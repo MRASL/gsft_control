@@ -1,0 +1,24 @@
+# Tnd nominal controller parameters
+position_gain: {x: 6.0, y: 6.0, z: 6.0}
+velocity_gain: {x: 4.7, y: 4.7, z: 4.7}
+attitude_gain: {x: 3.0, y: 3.0, z: 0.15}
+angular_rate_gain: {x: 0.52, y: 0.52, z: 0.18}
+#
+#z_gain: {K1: 14.1101, K2: 7.0551, Ki: 10.5826}
+z_gain: {K1: 15.5178, K2: 8.8989, Ki: 10.5959}
+#
+#phi_gain: {K1: 1.8768, K2: 0.4171, Ki: 3.7537}
+phi_gain: {K1: 1.5527, K2: 0.3770, Ki: 2.8737}
+#
+#teta_gain: {K1: 2.4782, K2: 0.5507, Ki: 4.9564}
+teta_gain: {K1: 2.0024, K2: 0.4800, Ki: 3.3867}
+#
+#psi_gain: {K1: 0.3908, K2: 0.2931, Ki: 0.1954}
+psi_gain: {K1: 0.3259, K2: 0.2725, Ki: 0.1539}
+#
+pd_gain: {Kp: 0.04, Kd: 0.1}
+#
+x_gain: {K1: 0.1019, K2: 0.1529, Ki: 0.0255}
+y_gain: {K1: -0.1019, K2: -0.1529, Ki: -0.0255}
+lost_control: {rotor0: 0.3, rotor1: 0.0, rotor2: 0.0, rotor3: 0.0, rotor4: 0.0, rotor5: 0.0}
+lost_moment:  {rotor0: 5.0, rotor1: 5.0, rotor2: 5.0, rotor3: 5.0, rotor4: 5.0, rotor5: 5.0}
