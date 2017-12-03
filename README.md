@@ -20,7 +20,7 @@ Duc-Tien Nguyen, David Saussié, Lahcen Saydy, [Robust Self-Scheduled Fault-Tole
 }
 ```
 
-D. T. Nguyen, D. Saussie and L. Saydy, [Quaternion-based robust fault-tolerant control of a quadrotor UAV](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7991516&isnumber=7991298), 2017 International Conference on Unmanned Aircraft Systems (ICUAS), Miami, FL, USA, 2017, pp. 1333-1342.
+D. T. Nguyen, D. Saussie and L. Saydy, [Quaternion-based robust fault-tolerant control of a quadrotor UAV](http://ieeexplore.ieee.org/document/7991516/), 2017 International Conference on Unmanned Aircraft Systems (ICUAS), Miami, FL, USA, 2017, pp. 1333-1342.
 doi: 10.1109/ICUAS.2017.7991516
 
 ```
