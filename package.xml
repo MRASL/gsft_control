@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>gsft_control</name>
+  <version>0.0.0</version>
+  <description>Gain Scheduling Fault Tolerant Control</description>
+
+  <maintainer email="duc-tien.nguyen@polymtl.ca">Duc-Tien Nguyen</maintainer>
+  
+  <license>BSD</license>
+
+  <author email="duc-tien-nguyen@polymtl.ca">Duc-Tien Nguyen</author>
+  <author email="andre-phu-van.nguyen@polymtl.ca">Andre Nguyen</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>
