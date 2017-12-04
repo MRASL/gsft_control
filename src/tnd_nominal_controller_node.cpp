@@ -1,318 +1,289 @@
-#include "rotors_control/tnd_nominal_controller.h"
+#include <ros/ros.h>
+#include <mav_msgs/default_topics.h>
+
+#include "tnd_nominal_controller_node.h"
+
+#include "rotors_control/parameters_ros.h"
 
 namespace rotors_control {
 
-TndNominalController::TndNominalController()
-    : initialized_params_(false),
-      controller_active_(false) {
-  InitializeParameters();
+TndNominalControllerNode::TndNominalControllerNode() {
+  InitializeParams();
+
+  ros::NodeHandle nh;
+
+  cmd_pose_sub_ = nh.subscribe(
+      mav_msgs::default_topics::COMMAND_POSE, 1,
+      &TndNominalControllerNode::CommandPoseCallback, this);
+
+  cmd_multi_dof_joint_trajectory_sub_ = nh.subscribe(
+      mav_msgs::default_topics::COMMAND_TRAJECTORY, 1,
+      &TndNominalControllerNode::MultiDofJointTrajectoryCallback, this);
+
+  odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1,
+                               &TndNominalControllerNode::OdometryCallback, this);
+
+  motor_velocity_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
+      mav_msgs::default_topics::COMMAND_ACTUATORS, 1);
+  // mav_msgs::Actuators is data type (https://github.com/ethz-asl/mav_comm/tree/master/mav_msgs/msg)
+  //      => see header file: #include <mav_msgs/Actuators.h>
+  // mav_msgs::default_topics::COMMAND_ACTUATORS is topic name (= command/motor_speed)
+  //      => see https://github.com/ethz-asl/mav_comm/blob/master/mav_msgs/include/mav_msgs/default_topics.h
+
+  tskf_input_pub_ = nh.advertise<mav_msgs::TSKFInput>(
+      mav_msgs::default_topics::TSKF_INPUT, 1);
+
+  command_timer_ = nh.createTimer(ros::Duration(0), &TndNominalControllerNode::TimedCommandCallback, this,
+                                  true, false);
 }
 
-TndNominalController::~TndNominalController() {}
+TndNominalControllerNode::~TndNominalControllerNode() { }
 
-void TndNominalController::InitializeParameters() {
-  ROS_INFO("Tnd_nominal_controller object initializeParameters");
-  position_W.setZero(); velocity_W.setZero(); euler_angle.setZero(); euler_rate.setZero();
-  z_int_ = 0.0; psi_int_ = 0.0; phi_int_ = 0.0; teta_int_ = 0.0; x_int_ = 0.0; y_int_ = 0.0;
-  initialized_params_ = true;
+void TndNominalControllerNode::InitializeParams() {
+  ros::NodeHandle pnh("~");
+
+  // Read parameters from rosparam.
+  GetRosParameter(pnh, "z_gain/K1",
+                  tnd_nominal_controller_.controller_parameters_.z_gain_.x(),
+                  &tnd_nominal_controller_.controller_parameters_.z_gain_.x());
+  GetRosParameter(pnh, "z_gain/K2",
+                  tnd_nominal_controller_.controller_parameters_.z_gain_.y(),
+                  &tnd_nominal_controller_.controller_parameters_.z_gain_.y());
+  GetRosParameter(pnh, "z_gain/Ki",
+                  tnd_nominal_controller_.controller_parameters_.z_gain_.z(),
+                  &tnd_nominal_controller_.controller_parameters_.z_gain_.z());
+  GetRosParameter(pnh, "phi_gain/K1",
+                  tnd_nominal_controller_.controller_parameters_.phi_gain_.x(),
+                  &tnd_nominal_controller_.controller_parameters_.phi_gain_.x());
+  GetRosParameter(pnh, "phi_gain/K2",
+                  tnd_nominal_controller_.controller_parameters_.phi_gain_.y(),
+                  &tnd_nominal_controller_.controller_parameters_.phi_gain_.y());
+  GetRosParameter(pnh, "phi_gain/Ki",
+                  tnd_nominal_controller_.controller_parameters_.phi_gain_.z(),
+                  &tnd_nominal_controller_.controller_parameters_.phi_gain_.z());
+  GetRosParameter(pnh, "teta_gain/K1",
+                  tnd_nominal_controller_.controller_parameters_.teta_gain_.x(),
+                  &tnd_nominal_controller_.controller_parameters_.teta_gain_.x());
+  GetRosParameter(pnh, "teta_gain/K2",
+                  tnd_nominal_controller_.controller_parameters_.teta_gain_.y(),
+                  &tnd_nominal_controller_.controller_parameters_.teta_gain_.y());
+  GetRosParameter(pnh, "teta_gain/Ki",
+                  tnd_nominal_controller_.controller_parameters_.teta_gain_.z(),
+                  &tnd_nominal_controller_.controller_parameters_.teta_gain_.z());
+  GetRosParameter(pnh, "psi_gain/K1",
+                  tnd_nominal_controller_.controller_parameters_.psi_gain_.x(),
+                  &tnd_nominal_controller_.controller_parameters_.psi_gain_.x());
+  GetRosParameter(pnh, "psi_gain/K2",
+                  tnd_nominal_controller_.controller_parameters_.psi_gain_.y(),
+                  &tnd_nominal_controller_.controller_parameters_.psi_gain_.y());
+  GetRosParameter(pnh, "psi_gain/Ki",
+                  tnd_nominal_controller_.controller_parameters_.psi_gain_.z(),
+                  &tnd_nominal_controller_.controller_parameters_.psi_gain_.z());
+  GetRosParameter(pnh, "x_gain/K1",
+                  tnd_nominal_controller_.controller_parameters_.x_gain_.x(),
+                  &tnd_nominal_controller_.controller_parameters_.x_gain_.x());
+  GetRosParameter(pnh, "x_gain/K2",
+                  tnd_nominal_controller_.controller_parameters_.x_gain_.y(),
+                  &tnd_nominal_controller_.controller_parameters_.x_gain_.y());
+  GetRosParameter(pnh, "x_gain/Ki",
+                  tnd_nominal_controller_.controller_parameters_.x_gain_.z(),
+                  &tnd_nominal_controller_.controller_parameters_.x_gain_.z());
+  GetRosParameter(pnh, "y_gain/K1",
+                  tnd_nominal_controller_.controller_parameters_.y_gain_.x(),
+                  &tnd_nominal_controller_.controller_parameters_.y_gain_.x());
+  GetRosParameter(pnh, "y_gain/K2",
+                  tnd_nominal_controller_.controller_parameters_.y_gain_.y(),
+                  &tnd_nominal_controller_.controller_parameters_.y_gain_.y());
+  GetRosParameter(pnh, "y_gain/Ki",
+                  tnd_nominal_controller_.controller_parameters_.y_gain_.z(),
+                  &tnd_nominal_controller_.controller_parameters_.y_gain_.z());
+  GetRosParameter(pnh, "pd_gain/Kp",
+                  tnd_nominal_controller_.controller_parameters_.pd_gain_.x(),
+                  &tnd_nominal_controller_.controller_parameters_.pd_gain_.x());
+  GetRosParameter(pnh, "pd_gain/Kd",
+                  tnd_nominal_controller_.controller_parameters_.pd_gain_.y(),
+                  &tnd_nominal_controller_.controller_parameters_.pd_gain_.y());
+  GetVehicleParameters(pnh, &tnd_nominal_controller_.vehicle_parameters_);
+  tnd_nominal_controller_.InitializeParameters();
+
+  LOE_.resize(tnd_nominal_controller_.vehicle_parameters_.rotor_configuration_.rotors.size());
+  LOE_time_.resize(tnd_nominal_controller_.vehicle_parameters_.rotor_configuration_.rotors.size());
+  GetRosParameter(pnh, "lost_control/rotor0",
+                  LOE_(0),&LOE_(0));
+  GetRosParameter(pnh, "lost_control/rotor1",
+                  LOE_(1),&LOE_(1));
+  GetRosParameter(pnh, "lost_control/rotor2",
+                  LOE_(2),&LOE_(2));
+  GetRosParameter(pnh, "lost_control/rotor3",
+                  LOE_(3),&LOE_(3));
+  GetRosParameter(pnh, "lost_control/rotor4",
+                  LOE_(4),&LOE_(4));
+  GetRosParameter(pnh, "lost_control/rotor5",
+                  LOE_(5),&LOE_(5));
+
+  GetRosParameter(pnh, "lost_moment/rotor0",
+                  LOE_time_(0),&LOE_time_(0));
+  GetRosParameter(pnh, "lost_moment/rotor1",
+                  LOE_time_(1),&LOE_time_(1));
+  GetRosParameter(pnh, "lost_moment/rotor2",
+                  LOE_time_(2),&LOE_time_(2));
+  GetRosParameter(pnh, "lost_moment/rotor3",
+                  LOE_time_(3),&LOE_time_(3));
+  GetRosParameter(pnh, "lost_moment/rotor4",
+                  LOE_time_(4),&LOE_time_(4));
+  GetRosParameter(pnh, "lost_moment/rotor5",
+                  LOE_time_(5),&LOE_time_(5));
+
+  // TND - Rotor failure simulation (random)
+  //  srand (time(NULL));
+  // fault_moment_         = rand() % 5 + 1;
+  reference_active_ = false;
+  // Fin TND
 }
-void TndNominalController::CalculateRotorVelocities(Eigen::VectorXd* rotor_velocities, Eigen::VectorXd* rotor_thrusts, ros::Duration Td) {
-  assert(rotor_velocities);
-  assert(initialized_params_);
+void TndNominalControllerNode::Publish() {
+}
 
-  rotor_velocities->resize(vehicle_parameters_.rotor_configuration_.rotors.size());
-  rotor_thrusts->resize(vehicle_parameters_.rotor_configuration_.rotors.size());
+void TndNominalControllerNode::CommandPoseCallback(
+  const geometry_msgs::PoseStampedConstPtr& pose_msg) {
+  // Clear all pending commands.
+  command_timer_.stop();
+  commands_.clear();
+  command_waiting_times_.clear();
 
-  // Return 0 velocities on all rotors, until the first command is received.
-  if (!controller_active_) {
-    *rotor_velocities = Eigen::VectorXd::Zero(rotor_velocities->rows());
-    *rotor_thrusts = Eigen::VectorXd::Zero(rotor_thrusts->rows());
+  mav_msgs::EigenTrajectoryPoint eigen_reference;
+  mav_msgs::eigenTrajectoryPointFromPoseMsg(*pose_msg, &eigen_reference);
+  commands_.push_front(eigen_reference);
+
+  tnd_nominal_controller_.SetTrajectoryPoint(commands_.front());
+  commands_.pop_front();
+}
+
+void TndNominalControllerNode::MultiDofJointTrajectoryCallback(
+    const trajectory_msgs::MultiDOFJointTrajectoryConstPtr& msg) {
+
+  // Clear all pending commands.
+  command_timer_.stop();
+  commands_.clear();
+  command_waiting_times_.clear();
+
+  const size_t n_commands = msg->points.size();
+
+  if(n_commands < 1){
+    ROS_WARN_STREAM("Got MultiDOFJointTrajectory message, but message has no points.");
     return;
   }
 
-  Eigen::VectorXd DTz(6);
-  ComputeDTz(&DTz,command_trajectory_.position_W.z(),Td);
+  mav_msgs::EigenTrajectoryPoint eigen_reference;
 
-  Eigen::VectorXd DTpsi(6), DTphi(6), DTteta(6);
-  Eigen::Vector3d angle_ref;
-  angle_ref.setZero();
+  mav_msgs::eigenTrajectoryPointFromMsg(msg->points.front(), &eigen_reference);
+  commands_.push_front(eigen_reference);
 
-  //if (position_W.z() > 1.9){
-  ComputeDesiredAttitude(&angle_ref,Td,0);      // 0 = PD controller for XY position, 1 = state feedback controller
-  //}
+  for (size_t i = 1; i < n_commands; ++i) {
+    const trajectory_msgs::MultiDOFJointTrajectoryPoint& reference_before = msg->points[i-1];
+    const trajectory_msgs::MultiDOFJointTrajectoryPoint& current_reference = msg->points[i];
 
-  ComputeDTpsi(&DTpsi,angle_ref.z(),Td);
-  ComputeDTphi(&DTphi,angle_ref.x(),Td);
-  ComputeDTteta(&DTteta,angle_ref.y(),Td);
+    mav_msgs::eigenTrajectoryPointFromMsg(current_reference, &eigen_reference);
 
-  Eigen::VectorXd DTe(6);
-  double thrust_e = vehicle_parameters_.mass_ * kDefaultGravity;
-  DTe << thrust_e/6.0, thrust_e/6.0, thrust_e/6.0, thrust_e/6.0, thrust_e/6.0, thrust_e/6.0; // 2.5633 N for each rotor <=> 547.5904 rad/s
-
-  //Eigen::VectorXd error_tuning(6);
-  //error_tuning << 0.03979, 0.03979, 0.03979, 0.03979, 0.03979, 0.03979;
-
-  Eigen::VectorXd DT(6);
-  DT = DTe + DTz + DTphi + DTteta + DTpsi;
-
-/*  std::cout << "[ INFO] [" << ros::Time::now() <<
-      "]: ---------- Controller thurst ----------" << DT << std::endl; */
-
-/*  for(unsigned int i=0; i< DT.size(); i++)
-      DT[i] = fmin(fmax(DT[i],0),controller_parameters_.max_thrust_);  */
-
-  Eigen::VectorXd omega;
-  omega =  DT/vehicle_parameters_.rotor_configuration_.rotors[0].rotor_force_constant;
-  for(unsigned int i=0; i< omega.size(); i++)
-      omega[i] = sqrt(fmax(omega[i],0.0));
-
-  *rotor_velocities = omega;
-  *rotor_thrusts = DT;
-/*  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND DT = " << DT << std::endl;
-/*  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND omega = " << omega << std::endl;*/
-}
-
-void TndNominalController::SetOdometry(const EigenOdometry& odometry) {
-  odometry_ = odometry;
-
-  position_W = odometry_.position;
-  // https://github.com/libigl/eigen/blob/1f05f51517ec4fd91eed711e0f89e97a7c028c0e/Eigen/src/Geometry/Quaternion.h
-  Eigen::Matrix3d R_W_B = odometry_.orientation.toRotationMatrix();
-  velocity_W =  R_W_B * odometry_.velocity;
-
-  GetEulerZYX_Mobile_Axis(&euler_angle,R_W_B);
-
-  /*tf::Matrix3x3 R_W_B_tf;
-  tf::matrixEigenToTF(R_W_B, R_W_B_tf);   // Eigen::Vector3d ea = R_W_I.eulerAngles(2,1,0) incorrect
-  double phi, teta, psi;
-  // http://docs.ros.org/api/tf/html/c++/Matrix3x3_8h_source.html
-  // https://answers.ros.org/question/58863/incorrect-rollpitch-yaw-values-using-getrpy/
-  // http://wiki.ros.org/geometry2/RotationMethods
-
-  R_W_B_tf.getRPY(phi, teta, psi);  // roll, pitch, yaw about fixed axes X, Y, Z
-  R_W_B_tf.getEulerYPR(psi, teta, phi);  // get euler angle z-y-z (around rotating axis)
-  euler << phi, teta, psi;
-*/
-  double phi = euler_angle.x(), teta = euler_angle.y(), psi = euler_angle.z();
-  Eigen::Matrix3d H;
-  H << 1.0, sin(phi)*tan(teta), cos(phi)*tan(teta),
-       0.0, cos(phi),           -sin(phi),
-       0.0, sin(phi)/cos(teta), cos(phi)/cos(teta);
-  euler_rate = H*odometry_.angular_velocity;
-  /*  std::cout << "Position World = " << position_W << std::endl;
-  std::cout << "Velocity World = " << velocity_W << std::endl;
-  std::cout << "Euler angle = "     << euler*180/3.14 << std::endl;
-  std::cout << "Euler rate = "     << euler_rate*180/3.14 << std::endl;*/
-}
-void TndNominalController::GetEulerZYX_Mobile_Axis(Eigen::Vector3d* euler_angle, Eigen::Matrix3d R_W2B){
-  double phi, teta, psi;
-  psi = atan2(R_W2B(1,0),R_W2B(0,0));
-  phi = atan2(R_W2B(2,1),R_W2B(2,2));
-  teta = asin(-R_W2B(2,0));
-  *euler_angle << phi, teta, psi;
-}
-
-void TndNominalController::ComputeDesiredAttitude(Eigen::Vector3d* deseriedAttitude, ros::Duration Td, bool state_feedback) {
-  double x_ref, teta_ref, y_ref, phi_ref;
-  x_ref = command_trajectory_.position_W.x();
-  y_ref = command_trajectory_.position_W.y();;
-
-  if (state_feedback) {
- /*    std::cout << "[ INFO] [" << ros::Time::now() <<
-          "]: ---------- TND State feedback controller ----------------- " << std::endl; */
-     Eigen::Vector2d state;
-     Eigen::RowVector2d K_x, K_y;
-     double Ki_x, Ki_y;
-
-     K_x << controller_parameters_.x_gain_(0), controller_parameters_.x_gain_(1);
-     Ki_x = controller_parameters_.x_gain_(2);
-  /*   std::cout << "Kx = " << K_x << std::endl;
-     std::cout << "Kix = " << Ki_x << std::endl; */
-     state << position_W.x(), velocity_W.x();
-     x_int_ += Td.toSec()*(x_ref - position_W.x());
-     teta_ref = -K_x*state + Ki_x*x_int_;
-
-     K_y << controller_parameters_.y_gain_(0), controller_parameters_.y_gain_(1);
-     Ki_y = controller_parameters_.y_gain_(2);
-     /*std::cout << "Ky = " << K_y << std::endl;
-     std::cout << "Kiy = " << Ki_y << std::endl;*/
-     state << position_W.y(), velocity_W.y();
-     y_int_ += Td.toSec()*(y_ref - position_W.y());
-     phi_ref = -K_y*state + Ki_y*y_int_;
+    commands_.push_back(eigen_reference);
+    command_waiting_times_.push_back(current_reference.time_from_start - reference_before.time_from_start);
   }
-  else {      // PD controller for XY position
-  /*  std::cout << "[ INFO] [" << ros::Time::now() <<
-          "]: ---------- TND PD controller ----------------- " << std::endl; */
-    double error_x, error_y;
-    double Kp, Kd;
-    Kp = controller_parameters_.pd_gain_(0);
-    Kd = controller_parameters_.pd_gain_(1);
 
-    error_x = x_ref - position_W.x();
-    error_y = y_ref - position_W.y();
+  // We can trigger the first command immediately.
+  tnd_nominal_controller_.SetTrajectoryPoint(commands_.front());
+  commands_.pop_front();
 
-    teta_ref = Kp*error_x - Kd*velocity_W.x();
-    phi_ref = -Kp*error_y + Kd*velocity_W.y();
-
+  // TND - Rotor failure simulation
+  if (!reference_active_) {
+      reference_active_ = true;
+      reference_time_   = ros::Time::now();
   }
-  // phi_ref = fmin(fmax(phi_ref, -controller_parameters_.max_roll_pitch_),controller_parameters_.max_roll_pitch_);
-  // teta_ref = fmin(fmax(teta_ref, -controller_parameters_.max_roll_pitch_),controller_parameters_.max_roll_pitch_);
+  // Fin TND
 
-   *deseriedAttitude << phi_ref, teta_ref, 0.0;
+  if (n_commands > 1) {     // wait before go to next point
+    command_timer_.setPeriod(command_waiting_times_.front());
+    command_waiting_times_.pop_front();
+    command_timer_.start();
+  }
 }
 
-void TndNominalController::SetTrajectoryPoint(
-    const mav_msgs::EigenTrajectoryPoint& command_trajectory) {
-  command_trajectory_ = command_trajectory;
-  controller_active_ = true;
-   std::cout << "[ INFO] [" << ros::WallTime::now()  <<
-          "]: Nominal Controller active " << std::endl;
+void TndNominalControllerNode::TimedCommandCallback(const ros::TimerEvent& e) {
+  if(commands_.empty()){
+    ROS_WARN("Commands empty, this should not happen here");
+    return;
+  }
+
+  const mav_msgs::EigenTrajectoryPoint eigen_reference = commands_.front();
+  tnd_nominal_controller_.SetTrajectoryPoint(commands_.front());
+  commands_.pop_front();
+  command_timer_.stop();
+  if(!command_waiting_times_.empty()){
+    command_timer_.setPeriod(command_waiting_times_.front());
+    command_waiting_times_.pop_front();
+    command_timer_.start();
+  }
 }
 
-void TndNominalController::ComputeDTz(Eigen::VectorXd* DTz,double z_ref,ros::Duration Td) {
-  DTz->resize(vehicle_parameters_.rotor_configuration_.rotors.size());
-  assert(DTz);
+void TndNominalControllerNode::OdometryCallback(const nav_msgs::OdometryConstPtr& odometry_msg) {
+  ros::NodeHandle pnh("~");
 
-  double a, b, c;
-  a = controller_parameters_.z_gain_(0);
-  b = controller_parameters_.z_gain_(1);
-  c = controller_parameters_.z_gain_(2);
-  Eigen::MatrixXd K(6,2);
-  Eigen::VectorXd Ki(6);
-  K << a/6.0, b/6.0,
-       a/6.0, b/6.0,
-       a/6.0, b/6.0,
-       a/6.0, b/6.0,
-       a/6.0, b/6.0,
-       a/6.0, b/6.0;
-  Ki << c/6.0, c/6.0, c/6.0, c/6.0, c/6.0, c/6.0;
+  EigenOdometry odometry;
+  eigenOdometryFromMsg(odometry_msg, &odometry);
+  tnd_nominal_controller_.SetOdometry(odometry);
 
-/*  std::cout << "Kz = " << a << "  " << b << std::endl;
-  std::cout << "Kiz = " << c << std::endl;*/
+  Eigen::VectorXd ref_rotor_velocities, ref_rotor_thrusts;
 
-  Eigen::Vector2d state;
-  state << position_W.z(), velocity_W.z();
-  z_int_ += Td.toSec()*(z_ref - position_W.z());
+  ros::Time current_time = ros::Time::now();
+  ros::Duration Td = current_time - prev_it_;
+  prev_it_ = current_time;
 
-  *DTz = -K*state + Ki*z_int_;
-/*  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND z = " << position_W.z() << std::endl;
-  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND z_ref = " << z_ref << std::endl;
-  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND DTz = " << *DTz << std::endl;*/
+  tnd_nominal_controller_.CalculateRotorVelocities(&ref_rotor_velocities,&ref_rotor_thrusts,Td);
+
+  // Sent to TSKF
+  if (reference_active_){
+    mav_msgs::TSKFInputPtr tskf_input_msg(new mav_msgs::TSKFInput);
+    tskf_input_msg->ref_thrusts.clear();
+    for (int i = 0; i < ref_rotor_thrusts.size(); i++)
+      tskf_input_msg->ref_thrusts.push_back(ref_rotor_thrusts[i]);
+
+    mav_msgs::vectorEigenToMsg(tnd_nominal_controller_.position_W, &tskf_input_msg->position_W);
+    mav_msgs::vectorEigenToMsg(tnd_nominal_controller_.velocity_W, &tskf_input_msg->velocity_W);
+    mav_msgs::vectorEigenToMsg(tnd_nominal_controller_.euler_angle, &tskf_input_msg->euler_angle);
+    mav_msgs::vectorEigenToMsg(tnd_nominal_controller_.euler_rate, &tskf_input_msg->euler_rate);
+
+    tskf_input_msg->header.stamp = odometry_msg->header.stamp;
+    tskf_input_pub_.publish(tskf_input_msg);
+  }
+
+  /*if (ros::Time::now().toSec() == 5.0){
+      std::cout << "[ INFO] [" << ros::WallTime::now() <<
+            "]: LOE of " << LOE << "% on namespace " <<  pnh.getNamespace().c_str() << std::endl;
+  }*/
+  // Rotor failure simulation
+  for(unsigned int i=0; i< 6; i++){
+    if ((ros::Time::now() - reference_time_).toSec() > LOE_time_(i)){
+        ref_rotor_velocities[i] = sqrt(1.0-LOE_(i))*ref_rotor_velocities[i];
+    }
+  }
+
+  // Sent to Gazebo
+  mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
+  actuator_msg->angular_velocities.clear();
+  for (int i = 0; i < ref_rotor_velocities.size(); i++)
+    actuator_msg->angular_velocities.push_back(ref_rotor_velocities[i]);
+  actuator_msg->header.stamp = odometry_msg->header.stamp;
+
+  motor_velocity_reference_pub_.publish(actuator_msg);
+
 }
 
-void TndNominalController::ComputeDTpsi(Eigen::VectorXd* DTpsi,double psi_ref,ros::Duration Td){
-  DTpsi->resize(vehicle_parameters_.rotor_configuration_.rotors.size());
-  assert(DTpsi);
-
-  double a, b, c, scale;
-  scale = vehicle_parameters_.rotor_configuration_.rotors[0].rotor_moment_constant;
-  a = controller_parameters_.psi_gain_(0)/(6.0*scale);
-  b = controller_parameters_.psi_gain_(1)/(6.0*scale);
-  c = controller_parameters_.psi_gain_(2)/(6.0*scale);
-
-/*  std::cout << "Kpsi = " << controller_parameters_.psi_gain_(0) << "  " << controller_parameters_.psi_gain_(1) << std::endl;
-  std::cout << "Kipsi = " << controller_parameters_.psi_gain_(2) << std::endl;*/
-
-  Eigen::MatrixXd K(6,2);
-  Eigen::VectorXd Ki(6);
-  K << -a,-b,
-        a,b,
-      -a,-b,
-       a, b,
-      -a,-b,
-      a, b;
-  Ki << -c, c, -c, c, -c, c;
-
-  Eigen::Vector2d state;
-  state << euler_angle.z(), euler_rate.z();
-  psi_int_ += Td.toSec()*(psi_ref - euler_angle.z());
-
-  *DTpsi = -K*state + Ki*psi_int_;
-/*  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND psi = " << euler_angle.z()*180/3.14 << std::endl;
-  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND psi_ref = " << psi_ref*180/3.14 << std::endl;
-   std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND DTpsi = " << *DTpsi << std::endl;*/
 }
 
-void TndNominalController::ComputeDTphi(Eigen::VectorXd* DTphi,double phi_ref,ros::Duration Td){
-  DTphi->resize(vehicle_parameters_.rotor_configuration_.rotors.size());
-  assert(DTphi);
+int main(int argc, char** argv) {
+  ros::init(argc, argv, "tnd_nominal_controller_node");
+  ROS_INFO("Tnd_nominal_controller_node main started");
+  rotors_control::TndNominalControllerNode tnd_nominal_controller_node;
 
-  double a, b, c, arm;
-  arm = vehicle_parameters_.rotor_configuration_.rotors[0].arm_length;
-  a = controller_parameters_.phi_gain_(0)/(6.0*arm);
-  b = controller_parameters_.phi_gain_(1)/(6.0*arm);
-  c = controller_parameters_.phi_gain_(2)/(6.0*arm);
-
-/*  std::cout << "Kphi = " << controller_parameters_.phi_gain_(0) << "  " << controller_parameters_.phi_gain_(1) << std::endl;
-  std::cout << "Kiphi = " << controller_parameters_.phi_gain_(2) << std::endl;*/
-
-  Eigen::MatrixXd K(6,2);
-  Eigen::VectorXd Ki(6);
-  K <<   a,   b,
-       2.0*a, 2.0*b,
-         a,   b,
-        -a,  -b,
-      -2.0*a,-2.0*b,
-        -a,  -b;
-  Ki << c, 2.0*c, c, -c, -2.0*c, -c;
-
-  Eigen::Vector2d state;
-  state << euler_angle.x(), euler_rate.x();
-  phi_int_ += Td.toSec()*(phi_ref - euler_angle.x());
-
-  *DTphi = -K*state + Ki*phi_int_;
-
-/*  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND phi = " << euler_angle.x()*180/3.14 << std::endl;
-  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND phi_ref = " << phi_ref*180/3.14 << std::endl;
-  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND DTphi = " << *DTphi << std::endl; */
-}
-
-
-void TndNominalController::ComputeDTteta(Eigen::VectorXd* DTteta,double teta_ref,ros::Duration Td){
-  DTteta->resize(vehicle_parameters_.rotor_configuration_.rotors.size());
-  assert(DTteta);
-
-  double a, b, c, arm;
-  arm = vehicle_parameters_.rotor_configuration_.rotors[0].arm_length;
-  a = sqrt(3)*controller_parameters_.teta_gain_(0)/(6.0*arm);
-  b = sqrt(3)*controller_parameters_.teta_gain_(1)/(6.0*arm);
-  c = sqrt(3)*controller_parameters_.teta_gain_(2)/(6.0*arm);
-
-/*  std::cout << "Kteta = " << controller_parameters_.teta_gain_(0) << "  " << controller_parameters_.teta_gain_(1) << std::endl;
-  std::cout << "Kiteta = " << controller_parameters_.teta_gain_(2) << std::endl;*/
-
-  Eigen::MatrixXd K(6,2);
-  Eigen::VectorXd Ki(6);
-  K << -a, -b,
-       0.0, 0.0,
-       a,b,
-       a,b,
-       0.0, 0.0,
-       -a, -b;
-  Ki << -c, 0.0, c, c, 0.0, -c;
-
-  Eigen::Vector2d state;
-  state << euler_angle.y(), euler_rate.y();
-  teta_int_ += Td.toSec()*(teta_ref - euler_angle.y());
-
-  *DTteta = -K*state + Ki*teta_int_;
-
-/*  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND teta = " << euler_angle.y()*180/3.14 << std::endl;
-  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND teta_ref = " << teta_ref*180/3.14 << std::endl;
-  std::cout << "[ INFO] [" << ros::Time::now() <<
-        "]: ---------- TND DTteta = " << *DTteta << std::endl; */
-}
+  tnd_nominal_controller_node.prev_it_ = ros::Time::now();
+  ros::spin();
+  return 0;
 }

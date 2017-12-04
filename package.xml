@@ -12,7 +12,13 @@
   <author email="andre-phu-van.nguyen@polymtl.ca">Andre Nguyen</author>
 
   <buildtool_depend>catkin</buildtool_depend>
-
+  <depend>cmake_modules</depend>
+  <depend>geometry_msgs</depend>
+  <depend>mav_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>trajectory_msgs</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

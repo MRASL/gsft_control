@@ -1,7 +1,9 @@
-#ifndef INCLUDE_ROTORS_CONTROL_PARAMETERS_H_
-#define INCLUDE_ROTORS_CONTROL_PARAMETERS_H_
+#ifndef GSFT_CONTROL_PARAMETERS_H
+#define GSFT_CONTROL_PARAMETERS_H
 
-namespace rotors_control {
+// This file belongs to the rotors_simulator project
+
+namespace gsft_control {
 // Default values for the Asctec Firefly rotor configuration.
 static constexpr double kDefaultRotor0Angle = 0.52359877559;
 static constexpr double kDefaultRotor1Angle = 1.57079632679;
@@ -85,4 +87,4 @@ class VehicleParameters {
 
 }
 
-#endif /* INCLUDE_ROTORS_CONTROL_PARAMETERS_H_ */
+#endif // GSFT_CONTROL_PARAMETERS_H
