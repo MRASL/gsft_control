@@ -15,6 +15,9 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     geometry_msgs
     trajectory_msgs
+    message_generation
+    std_msgs
+    geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -52,11 +55,11 @@ find_package(Eigen3 REQUIRED)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  VirtualControl.msg
+  XYZYawError.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -73,10 +76,11 @@ find_package(Eigen3 REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+ DEPENDENCIES
+ std_msgs  # Or other packages containing msgs
+ geometry_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -110,7 +114,7 @@ find_package(Eigen3 REQUIRED)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES gsft_control
-    CATKIN_DEPENDS geometry_msgs mav_msgs nav_msgs roscpp sensor_msgs trajectory_msgs
+    CATKIN_DEPENDS geometry_msgs mav_msgs nav_msgs roscpp sensor_msgs trajectory_msgs message_generation std_msgs geometry_msgs
     DEPENDS EIGEN3
 )
 
@@ -122,6 +126,9 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
  include
+ R2017a/extern/include
+ R2017a/simulink/include
+ src/lqr_firefly_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
@@ -133,11 +140,13 @@ add_library(${PROJECT_NAME}
     include/nominal_controller.hpp
     src/nominal_controller.cpp
 )
-
-## Add cmake target dependencies of the library
-## as an example, code may need to be generated before libraries
-## either from message generation or dynamic reconfigure
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_library(matlab_lqr
+    src/lqr_firefly_grt_rtw/lqr_firefly_data.cpp
+    src/lqr_firefly_grt_rtw/lqr_firefly.cpp
+)
+add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -146,25 +155,27 @@ add_executable(nominal_controller_node
     include/nominal_controller_node.hpp
     src/nominal_controller_node.cpp
 )
-
-## Rename C++ executable without prefix
-## The above recommended prefix causes long target names, the following renames the
-## target back to the shorter version for ease of user use
-## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
-
-## Add cmake target dependencies of the executable
-## same as for the library above
 add_dependencies(nominal_controller_node
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
     ${PROJECT_NAME}
 )
-
-## Specify libraries to link a library or executable target against
 target_link_libraries(nominal_controller_node
     ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
+    ${catkin_LIBRARIES}
+)
+
+add_executable(lqr_controller_node
+    src/matlab_lqr_controller_node.cpp
+)
+add_dependencies(lqr_controller_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_lqr
+)
+target_link_libraries(lqr_controller_node
+    matlab_lqr
+    ${catkin_LIBRARIES}
 )
 
 #############

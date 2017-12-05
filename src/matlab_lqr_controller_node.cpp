@@ -1,17 +1,21 @@
 #include <ros/ros.h>
+
 #include <mav_msgs/default_topics.h>
 #include <nav_msgs/Odometry.h>
 #include <mav_msgs/eigen_mav_msgs.h>
 #include <mav_msgs/conversions.h>
+
+#include <tf/tf.h>
 #include <tf_conversions/tf_eigen.h>
 #include <trajectory_msgs/MultiDOFJointTrajectory.h>
-#include "rotors_control/parameters.h"
-#include "rotors_control/parameters_ros.h"
-#include "rotors_control/common.h"
+
+#include "parameters.h"
+#include "parameters_ros.h"
+#include "common.h"
+
+#include <gsft_control/VirtualControl.h>
+#include <gsft_control/XYZYawError.h>
 #include <lqr_firefly.h>
-#include <tf/tf.h>
-#include <mav_msgs/VirtualControl.h>
-#include <mav_msgs/XYZYawError.h>
 
 lqr_fireflyModelClass gController;
 
@@ -98,10 +102,10 @@ int main(int argc, char** argv) {
   cmd_multi_dof_joint_trajectory_sub = nh.subscribe(mav_msgs::default_topics::COMMAND_TRAJECTORY, 1, MultiDofJointTrajectoryCallback);
 
   ros::Publisher xyzyaw_error_pub_;
-  xyzyaw_error_pub_ = nh.advertise<mav_msgs::XYZYawError>(mav_msgs::default_topics::XYZYAW_ERROR, 1);
+  xyzyaw_error_pub_ = nh.advertise<gsft_control::XYZYawError>(gsft_control::default_topics::XYZYAW_ERROR, 1);
 
   ros::Publisher virtual_control_pub_;
-  virtual_control_pub_ = nh.advertise<mav_msgs::VirtualControl>(mav_msgs::default_topics::VIRTUAL_CONTROL, 1);
+  virtual_control_pub_ = nh.advertise<gsft_control::VirtualControl>(gsft_control::default_topics::VIRTUAL_CONTROL, 1);
 
   ros::Publisher motor_velocity_reference_pub_;
   motor_velocity_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
@@ -129,7 +133,7 @@ int main(int argc, char** argv) {
         motor_velocity_reference_pub_.publish(actuator_msg);
 
         // Publish: error
-        mav_msgs::XYZYawErrorPtr xyzyaw_error_msg(new mav_msgs::XYZYawError);
+        gsft_control::XYZYawErrorPtr xyzyaw_error_msg(new gsft_control::XYZYawError);
         Eigen::VectorXd position_error(3);
         for(unsigned int i=0; i< 3; i++)
             position_error[i] = gController.lqr_firefly_Y.error[i];
@@ -139,7 +143,7 @@ int main(int argc, char** argv) {
         xyzyaw_error_pub_.publish(xyzyaw_error_msg);
 
         // Publish: virtual control
-        mav_msgs::VirtualControlPtr virtual_contrl_msg(new mav_msgs::VirtualControl);
+        gsft_control::VirtualControlPtr virtual_contrl_msg(new gsft_control::VirtualControl);
         Eigen::VectorXd moment(3);
         for(unsigned int i=1; i< 4; i++)
             moment[i-1] = gController.lqr_firefly_Y.virtual_control[i];

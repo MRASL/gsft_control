@@ -46,6 +46,11 @@ static const std::string kDefaultImuTopic =
     mav_msgs::default_topics::IMU; // "imu
 static const std::string kDefaultOdometryTopic =
     mav_msgs::default_topics::ODOMETRY; // "odometry"
+    
+namespace default_topics {
+  static constexpr char XYZYAW_ERROR[] = "xyz_yaw_error";
+  static constexpr char VIRTUAL_CONTROL[] = "virtual_control";
+}    
 
 struct EigenOdometry {
   EigenOdometry()
