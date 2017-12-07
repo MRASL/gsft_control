@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_firefly".
  *
- * Model version              : 1.450
+ * Model version              : 1.455
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Dec 05 13:45:58 2017
+ * C++ source code generated on : Thu Dec  7 15:05:55 2017
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -61,7 +61,7 @@ void lqr_fireflyModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   real_T *f5 = id->f[5];
   real_T hB[6];
   int_T i;
-  int_T nXc = 10;
+  int_T nXc = 4;
   rtsiSetSimTimeStep(si,MINOR_TIME_STEP);
 
   /* Save the state values at time t in y, we'll use x as ynew. */
@@ -159,13 +159,12 @@ void lqr_fireflyModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 /* Model step function */
 void lqr_fireflyModelClass::step()
 {
-  int_T iy;
-  int_T ci;
-  real_T rtb_Gain2[6];
   real_T rtb_Sum2[4];
   real_T tmp[4];
-  real_T rtb_Sum2_h;
-  const real_T *tmp_0;
+  int32_T i;
+  int32_T i_0;
+  real_T tmp_0;
+  const real_T *tmp_1;
   if (rtmIsMajorTimeStep((&lqr_firefly_M))) {
     /* set solver stop time */
     if (!((&lqr_firefly_M)->Timing.clockTick0+1)) {
@@ -185,24 +184,61 @@ void lqr_fireflyModelClass::step()
     (&lqr_firefly_M)->Timing.t[0] = rtsiGetT(&(&lqr_firefly_M)->solverInfo);
   }
 
-  for (iy = 0; iy < 6; iy++) {
-    /* StateSpace: '<Root>/Filter' */
-    rtb_Gain2[iy] = 0.0;
-    for (ci = iy; ci < iy + 1; ci++) {
-      rtb_Gain2[iy] += lqr_firefly_X.Filter_CSTATE[ci];
-    }
-
-    /* End of StateSpace: '<Root>/Filter' */
-
-    /* Outport: '<Root>/omega' */
-    lqr_firefly_Y.omega[iy] = rtb_Gain2[iy];
-  }
-
   /* Sum: '<Root>/Sum3' incorporates:
    *  Gain: '<Root>/                   '
    *  Inport: '<Root>/X'
    */
-  tmp_0 = &lqr_firefly_U.X[0];
+  tmp_1 = &lqr_firefly_U.X[0];
+  for (i = 0; i < 4; i++) {
+    /* Gain: '<Root>/ ' incorporates:
+     *  Integrator: '<Root>/Integrator'
+     *  Sum: '<Root>/Sum'
+     */
+    tmp_0 = lqr_firefly_ConstP._Gain[i + 12] * lqr_firefly_X.Integrator_CSTATE[3]
+      + (lqr_firefly_ConstP._Gain[i + 8] * lqr_firefly_X.Integrator_CSTATE[2] +
+         (lqr_firefly_ConstP._Gain[i + 4] * lqr_firefly_X.Integrator_CSTATE[1] +
+          lqr_firefly_ConstP._Gain[i] * lqr_firefly_X.Integrator_CSTATE[0]));
+
+    /* Gain: '<Root>/                   ' incorporates:
+     *  Sum: '<Root>/Sum'
+     */
+    tmp[i] = 0.0;
+    for (i_0 = 0; i_0 < 12; i_0++) {
+      tmp[i] += lqr_firefly_ConstP._Gain_g[(i_0 << 2) + i] * tmp_1[i_0];
+    }
+
+    /* Sum: '<Root>/Sum2' incorporates:
+     *  Constant: '<Root>/              '
+     *  Sum: '<Root>/Sum'
+     */
+    rtb_Sum2[i] = (tmp_0 - tmp[i]) + lqr_firefly_ConstP._Value[i];
+  }
+
+  for (i = 0; i < 6; i++) {
+    /* Gain: '<Root>/Gain' incorporates:
+     *  Saturate: '<Root>/Saturation'
+     */
+    tmp_0 = lqr_firefly_ConstP.Gain_Gain[i + 18] * rtb_Sum2[3] +
+      (lqr_firefly_ConstP.Gain_Gain[i + 12] * rtb_Sum2[2] +
+       (lqr_firefly_ConstP.Gain_Gain[i + 6] * rtb_Sum2[1] +
+        lqr_firefly_ConstP.Gain_Gain[i] * rtb_Sum2[0]));
+
+    /* Sqrt: '<Root>/Sqrt1' */
+    if (tmp_0 > 6.00318901352) {
+      tmp_0 = 6.00318901352;
+    } else {
+      if (tmp_0 < 0.0) {
+        tmp_0 = 0.0;
+      }
+    }
+
+    /* Outport: '<Root>/omega' incorporates:
+     *  Gain: '<Root>/Gain'
+     *  Gain: '<Root>/Gain2'
+     *  Sqrt: '<Root>/Sqrt1'
+     */
+    lqr_firefly_Y.omega[i] = std::sqrt(116978.4923343994 * tmp_0);
+  }
 
   /* Sum: '<Root>/Sum1' incorporates:
    *  Inport: '<Root>/X'
@@ -215,69 +251,30 @@ void lqr_fireflyModelClass::step()
   lqr_firefly_B.Sum1[1] = lqr_firefly_U.y_ref - lqr_firefly_U.X[1];
   lqr_firefly_B.Sum1[2] = lqr_firefly_U.z_ref - lqr_firefly_U.X[2];
   lqr_firefly_B.Sum1[3] = lqr_firefly_U.psi_ref - lqr_firefly_U.X[8];
-  for (iy = 0; iy < 4; iy++) {
-    /* Gain: '<Root>/ ' incorporates:
-     *  Integrator: '<Root>/Integrator'
-     *  Sum: '<Root>/Sum'
-     */
-    rtb_Sum2_h = lqr_firefly_ConstP._Gain[iy + 12] *
-      lqr_firefly_X.Integrator_CSTATE[3] + (lqr_firefly_ConstP._Gain[iy + 8] *
-      lqr_firefly_X.Integrator_CSTATE[2] + (lqr_firefly_ConstP._Gain[iy + 4] *
-      lqr_firefly_X.Integrator_CSTATE[1] + lqr_firefly_ConstP._Gain[iy] *
-      lqr_firefly_X.Integrator_CSTATE[0]));
 
-    /* Gain: '<Root>/                   ' incorporates:
-     *  Sum: '<Root>/Sum'
-     */
-    tmp[iy] = 0.0;
-    for (ci = 0; ci < 12; ci++) {
-      tmp[iy] += lqr_firefly_ConstP._Gain_g[(ci << 2) + iy] * tmp_0[ci];
-    }
+  /* Outport: '<Root>/virtual_control' */
+  lqr_firefly_Y.virtual_control[0] = rtb_Sum2[0];
 
-    /* Sum: '<Root>/Sum2' incorporates:
-     *  Constant: '<Root>/              '
-     *  Sum: '<Root>/Sum'
-     */
-    rtb_Sum2_h = (rtb_Sum2_h - tmp[iy]) + lqr_firefly_ConstP._Value[iy];
+  /* Outport: '<Root>/error' */
+  lqr_firefly_Y.error[0] = lqr_firefly_B.Sum1[0];
 
-    /* Outport: '<Root>/virtual_control' */
-    lqr_firefly_Y.virtual_control[iy] = rtb_Sum2_h;
+  /* Outport: '<Root>/virtual_control' */
+  lqr_firefly_Y.virtual_control[1] = rtb_Sum2[1];
 
-    /* Outport: '<Root>/error' */
-    lqr_firefly_Y.error[iy] = lqr_firefly_B.Sum1[iy];
+  /* Outport: '<Root>/error' */
+  lqr_firefly_Y.error[1] = lqr_firefly_B.Sum1[1];
 
-    /* Sum: '<Root>/Sum2' incorporates:
-     *  Sum: '<Root>/Sum'
-     */
-    rtb_Sum2[iy] = rtb_Sum2_h;
-  }
+  /* Outport: '<Root>/virtual_control' */
+  lqr_firefly_Y.virtual_control[2] = rtb_Sum2[2];
 
-  for (ci = 0; ci < 6; ci++) {
-    /* Gain: '<Root>/Gain' incorporates:
-     *  Saturate: '<Root>/Saturation'
-     */
-    rtb_Sum2_h = lqr_firefly_ConstP.Gain_Gain[ci + 18] * rtb_Sum2[3] +
-      (lqr_firefly_ConstP.Gain_Gain[ci + 12] * rtb_Sum2[2] +
-       (lqr_firefly_ConstP.Gain_Gain[ci + 6] * rtb_Sum2[1] +
-        lqr_firefly_ConstP.Gain_Gain[ci] * rtb_Sum2[0]));
+  /* Outport: '<Root>/error' */
+  lqr_firefly_Y.error[2] = lqr_firefly_B.Sum1[2];
 
-    /* Sqrt: '<Root>/Sqrt1' incorporates:
-     *  Gain: '<Root>/Gain'
-     *  Gain: '<Root>/Gain2'
-     */
-    if (rtb_Sum2_h > 6.00318901352) {
-      rtb_Sum2_h = 6.00318901352;
-    } else {
-      if (rtb_Sum2_h < 0.0) {
-        rtb_Sum2_h = 0.0;
-      }
-    }
+  /* Outport: '<Root>/virtual_control' */
+  lqr_firefly_Y.virtual_control[3] = rtb_Sum2[3];
 
-    lqr_firefly_B.Sqrt1[ci] = std::sqrt(116978.4923343994 * rtb_Sum2_h);
-
-    /* End of Sqrt: '<Root>/Sqrt1' */
-  }
-
+  /* Outport: '<Root>/error' */
+  lqr_firefly_Y.error[3] = lqr_firefly_B.Sum1[3];
   if (rtmIsMajorTimeStep((&lqr_firefly_M))) {
     rt_ertODEUpdateContinuousStates(&(&lqr_firefly_M)->solverInfo);
 
@@ -318,26 +315,8 @@ void lqr_fireflyModelClass::step()
 /* Derivatives for root system: '<Root>' */
 void lqr_fireflyModelClass::lqr_firefly_derivatives()
 {
-  int_T is;
-  int_T ci;
   XDot_lqr_firefly_T *_rtXdot;
   _rtXdot = ((XDot_lqr_firefly_T *) (&lqr_firefly_M)->derivs);
-
-  /* Derivatives for StateSpace: '<Root>/Filter' */
-  for (is = 0; is < 6; is++) {
-    _rtXdot->Filter_CSTATE[is] = 0.0;
-    for (ci = is; ci < is + 1; ci++) {
-      _rtXdot->Filter_CSTATE[is] += -80.0 * lqr_firefly_X.Filter_CSTATE[ci];
-    }
-  }
-
-  for (is = 0; is < 6; is++) {
-    for (ci = is; ci < is + 1; ci++) {
-      _rtXdot->Filter_CSTATE[is] += 80.0 * lqr_firefly_B.Sqrt1[ci];
-    }
-  }
-
-  /* End of Derivatives for StateSpace: '<Root>/Filter' */
 
   /* Derivatives for Integrator: '<Root>/Integrator' */
   _rtXdot->Integrator_CSTATE[0] = lqr_firefly_B.Sum1[0];
@@ -410,22 +389,11 @@ void lqr_fireflyModelClass::initialize()
   (void) memset((void *)&lqr_firefly_Y, 0,
                 sizeof(ExtY_lqr_firefly_T));
 
-  {
-    int_T is;
-
-    /* InitializeConditions for StateSpace: '<Root>/Filter' */
-    for (is = 0; is < 6; is++) {
-      lqr_firefly_X.Filter_CSTATE[is] = 0.0;
-    }
-
-    /* End of InitializeConditions for StateSpace: '<Root>/Filter' */
-
-    /* InitializeConditions for Integrator: '<Root>/Integrator' */
-    lqr_firefly_X.Integrator_CSTATE[0] = 0.0;
-    lqr_firefly_X.Integrator_CSTATE[1] = 0.0;
-    lqr_firefly_X.Integrator_CSTATE[2] = 0.0;
-    lqr_firefly_X.Integrator_CSTATE[3] = 0.0;
-  }
+  /* InitializeConditions for Integrator: '<Root>/Integrator' */
+  lqr_firefly_X.Integrator_CSTATE[0] = 0.0;
+  lqr_firefly_X.Integrator_CSTATE[1] = 0.0;
+  lqr_firefly_X.Integrator_CSTATE[2] = 0.0;
+  lqr_firefly_X.Integrator_CSTATE[3] = 0.0;
 }
 
 /* Model terminate function */

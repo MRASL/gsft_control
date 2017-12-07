@@ -120,15 +120,21 @@ int main(int argc, char** argv) {
     if (gCommand_active) {
         gController.step();
         Eigen::VectorXd omega(6);
-        for(unsigned int i=0; i< 6; i++)
-            omega[i] = gController.lqr_firefly_Y.omega[i];
+        Eigen::VectorXd omega_normalized(6);
 
+        for(unsigned int i=0; i< 6; i++) {
+            omega[i] = fmin(fmax(gController.lqr_firefly_Y.omega[i],0.0),838.0);
+            omega_normalized[i] = omega[i]/838.0;
+        }
         // Publish: Rotor speed
         mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
         actuator_msg->angular_velocities.clear();
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 6; i++) {
           actuator_msg->angular_velocities.push_back(omega[i]);
+          actuator_msg->normalized.push_back(omega_normalized[i]);
+        }
+
         actuator_msg->header.stamp =  ros::Time::now();
         motor_velocity_reference_pub_.publish(actuator_msg);
 
