@@ -158,6 +158,18 @@ int main(int argc, char** argv) {
         virtual_contrl_msg->total_thrust = gController.lqr_firefly_Y.virtual_control[0];
         virtual_control_pub_.publish(virtual_contrl_msg);
 
+    } else {
+      // Publish: Rotor speed
+      mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
+      actuator_msg->angular_velocities.clear();
+
+      for (int i = 0; i < 6; i++) {
+        actuator_msg->angular_velocities.push_back(0.0);
+        actuator_msg->normalized.push_back(0.0);
+      }
+
+      actuator_msg->header.stamp =  ros::Time::now();
+      motor_velocity_reference_pub_.publish(actuator_msg);
     }
     ros::spinOnce();
     r.sleep();
