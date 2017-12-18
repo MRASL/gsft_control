@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
             omega[i] = gController.lqr_firefly_Y.omega[i];             // max 10000 RPM ~ 1047 rad/s
             motor_RPM[i] = omega[i]*9.5493;                            // 1 rad/s = 9.5493 RPM
             motor_command[i] =  (motor_RPM[i] - 1250.0)/43.75;            // mapping, range 0 .. 200
-            motor_command[i] = fmin(fmax(motor_command[i], 200.0),0.0);
+            motor_command[i] = fmax(fmin(motor_command[i], 200.0),0.0);
             omega_normalized[i] = motor_command[i]/200.0;              // mapping, range 0 .. 1
         }
         // Publish: Rotor speed
