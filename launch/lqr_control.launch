@@ -2,6 +2,6 @@
 	<node pkg="gsft_control" type="lqr_controller_node" name="lqr_controller">
 		<rosparam command="load" file="$(find gsft_control)/cfg/firefly.yaml" />
 		<remap from="odometry" to="/msf_core/odometry" />
-		<remap from="command/motor_speed" to="/fcu/command/direct_motor" />
+		<remap from="command/motor_speed" to="/fcu1/command1/direct_motor2" />
 	</node>
 </launch>

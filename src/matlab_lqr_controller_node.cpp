@@ -121,10 +121,15 @@ int main(int argc, char** argv) {
         gController.step();
         Eigen::VectorXd omega(6);
         Eigen::VectorXd omega_normalized(6);
+        Eigen::VectorXd motor_RPM(6);
+        Eigen::VectorXd motor_command(6);
 
         for(unsigned int i=0; i< 6; i++) {
-            omega[i] = fmin(fmax(gController.lqr_firefly_Y.omega[i],0.0),838.0);
-            omega_normalized[i] = omega[i]/838.0;
+            omega[i] = gController.lqr_firefly_Y.omega[i];             // max 10000 RPM ~ 1047 rad/s
+            motor_RPM[i] = omega[i]*9.5493;                            // 1 rad/s = 9.5493 RPM
+            motor_command[i] =  (motor_RPM[i] - 1250.0)/43.75;            // mapping, range 0 .. 200
+            motor_command[i] = fmin(fmax(motor_command[i], 200.0),0.0);
+            omega_normalized[i] = motor_command[i]/200.0;              // mapping, range 0 .. 1
         }
         // Publish: Rotor speed
         mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
