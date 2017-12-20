@@ -143,21 +143,29 @@ int main(int argc, char** argv) {
         actuator_msg->header.stamp =  ros::Time::now();
         motor_velocity_reference_pub_.publish(actuator_msg);
 
-        // Publish: error
+        // Publish: error - RPY
         gsft_control::XYZYawErrorPtr xyzyaw_error_msg(new gsft_control::XYZYawError);
         Eigen::VectorXd position_error(3);
-        for(unsigned int i=0; i< 3; i++)
-            position_error[i] = gController.lqr_firefly_Y.error[i];
+        //for(unsigned int i=0; i< 3; i++)
+            // position_error[i] = gController.lqr_firefly_Y.error[i];
+        position_error[0] = gController.lqr_firefly_U.X[6];  // roll
+        position_error[1] = gController.lqr_firefly_U.X[7];  // pitch
+        position_error[2] = gController.lqr_firefly_U.X[8];  // yaw
         mav_msgs::vectorEigenToMsg(position_error, &xyzyaw_error_msg->position_error);
 
         xyzyaw_error_msg->yaw_error = gController.lqr_firefly_Y.error[3];
         xyzyaw_error_pub_.publish(xyzyaw_error_msg);
 
-        // Publish: virtual control
+        // Publish: virtual control - RPY rate
         gsft_control::VirtualControlPtr virtual_contrl_msg(new gsft_control::VirtualControl);
         Eigen::VectorXd moment(3);
-        for(unsigned int i=1; i< 4; i++)
-            moment[i-1] = gController.lqr_firefly_Y.virtual_control[i];
+        //for(unsigned int i=1; i< 4; i++)
+        //    moment[i-1] = gController.lqr_firefly_Y.virtual_control[i];
+
+        moment[0] = gController.lqr_firefly_U.X[9];  // roll rate
+        moment[1] = gController.lqr_firefly_U.X[10];  // pitch rate
+        moment[2] = gController.lqr_firefly_U.X[11];  // yaw rate
+
         mav_msgs::vectorEigenToMsg(moment, &virtual_contrl_msg->moment);
 
         virtual_contrl_msg->total_thrust = gController.lqr_firefly_Y.virtual_control[0];
