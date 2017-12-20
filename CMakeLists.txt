@@ -130,6 +130,7 @@ include_directories(
  R2017a/simulink/include
  src/lqr_firefly_grt_rtw
  src/lqr_inner_grt_rtw
+ src/lqr_outer_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
@@ -148,6 +149,8 @@ add_library(matlab_lqr
     src/lqr_firefly_grt_rtw/lqr_firefly.cpp
     src/lqr_inner_grt_rtw/lqr_inner_data.cpp
     src/lqr_inner_grt_rtw/lqr_inner.cpp
+    src/lqr_outer_grt_rtw/lqr_outer_data.cpp
+    src/lqr_outer_grt_rtw/lqr_outer.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -194,6 +197,18 @@ target_link_libraries(lqr_inner_controller_node
     ${catkin_LIBRARIES}
 )
 
+add_executable(lqr_outer_controller_node
+    src/lqr_outer_controller_node.cpp
+)
+add_dependencies(lqr_outer_controller_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_lqr
+)
+target_link_libraries(lqr_outer_controller_node
+    matlab_lqr
+    ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############
