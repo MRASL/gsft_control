@@ -86,18 +86,15 @@ void CommandPoseCallback(
   }
 }
 
-void LostControlCallback(const gsft_control::LOE::ConstPtr &loe_msg) {
+/*
+void LostControlCallback(const gsft_control::LOEPtr &loe_msg) {
   for (int i = 0; i < 6; i++) {
-    gLOE[i]->angular_velocities.push_back(motor_RPM[i]);
-    motorRPM_msg->normalized.push_back(motor_command[i]);
-
-    actuator_msg->angular_velocities.push_back(motor_speed[i]);
-    actuator_msg->normalized.push_back(motor_normalized[i]);
+    gLOE[i] = loe_msg->LOE[i];
   }
   if (!gCommand_active){
     gLOE_active      = true;
   }
-}
+} */
 
 
 int main(int argc, char** argv) {
@@ -115,8 +112,8 @@ int main(int argc, char** argv) {
   /*ros::Subscriber cmd_multi_dof_joint_trajectory_sub;
   cmd_multi_dof_joint_trajectory_sub = nh.subscribe(mav_msgs::default_topics::COMMAND_TRAJECTORY, 1, MultiDofJointTrajectoryCallback);*/
 
-  ros::Subscriber lost_control_sub_;
-  lost_control_sub_ = nh.subscribe(gsft_control::default_topics::LOE, 1, LostControlCallback);
+  /*ros::Subscriber lost_control_sub_;
+  lost_control_sub_ = nh.subscribe(gsft_control::default_topics::LOE, 1, LostControlCallback);*/
 
   ros::Publisher virtual_control_pub_;
   virtual_control_pub_ = nh.advertise<gsft_control::VirtualControl>(gsft_control::default_topics::VIRTUAL_CONTROL, 1);

@@ -133,6 +133,7 @@ include_directories(
  src/lqr_inner_grt_rtw
  src/lqr_outer_grt_rtw
  src/lqr_full_grt_rtw
+ src/lqr_final_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
@@ -155,6 +156,8 @@ add_library(matlab_lqr
     src/lqr_outer_grt_rtw/lqr_outer.cpp
     src/lqr_full_grt_rtw/lqr_full_data.cpp
     src/lqr_full_grt_rtw/lqr_full.cpp
+    src/lqr_final_grt_rtw/lqr_final_data.cpp
+    src/lqr_final_grt_rtw/lqr_final.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -223,6 +226,19 @@ add_dependencies(lqr_full_controller_node
     matlab_lqr
 )
 target_link_libraries(lqr_full_controller_node
+    matlab_lqr
+    ${catkin_LIBRARIES}
+)
+
+add_executable(lqr_final_controller_node
+    src/lqr_final_controller_node.cpp
+)
+add_dependencies(lqr_final_controller_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_lqr
+)
+target_link_libraries(lqr_final_controller_node
     matlab_lqr
     ${catkin_LIBRARIES}
 )
