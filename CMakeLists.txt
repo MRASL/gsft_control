@@ -59,6 +59,7 @@ add_message_files(
   FILES
   VirtualControl.msg
   XYZYawError.msg
+  LOE.msg
 )
 
 ## Generate services in the 'srv' folder
