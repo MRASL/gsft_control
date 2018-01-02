@@ -1,0 +1,442 @@
+   1  ssh asctec@192.168.1.22
+    2  ssh asctec@192.168.1.12
+    3  rostopic list
+    4  sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+    5  sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+    6  sudo apt-get update
+    7  ls
+    8  cd Documents/
+    9  ls
+   10  sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
+   11  wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
+   12  sudo apt-get update
+   13  sudo apt-get install python-catkin-tools
+   14  mkdir -p tien_ws
+   15  mkdir -p tien_ws/src
+   16  cd tien_ws/src/
+   17  git clone https://github.com/ethz-asl/ros_vrpn_client.git
+   18  sudo apt install git
+   19  git clone https://github.com/ethz-asl/ros_vrpn_client.git
+   20  cd ..
+   21  cd src
+   22  ls
+   23  git clone https://github.com/ethz-asl/vrpn_catkin.git
+   24  cd ..
+   25  catkin build
+   26  catkin init
+   27  catkin build
+   28  sudo rosdep init
+   29  rosdep update
+   30  echo "source /opt/ros/lunar/setup.bash" >> ~/.bashrc
+   31  source ~/.bashrc
+   32  catkin build
+   33  catkin init
+   34  catkin build
+   35  cd src
+   36  git clone https://github.com/catkin/catkin_simple.git
+   37  cd ..
+   38  catkin build
+   39  sudo add-apt-repository ppa:webupd8team/atom
+   40  sudo apt update
+   41  sudo apt install atom
+   42  ls
+   43  cd src/
+   44  ls
+   45  atom /home/etudiant/Documents/tien_ws/build/vrpn_catkin/vrpn_src-prefix/src/vrpn_src/vrpn_Connection.C
+   46  cd
+   47  ls
+   48  cd Downloads/
+   49  ls
+   50  pwd
+   51  ifconfig
+   52  ls
+   53  scp 09_config_serial asctec@192.168.1.12:/home/asctec/Downloads/09_config_serial
+   54  source devel/setup.bash 
+   55  catkin build
+   56  vim /home/etudiant/Documents/tien_ws/build/vrpn_catkin/vrpn_src-prefix/src/vrpn_src/vrpn_Connection.C
+   57  sudo apt install vim
+   58  vi /home/etudiant/Documents/tien_ws/build/vrpn_catkin/vrpn_src-prefix/src/vrpn_src/vrpn_Connection.C
+   59  vi +2426 /home/etudiant/Documents/tien_ws/build/vrpn_catkin/vrpn_src-prefix/src/vrpn_src/vrpn_Connection.C
+   60  catkin build
+   61  cd src/
+   62  git clone https://github.com/ethz-asl/glog_catkin.git
+   63  catkin build
+   64  atom .
+ 65  sudo apt install tmux
+   66  tmux
+   67  ping 192.168.1.12
+   68  ls
+   69  ssh asctec@192.168.1.12
+   70  @
+   71  cd ..
+   72  source devel/setup.bash
+   73  export ROS_MASTER_URI=http://192.168.1.12
+   74  export ROS_MASTER_URI=http://192.168.1.12:11311
+   75  export ROS_IP=192.168.1.4
+   76  sudo nano
+   77  sudo nano /etc/hosts
+   78  ping 192.168.1.12
+   79  rostopic list
+   80  rostopic echo /mav/imu 
+   81  source devel/setup.bash
+   82  ls src/
+   83  roslaunch ros_vrpn_client mrasl_vicon.launch 
+   84  ifconfig
+   85  roslaunch ros_vrpn_client mrasl_vicon.launch 
+   86  ifconfig
+   87  cd ..
+   88  rostopic list
+   89  export ROS_MASTER_URI=http://192.168.1.12:11311
+   90  export ROS_IP=192.168.1.4
+   91  rostopic list
+   92  rostopic info /firefly_blue/vrpn_client/estimated_transform 
+   93  rostopic info /firefly_blue/vrpn_client/raw_transform 
+   94  rqt_graph 
+   95  rqt
+   96  sudo apt-get install ros-lunar-rqt-multiplot
+   97  rosrun rviz rviz 
+   98  rqt_graph 
+   99  rqt
+  100  rosrun rviz rviz 
+  101  ls
+  102  cd Documents/
+  103  ls
+  104  cd tien_ws/
+  105  ls
+  106  cd src
+  107  git clone https://github.com/MRASL/gsft_control.git
+  108  clear
+  109  ls
+  110  cd gsft_control/
+  111  git status
+  112  cd ..
+  113  tmux
+  114  cd ..
+  115  hostname -i
+  116  ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'
+  117  ifconfig
+  118  ifconfig  | grep 'inet '| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'
+  119  ip=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
+  120  ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'
+  121  hostname  -I
+  122  hostname  -I | cut -f1 -d' '
+  123  source ~/.bashrc
+  124  master_firefly_blue 
+  125  cd
+  126  gotien 
+  127  gotien
+ 128  master_firefly_blue 
+  129  source ~/.bashrc
+  130  master_firefly_blue 
+  131  echo $ROS_MASTER_URI
+  132  source ~/.bashrc
+  133  master_firefly_blue 
+  134  echo $ROS_MASTER_URI
+  135  source ~/.bashrc
+  136  connect_firefly_blue 
+  137  master_firefly_blue 
+  138  echo $ROS_MASTER_URI
+  139  echo $ROS_IP
+  140  source ~/.bashrc
+  141  connect_firefly_blue 
+  142  source ~/.bashrc
+  143  connect_firefly_blue 
+  144  source ~/.bashrc
+  145  connect_firefly_blue 
+  146  source ~/.bashrc
+  147  connect_firefly_blue 
+  148  source ~/.bashrc
+  149  connect_firefly_blue 
+  150  cd ..
+  151  ls
+  152  cd ..
+  153  ls
+  154  git clone https://github.com/MRASL/documentation.git
+  155  cd documentation/
+  156  ls
+  157  atom . &
+  158  git status
+  159  git add UAV/
+  160  git commit -am "new tutorial firefly"
+  161  git config --local user.email "duc-tien.nguyen@polymtl.ca"
+  162  git config --local user.name "Duc Tien Nguyen"
+  163  git commit -am "new tutorial firefly"
+  164  git push origin master
+  165  atom . &
+  166  git status
+  167  sudo apt install vim
+  168  ls
+  169  vim ~/.bashrc 
+  170  cd
+  171  ls
+  172  cd Downloads/
+  173  ls
+  174  scp firefly.yaml asctec@192.168.1.12/home/asctec/Downloads
+  175  scp firefly.yaml asctec@192.168.1.12/home/asctec/Downloads/firefly.yaml
+  176  scp firefly.yaml asctec@192.168.1.12:/home/asctec/Downloads/firefly.yaml
+  177  atom .
+  178  cd ..
+  179  ls
+  180  cd Documents/
+  181  ls
+  182  cd documentation/
+  183  ls
+  184  clear
+  185  ls
+  186  git status
+  187  git pull
+  188  git status
+  189  git checkout
+  190  git clean -f
+ 191  git status
+  192  atom .
+  193  git status
+  194  git add UAV/AscTec/Firefly/Firefly_with_Vicon_Tutorial.md 
+  195  git commit -m "tutorial firefly"
+  196  git push origin master
+  197  matlab
+  198  connect_firefly_blue 
+  199  clc
+  200  clear
+  201  connect_firefly_blue
+  202  ping 192.168.1.12
+  203  connect_firefly_blue
+  204  clear
+  205  connect_firefly_blue 
+  206  clear
+  207  connect_firefly_blue 
+  208  clear
+  209  connect_firefly_blue 
+  210  export ROS_MASTER_URI=http://192.168.1.11:11311
+  211  ifconfig
+  212  export ROS_IP=192.168.1.84
+  213  rostopic list
+  214  rqt
+  215  rosrun rviz rviz 
+  216  rostopic echo /lidar/scan 
+  217  ifconfig
+  218  rqt
+  219  rostopic echo /lidar/scan 
+  220  rosrun rviz rviz 
+  221  rqt
+  222  rosrun rviz rviz 
+  223  rostopic list
+  224  rostopic info /cmd_vel 
+  225  rostopic pub /cmd_vel geometry_msgs/Twist "linear:
+  226    x: 0.5
+  227    y: 0.0
+  228    z: 0.0
+  229  angular:
+  230    x: 0.0
+  231    y: 0.0
+  232    z: 0.0" 
+  233  ssh administrator@192.168.1.11
+  234  gotien 
+  235  master_firefly_blue 
+  236  connect_firefly_blue 
+  237  cd
+  238  ls
+  239  connect_firefly_blue 
+  240  sudo vim /etc/hosts
+  241  ping google.com
+  242  gotien 
+  243  ls
+  244  master_firefly_blue 
+  245  tmux
+  246  ssh asctec@192.168.1.12
+  247  cd ..
+  248  source devel/setup.bash
+  249  rqt
+  250  export ROS_MASTER_URI=http://192.168.1.12:11311
+  251  export ROS_IP=192.168.1.122
+  252  rqt
+ 253  ls
+  254  cd src/
+  255  ls
+  256  git clone https://github.com/ethz-asl/ethzasl_msf.git
+  257  catkin build
+  258  source ../devel/setup.bash 
+  259  rqt
+  260  clear
+  261  cd ..
+  262  source devel/setup.bash
+  263  export ROS_MASTER_URI=http://192.168.1.12:11311
+  264  export ROS_IP=129.168.1.122
+  265  rostopic list
+  266  rostopic echo /fcu/imu 
+  267  clear
+  268  roslaunch ros_vrpn_client mrasl_vicon.launch 
+  269  roslaunch ros_vrpn_client mrasl_vicon.launch
+  270  ls
+  271  atom . &
+  272  ifconfig
+  273  ping 192.168.1.200
+  274  roslaunch ros_vrpn_client mrasl_vicon.launch
+  275  source devel/setup.bash 
+  276  echo $ROS_MASTER_URI
+  277  ping 192.168.1.12
+  278  echo $ROS_IP
+  279  export ROS_IP=192.168.1.4
+  280  roslaunch ros_vrpn_client mrasl_vicon.launch
+  281  gotien 
+  282  master_firefly_blue 
+  283  rqt
+  284  cd src/
+  285  git clone https://github.com/ethz-asl/mav_comm.git
+  286  catkin build mav_comm
+  287  rqt
+  288  gotien
+  289  master_firefly_blue 
+  290  rqt
+  291  ssh asctec@192.168.1.12
+  292  gotien 
+  293  master_firefly_blue 
+  294  roslaunch ros_vrpn_client mrasl_vicon.launch 
+  295  gotien 
+  296  master_firefly_blue 
+  297  rqt
+  298  cd
+  299  ls
+  300  cd Documents/
+  301  ls
+  302  scp etudiant@192.168.1.4:/home/asctec/Documents/bags/doug/moving.bag ./
+  303  scp asctec@192.168.1.12:/home/asctec/Documents/bags/doug/moving.bag ./
+  304  scp asctec@192.168.1.12:/home/asctec/Documents/bags/doug/moving_fast.bag ./
+  305  scp asctec@192.168.1.12:/home/asctec/Documents/bags/doug/moving.b_fast.bag ./
+  306  scp asctec@192.168.1.12:/home/asctec/Documents/bags/doug/not_mobing.bag ./
+  307  scp asctec@192.168.1.12:/home/asctec/Documents/bags/doug/not_moving.bag ./
+  308  master_firefly_blue 
+  309  gotien
+  310  rqt
+  311  gotien
+  312  master_firefly_blue 
+  313  rostopic list
+  314  ls
+  315  cd src/
+ 316  ls
+  317  cd gsft_control/
+  318  ls
+  319  git pull
+  320  catkin build gsft_control
+  321  ls
+  322  gotien 
+  323  master_firefly_blue 
+  324  roslaunch ros_vrpn_client mrasl_vicon.launch 
+  325  gotien 
+  326  master_firefly_blue 
+  327  rosparam list
+  328  rosparam list nominal_controller
+  329  clear
+  330  ls
+  331  cd src
+  332  ls
+  333  cd ..
+  334  gotien
+  335  roslaunch ros_vrpn_client mrasl_vicon.launch 
+  336  gotien
+  337  master_firefly_blue 
+  338  roslaunch ros_vrpn_client mrasl_vicon.launch 
+  339  master_firefly_blue 
+  340  gotien
+  341  roslaunch ros_vrpn_client mrasl_vicon.launch 
+  342  gotien
+  343  master_firefly_blue 
+  344  master_firefly_blue 
+  345  gotien
+  346  rostopic list
+  347  gotien
+  348  rqt
+  349  gotien
+  350  master_firefly_blue 
+  351  rqt
+  352  master_firefly_blue 
+  353  rqt
+  354  source devel/setup.bash 
+  355  master_firefly_blue 
+  356  rqt
+  357  gotien 
+  358  master_firefly_blue 
+  359  ls
+  360  rostopic list
+  361  connect_firefly_blue 
+  362  ping 192.168.1.12
+  363  connect_firefly_blue 
+  364  exit
+  365  exit
+  366  cd
+  367  gotien
+  368  connect_firefly_blue 
+  369  exit
+  370  gotien
+  371  rqt
+  372  cleat
+  373  clear
+  374  exit
+  375  gotien
+  376  master_firefly_blue 
+  377  roslaunch ros_vrpn_client mrasl_vicon.launch 
+  378  exit
+  379  gotien 
+  380  master_firefly_blue 
+  381  rqt
+  382  ls
+  383  cd src/
+  384  ls
+  385  git clone https://github.com/MRASL/asctec_mav_framework.git
+  386  cd asctec_mav_framework/
+  387  ls
+  388  git checkout direct_motor_ctrl 
+  389  catkin build
+  390  ls
+  391  cd ..
+  392  ls
+  393  ls mav_comm/
+  394  ls mav_comm/mav_msgs/
+  395  ls mav_comm/mav_msgs/msg/
+  396  catkin build
+  397  catkin build mav_msgs
+  398  gotien 
+  399  catkin build
+  400  ls
+  401  cd src/
+  402  ls
+  403  cd asctec_mav_framework/
+  404  ls
+  405  cd asctec_hl_interface/
+  406  ls
+  407  cat CMakeLists.txt 
+  408  vim CMakeLists.txt 
+  409  ls
+  410  vim package
+  411  vim package.xml 
+  412  catkin build asctec_hl_interface
+  413  vim src/hl_interface.h:101
+  414  vim src/hl_interface.h
+  415  catkin build asctec_hl_interface
+  416  gotien 
+  417  rqt
+  418  atom src/asctec_mav_framework/asctec_hl_interface/
+  419  catkin build
+  420  cd src/
+  421  ls
+  422  cd asctec_mav_framework/
+  423  ls
+  424  catkin build asctec_hl_interface 
+  425  ls
+  426  cd asctec_hl_
+  427  ls
+  428  cd asctec_hl_interface/
+  429  ls
+  430  git status
+  431  git commit -am "change motor topic"
+  432  git config --local user.email "duc-tien.nguyen@polymtl.ca"
+  433  git config --local user.name "Duc Tien Nguyen"
+  434  git
+  435  git commit -am "change motor topic"
+  436  git push origin direct_motor_ctrl 
+  437  rqt
+  438  tmux
+  439  cd Documents/documentation/
+  440  atom .
+  441  git status
+  442  git add -a
