@@ -1,7 +1,0 @@
-<launch>
-	<node pkg="gsft_control" type="nominal_controller_node" name="nominal_controller">
-		<rosparam command="load" file="$(find gsft_control)/cfg/FTC_controller_firefly.yaml" />
-		<rosparam command="load" file="$(find gsft_control)/cfg/firefly.yaml" />
-		<remap from="odometry" to="/msf_core/odometry" />
-	</node>
-</launch>
