@@ -43,12 +43,12 @@ static const std::string kDefaultCommandRollPitchYawrateThrustTopic =
     mav_msgs::default_topics::COMMAND_ROLL_PITCH_YAWRATE_THRUST;
     // "command/roll_pitch_yawrate_thrust"
 static const std::string kDefaultImuTopic =
-    mav_msgs::default_topics::IMU; // "imu
+    mav_msgs::default_topics::IMU;      // "imu
 static const std::string kDefaultOdometryTopic =
     mav_msgs::default_topics::ODOMETRY; // "odometry"
 
 namespace default_topics {
-  static constexpr char LOE[] = "loe";
+  static constexpr char LOE[] = "lost_control";
   static constexpr char XYZYAW_ERROR[] = "xyz_yaw_error";
   static constexpr char VIRTUAL_CONTROL[] = "virtual_control";
   static constexpr char MOTOR_RPM[] = "motor_rpm";            // range 0 .. 10000 RPM

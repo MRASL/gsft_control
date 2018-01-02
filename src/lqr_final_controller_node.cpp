@@ -13,6 +13,7 @@
 #include "parameters_ros.h"
 #include "common.h"
 
+#include <gsft_control/LOE.h>
 #include <gsft_control/VirtualControl.h>
 #include <lqr_final.h>
 
@@ -21,8 +22,6 @@ lqr_finalModelClass gController;
 bool gCommand_active;
 bool gLOE_active;
 Eigen::VectorXd gLOE(6);
-
-// ros::Time gCommand_time;
 
 void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   mav_msgs::EigenOdometry odometry;
@@ -72,8 +71,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
     }
 }*/
 
-void CommandPoseCallback(
-  const geometry_msgs::PoseStampedConstPtr& pose_msg) {
+void CommandPoseCallback(const geometry_msgs::PoseStampedConstPtr& pose_msg) {
   mav_msgs::EigenTrajectoryPoint eigen_reference;
   mav_msgs::eigenTrajectoryPointFromPoseMsg(*pose_msg, &eigen_reference);
   gController.lqr_final_U.x_ref    = eigen_reference.position_W.x();
@@ -82,19 +80,16 @@ void CommandPoseCallback(
   gController.lqr_final_U.psi_ref  = 0.0;
   if (!gCommand_active){
     gCommand_active      = true;
-  //  gCommand_time        = ros::Time::now();
   }
 }
 
-/*
-void LostControlCallback(const gsft_control::LOEPtr &loe_msg) {
-  for (int i = 0; i < 6; i++) {
+void LostControlCallback(const gsft_control::LOEConstPtr& loe_msg) {
+ for (int i = 0; i < 6; i++) {
     gLOE[i] = loe_msg->LOE[i];
   }
-  if (!gCommand_active){
-    gLOE_active      = true;
-  }
-} */
+  std::cout << "[ INFO] [" << ros::Time::now() <<
+    "]: ---------- TND LOE0 = " << gLOE[0] << std::endl;
+}
 
 
 int main(int argc, char** argv) {
@@ -112,8 +107,8 @@ int main(int argc, char** argv) {
   /*ros::Subscriber cmd_multi_dof_joint_trajectory_sub;
   cmd_multi_dof_joint_trajectory_sub = nh.subscribe(mav_msgs::default_topics::COMMAND_TRAJECTORY, 1, MultiDofJointTrajectoryCallback);*/
 
-  /*ros::Subscriber lost_control_sub_;
-  lost_control_sub_ = nh.subscribe(gsft_control::default_topics::LOE, 1, LostControlCallback);*/
+  ros::Subscriber lost_control_sub_;
+  lost_control_sub_ = nh.subscribe(gsft_control::default_topics::LOE, 1, LostControlCallback);
 
   ros::Publisher virtual_control_pub_;
   virtual_control_pub_ = nh.advertise<gsft_control::VirtualControl>(gsft_control::default_topics::VIRTUAL_CONTROL, 1);
@@ -129,7 +124,9 @@ int main(int argc, char** argv) {
   ros::Rate r(60);
 
   gCommand_active = false;
-  gLOE_active = false;
+  for (unsigned int i=0; i< 6; i++) {
+    gLOE[i] = 0.0;
+  }
   gController.initialize();
 
   while(ros::ok()) {
@@ -137,35 +134,35 @@ int main(int argc, char** argv) {
         gController.step();
         Eigen::VectorXd motor_RPM(6);           // range 0 .. 10000 RPM
         Eigen::VectorXd motor_command(6);       // range 0 .. 200
-
-        Eigen::VectorXd motor_speed(6);         // range 0 .. 1047 rad/s
         Eigen::VectorXd motor_normalized(6);    // range 0 .. 1
+        Eigen::VectorXd motor_speed(6);         // range 0 .. 1047 rad/s
 
         for(unsigned int i=0; i< 6; i++) {
-            motor_RPM[i]     = gController.lqr_final_Y.motor_RPM[i];
-            motor_command[i] = gController.lqr_final_Y.motor_command[i];
-            motor_speed[i]   = gController.lqr_final_Y.motor_speed[i];
+            motor_RPM[i]     = gController.lqr_final_Y.motor_RPM[i]*(1.0 - gLOE[i]);
+            motor_command[i] = gController.lqr_final_Y.motor_command[i]*(1.0 - gLOE[i]);
+            motor_speed[i]   = gController.lqr_final_Y.motor_speed[i]*(1.0 - gLOE[i]);
             motor_normalized[i] = motor_command[i]/200.0;
         }
-        // Publish: Rotor speed
-        mav_msgs::ActuatorsPtr motorRPM_msg(new mav_msgs::Actuators);
-        mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
 
+        // Publish: RPM and command in 0 .. 200
+        mav_msgs::ActuatorsPtr motorRPM_msg(new mav_msgs::Actuators);
         motorRPM_msg->angular_velocities.clear();
         motorRPM_msg->normalized.clear();
-        actuator_msg->angular_velocities.clear();
-        actuator_msg->normalized.clear();
-
         for (int i = 0; i < 6; i++) {
           motorRPM_msg->angular_velocities.push_back(motor_RPM[i]);
           motorRPM_msg->normalized.push_back(motor_command[i]);
-
-          actuator_msg->angular_velocities.push_back(motor_speed[i]);
-          actuator_msg->normalized.push_back(motor_normalized[i]);
         }
         motorRPM_msg->header.stamp =  ros::Time::now();
         motor_RPM_pub_.publish(motorRPM_msg);
 
+        // Publish: Rotor speed (rad/s) and normalized in 0 .. 1
+        mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
+        actuator_msg->angular_velocities.clear();
+        actuator_msg->normalized.clear();
+        for (int i = 0; i < 6; i++) {
+          actuator_msg->angular_velocities.push_back(motor_speed[i]);
+          actuator_msg->normalized.push_back(motor_normalized[i]);
+        }
         actuator_msg->header.stamp =  ros::Time::now();
         motor_velocity_reference_pub_.publish(actuator_msg);
 
