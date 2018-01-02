@@ -134,14 +134,12 @@ int main(int argc, char** argv) {
         gController.step();
         Eigen::VectorXd motor_RPM(6);           // range 0 .. 10000 RPM
         Eigen::VectorXd motor_command(6);       // range 0 .. 200
-        Eigen::VectorXd motor_normalized(6);    // range 0 .. 1
         Eigen::VectorXd motor_speed(6);         // range 0 .. 1047 rad/s
 
         for(unsigned int i=0; i< 6; i++) {
             motor_RPM[i]     = gController.lqr_final_Y.motor_RPM[i]*(1.0 - gLOE[i]);
             motor_command[i] = gController.lqr_final_Y.motor_command[i]*(1.0 - gLOE[i]);
             motor_speed[i]   = gController.lqr_final_Y.motor_speed[i]*(1.0 - gLOE[i]);
-            motor_normalized[i] = motor_command[i]/200.0;
         }
 
         // Publish: RPM and normalized command in 0 .. 200
@@ -155,13 +153,12 @@ int main(int argc, char** argv) {
         motorRPM_msg->header.stamp =  ros::Time::now();
         motor_RPM_reference_pub_.publish(motorRPM_msg);
 
-        // Publish: Rotor speed (rad/s) and normalized in 0 .. 1
+        // Publish: Rotor speed (rad/s)
         mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
         actuator_msg->angular_velocities.clear();
         actuator_msg->normalized.clear();
         for (int i = 0; i < 6; i++) {
           actuator_msg->angular_velocities.push_back(motor_speed[i]);
-          actuator_msg->normalized.push_back(motor_normalized[i]);
         }
         actuator_msg->header.stamp =  ros::Time::now();
         motor_velocity_reference_pub_.publish(actuator_msg);
@@ -187,7 +184,6 @@ int main(int argc, char** argv) {
         actuator_msg->angular_velocities.push_back(0.0);
         actuator_msg->normalized.push_back(0.0);
       }
-
       actuator_msg->header.stamp =  ros::Time::now();
       motor_RPM_reference_pub_.publish(actuator_msg);
       motor_velocity_reference_pub_.publish(actuator_msg);

@@ -51,8 +51,7 @@ namespace default_topics {
   static constexpr char LOE[] = "lost_control";
   static constexpr char XYZYAW_ERROR[] = "xyz_yaw_error";
   static constexpr char VIRTUAL_CONTROL[] = "virtual_control";
-  static constexpr char MOTOR_RPM[] = "motor_rpm";            // range 0 .. 10000 RPM
-  static constexpr char MOTOR_COMMAND[] = "motor_command";    // range 0 .. 200
+  static constexpr char MOTOR_RPM[] = "motor_rpm";             
 }
 
 struct EigenOdometry {
