@@ -113,8 +113,8 @@ int main(int argc, char** argv) {
   ros::Publisher virtual_control_pub_;
   virtual_control_pub_ = nh.advertise<gsft_control::VirtualControl>(gsft_control::default_topics::VIRTUAL_CONTROL, 1);
 
-  ros::Publisher motor_RPM_pub_;
-  motor_RPM_pub_ = nh.advertise<mav_msgs::Actuators>(
+  ros::Publisher motor_RPM_reference_pub_;
+  motor_RPM_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
         gsft_control::default_topics::MOTOR_RPM, 1);
 
   ros::Publisher motor_velocity_reference_pub_;
@@ -144,7 +144,7 @@ int main(int argc, char** argv) {
             motor_normalized[i] = motor_command[i]/200.0;
         }
 
-        // Publish: RPM and command in 0 .. 200
+        // Publish: RPM and normalized command in 0 .. 200
         mav_msgs::ActuatorsPtr motorRPM_msg(new mav_msgs::Actuators);
         motorRPM_msg->angular_velocities.clear();
         motorRPM_msg->normalized.clear();
@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
           motorRPM_msg->normalized.push_back(motor_command[i]);
         }
         motorRPM_msg->header.stamp =  ros::Time::now();
-        motor_RPM_pub_.publish(motorRPM_msg);
+        motor_RPM_reference_pub_.publish(motorRPM_msg);
 
         // Publish: Rotor speed (rad/s) and normalized in 0 .. 1
         mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
