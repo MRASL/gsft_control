@@ -113,11 +113,11 @@ int main(int argc, char** argv) {
   ros::Publisher virtual_control_pub_;
   virtual_control_pub_ = nh.advertise<gsft_control::VirtualControl>(gsft_control::default_topics::VIRTUAL_CONTROL, 1);
 
-  ros::Publisher motor_RPM_reference_pub_;
+  ros::Publisher motor_RPM_reference_pub_;          // motor speed RPM   => Asctec Firefly test
   motor_RPM_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
         gsft_control::default_topics::MOTOR_RPM, 1);
 
-  ros::Publisher motor_velocity_reference_pub_;
+  ros::Publisher motor_velocity_reference_pub_;     // motor speed rad/s => Gazebo test
   motor_velocity_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
         mav_msgs::default_topics::COMMAND_ACTUATORS, 1);
 
