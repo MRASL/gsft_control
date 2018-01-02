@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
   ros::Subscriber odometry_sub_;
   odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1, OdometryCallback);
 
-  ros::Subscriber cmd_pose_sub_;
+  ros::Subscriber cmd_pose_sub_;                    // references (position and yaw)
   cmd_pose_sub_ = nh.subscribe(mav_msgs::default_topics::COMMAND_POSE, 1, CommandPoseCallback);
 
   /*ros::Subscriber cmd_multi_dof_joint_trajectory_sub;
@@ -179,7 +179,7 @@ int main(int argc, char** argv) {
         virtual_control_pub_.publish(virtual_contrl_msg);
 
     } else {
-      // Publish: Rotor speed
+      // Controller inactive
       mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
       actuator_msg->angular_velocities.clear();
 
@@ -189,6 +189,7 @@ int main(int argc, char** argv) {
       }
 
       actuator_msg->header.stamp =  ros::Time::now();
+      motor_RPM_reference_pub_.publish(actuator_msg);
       motor_velocity_reference_pub_.publish(actuator_msg);
     }
     ros::spinOnce();
