@@ -74,22 +74,22 @@ step(sys_full,10)
 
 save('K_lqr.mat','Kx_lqr','Ki_lqr','sys_full');
 
-%% Test - Fault
+%% Test - NonLinear
+%  Fault
 tm1  = 10; tm2 = 10; tm3 = 10; tm4 = 10; tm5 = 10; tm6 = 10;
 LOE1 = 0; LOE2 = 0; LOE3 = 0; LOE4 = 0; LOE5 = 0; LOE6 = 0;
 
-%% Test - 6DOF param
-% Init
+% 6DOF param init
 H_e        = 0;                   % 6DoF Parameters
 Vb_e       = [0 0 0]';
 Omegab_e   = [0 0 0]';
 Po_e       = [0 0 0]';
-Euler_e    = [0 0 0]';
+Euler_e    = [0 0 2*pi]';
 g0         = gra;
 Ib         = [Ixx  0   0
               0   Iyy  0
               0    0  Izz];
-X0 = [0 0 0 0 0 0 0 0 0 0 0 0]';          % Initial condition   
+X0 = [0 0 0 0 0 0 0 0 2*pi 0 0 0]';          % Initial condition (in NED)
 
 %% Note: NED to ENU
 % See 
@@ -110,6 +110,3 @@ X0 = [0 0 0 0 0 0 0 0 0 0 0 0]';          % Initial condition
 %       * y: right
 %       * z: down
 %       * yaw: cw when viewed from top 
-
-
-
