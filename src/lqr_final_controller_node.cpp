@@ -115,7 +115,7 @@ int main(int argc, char** argv) {
 
   ros::Publisher motor_RPM_reference_pub_;          // motor speed RPM   => Asctec Firefly test
   motor_RPM_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
-        gsft_control::default_topics::MOTOR_RPM, 1);
+        gsft_control::default_topics::COMMAND_RPM, 1);
 
   ros::Publisher motor_velocity_reference_pub_;     // motor speed rad/s => Gazebo test
   motor_velocity_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
