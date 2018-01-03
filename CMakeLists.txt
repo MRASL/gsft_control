@@ -129,14 +129,14 @@ include_directories(
  include
  R2017a/extern/include
  R2017a/simulink/include
- src/lqr_final_grt_rtw
+ src/lqr_hovering_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
 
 add_library(matlab_lqr
-    src/lqr_final_grt_rtw/lqr_final_data.cpp
-    src/lqr_final_grt_rtw/lqr_final.cpp
+    src/lqr_hovering_grt_rtw/lqr_hovering_data.cpp
+    src/lqr_hovering_grt_rtw/lqr_hovering.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -144,15 +144,15 @@ add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 
-add_executable(lqr_final_controller_node
-    src/lqr_final_controller_node.cpp
+add_executable(lqr_hovering_controller_node
+    src/lqr_hovering_controller_node.cpp
 )
-add_dependencies(lqr_final_controller_node
+add_dependencies(lqr_hovering_controller_node
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
     matlab_lqr
 )
-target_link_libraries(lqr_final_controller_node
+target_link_libraries(lqr_hovering_controller_node
     matlab_lqr
     ${catkin_LIBRARIES}
 )

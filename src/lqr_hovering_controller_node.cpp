@@ -15,9 +15,9 @@
 
 #include <gsft_control/LOE.h>
 #include <gsft_control/VirtualControl.h>
-#include <lqr_final.h>
+#include <lqr_hovering.h>
 
-lqr_finalModelClass gController;
+lqr_hoveringModelClass gController;
 
 bool gCommand_active;
 bool gLOE_active;
@@ -27,25 +27,25 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   mav_msgs::EigenOdometry odometry;
   mav_msgs::eigenOdometryFromMsg(*odom, &odometry);
 
-  gController.lqr_final_U.X[0 ]  = odometry.position_W.x();
-  gController.lqr_final_U.X[1 ]  = odometry.position_W.y();
-  gController.lqr_final_U.X[2 ]  = odometry.position_W.z();
+  gController.lqr_hovering_U.X[0 ]  = odometry.position_W.x();
+  gController.lqr_hovering_U.X[1 ]  = odometry.position_W.y();
+  gController.lqr_hovering_U.X[2 ]  = odometry.position_W.z();
 
   Eigen::Matrix3d R_W_B = odometry.orientation_W_B.toRotationMatrix();
   Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
 
-  gController.lqr_final_U.X[3 ]  = velocity_W.x();
-  gController.lqr_final_U.X[4 ]  = velocity_W.y();
-  gController.lqr_final_U.X[5 ]  = velocity_W.z();
+  gController.lqr_hovering_U.X[3 ]  = velocity_W.x();
+  gController.lqr_hovering_U.X[4 ]  = velocity_W.y();
+  gController.lqr_hovering_U.X[5 ]  = velocity_W.z();
 
   double psi, phi, teta;
   psi = atan2(R_W_B(1,0),R_W_B(0,0));
   phi = atan2(R_W_B(2,1),R_W_B(2,2));
   teta = asin(-R_W_B(2,0));
 
-  gController.lqr_final_U.X[6 ]  = phi;
-  gController.lqr_final_U.X[7 ]  = teta;
-  gController.lqr_final_U.X[8 ]  = psi;
+  gController.lqr_hovering_U.X[6 ]  = phi;
+  gController.lqr_hovering_U.X[7 ]  = teta;
+  gController.lqr_hovering_U.X[8 ]  = psi;
 
   Eigen::Matrix3d H;
   H << 1.0, sin(phi)*tan(teta), cos(phi)*tan(teta),
@@ -53,9 +53,9 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
        0.0, sin(phi)/cos(teta), cos(phi)/cos(teta);
   Eigen::Vector3d euler_rate = H*odometry.angular_velocity_B;
 
-  gController.lqr_final_U.X[9 ]  = euler_rate.x();
-  gController.lqr_final_U.X[10]  = euler_rate.y();
-  gController.lqr_final_U.X[11]  = euler_rate.z();
+  gController.lqr_hovering_U.X[9 ]  = euler_rate.x();
+  gController.lqr_hovering_U.X[10]  = euler_rate.y();
+  gController.lqr_hovering_U.X[11]  = euler_rate.z();
 }
 
 /*void MultiDofJointTrajectoryCallback(
@@ -63,7 +63,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
     mav_msgs::EigenTrajectoryPoint eigen_reference;
     mav_msgs::eigenTrajectoryPointFromMsg(msg->points.front(), &eigen_reference);
 
-    gController.lqr_final_U.z_ref    = eigen_reference.position_W.z();
+    gController.lqr_hovering_U.z_ref    = eigen_reference.position_W.z();
 
     if (!gCommand_active){
       gCommand_active      = true;
@@ -74,10 +74,10 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
 void CommandPoseCallback(const geometry_msgs::PoseStampedConstPtr& pose_msg) {
   mav_msgs::EigenTrajectoryPoint eigen_reference;
   mav_msgs::eigenTrajectoryPointFromPoseMsg(*pose_msg, &eigen_reference);
-  gController.lqr_final_U.x_ref    = eigen_reference.position_W.x();
-  gController.lqr_final_U.y_ref    = eigen_reference.position_W.y();
-  gController.lqr_final_U.z_ref    = eigen_reference.position_W.z();
-  gController.lqr_final_U.psi_ref  = 0.0;
+  gController.lqr_hovering_U.x_ref    = eigen_reference.position_W.x();
+  gController.lqr_hovering_U.y_ref    = eigen_reference.position_W.y();
+  gController.lqr_hovering_U.z_ref    = eigen_reference.position_W.z();
+  gController.lqr_hovering_U.psi_ref  = 0.0;
   if (!gCommand_active){
     gCommand_active      = true;
   }
@@ -137,9 +137,9 @@ int main(int argc, char** argv) {
         Eigen::VectorXd motor_speed(6);         // range 0 .. 1047 rad/s
 
         for(unsigned int i=0; i< 6; i++) {
-            motor_RPM[i]     = gController.lqr_final_Y.motor_RPM[i]*(1.0 - gLOE[i]);
-            motor_command[i] = gController.lqr_final_Y.motor_command[i]*(1.0 - gLOE[i]);
-            motor_speed[i]   = gController.lqr_final_Y.motor_speed[i]*(1.0 - gLOE[i]);
+            motor_RPM[i]     = gController.lqr_hovering_Y.motor_RPM[i]*(1.0 - gLOE[i]);
+            motor_command[i] = gController.lqr_hovering_Y.motor_command[i]*(1.0 - gLOE[i]);
+            motor_speed[i]   = gController.lqr_hovering_Y.motor_speed[i]*(1.0 - gLOE[i]);
         }
 
         // Publish: RPM and normalized command in 0 .. 200
@@ -165,11 +165,11 @@ int main(int argc, char** argv) {
 
         // Publish: virtual control (thrust, moment x, moment y)
         gsft_control::VirtualControlPtr virtual_contrl_msg(new gsft_control::VirtualControl);
-        virtual_contrl_msg->total_thrust = gController.lqr_final_Y.virtual_control[0];
+        virtual_contrl_msg->total_thrust = gController.lqr_hovering_Y.virtual_control[0];
 
         Eigen::VectorXd moment(3);
         for(unsigned int i=0; i< 2; i++)
-            moment[i] = gController.lqr_final_Y.virtual_control[i+1];
+            moment[i] = gController.lqr_hovering_Y.virtual_control[i+1];
         moment[2] = 0.0;    // yaw
         mav_msgs::vectorEigenToMsg(moment, &virtual_contrl_msg->moment);
 

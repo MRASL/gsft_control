@@ -1,15 +1,15 @@
 /*
- * lqr_final.h
+ * lqr_hovering.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "lqr_final".
+ * Code generation for model "lqr_hovering".
  *
  * Model version              : 1.483
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Dec 21 08:40:24 2017
+ * C++ source code generated on : Tue Jan  2 22:38:11 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,18 +18,18 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_lqr_final_h_
-#define RTW_HEADER_lqr_final_h_
+#ifndef RTW_HEADER_lqr_hovering_h_
+#define RTW_HEADER_lqr_hovering_h_
 #include <cmath>
 #include <string.h>
-#ifndef lqr_final_COMMON_INCLUDES_
-# define lqr_final_COMMON_INCLUDES_
+#ifndef lqr_hovering_COMMON_INCLUDES_
+# define lqr_hovering_COMMON_INCLUDES_
 #include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#endif                                 /* lqr_final_COMMON_INCLUDES_ */
+#endif                                 /* lqr_hovering_COMMON_INCLUDES_ */
 
-#include "lqr_final_types.h"
+#include "lqr_hovering_types.h"
 
 /* Shared type includes */
 #include "multiword_types.h"
@@ -153,22 +153,22 @@ typedef struct {
   real_T Saturation6;                  /* '<Root>/Saturation6' */
   real_T Saturation7;                  /* '<Root>/Saturation7' */
   real_T Saturation8;                  /* '<Root>/Saturation8' */
-} B_lqr_final_T;
+} B_lqr_hovering_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
   real_T Integrator_CSTATE[4];         /* '<Root>/Integrator' */
-} X_lqr_final_T;
+} X_lqr_hovering_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
   real_T Integrator_CSTATE[4];         /* '<Root>/Integrator' */
-} XDot_lqr_final_T;
+} XDot_lqr_hovering_T;
 
 /* State disabled  */
 typedef struct {
   boolean_T Integrator_CSTATE[4];      /* '<Root>/Integrator' */
-} XDis_lqr_final_T;
+} XDis_lqr_hovering_T;
 
 #ifndef ODE5_INTG
 #define ODE5_INTG
@@ -202,7 +202,7 @@ typedef struct {
    * Referenced by: '<Root>/Gain'
    */
   real_T Gain_Gain[24];
-} ConstP_lqr_final_T;
+} ConstP_lqr_hovering_T;
 
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
@@ -211,7 +211,7 @@ typedef struct {
   real_T z_ref;                        /* '<Root>/z_ref' */
   real_T psi_ref;                      /* '<Root>/psi_ref' */
   real_T X[12];                        /* '<Root>/X' */
-} ExtU_lqr_final_T;
+} ExtU_lqr_hovering_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
 typedef struct {
@@ -219,13 +219,13 @@ typedef struct {
   real_T virtual_control[4];           /* '<Root>/virtual_control' */
   real_T motor_speed[6];               /* '<Root>/motor_speed' */
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
-} ExtY_lqr_final_T;
+} ExtY_lqr_hovering_T;
 
 /* Real-time Model Data Structure */
-struct tag_RTM_lqr_final_T {
+struct tag_RTM_lqr_hovering_T {
   const char_T *errorStatus;
   RTWSolverInfo solverInfo;
-  X_lqr_final_T *contStates;
+  X_lqr_hovering_T *contStates;
   int_T *periodicContStateIndices;
   real_T *periodicContStateRanges;
   real_T *derivs;
@@ -279,17 +279,17 @@ extern "C" {
 #endif
 
 /* Constant parameters (auto storage) */
-extern const ConstP_lqr_final_T lqr_final_ConstP;
+extern const ConstP_lqr_hovering_T lqr_hovering_ConstP;
 
-/* Class declaration for model lqr_final */
-class lqr_finalModelClass {
+/* Class declaration for model lqr_hovering */
+class lqr_hoveringModelClass {
   /* public data and function members */
  public:
   /* External inputs */
-  ExtU_lqr_final_T lqr_final_U;
+  ExtU_lqr_hovering_T lqr_hovering_U;
 
   /* External outputs */
-  ExtY_lqr_final_T lqr_final_Y;
+  ExtY_lqr_hovering_T lqr_hovering_Y;
 
   /* model initialize function */
   void initialize();
@@ -301,28 +301,28 @@ class lqr_finalModelClass {
   void terminate();
 
   /* Constructor */
-  lqr_finalModelClass();
+  lqr_hoveringModelClass();
 
   /* Destructor */
-  ~lqr_finalModelClass();
+  ~lqr_hoveringModelClass();
 
   /* Real-Time Model get method */
-  RT_MODEL_lqr_final_T * getRTM();
+  RT_MODEL_lqr_hovering_T * getRTM();
 
   /* private data and function members */
  private:
   /* Block signals */
-  B_lqr_final_T lqr_final_B;
-  X_lqr_final_T lqr_final_X;           /* Block continuous states */
+  B_lqr_hovering_T lqr_hovering_B;
+  X_lqr_hovering_T lqr_hovering_X;     /* Block continuous states */
 
   /* Real-Time Model */
-  RT_MODEL_lqr_final_T lqr_final_M;
+  RT_MODEL_lqr_hovering_T lqr_hovering_M;
 
   /* Continuous states update member function*/
   void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si );
 
   /* Derivatives member function */
-  void lqr_final_derivatives();
+  void lqr_hovering_derivatives();
 };
 
 /*-
@@ -339,6 +339,6 @@ class lqr_finalModelClass {
  *
  * Here is the system hierarchy for this model
  *
- * '<Root>' : 'lqr_final'
+ * '<Root>' : 'lqr_hovering'
  */
-#endif                                 /* RTW_HEADER_lqr_final_h_ */
+#endif                                 /* RTW_HEADER_lqr_hovering_h_ */

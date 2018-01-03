@@ -1,15 +1,15 @@
 /*
- * rtwtypes.h
+ * lqr_hovering_types.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "lqr_final".
+ * Code generation for model "lqr_hovering".
  *
  * Model version              : 1.483
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Dec 21 08:40:24 2017
+ * C++ source code generated on : Tue Jan  2 22:38:11 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,25 +18,10 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTWTYPES_H
-#define RTWTYPES_H
-#include "tmwtypes.h"
-#include "simstruc_types.h"
-#ifndef POINTER_T
-# define POINTER_T
+#ifndef RTW_HEADER_lqr_hovering_types_h_
+#define RTW_HEADER_lqr_hovering_types_h_
 
-typedef void * pointer_T;
+/* Forward declaration for rtModel */
+typedef struct tag_RTM_lqr_hovering_T RT_MODEL_lqr_hovering_T;
 
-#endif
-
-/* Logical type definitions */
-#if (!defined(__cplusplus))
-#  ifndef false
-#   define false                       (0U)
-#  endif
-
-#  ifndef true
-#   define true                        (1U)
-#  endif
-#endif
-#endif                                 /* RTWTYPES_H */
+#endif                                 /* RTW_HEADER_lqr_hovering_types_h_ */

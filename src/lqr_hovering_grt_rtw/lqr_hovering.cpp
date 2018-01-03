@@ -1,15 +1,15 @@
 /*
- * lqr_final.cpp
+ * lqr_hovering.cpp
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "lqr_final".
+ * Code generation for model "lqr_hovering".
  *
  * Model version              : 1.483
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Dec 21 08:40:24 2017
+ * C++ source code generated on : Tue Jan  2 22:38:11 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,14 +18,14 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#include "lqr_final.h"
-#include "lqr_final_private.h"
+#include "lqr_hovering.h"
+#include "lqr_hovering_private.h"
 
 /*
  * This function updates continuous states using the ODE5 fixed-step
  * solver algorithm
  */
-void lqr_finalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
+void lqr_hoveringModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 {
   /* Solver Matrices */
   static const real_T rt_ODE5_A[6] = {
@@ -71,7 +71,7 @@ void lqr_finalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   /* Assumes that rtsiSetT and ModelOutputs are up-to-date */
   /* f0 = f(t,y) */
   rtsiSetdX(si, f0);
-  lqr_final_derivatives();
+  lqr_hovering_derivatives();
 
   /* f(:,2) = feval(odefile, t + hA(1), y + f*hB(:,1), args(:)(*)); */
   hB[0] = h * rt_ODE5_B[0][0];
@@ -82,7 +82,7 @@ void lqr_finalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   rtsiSetT(si, t + h*rt_ODE5_A[0]);
   rtsiSetdX(si, f1);
   this->step();
-  lqr_final_derivatives();
+  lqr_hovering_derivatives();
 
   /* f(:,3) = feval(odefile, t + hA(2), y + f*hB(:,2), args(:)(*)); */
   for (i = 0; i <= 1; i++) {
@@ -96,7 +96,7 @@ void lqr_finalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   rtsiSetT(si, t + h*rt_ODE5_A[1]);
   rtsiSetdX(si, f2);
   this->step();
-  lqr_final_derivatives();
+  lqr_hovering_derivatives();
 
   /* f(:,4) = feval(odefile, t + hA(3), y + f*hB(:,3), args(:)(*)); */
   for (i = 0; i <= 2; i++) {
@@ -110,7 +110,7 @@ void lqr_finalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   rtsiSetT(si, t + h*rt_ODE5_A[2]);
   rtsiSetdX(si, f3);
   this->step();
-  lqr_final_derivatives();
+  lqr_hovering_derivatives();
 
   /* f(:,5) = feval(odefile, t + hA(4), y + f*hB(:,4), args(:)(*)); */
   for (i = 0; i <= 3; i++) {
@@ -125,7 +125,7 @@ void lqr_finalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   rtsiSetT(si, t + h*rt_ODE5_A[3]);
   rtsiSetdX(si, f4);
   this->step();
-  lqr_final_derivatives();
+  lqr_hovering_derivatives();
 
   /* f(:,6) = feval(odefile, t + hA(5), y + f*hB(:,5), args(:)(*)); */
   for (i = 0; i <= 4; i++) {
@@ -140,7 +140,7 @@ void lqr_finalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   rtsiSetT(si, tnew);
   rtsiSetdX(si, f5);
   this->step();
-  lqr_final_derivatives();
+  lqr_hovering_derivatives();
 
   /* tnew = t + hA(6);
      ynew = y + f*hB(:,6); */
@@ -157,7 +157,7 @@ void lqr_finalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 }
 
 /* Model step function */
-void lqr_finalModelClass::step()
+void lqr_hoveringModelClass::step()
 {
   real_T rtb_Sum2[4];
   real_T tmp[4];
@@ -166,23 +166,23 @@ void lqr_finalModelClass::step()
   real_T u0;
   real_T rtb_Sqrt1;
   real_T rtb_rads_to_RPM;
-  if (rtmIsMajorTimeStep((&lqr_final_M))) {
+  if (rtmIsMajorTimeStep((&lqr_hovering_M))) {
     /* set solver stop time */
-    if (!((&lqr_final_M)->Timing.clockTick0+1)) {
-      rtsiSetSolverStopTime(&(&lqr_final_M)->solverInfo, (((&lqr_final_M)
-        ->Timing.clockTickH0 + 1) * (&lqr_final_M)->Timing.stepSize0 *
+    if (!((&lqr_hovering_M)->Timing.clockTick0+1)) {
+      rtsiSetSolverStopTime(&(&lqr_hovering_M)->solverInfo, (((&lqr_hovering_M
+        )->Timing.clockTickH0 + 1) * (&lqr_hovering_M)->Timing.stepSize0 *
         4294967296.0));
     } else {
-      rtsiSetSolverStopTime(&(&lqr_final_M)->solverInfo, (((&lqr_final_M)
-        ->Timing.clockTick0 + 1) * (&lqr_final_M)->Timing.stepSize0 +
-        (&lqr_final_M)->Timing.clockTickH0 * (&lqr_final_M)->Timing.stepSize0 *
-        4294967296.0));
+      rtsiSetSolverStopTime(&(&lqr_hovering_M)->solverInfo, (((&lqr_hovering_M
+        )->Timing.clockTick0 + 1) * (&lqr_hovering_M)->Timing.stepSize0 +
+        (&lqr_hovering_M)->Timing.clockTickH0 * (&lqr_hovering_M)
+        ->Timing.stepSize0 * 4294967296.0));
     }
   }                                    /* end MajorTimeStep */
 
   /* Update absolute time of base rate at minor time step */
-  if (rtmIsMinorTimeStep((&lqr_final_M))) {
-    (&lqr_final_M)->Timing.t[0] = rtsiGetT(&(&lqr_final_M)->solverInfo);
+  if (rtmIsMinorTimeStep((&lqr_hovering_M))) {
+    (&lqr_hovering_M)->Timing.t[0] = rtsiGetT(&(&lqr_hovering_M)->solverInfo);
   }
 
   for (i_0 = 0; i_0 < 4; i_0++) {
@@ -190,10 +190,13 @@ void lqr_finalModelClass::step()
      *  Integrator: '<Root>/Integrator'
      *  Sum: '<Root>/Sum'
      */
-    u0 = lqr_final_ConstP._Gain[i_0 + 12] * lqr_final_X.Integrator_CSTATE[3] +
-      (lqr_final_ConstP._Gain[i_0 + 8] * lqr_final_X.Integrator_CSTATE[2] +
-       (lqr_final_ConstP._Gain[i_0 + 4] * lqr_final_X.Integrator_CSTATE[1] +
-        lqr_final_ConstP._Gain[i_0] * lqr_final_X.Integrator_CSTATE[0]));
+    u0 = lqr_hovering_ConstP._Gain[i_0 + 12] * lqr_hovering_X.Integrator_CSTATE
+      [3] + (lqr_hovering_ConstP._Gain[i_0 + 8] *
+             lqr_hovering_X.Integrator_CSTATE[2] +
+             (lqr_hovering_ConstP._Gain[i_0 + 4] *
+              lqr_hovering_X.Integrator_CSTATE[1] +
+              lqr_hovering_ConstP._Gain[i_0] * lqr_hovering_X.Integrator_CSTATE
+              [0]));
 
     /* Gain: '<Root>/                   ' incorporates:
      *  Inport: '<Root>/X'
@@ -201,7 +204,8 @@ void lqr_finalModelClass::step()
      */
     tmp[i_0] = 0.0;
     for (i = 0; i < 12; i++) {
-      tmp[i_0] += lqr_final_ConstP._Gain_g[(i << 2) + i_0] * lqr_final_U.X[i];
+      tmp[i_0] += lqr_hovering_ConstP._Gain_g[(i << 2) + i_0] *
+        lqr_hovering_U.X[i];
     }
 
     /* End of Gain: '<Root>/                   ' */
@@ -210,22 +214,22 @@ void lqr_finalModelClass::step()
      *  Constant: '<Root>/              '
      *  Sum: '<Root>/Sum'
      */
-    rtb_Sum2[i_0] = (u0 - tmp[i_0]) + lqr_final_ConstP._Value[i_0];
+    rtb_Sum2[i_0] = (u0 - tmp[i_0]) + lqr_hovering_ConstP._Value[i_0];
   }
 
   /* Outport: '<Root>/virtual_control' */
-  lqr_final_Y.virtual_control[0] = rtb_Sum2[0];
-  lqr_final_Y.virtual_control[1] = rtb_Sum2[1];
-  lqr_final_Y.virtual_control[2] = rtb_Sum2[2];
-  lqr_final_Y.virtual_control[3] = rtb_Sum2[3];
+  lqr_hovering_Y.virtual_control[0] = rtb_Sum2[0];
+  lqr_hovering_Y.virtual_control[1] = rtb_Sum2[1];
+  lqr_hovering_Y.virtual_control[2] = rtb_Sum2[2];
+  lqr_hovering_Y.virtual_control[3] = rtb_Sum2[3];
   for (i_0 = 0; i_0 < 6; i_0++) {
     /* Gain: '<Root>/Gain' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    u0 = lqr_final_ConstP.Gain_Gain[i_0 + 18] * rtb_Sum2[3] +
-      (lqr_final_ConstP.Gain_Gain[i_0 + 12] * rtb_Sum2[2] +
-       (lqr_final_ConstP.Gain_Gain[i_0 + 6] * rtb_Sum2[1] +
-        lqr_final_ConstP.Gain_Gain[i_0] * rtb_Sum2[0]));
+    u0 = lqr_hovering_ConstP.Gain_Gain[i_0 + 18] * rtb_Sum2[3] +
+      (lqr_hovering_ConstP.Gain_Gain[i_0 + 12] * rtb_Sum2[2] +
+       (lqr_hovering_ConstP.Gain_Gain[i_0 + 6] * rtb_Sum2[1] +
+        lqr_hovering_ConstP.Gain_Gain[i_0] * rtb_Sum2[0]));
 
     /* Sqrt: '<Root>/Sqrt1' incorporates:
      *  Gain: '<Root>/Gain2'
@@ -244,33 +248,33 @@ void lqr_finalModelClass::step()
     /* Saturate: '<Root>/Saturation' */
     if (u0 > 200.0) {
       /* Outport: '<Root>/motor_command' */
-      lqr_final_Y.motor_command[i_0] = 200.0;
+      lqr_hovering_Y.motor_command[i_0] = 200.0;
     } else if (u0 < 0.0) {
       /* Outport: '<Root>/motor_command' */
-      lqr_final_Y.motor_command[i_0] = 0.0;
+      lqr_hovering_Y.motor_command[i_0] = 0.0;
     } else {
       /* Outport: '<Root>/motor_command' */
-      lqr_final_Y.motor_command[i_0] = u0;
+      lqr_hovering_Y.motor_command[i_0] = u0;
     }
 
     /* End of Saturate: '<Root>/Saturation' */
 
     /* Outport: '<Root>/motor_speed' */
-    lqr_final_Y.motor_speed[i_0] = rtb_Sqrt1;
+    lqr_hovering_Y.motor_speed[i_0] = rtb_Sqrt1;
 
     /* Outport: '<Root>/motor_RPM' */
-    lqr_final_Y.motor_RPM[i_0] = rtb_rads_to_RPM;
+    lqr_hovering_Y.motor_RPM[i_0] = rtb_rads_to_RPM;
   }
 
   /* Saturate: '<Root>/Saturation1' incorporates:
    *  Inport: '<Root>/x_ref'
    */
-  if (lqr_final_U.x_ref > 1.0) {
+  if (lqr_hovering_U.x_ref > 1.0) {
     u0 = 1.0;
-  } else if (lqr_final_U.x_ref < -1.5) {
+  } else if (lqr_hovering_U.x_ref < -1.5) {
     u0 = -1.5;
   } else {
-    u0 = lqr_final_U.x_ref;
+    u0 = lqr_hovering_U.x_ref;
   }
 
   /* End of Saturate: '<Root>/Saturation1' */
@@ -278,15 +282,15 @@ void lqr_finalModelClass::step()
   /* Sum: '<Root>/Sum1' incorporates:
    *  Inport: '<Root>/X'
    */
-  u0 -= lqr_final_U.X[0];
+  u0 -= lqr_hovering_U.X[0];
 
   /* Saturate: '<Root>/Saturation4' */
   if (u0 > 1.0) {
-    lqr_final_B.Saturation4 = 1.0;
+    lqr_hovering_B.Saturation4 = 1.0;
   } else if (u0 < -1.0) {
-    lqr_final_B.Saturation4 = -1.0;
+    lqr_hovering_B.Saturation4 = -1.0;
   } else {
-    lqr_final_B.Saturation4 = u0;
+    lqr_hovering_B.Saturation4 = u0;
   }
 
   /* End of Saturate: '<Root>/Saturation4' */
@@ -294,12 +298,12 @@ void lqr_finalModelClass::step()
   /* Saturate: '<Root>/Saturation2' incorporates:
    *  Inport: '<Root>/y_ref'
    */
-  if (lqr_final_U.y_ref > 1.5) {
+  if (lqr_hovering_U.y_ref > 1.5) {
     u0 = 1.5;
-  } else if (lqr_final_U.y_ref < -1.5) {
+  } else if (lqr_hovering_U.y_ref < -1.5) {
     u0 = -1.5;
   } else {
-    u0 = lqr_final_U.y_ref;
+    u0 = lqr_hovering_U.y_ref;
   }
 
   /* End of Saturate: '<Root>/Saturation2' */
@@ -307,15 +311,15 @@ void lqr_finalModelClass::step()
   /* Sum: '<Root>/Sum4' incorporates:
    *  Inport: '<Root>/X'
    */
-  u0 -= lqr_final_U.X[1];
+  u0 -= lqr_hovering_U.X[1];
 
   /* Saturate: '<Root>/Saturation6' */
   if (u0 > 1.0) {
-    lqr_final_B.Saturation6 = 1.0;
+    lqr_hovering_B.Saturation6 = 1.0;
   } else if (u0 < -1.0) {
-    lqr_final_B.Saturation6 = -1.0;
+    lqr_hovering_B.Saturation6 = -1.0;
   } else {
-    lqr_final_B.Saturation6 = u0;
+    lqr_hovering_B.Saturation6 = u0;
   }
 
   /* End of Saturate: '<Root>/Saturation6' */
@@ -323,12 +327,12 @@ void lqr_finalModelClass::step()
   /* Saturate: '<Root>/Saturation3' incorporates:
    *  Inport: '<Root>/z_ref'
    */
-  if (lqr_final_U.z_ref > 1.5) {
+  if (lqr_hovering_U.z_ref > 1.5) {
     u0 = 1.5;
-  } else if (lqr_final_U.z_ref < 0.1) {
+  } else if (lqr_hovering_U.z_ref < 0.1) {
     u0 = 0.1;
   } else {
-    u0 = lqr_final_U.z_ref;
+    u0 = lqr_hovering_U.z_ref;
   }
 
   /* End of Saturate: '<Root>/Saturation3' */
@@ -336,15 +340,15 @@ void lqr_finalModelClass::step()
   /* Sum: '<Root>/Sum5' incorporates:
    *  Inport: '<Root>/X'
    */
-  u0 -= lqr_final_U.X[2];
+  u0 -= lqr_hovering_U.X[2];
 
   /* Saturate: '<Root>/Saturation7' */
   if (u0 > 0.5) {
-    lqr_final_B.Saturation7 = 0.5;
+    lqr_hovering_B.Saturation7 = 0.5;
   } else if (u0 < -0.5) {
-    lqr_final_B.Saturation7 = -0.5;
+    lqr_hovering_B.Saturation7 = -0.5;
   } else {
-    lqr_final_B.Saturation7 = u0;
+    lqr_hovering_B.Saturation7 = u0;
   }
 
   /* End of Saturate: '<Root>/Saturation7' */
@@ -352,12 +356,12 @@ void lqr_finalModelClass::step()
   /* Saturate: '<Root>/Saturation5' incorporates:
    *  Inport: '<Root>/psi_ref'
    */
-  if (lqr_final_U.psi_ref > 6.2831853071795862) {
+  if (lqr_hovering_U.psi_ref > 6.2831853071795862) {
     u0 = 6.2831853071795862;
-  } else if (lqr_final_U.psi_ref < -6.2831853071795862) {
+  } else if (lqr_hovering_U.psi_ref < -6.2831853071795862) {
     u0 = -6.2831853071795862;
   } else {
-    u0 = lqr_final_U.psi_ref;
+    u0 = lqr_hovering_U.psi_ref;
   }
 
   /* End of Saturate: '<Root>/Saturation5' */
@@ -365,20 +369,20 @@ void lqr_finalModelClass::step()
   /* Sum: '<Root>/Sum6' incorporates:
    *  Inport: '<Root>/X'
    */
-  u0 -= lqr_final_U.X[8];
+  u0 -= lqr_hovering_U.X[8];
 
   /* Saturate: '<Root>/Saturation8' */
   if (u0 > 0.78539816339744828) {
-    lqr_final_B.Saturation8 = 0.78539816339744828;
+    lqr_hovering_B.Saturation8 = 0.78539816339744828;
   } else if (u0 < -0.78539816339744828) {
-    lqr_final_B.Saturation8 = -0.78539816339744828;
+    lqr_hovering_B.Saturation8 = -0.78539816339744828;
   } else {
-    lqr_final_B.Saturation8 = u0;
+    lqr_hovering_B.Saturation8 = u0;
   }
 
   /* End of Saturate: '<Root>/Saturation8' */
-  if (rtmIsMajorTimeStep((&lqr_final_M))) {
-    rt_ertODEUpdateContinuousStates(&(&lqr_final_M)->solverInfo);
+  if (rtmIsMajorTimeStep((&lqr_hovering_M))) {
+    rt_ertODEUpdateContinuousStates(&(&lqr_hovering_M)->solverInfo);
 
     /* Update absolute time for base rate */
     /* The "clockTick0" counts the number of times the code of this task has
@@ -389,11 +393,11 @@ void lqr_finalModelClass::step()
      * The two integers represent the low bits Timing.clockTick0 and the high bits
      * Timing.clockTickH0. When the low bit overflows to 0, the high bits increment.
      */
-    if (!(++(&lqr_final_M)->Timing.clockTick0)) {
-      ++(&lqr_final_M)->Timing.clockTickH0;
+    if (!(++(&lqr_hovering_M)->Timing.clockTick0)) {
+      ++(&lqr_hovering_M)->Timing.clockTickH0;
     }
 
-    (&lqr_final_M)->Timing.t[0] = rtsiGetSolverStopTime(&(&lqr_final_M)
+    (&lqr_hovering_M)->Timing.t[0] = rtsiGetSolverStopTime(&(&lqr_hovering_M)
       ->solverInfo);
 
     {
@@ -406,117 +410,117 @@ void lqr_finalModelClass::step()
        * The two integers represent the low bits Timing.clockTick1 and the high bits
        * Timing.clockTickH1. When the low bit overflows to 0, the high bits increment.
        */
-      (&lqr_final_M)->Timing.clockTick1++;
-      if (!(&lqr_final_M)->Timing.clockTick1) {
-        (&lqr_final_M)->Timing.clockTickH1++;
+      (&lqr_hovering_M)->Timing.clockTick1++;
+      if (!(&lqr_hovering_M)->Timing.clockTick1) {
+        (&lqr_hovering_M)->Timing.clockTickH1++;
       }
     }
   }                                    /* end MajorTimeStep */
 }
 
 /* Derivatives for root system: '<Root>' */
-void lqr_finalModelClass::lqr_final_derivatives()
+void lqr_hoveringModelClass::lqr_hovering_derivatives()
 {
-  XDot_lqr_final_T *_rtXdot;
-  _rtXdot = ((XDot_lqr_final_T *) (&lqr_final_M)->derivs);
+  XDot_lqr_hovering_T *_rtXdot;
+  _rtXdot = ((XDot_lqr_hovering_T *) (&lqr_hovering_M)->derivs);
 
   /* Derivatives for Integrator: '<Root>/Integrator' */
-  _rtXdot->Integrator_CSTATE[0] = lqr_final_B.Saturation4;
-  _rtXdot->Integrator_CSTATE[1] = lqr_final_B.Saturation6;
-  _rtXdot->Integrator_CSTATE[2] = lqr_final_B.Saturation7;
-  _rtXdot->Integrator_CSTATE[3] = lqr_final_B.Saturation8;
+  _rtXdot->Integrator_CSTATE[0] = lqr_hovering_B.Saturation4;
+  _rtXdot->Integrator_CSTATE[1] = lqr_hovering_B.Saturation6;
+  _rtXdot->Integrator_CSTATE[2] = lqr_hovering_B.Saturation7;
+  _rtXdot->Integrator_CSTATE[3] = lqr_hovering_B.Saturation8;
 }
 
 /* Model initialize function */
-void lqr_finalModelClass::initialize()
+void lqr_hoveringModelClass::initialize()
 {
   /* Registration code */
 
   /* initialize real-time model */
-  (void) memset((void *)(&lqr_final_M), 0,
-                sizeof(RT_MODEL_lqr_final_T));
+  (void) memset((void *)(&lqr_hovering_M), 0,
+                sizeof(RT_MODEL_lqr_hovering_T));
 
   {
     /* Setup solver object */
-    rtsiSetSimTimeStepPtr(&(&lqr_final_M)->solverInfo, &(&lqr_final_M)
+    rtsiSetSimTimeStepPtr(&(&lqr_hovering_M)->solverInfo, &(&lqr_hovering_M)
                           ->Timing.simTimeStep);
-    rtsiSetTPtr(&(&lqr_final_M)->solverInfo, &rtmGetTPtr((&lqr_final_M)));
-    rtsiSetStepSizePtr(&(&lqr_final_M)->solverInfo, &(&lqr_final_M)
+    rtsiSetTPtr(&(&lqr_hovering_M)->solverInfo, &rtmGetTPtr((&lqr_hovering_M)));
+    rtsiSetStepSizePtr(&(&lqr_hovering_M)->solverInfo, &(&lqr_hovering_M)
                        ->Timing.stepSize0);
-    rtsiSetdXPtr(&(&lqr_final_M)->solverInfo, &(&lqr_final_M)->derivs);
-    rtsiSetContStatesPtr(&(&lqr_final_M)->solverInfo, (real_T **) &(&lqr_final_M)
-                         ->contStates);
-    rtsiSetNumContStatesPtr(&(&lqr_final_M)->solverInfo, &(&lqr_final_M)
+    rtsiSetdXPtr(&(&lqr_hovering_M)->solverInfo, &(&lqr_hovering_M)->derivs);
+    rtsiSetContStatesPtr(&(&lqr_hovering_M)->solverInfo, (real_T **)
+                         &(&lqr_hovering_M)->contStates);
+    rtsiSetNumContStatesPtr(&(&lqr_hovering_M)->solverInfo, &(&lqr_hovering_M)
       ->Sizes.numContStates);
-    rtsiSetNumPeriodicContStatesPtr(&(&lqr_final_M)->solverInfo, &(&lqr_final_M
-      )->Sizes.numPeriodicContStates);
-    rtsiSetPeriodicContStateIndicesPtr(&(&lqr_final_M)->solverInfo,
-      &(&lqr_final_M)->periodicContStateIndices);
-    rtsiSetPeriodicContStateRangesPtr(&(&lqr_final_M)->solverInfo,
-      &(&lqr_final_M)->periodicContStateRanges);
-    rtsiSetErrorStatusPtr(&(&lqr_final_M)->solverInfo, (&rtmGetErrorStatus
-      ((&lqr_final_M))));
-    rtsiSetRTModelPtr(&(&lqr_final_M)->solverInfo, (&lqr_final_M));
+    rtsiSetNumPeriodicContStatesPtr(&(&lqr_hovering_M)->solverInfo,
+      &(&lqr_hovering_M)->Sizes.numPeriodicContStates);
+    rtsiSetPeriodicContStateIndicesPtr(&(&lqr_hovering_M)->solverInfo,
+      &(&lqr_hovering_M)->periodicContStateIndices);
+    rtsiSetPeriodicContStateRangesPtr(&(&lqr_hovering_M)->solverInfo,
+      &(&lqr_hovering_M)->periodicContStateRanges);
+    rtsiSetErrorStatusPtr(&(&lqr_hovering_M)->solverInfo, (&rtmGetErrorStatus
+      ((&lqr_hovering_M))));
+    rtsiSetRTModelPtr(&(&lqr_hovering_M)->solverInfo, (&lqr_hovering_M));
   }
 
-  rtsiSetSimTimeStep(&(&lqr_final_M)->solverInfo, MAJOR_TIME_STEP);
-  (&lqr_final_M)->intgData.y = (&lqr_final_M)->odeY;
-  (&lqr_final_M)->intgData.f[0] = (&lqr_final_M)->odeF[0];
-  (&lqr_final_M)->intgData.f[1] = (&lqr_final_M)->odeF[1];
-  (&lqr_final_M)->intgData.f[2] = (&lqr_final_M)->odeF[2];
-  (&lqr_final_M)->intgData.f[3] = (&lqr_final_M)->odeF[3];
-  (&lqr_final_M)->intgData.f[4] = (&lqr_final_M)->odeF[4];
-  (&lqr_final_M)->intgData.f[5] = (&lqr_final_M)->odeF[5];
-  getRTM()->contStates = ((X_lqr_final_T *) &lqr_final_X);
-  rtsiSetSolverData(&(&lqr_final_M)->solverInfo, (void *)&(&lqr_final_M)
+  rtsiSetSimTimeStep(&(&lqr_hovering_M)->solverInfo, MAJOR_TIME_STEP);
+  (&lqr_hovering_M)->intgData.y = (&lqr_hovering_M)->odeY;
+  (&lqr_hovering_M)->intgData.f[0] = (&lqr_hovering_M)->odeF[0];
+  (&lqr_hovering_M)->intgData.f[1] = (&lqr_hovering_M)->odeF[1];
+  (&lqr_hovering_M)->intgData.f[2] = (&lqr_hovering_M)->odeF[2];
+  (&lqr_hovering_M)->intgData.f[3] = (&lqr_hovering_M)->odeF[3];
+  (&lqr_hovering_M)->intgData.f[4] = (&lqr_hovering_M)->odeF[4];
+  (&lqr_hovering_M)->intgData.f[5] = (&lqr_hovering_M)->odeF[5];
+  getRTM()->contStates = ((X_lqr_hovering_T *) &lqr_hovering_X);
+  rtsiSetSolverData(&(&lqr_hovering_M)->solverInfo, (void *)&(&lqr_hovering_M)
                     ->intgData);
-  rtsiSetSolverName(&(&lqr_final_M)->solverInfo,"ode5");
-  rtmSetTPtr(getRTM(), &(&lqr_final_M)->Timing.tArray[0]);
-  (&lqr_final_M)->Timing.stepSize0 = 0.016666666666666666;
+  rtsiSetSolverName(&(&lqr_hovering_M)->solverInfo,"ode5");
+  rtmSetTPtr(getRTM(), &(&lqr_hovering_M)->Timing.tArray[0]);
+  (&lqr_hovering_M)->Timing.stepSize0 = 0.016666666666666666;
 
   /* block I/O */
-  (void) memset(((void *) &lqr_final_B), 0,
-                sizeof(B_lqr_final_T));
+  (void) memset(((void *) &lqr_hovering_B), 0,
+                sizeof(B_lqr_hovering_T));
 
   /* states (continuous) */
   {
-    (void) memset((void *)&lqr_final_X, 0,
-                  sizeof(X_lqr_final_T));
+    (void) memset((void *)&lqr_hovering_X, 0,
+                  sizeof(X_lqr_hovering_T));
   }
 
   /* external inputs */
-  (void)memset((void *)&lqr_final_U, 0, sizeof(ExtU_lqr_final_T));
+  (void)memset((void *)&lqr_hovering_U, 0, sizeof(ExtU_lqr_hovering_T));
 
   /* external outputs */
-  (void) memset((void *)&lqr_final_Y, 0,
-                sizeof(ExtY_lqr_final_T));
+  (void) memset((void *)&lqr_hovering_Y, 0,
+                sizeof(ExtY_lqr_hovering_T));
 
   /* InitializeConditions for Integrator: '<Root>/Integrator' */
-  lqr_final_X.Integrator_CSTATE[0] = 0.0;
-  lqr_final_X.Integrator_CSTATE[1] = 0.0;
-  lqr_final_X.Integrator_CSTATE[2] = 0.0;
-  lqr_final_X.Integrator_CSTATE[3] = 0.0;
+  lqr_hovering_X.Integrator_CSTATE[0] = 0.0;
+  lqr_hovering_X.Integrator_CSTATE[1] = 0.0;
+  lqr_hovering_X.Integrator_CSTATE[2] = 0.0;
+  lqr_hovering_X.Integrator_CSTATE[3] = 0.0;
 }
 
 /* Model terminate function */
-void lqr_finalModelClass::terminate()
+void lqr_hoveringModelClass::terminate()
 {
   /* (no terminate code required) */
 }
 
 /* Constructor */
-lqr_finalModelClass::lqr_finalModelClass()
+lqr_hoveringModelClass::lqr_hoveringModelClass()
 {
 }
 
 /* Destructor */
-lqr_finalModelClass::~lqr_finalModelClass()
+lqr_hoveringModelClass::~lqr_hoveringModelClass()
 {
   /* Currently there is no destructor body generated.*/
 }
 
 /* Real-Time Model get method */
-RT_MODEL_lqr_final_T * lqr_finalModelClass::getRTM()
+RT_MODEL_lqr_hovering_T * lqr_hoveringModelClass::getRTM()
 {
-  return (&lqr_final_M);
+  return (&lqr_hovering_M);
 }
