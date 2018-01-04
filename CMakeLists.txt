@@ -147,18 +147,6 @@ add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 
- add_executable(main_node
-     src/main_node.cpp
- )
- add_dependencies(main_node
-   ${${PROJECT_NAME}_EXPORTED_TARGETS}
-   ${catkin_EXPORTED_TARGETS}
-   ${PROJECT_NAME}_gencfg
- )
- target_link_libraries(main_node
-     ${catkin_LIBRARIES}
- )
-
 add_executable(lqr_hovering_controller_node
     src/lqr_hovering_controller_node.cpp
 )
@@ -178,6 +166,7 @@ add_executable(lqr_tracking_controller_node
 add_dependencies(lqr_tracking_controller_node
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
+    ${PROJECT_NAME}_gencfg
     matlab_lqr
 )
 target_link_libraries(lqr_tracking_controller_node

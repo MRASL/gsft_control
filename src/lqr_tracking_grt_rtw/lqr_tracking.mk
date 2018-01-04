@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'lqr_tracking'. 
 ## 
 ## Makefile     : lqr_tracking.mk
-## Generated on : Thu Jan 04 10:56:20 2018
+## Generated on : Thu Jan 04 17:11:59 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:

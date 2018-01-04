@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_tracking".
  *
- * Model version              : 1.491
+ * Model version              : 1.493
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan  4 10:56:16 2018
+ * C++ source code generated on : Thu Jan  4 17:11:55 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -277,8 +277,8 @@ void lqr_trackingModelClass::step()
     /* Get index */
     if (t <= pTimeValues[0]) {
       currTimeIndex = 0;
-    } else if (t >= pTimeValues[4]) {
-      currTimeIndex = 3;
+    } else if (t >= pTimeValues[5]) {
+      currTimeIndex = 4;
     } else {
       if (t < pTimeValues[currTimeIndex]) {
         while (t < pTimeValues[currTimeIndex]) {
@@ -312,7 +312,7 @@ void lqr_trackingModelClass::step()
         d1 = pDataValues[TimeIndex];
         d2 = pDataValues[TimeIndex + 1];
         rtb_Sum6 = (real_T) rtInterpolate(d1, d2, f1, f2);
-        pDataValues += 5;
+        pDataValues += 6;
       }
     }
   }
@@ -511,9 +511,9 @@ void lqr_trackingModelClass::initialize()
 
   /* Start for FromWorkspace: '<S1>/FromWs' */
   {
-    static real_T pTimeValues0[] = { 0.0, 2.5, 2.5, 6.0, 10.0 } ;
+    static real_T pTimeValues0[] = { 0.0, 2.5, 2.5, 17.5, 17.5, 20.0 } ;
 
-    static real_T pDataValues0[] = { 0.0, 1.0, 1.0, 1.0, 1.0 } ;
+    static real_T pDataValues0[] = { 0.0, 0.5, 0.5, 0.5, 0.5, 0.0 } ;
 
     lqr_tracking_DW.FromWs_PWORK.TimePtr = (void *) pTimeValues0;
     lqr_tracking_DW.FromWs_PWORK.DataPtr = (void *) pDataValues0;

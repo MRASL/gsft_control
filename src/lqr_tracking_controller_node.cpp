@@ -17,6 +17,9 @@
 #include <gsft_control/VirtualControl.h>
 #include <lqr_tracking.h>
 
+#include <dynamic_reconfigure/server.h>
+#include <gsft_control/controllerDynConfig.h>
+
 lqr_trackingModelClass gController;
 
 bool gCommand_active;
@@ -84,6 +87,17 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
 }
 */
 
+void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t level) {
+  ROS_INFO("Starting controller Request: %s",config.start_controller?"True":"False");
+  if (config.start_controller == true){
+      if (!gCommand_active){
+        gCommand_active      = true;
+        config.start_controller = false;
+        // gCommand_time        = ros::Time::now();
+      }
+  }
+}
+
 void LostControlCallback(const gsft_control::LOEConstPtr& loe_msg) {
  for (int i = 0; i < 6; i++) {
     gLOE[i] = loe_msg->LOE[i];
@@ -129,6 +143,11 @@ int main(int argc, char** argv) {
     gLOE[i] = 0.0;
   }
   gController.initialize();
+
+  dynamic_reconfigure::Server<gsft_control::controllerDynConfig> server;
+  dynamic_reconfigure::Server<gsft_control::controllerDynConfig>::CallbackType f;
+  f = boost::bind(&controller_dyn_callback, _1, _2);
+  server.setCallback(f);
 
   while(ros::ok()) {
     if (gCommand_active) {
