@@ -5,7 +5,7 @@
   <description>Gain Scheduling Fault Tolerant Control</description>
 
   <maintainer email="duc-tien.nguyen@polymtl.ca">Duc-Tien Nguyen</maintainer>
-  
+
   <license>BSD</license>
 
   <author email="duc-tien-nguyen@polymtl.ca">Duc-Tien Nguyen</author>
@@ -21,6 +21,7 @@
   <depend>trajectory_msgs</depend>
   <depend>message_generation</depend>
   <depend>std_msgs</depend>
+  <depend>dynamic_reconfigure</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

@@ -8,4 +8,4 @@ firefly_parameters
 Ts = 1/60;
 
 %%
-load systhesis/K_lqr_tracking_ENU
+load synthesis/K_lqr_tracking_ENU

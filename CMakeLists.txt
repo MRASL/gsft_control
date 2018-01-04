@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
     message_generation
     std_msgs
     geometry_msgs
+    dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -98,10 +99,9 @@ generate_messages(
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+   cfg/controller_dyn.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -115,7 +115,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES gsft_control
-    CATKIN_DEPENDS geometry_msgs mav_msgs nav_msgs roscpp sensor_msgs trajectory_msgs message_generation std_msgs geometry_msgs
+    CATKIN_DEPENDS geometry_msgs mav_msgs nav_msgs roscpp sensor_msgs trajectory_msgs message_generation std_msgs geometry_msgs dynamic_reconfigure
     DEPENDS EIGEN3
 )
 
@@ -130,6 +130,7 @@ include_directories(
  R2017a/extern/include
  R2017a/simulink/include
  src/lqr_hovering_grt_rtw
+ src/lqr_tracking_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
@@ -137,6 +138,8 @@ include_directories(
 add_library(matlab_lqr
     src/lqr_hovering_grt_rtw/lqr_hovering_data.cpp
     src/lqr_hovering_grt_rtw/lqr_hovering.cpp
+    src/lqr_tracking_grt_rtw/lqr_tracking_data.cpp
+    src/lqr_tracking_grt_rtw/lqr_tracking.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -153,6 +156,19 @@ add_dependencies(lqr_hovering_controller_node
     matlab_lqr
 )
 target_link_libraries(lqr_hovering_controller_node
+    matlab_lqr
+    ${catkin_LIBRARIES}
+)
+
+add_executable(lqr_tracking_controller_node
+    src/lqr_tracking_controller_node.cpp
+)
+add_dependencies(lqr_tracking_controller_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_lqr
+)
+target_link_libraries(lqr_tracking_controller_node
     matlab_lqr
     ${catkin_LIBRARIES}
 )
