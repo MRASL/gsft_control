@@ -1,10 +1,13 @@
 %%  Parameters
-mass  = 1.5435; 
+
+mass  = 1.490;          % without cameras
+% mass  = 1.5435;       % with cameras
+% mass  = 1.56779;      % ethz-asl/rotors_simulator (Gazebo)
+
 gra   = 9.80665;
 
-% Asctec Firefly Parameters: https://github.com/ethz-asl/rotors_simulator 
-% mass  = 1.56779; 
-arm = 0.215;                  
+% https://github.com/ethz-asl/rotors_simulator 
+arm   = 0.215;                  
 Ixx   = 0.0347563;       Iyy = 0.0458929;    Izz    = 0.0977;
 KT    = 0.00000854858;   KD  = KT*0.016;     factor = 0.016;
 w_max = 838;             T_max = KT*w_max^2;

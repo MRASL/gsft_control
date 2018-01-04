@@ -2,7 +2,9 @@
 clc; clear all; close all;  
 
 %% Parameters
-firefly_parameters;
+addpath('../..')
+firefly_parameters
+
 Ts = 1/60;                       % frequency
 
 %%
@@ -41,9 +43,14 @@ V = ctrb(Aa,Ba);
 rank(V)
 
 % Ponderation
-%         p            pd           euler        euler_rate    augmented state
+%         p              pd                euler        euler_rate    augmented state
 Q = diag([10^1*[2 2 5] 10^1*[0.5 0.5 2] 10^1*[1 1 2] 10^0*[1 1 2]  10^2*[0.1 0.1 0.75 0.1]]);        
 R = diag(10^1*[0.1 100 100 1000]);
+
+% forte ponderation sur augmented state: dynamique plus rapide, commandes plus grandes
+% forte ponderation sur R: dynamique plus lente, peu solliciter les actionneurs
+
+% forte ponderation sur p, pd, euler, euler_rate: dynamique plus lente, peu solliciter les actionneurs !!!
 
 % Observabilit�
 M = sqrtm(Q);
@@ -72,8 +79,9 @@ sys_full = feedback(sys2,eye(4));
 
 step(sys_full,10)
 
-save('K_lqr.mat','Kx_lqr','Ki_lqr','sys_full');
+save('K_lqr_hovering_ENU.mat','Kx_lqr','Ki_lqr','sys_full');
 
+sim('lqr_hovering_ENU_linear')
 %% Test - NonLinear
 %  Fault
 tm1  = 10; tm2 = 10; tm3 = 10; tm4 = 10; tm5 = 10; tm6 = 10;
