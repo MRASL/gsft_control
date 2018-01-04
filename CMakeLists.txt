@@ -8,6 +8,7 @@ project(gsft_control)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+    dynamic_reconfigure
     mav_msgs
     nav_msgs
     sensor_msgs
@@ -18,7 +19,6 @@ find_package(catkin REQUIRED COMPONENTS
     message_generation
     std_msgs
     geometry_msgs
-    dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -100,7 +100,7 @@ generate_messages(
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
 generate_dynamic_reconfigure_options(
-   cfg/controller_dyn.cfg
+  cfg/ControllerDyn.cfg
 )
 
 ###################################
@@ -113,9 +113,9 @@ generate_dynamic_reconfigure_options(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES gsft_control
-    CATKIN_DEPENDS geometry_msgs mav_msgs nav_msgs roscpp sensor_msgs trajectory_msgs message_generation std_msgs geometry_msgs dynamic_reconfigure
+    INCLUDE_DIRS include
+##    LIBRARIES gsft_control
+    CATKIN_DEPENDS dynamic_reconfigure geometry_msgs mav_msgs nav_msgs roscpp sensor_msgs trajectory_msgs message_generation std_msgs geometry_msgs
     DEPENDS EIGEN3
 )
 
@@ -146,6 +146,18 @@ add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
+
+ add_executable(main_node
+     src/main_node.cpp
+ )
+ add_dependencies(main_node
+   ${${PROJECT_NAME}_EXPORTED_TARGETS}
+   ${catkin_EXPORTED_TARGETS}
+   ${PROJECT_NAME}_gencfg
+ )
+ target_link_libraries(main_node
+     ${catkin_LIBRARIES}
+ )
 
 add_executable(lqr_hovering_controller_node
     src/lqr_hovering_controller_node.cpp

@@ -94,10 +94,10 @@ void LostControlCallback(const gsft_control::LOEConstPtr& loe_msg) {
 
 
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "matlab_lqr_firefly_node");
+  ros::init(argc, argv, "lqr_tracking_controller_node");
   ros::NodeHandle nh;
   ros::NodeHandle pnh("~");
-  ROS_INFO("Matlab_lqr_firefly_node main started");
+  ROS_INFO("lqr_tracking_controller_node main started");
 
   ros::Subscriber odometry_sub_;
   odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1, OdometryCallback);
