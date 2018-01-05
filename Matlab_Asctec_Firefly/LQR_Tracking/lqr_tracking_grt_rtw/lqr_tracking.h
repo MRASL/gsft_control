@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_tracking".
  *
- * Model version              : 1.493
+ * Model version              : 1.499
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan  4 17:11:55 2018
+ * C++ source code generated on : Fri Jan  5 12:03:09 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -155,19 +155,6 @@ typedef struct {
   real_T Saturation8;                  /* '<Root>/Saturation8' */
 } B_lqr_tracking_T;
 
-/* Block states (auto storage) for system '<Root>' */
-typedef struct {
-  struct {
-    void *TimePtr;
-    void *DataPtr;
-    void *RSimInfoPtr;
-  } FromWs_PWORK;                      /* '<S1>/FromWs' */
-
-  struct {
-    int_T PrevIndex;
-  } FromWs_IWORK;                      /* '<S1>/FromWs' */
-} DW_lqr_tracking_T;
-
 /* Continuous states (auto storage) */
 typedef struct {
   real_T Integrator_CSTATE[4];         /* '<Root>/Integrator' */
@@ -196,6 +183,11 @@ typedef struct {
 
 /* Constant parameters (auto storage) */
 typedef struct {
+  /* Expression: [mass*gra 0 0 0]'
+   * Referenced by: '<Root>/              '
+   */
+  real_T _Value[4];
+
   /* Expression: Ki_lqr
    * Referenced by: '<Root>/ '
    */
@@ -205,11 +197,6 @@ typedef struct {
    * Referenced by: '<Root>/                   '
    */
   real_T _Gain_g[48];
-
-  /* Expression: [mass*gra 0 0 0]'
-   * Referenced by: '<Root>/              '
-   */
-  real_T _Value[4];
 
   /* Expression: B_ENU_inv
    * Referenced by: '<Root>/Gain'
@@ -322,9 +309,6 @@ class lqr_trackingModelClass {
  private:
   /* Block signals */
   B_lqr_tracking_T lqr_tracking_B;
-
-  /* Block states */
-  DW_lqr_tracking_T lqr_tracking_DW;
   X_lqr_tracking_T lqr_tracking_X;     /* Block continuous states */
 
   /* Real-Time Model */
@@ -352,6 +336,6 @@ class lqr_trackingModelClass {
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'lqr_tracking'
- * '<S1>'   : 'lqr_tracking/Signal Builder1'
+ * '<S1>'   : 'lqr_tracking/MATLAB Function'
  */
 #endif                                 /* RTW_HEADER_lqr_tracking_h_ */

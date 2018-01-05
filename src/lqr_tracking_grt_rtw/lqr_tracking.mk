@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'lqr_tracking'. 
 ## 
 ## Makefile     : lqr_tracking.mk
-## Generated on : Thu Jan 04 17:11:59 2018
+## Generated on : Fri Jan 05 12:03:13 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
@@ -176,7 +176,7 @@ BUILD_TYPE = "Top-Level Standalone Executable"
 ## INCLUDE PATHS
 ###########################################################################
 
-INCLUDES_BUILDINFO = -I$(START_DIR) -I$(START_DIR)/lqr_tracking_grt_rtw -I$(MATLAB_ROOT)/extern/include -I$(MATLAB_ROOT)/simulink/include -I$(MATLAB_ROOT)/rtw/c/src -I$(MATLAB_ROOT)/rtw/c/src/ext_mode/common
+INCLUDES_BUILDINFO = -I$(START_DIR) -I$(MATLAB_ROOT)/simulink/include/sf_runtime -I$(START_DIR)/lqr_tracking_grt_rtw -I$(MATLAB_ROOT)/extern/include -I$(MATLAB_ROOT)/simulink/include -I$(MATLAB_ROOT)/rtw/c/src -I$(MATLAB_ROOT)/rtw/c/src/ext_mode/common
 
 INCLUDES = $(INCLUDES_BUILDINFO)
 

@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_tracking".
  *
- * Model version              : 1.493
+ * Model version              : 1.499
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan  4 17:11:55 2018
+ * C++ source code generated on : Fri Jan  5 12:03:09 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -23,6 +23,11 @@
 
 /* Constant parameters (auto storage) */
 const ConstP_lqr_tracking_T lqr_tracking_ConstP = {
+  /* Expression: [mass*gra 0 0 0]'
+   * Referenced by: '<Root>/              '
+   */
+  { 14.611908499999998, 0.0, 0.0, 0.0 },
+
   /* Expression: Ki_lqr
    * Referenced by: '<Root>/ '
    */
@@ -39,11 +44,6 @@ const ConstP_lqr_tracking_T lqr_tracking_ConstP = {
     1.4132110363427504, 0.0, 0.0, 0.0, 0.0, 1.5946833792719646, 0.0, 0.0, 0.0,
     0.0, 0.10770952525207145, 0.0, 0.32899236083058114, 0.0, 0.0, 0.0, 0.0,
     0.39543556961049953, 0.0, 0.0, 0.0, 0.0, 0.15181054388366683 },
-
-  /* Expression: [mass*gra 0 0 0]'
-   * Referenced by: '<Root>/              '
-   */
-  { 14.611908499999998, 0.0, 0.0, 0.0 },
 
   /* Expression: B_ENU_inv
    * Referenced by: '<Root>/Gain'

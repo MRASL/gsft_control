@@ -95,7 +95,6 @@ g0         = gra;
 Ib         = [Ixx  0   0
               0   Iyy  0
               0    0  Izz];
-X0 = [0 0 0 0 0 0 0 0 2*pi 0 0 0]';          % Initial condition (in NED)
 
 %% Note: NED to ENU
 % See 

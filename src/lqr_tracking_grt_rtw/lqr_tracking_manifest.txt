@@ -2,6 +2,8 @@ This file is the manifest for the generated code from model 'lqr_tracking'.
 /home/ducnguyen/Documents/gsft_test/src/gsft_control/Matlab_Asctec_Firefly/LQR_Tracking/lqr_tracking_grt_rtw/lqr_tracking.cpp
 /home/ducnguyen/Documents/gsft_test/src/gsft_control/Matlab_Asctec_Firefly/LQR_Tracking/lqr_tracking_grt_rtw/lqr_tracking_data.cpp
 /usr/local/MATLAB/R2017a/rtw/c/src/common/rt_cppclass_main.cpp
+/usr/local/MATLAB/R2017a/simulink/include/sf_runtime/slTestTypes.h
+/usr/local/MATLAB/R2017a/simulink/include/sf_runtime/slTestResult.h
 /home/ducnguyen/Documents/gsft_test/src/gsft_control/Matlab_Asctec_Firefly/LQR_Tracking/lqr_tracking_grt_rtw/lqr_tracking.h
 /home/ducnguyen/Documents/gsft_test/src/gsft_control/Matlab_Asctec_Firefly/LQR_Tracking/lqr_tracking_grt_rtw/lqr_tracking_private.h
 /home/ducnguyen/Documents/gsft_test/src/gsft_control/Matlab_Asctec_Firefly/LQR_Tracking/lqr_tracking_grt_rtw/lqr_tracking_types.h

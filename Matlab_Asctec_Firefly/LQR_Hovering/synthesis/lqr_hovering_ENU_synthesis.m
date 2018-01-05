@@ -92,13 +92,11 @@ H_e        = 0;                   % 6DoF Parameters
 Vb_e       = [0 0 0]';
 Omegab_e   = [0 0 0]';
 Po_e       = [0 0 0]';
-Euler_e    = [0 0 2*pi]';
+Euler_e    = [0 0 2*pi]';         % in NED
 g0         = gra;
 Ib         = [Ixx  0   0
               0   Iyy  0
               0    0  Izz];
-X0 = [0 0 0 0 0 0 0 0 2*pi 0 0 0]';          % Initial condition (in NED)
-
 %% Note: NED to ENU
 % See 
 %     asctec_hl_firmware/sdk.c 
