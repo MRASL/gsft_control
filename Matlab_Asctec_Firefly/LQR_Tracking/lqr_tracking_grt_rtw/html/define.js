@@ -2,10 +2,10 @@ function CodeDefine() {
 this.def = new Array();
 this.def["rt_ertODEUpdateContinuousStates"] = {file: "lqr_tracking_cpp.html",line:28,type:"fcn"};
 this.def["step"] = {file: "lqr_tracking_cpp.html",line:160,type:"fcn"};
-this.def["lqr_tracking_derivatives"] = {file: "lqr_tracking_cpp.html",line:420,type:"fcn"};
-this.def["initialize"] = {file: "lqr_tracking_cpp.html",line:433,type:"fcn"};
-this.def["terminate"] = {file: "lqr_tracking_cpp.html",line:504,type:"fcn"};
-this.def["getRTM"] = {file: "lqr_tracking_cpp.html",line:521,type:"fcn"};
+this.def["lqr_tracking_derivatives"] = {file: "lqr_tracking_cpp.html",line:380,type:"fcn"};
+this.def["initialize"] = {file: "lqr_tracking_cpp.html",line:393,type:"fcn"};
+this.def["terminate"] = {file: "lqr_tracking_cpp.html",line:464,type:"fcn"};
+this.def["getRTM"] = {file: "lqr_tracking_cpp.html",line:481,type:"fcn"};
 this.def["B_lqr_tracking_T"] = {file: "lqr_tracking_h.html",line:156,type:"type"};
 this.def["X_lqr_tracking_T"] = {file: "lqr_tracking_h.html",line:161,type:"type"};
 this.def["XDot_lqr_tracking_T"] = {file: "lqr_tracking_h.html",line:166,type:"type"};
