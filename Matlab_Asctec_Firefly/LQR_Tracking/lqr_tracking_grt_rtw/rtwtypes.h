@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_tracking".
  *
- * Model version              : 1.500
+ * Model version              : 1.506
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jan  5 13:59:33 2018
+ * C++ source code generated on : Fri Jan  5 14:24:26 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
