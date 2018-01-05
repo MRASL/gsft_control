@@ -92,9 +92,9 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
   if (config.start_controller == true){
       if (!gCommand_active){
         gCommand_active      = true;
-        config.start_controller = false;
         // gCommand_time        = ros::Time::now();
       }
+      config.start_controller = false;
   }
 }
 
