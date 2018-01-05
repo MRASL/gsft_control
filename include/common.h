@@ -52,6 +52,7 @@ namespace default_topics {
   static constexpr char XYZYAW_ERROR[] = "xyz_yaw_error";
   static constexpr char VIRTUAL_CONTROL[] = "virtual_control";
   static constexpr char COMMAND_RPM[] = "command/motor_rpm";
+  static constexpr char UAV_STATE[] = "uav_state";
 }
 
 struct EigenOdometry {

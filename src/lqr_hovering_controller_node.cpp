@@ -14,7 +14,6 @@
 #include "common.h"
 
 #include <gsft_control/LOE.h>
-#include <gsft_control/VirtualControl.h>
 #include <lqr_hovering.h>
 
 lqr_hoveringModelClass gController;
@@ -110,9 +109,6 @@ int main(int argc, char** argv) {
   ros::Subscriber lost_control_sub_;
   lost_control_sub_ = nh.subscribe(gsft_control::default_topics::LOE, 1, LostControlCallback);
 
-  ros::Publisher virtual_control_pub_;
-  virtual_control_pub_ = nh.advertise<gsft_control::VirtualControl>(gsft_control::default_topics::VIRTUAL_CONTROL, 1);
-
   ros::Publisher motor_RPM_reference_pub_;          // motor speed RPM   => Asctec Firefly test
   motor_RPM_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
         gsft_control::default_topics::COMMAND_RPM, 1);
@@ -162,18 +158,6 @@ int main(int argc, char** argv) {
         }
         actuator_msg->header.stamp =  ros::Time::now();
         motor_velocity_reference_pub_.publish(actuator_msg);
-
-        // Publish: virtual control (thrust, moment x, moment y)
-        gsft_control::VirtualControlPtr virtual_contrl_msg(new gsft_control::VirtualControl);
-        virtual_contrl_msg->total_thrust = gController.lqr_hovering_Y.virtual_control[0];
-
-        Eigen::VectorXd moment(3);
-        for(unsigned int i=0; i< 2; i++)
-            moment[i] = gController.lqr_hovering_Y.virtual_control[i+1];
-        moment[2] = 0.0;    // yaw
-        mav_msgs::vectorEigenToMsg(moment, &virtual_contrl_msg->moment);
-
-        virtual_control_pub_.publish(virtual_contrl_msg);
 
     } else {
       // Controller inactive

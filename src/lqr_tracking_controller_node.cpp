@@ -14,7 +14,7 @@
 #include "common.h"
 
 #include <gsft_control/LOE.h>
-#include <gsft_control/VirtualControl.h>
+#include <gsft_control/UAVState.h>
 #include <lqr_tracking.h>
 
 #include <dynamic_reconfigure/server.h>
@@ -125,9 +125,6 @@ int main(int argc, char** argv) {
   ros::Subscriber lost_control_sub_;
   lost_control_sub_ = nh.subscribe(gsft_control::default_topics::LOE, 1, LostControlCallback);
 
-  ros::Publisher virtual_control_pub_;
-  virtual_control_pub_ = nh.advertise<gsft_control::VirtualControl>(gsft_control::default_topics::VIRTUAL_CONTROL, 1);
-
   ros::Publisher motor_RPM_reference_pub_;          // motor speed RPM   => Asctec Firefly test
   motor_RPM_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
         gsft_control::default_topics::COMMAND_RPM, 1);
@@ -135,6 +132,9 @@ int main(int argc, char** argv) {
   ros::Publisher motor_velocity_reference_pub_;     // motor speed rad/s => Gazebo test
   motor_velocity_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
         mav_msgs::default_topics::COMMAND_ACTUATORS, 1);
+
+  ros::Publisher uav_state_pub_;
+  uav_state_pub_ = nh.advertise<gsft_control::UAVState>(gsft_control::default_topics::UAV_STATE, 1);
 
   ros::Rate r(60);
 
@@ -183,17 +183,27 @@ int main(int argc, char** argv) {
         actuator_msg->header.stamp =  ros::Time::now();
         motor_velocity_reference_pub_.publish(actuator_msg);
 
-        // Publish: virtual control (thrust, moment x, moment y)
-        gsft_control::VirtualControlPtr virtual_contrl_msg(new gsft_control::VirtualControl);
-        virtual_contrl_msg->total_thrust = gController.lqr_tracking_Y.virtual_control[0];
+        // Publish: UAV state in World frame
+        gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
+        uav_state_msg->position_W.x  = gController.lqr_tracking_U.X[0];
+        uav_state_msg->position_W.y  = gController.lqr_tracking_U.X[1];
+        uav_state_msg->position_W.z  = gController.lqr_tracking_U.X[2];
+        uav_state_msg->velocity_W.x  = gController.lqr_tracking_U.X[3];
+        uav_state_msg->velocity_W.y  = gController.lqr_tracking_U.X[4];
+        uav_state_msg->velocity_W.z  = gController.lqr_tracking_U.X[5];
+        uav_state_msg->euler_angle.x = gController.lqr_tracking_U.X[6]*180.0/3.14;  // rad => deg
+        uav_state_msg->euler_angle.y = gController.lqr_tracking_U.X[7]*180.0/3.14;
+        uav_state_msg->euler_angle.z = gController.lqr_tracking_U.X[8]*180.0/3.14;
+        uav_state_msg->euler_rate.x  = gController.lqr_tracking_U.X[9]*180.0/3.14;
+        uav_state_msg->euler_rate.y  = gController.lqr_tracking_U.X[10]*180.0/3.14;
+        uav_state_msg->euler_rate.z  = gController.lqr_tracking_U.X[11]*180.0/3.14;
+        uav_state_msg->total_thrust  = gController.lqr_tracking_Y.virtual_control[0];
+        uav_state_msg->moment.x      = gController.lqr_tracking_Y.virtual_control[1];
+        uav_state_msg->moment.y      = gController.lqr_tracking_Y.virtual_control[2];
+        uav_state_msg->moment.z      = gController.lqr_tracking_Y.virtual_control[3];
 
-        Eigen::VectorXd moment(3);
-        for(unsigned int i=0; i< 2; i++)
-            moment[i] = gController.lqr_tracking_Y.virtual_control[i+1];
-        moment[2] = 0.0;    // yaw
-        mav_msgs::vectorEigenToMsg(moment, &virtual_contrl_msg->moment);
-
-        virtual_control_pub_.publish(virtual_contrl_msg);
+        uav_state_msg->header.stamp  =  ros::Time::now();
+        uav_state_pub_.publish(uav_state_msg);
 
     } else {
       // Controller inactive
