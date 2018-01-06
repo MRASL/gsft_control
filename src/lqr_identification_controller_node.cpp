@@ -204,12 +204,12 @@ int main(int argc, char** argv) {
     uav_state_msg->velocity_W.x  = gController.lqr_identification_U.X[3];
     uav_state_msg->velocity_W.y  = gController.lqr_identification_U.X[4];
     uav_state_msg->velocity_W.z  = gController.lqr_identification_U.X[5];
-    uav_state_msg->euler_angle.x = gController.lqr_identification_U.X[6]*180.0/3.14;  // rad => deg
-    uav_state_msg->euler_angle.y = gController.lqr_identification_U.X[7]*180.0/3.14;
-    uav_state_msg->euler_angle.z = gController.lqr_identification_U.X[8]*180.0/3.14;
-    uav_state_msg->euler_rate.x  = gController.lqr_identification_U.X[9]*180.0/3.14;
-    uav_state_msg->euler_rate.y  = gController.lqr_identification_U.X[10]*180.0/3.14;
-    uav_state_msg->euler_rate.z  = gController.lqr_identification_U.X[11]*180.0/3.14;
+    uav_state_msg->euler_angle.x = gController.lqr_identification_U.X[6];
+    uav_state_msg->euler_angle.y = gController.lqr_identification_U.X[7];
+    uav_state_msg->euler_angle.z = gController.lqr_identification_U.X[8];
+    uav_state_msg->euler_rate.x  = gController.lqr_identification_U.X[9];
+    uav_state_msg->euler_rate.y  = gController.lqr_identification_U.X[10];
+    uav_state_msg->euler_rate.z  = gController.lqr_identification_U.X[11];
     uav_state_msg->total_thrust  = gController.lqr_identification_Y.virtual_control[0];
     uav_state_msg->moment.x      = gController.lqr_identification_Y.virtual_control[1];
     uav_state_msg->moment.y      = gController.lqr_identification_Y.virtual_control[2];
