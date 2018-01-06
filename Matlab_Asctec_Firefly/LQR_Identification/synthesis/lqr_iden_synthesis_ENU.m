@@ -1,10 +1,9 @@
 %%
-clc; clear all; close all;  
+clc; clear all; %close all;  
 
 %% Parameters
 addpath('../..')
-firefly_parameters
-
+firefly_parameters;
 Ts = 1/60;                       % frequency
 
 %%
@@ -43,14 +42,13 @@ V = ctrb(Aa,Ba);
 rank(V)
 
 % Ponderation
-%         p              pd                euler        euler_rate    augmented state
-Q = diag([10^0*[2 2 5] 10^0*[0.5 0.5 2] 10^0*[1 1 2] 10^0*[0.1 0.1 0.2]  10^1*[0.1 0.1 0.75 0.1]]);        
-R = diag(10^1*[0.01 10 10 100]);
-
+        % p          pd      euler  euler_rate  ex ey ez epsi
+Q = diag([[1 1 5]  [1 1 1]  [1 1 5]  [1 1 5]    [1 1 10 1]]);  
+        % T    Mx My Mz
+R = diag([0.1 100 100 1000]);
 
 % forte ponderation sur augmented state: dynamique plus rapide, commandes plus grandes
 % forte ponderation sur R: dynamique plus lente, peu solliciter les actionneurs
-
 % forte ponderation sur p, pd, euler, euler_rate: dynamique plus lente, peu solliciter les actionneurs !!!
 
 % Observabilit�
@@ -58,7 +56,7 @@ M = sqrtm(Q);
 U = obsv(Aa,M);
 rank(U)
 
-% Calcul du retour d'�tat
+% Calcul du retour d'�tat[1
 K  = lqr(Aa,Ba,Q,R);
 for i = 1:size(K,1)
     for j = 1:size(K,2)
@@ -78,11 +76,10 @@ s = tf('s');
 sys2 = Cc*sys1*Ki_lqr/s;
 sys_full = feedback(sys2,eye(4));
 
-step(sys_full,10)
+step(sys_full,20); grid on;
 
-save('K_lqr_hovering_ENU.mat','Kx_lqr','Ki_lqr','sys_full');
+save('K_lqr_iden_ENU.mat','Kx_lqr','Ki_lqr','sys_full');
 
-sim('lqr_hovering_ENU_linear')
 %% Test - NonLinear
 %  Fault
 tm1  = 10; tm2 = 10; tm3 = 10; tm4 = 10; tm5 = 10; tm6 = 10;
@@ -93,11 +90,12 @@ H_e        = 0;                   % 6DoF Parameters
 Vb_e       = [0 0 0]';
 Omegab_e   = [0 0 0]';
 Po_e       = [0 0 0]';
-Euler_e    = [0 0 2*pi]';         % in NED
+Euler_e    = [0 0 2*pi]';
 g0         = gra;
 Ib         = [Ixx  0   0
               0   Iyy  0
               0    0  Izz];
+
 %% Note: NED to ENU
 % See 
 %     asctec_hl_firmware/sdk.c 
@@ -117,3 +115,5 @@ Ib         = [Ixx  0   0
 %       * y: right
 %       * z: down
 %       * yaw: cw when viewed from top 
+
+sim('lqr_iden_test_nonlinear')

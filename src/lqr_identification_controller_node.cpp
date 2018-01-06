@@ -15,12 +15,12 @@
 
 #include <gsft_control/LOE.h>
 #include <gsft_control/UAVState.h>
-#include <lqr_tracking.h>
+#include <lqr_identification.h>
 
 #include <dynamic_reconfigure/server.h>
 #include <gsft_control/controllerDynConfig.h>
 
-lqr_trackingModelClass gController;
+lqr_identificationModelClass gController;
 
 bool gCommand_active;
 bool gLOE_active;
@@ -30,25 +30,25 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   mav_msgs::EigenOdometry odometry;
   mav_msgs::eigenOdometryFromMsg(*odom, &odometry);
 
-  gController.lqr_tracking_U.X[0 ]  = odometry.position_W.x();
-  gController.lqr_tracking_U.X[1 ]  = odometry.position_W.y();
-  gController.lqr_tracking_U.X[2 ]  = odometry.position_W.z();
+  gController.lqr_identification_U.X[0 ]  = odometry.position_W.x();
+  gController.lqr_identification_U.X[1 ]  = odometry.position_W.y();
+  gController.lqr_identification_U.X[2 ]  = odometry.position_W.z();
 
   Eigen::Matrix3d R_W_B = odometry.orientation_W_B.toRotationMatrix();
   Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
 
-  gController.lqr_tracking_U.X[3 ]  = velocity_W.x();
-  gController.lqr_tracking_U.X[4 ]  = velocity_W.y();
-  gController.lqr_tracking_U.X[5 ]  = velocity_W.z();
+  gController.lqr_identification_U.X[3 ]  = velocity_W.x();
+  gController.lqr_identification_U.X[4 ]  = velocity_W.y();
+  gController.lqr_identification_U.X[5 ]  = velocity_W.z();
 
   double psi, phi, teta;
   psi = atan2(R_W_B(1,0),R_W_B(0,0));
   phi = atan2(R_W_B(2,1),R_W_B(2,2));
   teta = asin(-R_W_B(2,0));
 
-  gController.lqr_tracking_U.X[6 ]  = phi;
-  gController.lqr_tracking_U.X[7 ]  = teta;
-  gController.lqr_tracking_U.X[8 ]  = psi;
+  gController.lqr_identification_U.X[6 ]  = phi;
+  gController.lqr_identification_U.X[7 ]  = teta;
+  gController.lqr_identification_U.X[8 ]  = psi;
 
   Eigen::Matrix3d H;
   H << 1.0, sin(phi)*tan(teta), cos(phi)*tan(teta),
@@ -56,9 +56,9 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
        0.0, sin(phi)/cos(teta), cos(phi)/cos(teta);
   Eigen::Vector3d euler_rate = H*odometry.angular_velocity_B;
 
-  gController.lqr_tracking_U.X[9 ]  = euler_rate.x();
-  gController.lqr_tracking_U.X[10]  = euler_rate.y();
-  gController.lqr_tracking_U.X[11]  = euler_rate.z();
+  gController.lqr_identification_U.X[9 ]  = euler_rate.x();
+  gController.lqr_identification_U.X[10]  = euler_rate.y();
+  gController.lqr_identification_U.X[11]  = euler_rate.z();
 }
 
 /*void MultiDofJointTrajectoryCallback(
@@ -66,7 +66,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
     mav_msgs::EigenTrajectoryPoint eigen_reference;
     mav_msgs::eigenTrajectoryPointFromMsg(msg->points.front(), &eigen_reference);
 
-    gController.lqr_tracking_U.z_ref    = eigen_reference.position_W.z();
+    gController.lqr_identification_U.z_ref    = eigen_reference.position_W.z();
 
     if (!gCommand_active){
       gCommand_active      = true;
@@ -77,10 +77,10 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
 /*void CommandPoseCallback(const geometry_msgs::PoseStampedConstPtr& pose_msg) {
   mav_msgs::EigenTrajectoryPoint eigen_reference;
   mav_msgs::eigenTrajectoryPointFromPoseMsg(*pose_msg, &eigen_reference);
-  gController.lqr_tracking_U.x_ref    = eigen_reference.position_W.x();
-  gController.lqr_tracking_U.y_ref    = eigen_reference.position_W.y();
-  gController.lqr_tracking_U.z_ref    = eigen_reference.position_W.z();
-  gController.lqr_tracking_U.psi_ref  = 0.0;
+  gController.lqr_identification_U.x_ref    = eigen_reference.position_W.x();
+  gController.lqr_identification_U.y_ref    = eigen_reference.position_W.y();
+  gController.lqr_identification_U.z_ref    = eigen_reference.position_W.z();
+  gController.lqr_identification_U.psi_ref  = 0.0;
   if (!gCommand_active){
     gCommand_active      = true;
   }
@@ -108,10 +108,10 @@ void LostControlCallback(const gsft_control::LOEConstPtr& loe_msg) {
 
 
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "lqr_tracking_controller_node");
+  ros::init(argc, argv, "lqr_identification_controller_node");
   ros::NodeHandle nh;
   ros::NodeHandle pnh("~");
-  ROS_INFO("lqr_tracking_controller_node main started");
+  ROS_INFO("lqr_identification_controller_node main started");
 
   ros::Subscriber odometry_sub_;
   odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1, OdometryCallback);
@@ -157,9 +157,9 @@ int main(int argc, char** argv) {
         Eigen::VectorXd motor_speed(6);         // range 0 .. 1047 rad/s
 
         for(unsigned int i=0; i< 6; i++) {
-            motor_RPM[i]     = gController.lqr_tracking_Y.motor_RPM[i]*(1.0 - gLOE[i]);
-            motor_command[i] = gController.lqr_tracking_Y.motor_command[i]*(1.0 - gLOE[i]);
-            motor_speed[i]   = gController.lqr_tracking_Y.motor_speed[i]*(1.0 - gLOE[i]);
+            motor_RPM[i]     = gController.lqr_identification_Y.motor_RPM[i]*(1.0 - gLOE[i]);
+            motor_command[i] = gController.lqr_identification_Y.motor_command[i]*(1.0 - gLOE[i]);
+            motor_speed[i]   = gController.lqr_identification_Y.motor_speed[i]*(1.0 - gLOE[i]);
         }
 
         // Publish: RPM and normalized command in 0 .. 200 (Asctec Firefly test)
@@ -198,22 +198,22 @@ int main(int argc, char** argv) {
 
     // Publish: UAV state in World frame
     gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-    uav_state_msg->position_W.x  = gController.lqr_tracking_U.X[0];
-    uav_state_msg->position_W.y  = gController.lqr_tracking_U.X[1];
-    uav_state_msg->position_W.z  = gController.lqr_tracking_U.X[2];
-    uav_state_msg->velocity_W.x  = gController.lqr_tracking_U.X[3];
-    uav_state_msg->velocity_W.y  = gController.lqr_tracking_U.X[4];
-    uav_state_msg->velocity_W.z  = gController.lqr_tracking_U.X[5];
-    uav_state_msg->euler_angle.x = gController.lqr_tracking_U.X[6]*180.0/3.14;  // rad => deg
-    uav_state_msg->euler_angle.y = gController.lqr_tracking_U.X[7]*180.0/3.14;
-    uav_state_msg->euler_angle.z = gController.lqr_tracking_U.X[8]*180.0/3.14;
-    uav_state_msg->euler_rate.x  = gController.lqr_tracking_U.X[9]*180.0/3.14;
-    uav_state_msg->euler_rate.y  = gController.lqr_tracking_U.X[10]*180.0/3.14;
-    uav_state_msg->euler_rate.z  = gController.lqr_tracking_U.X[11]*180.0/3.14;
-    uav_state_msg->total_thrust  = gController.lqr_tracking_Y.virtual_control[0];
-    uav_state_msg->moment.x      = gController.lqr_tracking_Y.virtual_control[1];
-    uav_state_msg->moment.y      = gController.lqr_tracking_Y.virtual_control[2];
-    uav_state_msg->moment.z      = gController.lqr_tracking_Y.virtual_control[3];
+    uav_state_msg->position_W.x  = gController.lqr_identification_U.X[0];
+    uav_state_msg->position_W.y  = gController.lqr_identification_U.X[1];
+    uav_state_msg->position_W.z  = gController.lqr_identification_U.X[2];
+    uav_state_msg->velocity_W.x  = gController.lqr_identification_U.X[3];
+    uav_state_msg->velocity_W.y  = gController.lqr_identification_U.X[4];
+    uav_state_msg->velocity_W.z  = gController.lqr_identification_U.X[5];
+    uav_state_msg->euler_angle.x = gController.lqr_identification_U.X[6]*180.0/3.14;  // rad => deg
+    uav_state_msg->euler_angle.y = gController.lqr_identification_U.X[7]*180.0/3.14;
+    uav_state_msg->euler_angle.z = gController.lqr_identification_U.X[8]*180.0/3.14;
+    uav_state_msg->euler_rate.x  = gController.lqr_identification_U.X[9]*180.0/3.14;
+    uav_state_msg->euler_rate.y  = gController.lqr_identification_U.X[10]*180.0/3.14;
+    uav_state_msg->euler_rate.z  = gController.lqr_identification_U.X[11]*180.0/3.14;
+    uav_state_msg->total_thrust  = gController.lqr_identification_Y.virtual_control[0];
+    uav_state_msg->moment.x      = gController.lqr_identification_Y.virtual_control[1];
+    uav_state_msg->moment.y      = gController.lqr_identification_Y.virtual_control[2];
+    uav_state_msg->moment.z      = gController.lqr_identification_Y.virtual_control[3];
 
     uav_state_msg->header.stamp  =  ros::Time::now();
     uav_state_pub_.publish(uav_state_msg);

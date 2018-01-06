@@ -2,6 +2,7 @@
 clc; clear all; %close all;  
 
 %% Parameters
+addpath('../..')
 firefly_parameters;
 Ts = 1/60;                       % frequency
 
