@@ -198,22 +198,22 @@ int main(int argc, char** argv) {
 
     // Publish: UAV state in World frame
     gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-    uav_state_msg->position_W.x  = gController.lqr_identification_U.X[0];
-    uav_state_msg->position_W.y  = gController.lqr_identification_U.X[1];
-    uav_state_msg->position_W.z  = gController.lqr_identification_U.X[2];
-    uav_state_msg->velocity_W.x  = gController.lqr_identification_U.X[3];
-    uav_state_msg->velocity_W.y  = gController.lqr_identification_U.X[4];
-    uav_state_msg->velocity_W.z  = gController.lqr_identification_U.X[5];
-    uav_state_msg->euler_angle.x = gController.lqr_identification_U.X[6];
-    uav_state_msg->euler_angle.y = gController.lqr_identification_U.X[7];
-    uav_state_msg->euler_angle.z = gController.lqr_identification_U.X[8];
-    uav_state_msg->euler_rate.x  = gController.lqr_identification_U.X[9];
-    uav_state_msg->euler_rate.y  = gController.lqr_identification_U.X[10];
-    uav_state_msg->euler_rate.z  = gController.lqr_identification_U.X[11];
-    uav_state_msg->total_thrust  = gController.lqr_identification_Y.virtual_control[0];
-    uav_state_msg->moment.x      = gController.lqr_identification_Y.virtual_control[1];
-    uav_state_msg->moment.y      = gController.lqr_identification_Y.virtual_control[2];
-    uav_state_msg->moment.z      = gController.lqr_identification_Y.virtual_control[3];
+    uav_state_msg->position_W.x  = gController.lqr_tracking_U.X[0];
+    uav_state_msg->position_W.y  = gController.lqr_tracking_U.X[1];
+    uav_state_msg->position_W.z  = gController.lqr_tracking_U.X[2];
+    uav_state_msg->velocity_W.x  = gController.lqr_tracking_U.X[3];
+    uav_state_msg->velocity_W.y  = gController.lqr_tracking_U.X[4];
+    uav_state_msg->velocity_W.z  = gController.lqr_tracking_U.X[5];
+    uav_state_msg->euler_angle.x = gController.lqr_tracking_U.X[6];
+    uav_state_msg->euler_angle.y = gController.lqr_tracking_U.X[7];
+    uav_state_msg->euler_angle.z = gController.lqr_tracking_U.X[8];
+    uav_state_msg->euler_rate.x  = gController.lqr_tracking_U.X[9];
+    uav_state_msg->euler_rate.y  = gController.lqr_tracking_U.X[10];
+    uav_state_msg->euler_rate.z  = gController.lqr_tracking_U.X[11];
+    uav_state_msg->total_thrust  = gController.lqr_tracking_Y.virtual_control[0];
+    uav_state_msg->moment.x      = gController.lqr_tracking_Y.virtual_control[1];
+    uav_state_msg->moment.y      = gController.lqr_tracking_Y.virtual_control[2];
+    uav_state_msg->moment.z      = gController.lqr_tracking_Y.virtual_control[3];
 
     uav_state_msg->header.stamp  =  ros::Time::now();
     uav_state_pub_.publish(uav_state_msg);
