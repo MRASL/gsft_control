@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_identification".
  *
- * Model version              : 1.514
+ * Model version              : 1.517
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Sun Jan  7 09:44:11 2018
+ * C++ source code generated on : Sun Jan  7 15:37:06 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -333,7 +333,7 @@ void lqr_identificationModelClass::step()
    *  Inport: '<Root>/X'
    *  Step: '<Root>/                  '
    */
-  u0 = (real_T)(currentTime < 80.0) * currentTime_0 - lqr_identification_U.X[2];
+  u0 = (real_T)(currentTime < 90.0) * currentTime_0 - lqr_identification_U.X[2];
 
   /* Saturate: '<Root>/Saturation7' */
   if (u0 > 0.5) {
@@ -359,10 +359,10 @@ void lqr_identificationModelClass::step()
   u0 = currentTime - lqr_identification_U.X[8];
 
   /* Saturate: '<Root>/Saturation8' */
-  if (u0 > 0.78539816339744828) {
-    lqr_identification_B.Saturation8 = 0.78539816339744828;
-  } else if (u0 < -0.78539816339744828) {
-    lqr_identification_B.Saturation8 = -0.78539816339744828;
+  if (u0 > 0.17453292519943295) {
+    lqr_identification_B.Saturation8 = 0.17453292519943295;
+  } else if (u0 < -0.17453292519943295) {
+    lqr_identification_B.Saturation8 = -0.17453292519943295;
   } else {
     lqr_identification_B.Saturation8 = u0;
   }
