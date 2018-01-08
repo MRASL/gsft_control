@@ -1,5 +1,9 @@
 Header header
 
+# references
+geometry_msgs/Vector3 position_ref
+float64 heading_ref
+
 # state
 geometry_msgs/Vector3 position_W
 geometry_msgs/Vector3 velocity_W
@@ -8,4 +12,4 @@ geometry_msgs/Vector3 euler_rate
 
 # virtual control
 float64 total_thrust
-geometry_msgs/Vector3 moment 
+geometry_msgs/Vector3 moment

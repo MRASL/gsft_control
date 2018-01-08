@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_identification".
  *
- * Model version              : 1.517
+ * Model version              : 1.520
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan  8 10:33:08 2018
+ * C++ source code generated on : Mon Jan  8 11:46:15 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -162,11 +162,11 @@ void lqr_identificationModelClass::step()
 {
   int32_T x;
   int32_T y;
-  real_T z;
   real_T psi;
   real_T rtb_Sum2[4];
   real_T rtb_Clock;
   real_T tmp[4];
+  real_T u0;
   if (rtmIsMajorTimeStep((&lqr_identification_M))) {
     /* set solver stop time */
     if (!((&lqr_identification_M)->Timing.clockTick0+1)) {
@@ -193,7 +193,7 @@ void lqr_identificationModelClass::step()
      *  Integrator: '<Root>/Integrator'
      *  Sum: '<Root>/Sum'
      */
-    rtb_Clock = lqr_identification_ConstP._Gain[x + 12] *
+    u0 = lqr_identification_ConstP._Gain[x + 12] *
       lqr_identification_X.Integrator_CSTATE[3] +
       (lqr_identification_ConstP._Gain[x + 8] *
        lqr_identification_X.Integrator_CSTATE[2] +
@@ -218,7 +218,7 @@ void lqr_identificationModelClass::step()
      *  Constant: '<Root>/              '
      *  Sum: '<Root>/Sum'
      */
-    rtb_Sum2[x] = (rtb_Clock - tmp[x]) + lqr_identification_ConstP._Value[x];
+    rtb_Sum2[x] = (u0 - tmp[x]) + lqr_identification_ConstP._Value[x];
   }
 
   /* Outport: '<Root>/virtual_control' */
@@ -230,7 +230,7 @@ void lqr_identificationModelClass::step()
     /* Gain: '<Root>/Gain' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    rtb_Clock = lqr_identification_ConstP.Gain_Gain[x + 18] * rtb_Sum2[3] +
+    u0 = lqr_identification_ConstP.Gain_Gain[x + 18] * rtb_Sum2[3] +
       (lqr_identification_ConstP.Gain_Gain[x + 12] * rtb_Sum2[2] +
        (lqr_identification_ConstP.Gain_Gain[x + 6] * rtb_Sum2[1] +
         lqr_identification_ConstP.Gain_Gain[x] * rtb_Sum2[0]));
@@ -238,33 +238,33 @@ void lqr_identificationModelClass::step()
     /* Sqrt: '<Root>/Sqrt1' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    z = std::sqrt(116978.4923343994 * rtb_Clock);
+    rtb_Clock = std::sqrt(116978.4923343994 * u0);
 
     /* Gain: '<Root>/rads_to_RPM' */
-    psi = 9.5493 * z;
+    psi = 9.5493 * rtb_Clock;
 
     /* Gain: '<Root>/mapping_0_200' incorporates:
      *  Constant: '<Root>/Constant1'
      *  Sum: '<Root>/Sum3'
      */
-    rtb_Clock = (psi - 1250.0) * 0.022857142857142857;
+    u0 = (psi - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
-    if (rtb_Clock > 200.0) {
+    if (u0 > 200.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_identification_Y.motor_command[x] = 200.0;
-    } else if (rtb_Clock < 0.0) {
+    } else if (u0 < 0.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_identification_Y.motor_command[x] = 0.0;
     } else {
       /* Outport: '<Root>/motor_command' */
-      lqr_identification_Y.motor_command[x] = rtb_Clock;
+      lqr_identification_Y.motor_command[x] = u0;
     }
 
     /* End of Saturate: '<Root>/Saturation' */
 
     /* Outport: '<Root>/motor_speed' */
-    lqr_identification_Y.motor_speed[x] = z;
+    lqr_identification_Y.motor_speed[x] = rtb_Clock;
 
     /* Outport: '<Root>/motor_RPM' */
     lqr_identification_Y.motor_RPM[x] = psi;
@@ -276,83 +276,98 @@ void lqr_identificationModelClass::step()
   /* MATLAB Function: '<Root>/MATLAB Function' */
   /* MATLAB Function 'MATLAB Function': '<S1>:1' */
   /* '<S1>:1:2' x = 0; */
-  x = 0;
-
   /* '<S1>:1:2' y = 0; */
-  y = 0;
-
   /* '<S1>:1:2' z = 0; */
-  z = 0.0;
-
   /* '<S1>:1:2' psi = 0; */
-  psi = 0.0;
-
-  /* '<S1>:1:3' if t<=10 */
-  if (rtb_Clock <= 10.0) {
+  /* '<S1>:1:3' if t <= 20 */
+  if (rtb_Clock <= 20.0) {
     /* '<S1>:1:4' x = 0; */
+    x = 0;
+
     /* '<S1>:1:5' y = 0; */
+    y = 0;
+
     /* '<S1>:1:6' z = 0.5; */
-    z = 0.5;
-  } else if (rtb_Clock <= 20.0) {
-    /* '<S1>:1:7' elseif t <= 20 */
-    /* '<S1>:1:8' x = -1; */
-    x = -1;
+    rtb_Clock = 0.5;
 
-    /* '<S1>:1:9' y = 0; */
-    /* '<S1>:1:10' z = 0.5; */
-    z = 0.5;
-  } else if (rtb_Clock <= 30.0) {
-    /* '<S1>:1:11' elseif t <= 30 */
-    /* '<S1>:1:12' x = -1; */
-    x = -1;
-
-    /* '<S1>:1:13' y = 1; */
-    y = 1;
-
-    /* '<S1>:1:14' z = 0.5; */
-    z = 0.5;
+    /* '<S1>:1:7' psi = 0; */
+    psi = 0.0;
   } else if (rtb_Clock <= 40.0) {
-    /* '<S1>:1:15' elseif t <= 40 */
-    /* '<S1>:1:16' x = -1; */
+    /* '<S1>:1:8' elseif t <= 40 */
+    /* '<S1>:1:9' x = -1; */
     x = -1;
 
-    /* '<S1>:1:17' y = 1; */
+    /* '<S1>:1:10' y = 0; */
+    y = 0;
+
+    /* '<S1>:1:11' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S1>:1:12' psi = 0; */
+    psi = 0.0;
+  } else if (rtb_Clock <= 60.0) {
+    /* '<S1>:1:13' elseif t <= 60 */
+    /* '<S1>:1:14' x = -1; */
+    x = -1;
+
+    /* '<S1>:1:15' y = 1; */
     y = 1;
 
-    /* '<S1>:1:18' z = 0.5; */
-    z = 0.5;
+    /* '<S1>:1:16' z = 0.5; */
+    rtb_Clock = 0.5;
 
-    /* '<S1>:1:19' psi = pi/6; */
+    /* '<S1>:1:17' psi = 0; */
+    psi = 0.0;
+  } else if (rtb_Clock <= 90.0) {
+    /* '<S1>:1:18' elseif t <= 90 */
+    /* '<S1>:1:19' x = -1; */
+    x = -1;
+
+    /* '<S1>:1:20' y = 1; */
+    y = 1;
+
+    /* '<S1>:1:21' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S1>:1:22' psi = pi/6; */
     psi = 0.52359877559829882;
   } else {
-    if (rtb_Clock <= 60.0) {
-      /* '<S1>:1:20' elseif t <= 60 */
-      /* '<S1>:1:21' x = -1; */
-      x = -1;
+    /* '<S1>:1:23' else */
+    /* '<S1>:1:24' x = -1; */
+    x = -1;
 
-      /* '<S1>:1:22' y = 1; */
-      y = 1;
+    /* '<S1>:1:25' y = 1; */
+    y = 1;
 
-      /* '<S1>:1:23' z = 0; */
-      /* '<S1>:1:24' psi = pi/6; */
-      psi = 0.52359877559829882;
-    }
+    /* '<S1>:1:26' z = 0; */
+    rtb_Clock = 0.0;
+
+    /* '<S1>:1:27' psi = 0; */
+    psi = 0.0;
   }
+
+  /* Outport: '<Root>/ref' incorporates:
+   *  MATLAB Function: '<Root>/MATLAB Function'
+   */
+  /* '<S1>:1:29' ref = [x;y;z;psi]; */
+  lqr_identification_Y.ref[0] = x;
+  lqr_identification_Y.ref[1] = y;
+  lqr_identification_Y.ref[2] = rtb_Clock;
+  lqr_identification_Y.ref[3] = psi;
 
   /* Sum: '<Root>/Sum1' incorporates:
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  /* '<S1>:1:26' ref = [x;y;z;psi]; */
-  rtb_Clock = (real_T)x - lqr_identification_U.X[0];
+  u0 = (real_T)x - lqr_identification_U.X[0];
 
   /* Saturate: '<Root>/Saturation4' */
-  if (rtb_Clock > 1.0) {
+  if (u0 > 1.0) {
     lqr_identification_B.Saturation4 = 1.0;
-  } else if (rtb_Clock < -1.0) {
+  } else if (u0 < -1.0) {
     lqr_identification_B.Saturation4 = -1.0;
   } else {
-    lqr_identification_B.Saturation4 = rtb_Clock;
+    lqr_identification_B.Saturation4 = u0;
   }
 
   /* End of Saturate: '<Root>/Saturation4' */
@@ -361,15 +376,15 @@ void lqr_identificationModelClass::step()
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  rtb_Clock = (real_T)y - lqr_identification_U.X[1];
+  u0 = (real_T)y - lqr_identification_U.X[1];
 
   /* Saturate: '<Root>/Saturation6' */
-  if (rtb_Clock > 1.0) {
+  if (u0 > 1.0) {
     lqr_identification_B.Saturation6 = 1.0;
-  } else if (rtb_Clock < -1.0) {
+  } else if (u0 < -1.0) {
     lqr_identification_B.Saturation6 = -1.0;
   } else {
-    lqr_identification_B.Saturation6 = rtb_Clock;
+    lqr_identification_B.Saturation6 = u0;
   }
 
   /* End of Saturate: '<Root>/Saturation6' */
@@ -378,15 +393,15 @@ void lqr_identificationModelClass::step()
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  rtb_Clock = z - lqr_identification_U.X[2];
+  u0 = rtb_Clock - lqr_identification_U.X[2];
 
   /* Saturate: '<Root>/Saturation7' */
-  if (rtb_Clock > 0.5) {
+  if (u0 > 0.5) {
     lqr_identification_B.Saturation7 = 0.5;
-  } else if (rtb_Clock < -0.5) {
+  } else if (u0 < -0.5) {
     lqr_identification_B.Saturation7 = -0.5;
   } else {
-    lqr_identification_B.Saturation7 = rtb_Clock;
+    lqr_identification_B.Saturation7 = u0;
   }
 
   /* End of Saturate: '<Root>/Saturation7' */
@@ -395,15 +410,15 @@ void lqr_identificationModelClass::step()
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  rtb_Clock = psi - lqr_identification_U.X[8];
+  u0 = psi - lqr_identification_U.X[8];
 
   /* Saturate: '<Root>/Saturation8' */
-  if (rtb_Clock > 0.17453292519943295) {
-    lqr_identification_B.Saturation8 = 0.17453292519943295;
-  } else if (rtb_Clock < -0.17453292519943295) {
-    lqr_identification_B.Saturation8 = -0.17453292519943295;
+  if (u0 > 0.78539816339744828) {
+    lqr_identification_B.Saturation8 = 0.78539816339744828;
+  } else if (u0 < -0.78539816339744828) {
+    lqr_identification_B.Saturation8 = -0.78539816339744828;
   } else {
-    lqr_identification_B.Saturation8 = rtb_Clock;
+    lqr_identification_B.Saturation8 = u0;
   }
 
   /* End of Saturate: '<Root>/Saturation8' */
