@@ -29,6 +29,13 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   mav_msgs::EigenOdometry odometry;
   mav_msgs::eigenOdometryFromMsg(*odom, &odometry);
 
+  if ((odometry.position_W.x() > 1.5)||(odometry.position_W.x() < -1.5)||(odometry.position_W.y() > 1.5)||(odometry.position_W.y() < -1.5)||(odometry.position_W.z() > 1.5))
+  {
+    if (!gEmergency_status){
+      gEmergency_status = true;
+    }
+  }
+
   gController.lqr_hovering_U.X[0 ]  = odometry.position_W.x();
   gController.lqr_hovering_U.X[1 ]  = odometry.position_W.y();
   gController.lqr_hovering_U.X[2 ]  = odometry.position_W.z();
@@ -59,12 +66,6 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   gController.lqr_hovering_U.X[10]  = euler_rate.y();
   gController.lqr_hovering_U.X[11]  = euler_rate.z();
 
-  if ((odometry.position_W.x() > 1.5)||(odometry.position_W.x() < -1.5)||(odometry.position_W.y() > 1.5)||(odometry.position_W.y() < -1.5)||(odometry.position_W.z() > 1.5))
-  {
-    if (!gEmergency_status){
-      gEmergency_status = true;
-    }
-  }
 }
 
 /*void MultiDofJointTrajectoryCallback(
@@ -148,12 +149,17 @@ int main(int argc, char** argv) {
         Eigen::VectorXd motor_speed(6);         // range 0 .. 1047 rad/s
 
         for(unsigned int i=0; i< 6; i++) {
-            motor_RPM[i]     = gController.lqr_hovering_Y.motor_RPM[i]*(1.0 - gLOE[i]);
-            motor_command[i] = gController.lqr_hovering_Y.motor_command[i]*(1.0 - gLOE[i]);
-            motor_speed[i]   = gController.lqr_hovering_Y.motor_speed[i]*(1.0 - gLOE[i]);
             if (gEmergency_status)
             {
-              motor_command[i] = 1;
+              motor_command[i] = 1.0;
+              motor_RPM[i]     = 1.0;
+              motor_speed[i]   = 1.0;
+            }
+            else
+            {
+              motor_RPM[i]     = gController.lqr_hovering_Y.motor_RPM[i]*(1.0 - gLOE[i]);
+              motor_command[i] = gController.lqr_hovering_Y.motor_command[i]*(1.0 - gLOE[i]);
+              motor_speed[i]   = gController.lqr_hovering_Y.motor_speed[i]*(1.0 - gLOE[i]);
             }
         }
 
@@ -192,32 +198,43 @@ int main(int argc, char** argv) {
       motor_velocity_reference_pub_.publish(actuator_msg);
     }
 
-      // Publish: UAV state in World frame
-      gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-      uav_state_msg->position_W.x  = gController.lqr_hovering_U.X[0];
-      uav_state_msg->position_W.y  = gController.lqr_hovering_U.X[1];
-      uav_state_msg->position_W.z  = gController.lqr_hovering_U.X[2];
-      uav_state_msg->velocity_W.x  = gController.lqr_hovering_U.X[3];
-      uav_state_msg->velocity_W.y  = gController.lqr_hovering_U.X[4];
-      uav_state_msg->velocity_W.z  = gController.lqr_hovering_U.X[5];
-      uav_state_msg->euler_angle.x = gController.lqr_hovering_U.X[6];
-      uav_state_msg->euler_angle.y = gController.lqr_hovering_U.X[7];
-      uav_state_msg->euler_angle.z = gController.lqr_hovering_U.X[8];
-      uav_state_msg->euler_rate.x  = gController.lqr_hovering_U.X[9];
-      uav_state_msg->euler_rate.y  = gController.lqr_hovering_U.X[10];
-      uav_state_msg->euler_rate.z  = gController.lqr_hovering_U.X[11];
-      uav_state_msg->total_thrust  = gController.lqr_hovering_Y.virtual_control[0];
-      uav_state_msg->moment.x      = gController.lqr_hovering_Y.virtual_control[1];
-      uav_state_msg->moment.y      = gController.lqr_hovering_Y.virtual_control[2];
-      uav_state_msg->moment.z      = gController.lqr_hovering_Y.virtual_control[3];
+    // Publish: UAV state in World frame
+    gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
+    uav_state_msg->position_W.x  = gController.lqr_hovering_U.X[0];
+    uav_state_msg->position_W.y  = gController.lqr_hovering_U.X[1];
+    uav_state_msg->position_W.z  = gController.lqr_hovering_U.X[2];
+    uav_state_msg->velocity_W.x  = gController.lqr_hovering_U.X[3];
+    uav_state_msg->velocity_W.y  = gController.lqr_hovering_U.X[4];
+    uav_state_msg->velocity_W.z  = gController.lqr_hovering_U.X[5];
+    uav_state_msg->euler_angle.x = gController.lqr_hovering_U.X[6];
+    uav_state_msg->euler_angle.y = gController.lqr_hovering_U.X[7];
+    uav_state_msg->euler_angle.z = gController.lqr_hovering_U.X[8];
+    uav_state_msg->euler_rate.x  = gController.lqr_hovering_U.X[9];
+    uav_state_msg->euler_rate.y  = gController.lqr_hovering_U.X[10];
+    uav_state_msg->euler_rate.z  = gController.lqr_hovering_U.X[11];
+    uav_state_msg->total_thrust  = gController.lqr_hovering_Y.virtual_control[0];
+    uav_state_msg->moment.x      = gController.lqr_hovering_Y.virtual_control[1];
+    uav_state_msg->moment.y      = gController.lqr_hovering_Y.virtual_control[2];
+    uav_state_msg->moment.z      = gController.lqr_hovering_Y.virtual_control[3];
 
-      uav_state_msg->header.stamp  =  ros::Time::now();
-      uav_state_pub_.publish(uav_state_msg);
+    uav_state_msg->header.stamp  =  ros::Time::now();
+    uav_state_pub_.publish(uav_state_msg);
 
     ros::spinOnce();
     r.sleep();
+
+    if (gEmergency_status)
+    {
+      ROS_INFO("x = %f, y = %f, z = %f",uav_state_msg->position_W.x,uav_state_msg->position_W.y,uav_state_msg->position_W.z);
+      ROS_ERROR("lqr_hovering_controller_node Emergency status");
+      ros::Duration(0.5).sleep();
+      gController.terminate();
+    }
+
   }
-  gController.terminate();
+  if (!gEmergency_status){
+    gController.terminate();
+  }
 
   return 0;
 }
