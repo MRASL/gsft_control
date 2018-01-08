@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_hovering".
  *
- * Model version              : 1.498
+ * Model version              : 1.499
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan  8 09:03:26 2018
+ * C++ source code generated on : Mon Jan  8 09:25:30 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -372,10 +372,10 @@ void lqr_hoveringModelClass::step()
   u0 -= lqr_hovering_U.X[8];
 
   /* Saturate: '<Root>/Saturation8' */
-  if (u0 > 0.17453292519943295) {
-    lqr_hovering_B.Saturation8 = 0.17453292519943295;
-  } else if (u0 < -0.17453292519943295) {
-    lqr_hovering_B.Saturation8 = -0.17453292519943295;
+  if (u0 > 0.78539816339744828) {
+    lqr_hovering_B.Saturation8 = 0.78539816339744828;
+  } else if (u0 < -0.78539816339744828) {
+    lqr_hovering_B.Saturation8 = -0.78539816339744828;
   } else {
     lqr_hovering_B.Saturation8 = u0;
   }
