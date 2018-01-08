@@ -41,18 +41,18 @@ Ba = [Bc ; -Dc];
 V = ctrb(Aa,Ba);
 rank(V)
 
+
+% Ponderation: hovering example
+Q = diag([10^0*[2 2 5] 10^0*[0.5 0.5 2] 10^0*[1 1 2] 10^0*[0.1 0.1 0.2]  10^1*[0.1 0.1 0.75 0.1]]);        
+R = diag(10^1*[0.01 10 10 100]);
+
 % Ponderation
 %         p            pd           euler        euler_rate    augmented state
 % Q = diag([10^0*[1 1 10] 10^0*[1 1 10] 10^0*[1 1 2] 10^0*[1 1 2]  10^1*[1 1 5 0.1]]);        
 % R = diag(10^1*[0.1 10 10 100]);
 
-Q = diag([10^0*[2 2 5] 10^0*[0.5 0.5 2] 10^0*[1 1 2] 10^0*[0.1 0.1 0.2]  10^1*[0.1 0.1 0.75 0.1]]);        
-R = diag(10^1*[0.01 10 10 100]);
-
-
 % forte ponderation sur augmented state: dynamique plus rapide, commandes plus grandes
 % forte ponderation sur R: dynamique plus lente, peu solliciter les actionneurs
-
 % forte ponderation sur p, pd, euler, euler_rate: dynamique plus lente, peu solliciter les actionneurs !!!
 
 % Observabilit�

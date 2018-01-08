@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_hovering".
  *
- * Model version              : 1.495
+ * Model version              : 1.496
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Sun Jan  7 22:00:04 2018
+ * C++ source code generated on : Sun Jan  7 22:12:17 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -246,9 +246,9 @@ void lqr_hoveringModelClass::step()
     u0 = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
-    if (u0 > 125.0) {
+    if (u0 > 200.0) {
       /* Outport: '<Root>/motor_command' */
-      lqr_hovering_Y.motor_command[i_0] = 125.0;
+      lqr_hovering_Y.motor_command[i_0] = 200.0;
     } else if (u0 < 0.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_hovering_Y.motor_command[i_0] = 0.0;
