@@ -1,7 +1,9 @@
 %%  Parameters
 
-mass  = 1.490;          % without cameras
-% mass  = 1.5435;       % with cameras
+% mass  = 1.490;          % without cameras
+mass  = 1.5435;           % with cameras
+
+
 % mass  = 1.56779;      % ethz-asl/rotors_simulator (Gazebo)
 
 gra   = 9.80665;

@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_hovering".
  *
- * Model version              : 1.499
+ * Model version              : 1.501
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan  8 09:25:30 2018
+ * C++ source code generated on : Mon Jan  8 10:25:27 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

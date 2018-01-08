@@ -174,10 +174,11 @@ int main(int argc, char** argv) {
             motor_RPM[i]     = 1.0;
             motor_speed[i]   = 1.0;
           }
-          else
+          else {
             motor_RPM[i]     = gController.lqr_tracking_Y.motor_RPM[i]*(1.0 - gLOE[i]);
             motor_command[i] = gController.lqr_tracking_Y.motor_command[i]*(1.0 - gLOE[i]);
             motor_speed[i]   = gController.lqr_tracking_Y.motor_speed[i]*(1.0 - gLOE[i]);
+          }
         }
 
         // Publish: RPM and normalized command in 0 .. 200 (Asctec Firefly test)
@@ -247,7 +248,7 @@ int main(int argc, char** argv) {
       gController.terminate();
     }
   }
-  
+
   if (!gEmergency_status){
     gController.terminate();
   }
