@@ -43,9 +43,9 @@ rank(V)
 
 % Ponderation: origin
 %         % p          pd      euler  euler_rate  ex ey ez epsi
-% Q = diag([[1 1 5]  [1 1 1]  [1 1 5]  [1 1 5]    [1 1 10 1]]);  
-%         % T    Mx My Mz
-% R = diag([0.1 100 100 1000]);
+Q = diag([[1 1 5]  [1 1 1]  [1 1 5]  [1 1 5]    [1 1 10 1]]);  
+        % T    Mx My Mz
+R = diag([0.1 100 100 1000]);
 
 % 
 % better psi
@@ -59,7 +59,7 @@ rank(V)
 % R = diag(10^1*[0.01 10 10 100]);
 
 % faster psi
-% %         p              pd                euler        euler_rate    augmented state
+% % %         p              pd                euler        euler_rate    augmented state
 Q = diag([10^0*[2 2 5] 10^0*[0.5 0.5 2] 10^0*[1 1 5] 10^0*[0.1 0.1 0.2]  10^1*[0.1 0.1 0.75 0.2]]);        
 R = diag(10^1*[0.01 10 10 100]);
 
