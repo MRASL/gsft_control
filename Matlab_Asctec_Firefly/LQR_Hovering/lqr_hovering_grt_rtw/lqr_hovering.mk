@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'lqr_hovering'. 
 ## 
 ## Makefile     : lqr_hovering.mk
-## Generated on : Sun Jan 07 22:12:21 2018
+## Generated on : Mon Jan 08 09:03:30 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
