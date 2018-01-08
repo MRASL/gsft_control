@@ -26,9 +26,18 @@ bool gCommand_active;
 bool gLOE_active;
 Eigen::VectorXd gLOE(6);
 
+bool gEmergency_status;
+
 void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   mav_msgs::EigenOdometry odometry;
   mav_msgs::eigenOdometryFromMsg(*odom, &odometry);
+
+  if ((odometry.position_W.x() > 1.5)||(odometry.position_W.x() < -1.5)||(odometry.position_W.y() > 1.5)||(odometry.position_W.y() < -1.5)||(odometry.position_W.z() > 1.5))
+  {
+    if (!gEmergency_status){
+      gEmergency_status = true;
+    }
+  }
 
   gController.lqr_tracking_U.X[0 ]  = odometry.position_W.x();
   gController.lqr_tracking_U.X[1 ]  = odometry.position_W.y();
@@ -139,6 +148,8 @@ int main(int argc, char** argv) {
   ros::Rate r(60);
 
   gCommand_active = false;
+  gEmergency_status = false;
+
   for (unsigned int i=0; i< 6; i++) {
     gLOE[i] = 0.0;
   }
@@ -157,6 +168,13 @@ int main(int argc, char** argv) {
         Eigen::VectorXd motor_speed(6);         // range 0 .. 1047 rad/s
 
         for(unsigned int i=0; i< 6; i++) {
+          if (gEmergency_status)
+          {
+            motor_command[i] = 1.0;
+            motor_RPM[i]     = 1.0;
+            motor_speed[i]   = 1.0;
+          }
+          else
             motor_RPM[i]     = gController.lqr_tracking_Y.motor_RPM[i]*(1.0 - gLOE[i]);
             motor_command[i] = gController.lqr_tracking_Y.motor_command[i]*(1.0 - gLOE[i]);
             motor_speed[i]   = gController.lqr_tracking_Y.motor_speed[i]*(1.0 - gLOE[i]);
@@ -220,8 +238,19 @@ int main(int argc, char** argv) {
 
     ros::spinOnce();
     r.sleep();
+
+    if (gEmergency_status)
+    {
+      ROS_INFO("x = %f, y = %f, z = %f",uav_state_msg->position_W.x,uav_state_msg->position_W.y,uav_state_msg->position_W.z);
+      ROS_ERROR("lqr_hovering_controller_node Emergency status");
+      ros::Duration(0.5).sleep();
+      gController.terminate();
+    }
   }
-  gController.terminate();
+  
+  if (!gEmergency_status){
+    gController.terminate();
+  }
 
   return 0;
 }
