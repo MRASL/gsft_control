@@ -2,13 +2,13 @@ clc; close all; clear all
 
 %%
 addpath('..');
-firefly_parameters
+firefly_param_test
 
 %%
 Ts = 1/60;
 
 %%
-load K_lqr_tracking_ENU
+load synthesis/K_lqr_iden_ENU
 
 
 %% For test
