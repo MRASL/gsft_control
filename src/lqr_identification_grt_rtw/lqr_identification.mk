@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'lqr_identification'. 
 ## 
 ## Makefile     : lqr_identification.mk
-## Generated on : Mon Jan 08 11:46:19 2018
+## Generated on : Mon Jan 08 16:01:50 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
