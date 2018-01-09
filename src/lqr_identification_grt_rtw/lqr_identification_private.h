@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_identification".
  *
- * Model version              : 1.525
+ * Model version              : 1.526
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan  9 17:01:09 2018
+ * C++ source code generated on : Tue Jan  9 17:24:19 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
