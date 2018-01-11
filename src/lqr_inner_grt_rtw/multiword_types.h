@@ -9,7 +9,7 @@
  *
  * Model version              : 1.530
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jan 10 20:34:16 2018
+ * C++ source code generated on : Wed Jan 10 20:50:10 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
