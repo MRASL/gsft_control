@@ -9,7 +9,7 @@
  *
  * Model version              : 1.531
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 11 10:51:45 2018
+ * C++ source code generated on : Thu Jan 11 11:18:25 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,10 +149,10 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T Saturation4;                  /* '<Root>/Saturation4' */
-  real_T Saturation6;                  /* '<Root>/Saturation6' */
-  real_T Saturation7;                  /* '<Root>/Saturation7' */
-  real_T Saturation8;                  /* '<Root>/Saturation8' */
+  real_T Sum1;                         /* '<Root>/Sum1' */
+  real_T Sum4;                         /* '<Root>/Sum4' */
+  real_T Sum5;                         /* '<Root>/Sum5' */
+  real_T Sum6;                         /* '<Root>/Sum6' */
 } B_lqr_inner_T;
 
 /* Continuous states (auto storage) */

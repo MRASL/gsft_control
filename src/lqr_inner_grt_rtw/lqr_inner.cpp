@@ -9,7 +9,7 @@
  *
  * Model version              : 1.531
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 11 10:51:45 2018
+ * C++ source code generated on : Thu Jan 11 11:18:25 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -165,7 +165,7 @@ void lqr_innerModelClass::step()
   real_T tmp_0[4];
   int32_T i;
   int32_T i_0;
-  real_T rtb_Sqrt1;
+  real_T u0;
   real_T rtb_rads_to_RPM;
   if (rtmIsMajorTimeStep((&lqr_inner_M))) {
     /* set solver stop time */
@@ -238,33 +238,33 @@ void lqr_innerModelClass::step()
     /* Sqrt: '<Root>/Sqrt1' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    rtb_Sqrt1 = std::sqrt(116978.4923343994 * z);
+    z = std::sqrt(116978.4923343994 * z);
 
     /* Gain: '<Root>/rads_to_RPM' */
-    rtb_rads_to_RPM = 9.5493 * rtb_Sqrt1;
+    rtb_rads_to_RPM = 9.5493 * z;
 
     /* Gain: '<Root>/mapping_0_200' incorporates:
      *  Constant: '<Root>/Constant1'
      *  Sum: '<Root>/Sum3'
      */
-    z = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
+    u0 = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
-    if (z > 200.0) {
+    if (u0 > 200.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_inner_Y.motor_command[i_0] = 200.0;
-    } else if (z < 0.0) {
+    } else if (u0 < 0.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_inner_Y.motor_command[i_0] = 0.0;
     } else {
       /* Outport: '<Root>/motor_command' */
-      lqr_inner_Y.motor_command[i_0] = z;
+      lqr_inner_Y.motor_command[i_0] = u0;
     }
 
     /* End of Saturate: '<Root>/Saturation' */
 
     /* Outport: '<Root>/motor_speed' */
-    lqr_inner_Y.motor_speed[i_0] = rtb_Sqrt1;
+    lqr_inner_Y.motor_speed[i_0] = z;
 
     /* Outport: '<Root>/motor_RPM' */
     lqr_inner_Y.motor_RPM[i_0] = rtb_rads_to_RPM;
@@ -309,60 +309,22 @@ void lqr_innerModelClass::step()
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  z -= lqr_inner_U.X[2];
+  lqr_inner_B.Sum1 = z - lqr_inner_U.X[2];
 
-  /* Saturate: '<Root>/Saturation4' */
-  if (z > 0.5) {
-    lqr_inner_B.Saturation4 = 0.5;
-  } else if (z < -0.5) {
-    lqr_inner_B.Saturation4 = -0.5;
-  } else {
-    lqr_inner_B.Saturation4 = z;
-  }
-
-  /* End of Saturate: '<Root>/Saturation4' */
-
-  /* Saturate: '<Root>/Saturation6' incorporates:
+  /* Sum: '<Root>/Sum4' incorporates:
    *  Inport: '<Root>/X'
-   *  Sum: '<Root>/Sum4'
    */
-  if (0.0 - lqr_inner_U.X[6] > 0.26179938779914941) {
-    lqr_inner_B.Saturation6 = 0.26179938779914941;
-  } else if (0.0 - lqr_inner_U.X[6] < -0.26179938779914941) {
-    lqr_inner_B.Saturation6 = -0.26179938779914941;
-  } else {
-    lqr_inner_B.Saturation6 = 0.0 - lqr_inner_U.X[6];
-  }
+  lqr_inner_B.Sum4 = 0.0 - lqr_inner_U.X[6];
 
-  /* End of Saturate: '<Root>/Saturation6' */
-
-  /* Saturate: '<Root>/Saturation7' incorporates:
+  /* Sum: '<Root>/Sum5' incorporates:
    *  Inport: '<Root>/X'
-   *  Sum: '<Root>/Sum5'
    */
-  if (0.0 - lqr_inner_U.X[7] > 0.26179938779914941) {
-    lqr_inner_B.Saturation7 = 0.26179938779914941;
-  } else if (0.0 - lqr_inner_U.X[7] < -0.26179938779914941) {
-    lqr_inner_B.Saturation7 = -0.26179938779914941;
-  } else {
-    lqr_inner_B.Saturation7 = 0.0 - lqr_inner_U.X[7];
-  }
+  lqr_inner_B.Sum5 = 0.0 - lqr_inner_U.X[7];
 
-  /* End of Saturate: '<Root>/Saturation7' */
-
-  /* Saturate: '<Root>/Saturation8' incorporates:
+  /* Sum: '<Root>/Sum6' incorporates:
    *  Inport: '<Root>/X'
-   *  Sum: '<Root>/Sum6'
    */
-  if (0.0 - lqr_inner_U.X[8] > 0.17453292519943295) {
-    lqr_inner_B.Saturation8 = 0.17453292519943295;
-  } else if (0.0 - lqr_inner_U.X[8] < -0.17453292519943295) {
-    lqr_inner_B.Saturation8 = -0.17453292519943295;
-  } else {
-    lqr_inner_B.Saturation8 = 0.0 - lqr_inner_U.X[8];
-  }
-
-  /* End of Saturate: '<Root>/Saturation8' */
+  lqr_inner_B.Sum6 = 0.0 - lqr_inner_U.X[8];
   if (rtmIsMajorTimeStep((&lqr_inner_M))) {
     rt_ertODEUpdateContinuousStates(&(&lqr_inner_M)->solverInfo);
 
@@ -407,10 +369,10 @@ void lqr_innerModelClass::lqr_inner_derivatives()
   _rtXdot = ((XDot_lqr_inner_T *) (&lqr_inner_M)->derivs);
 
   /* Derivatives for Integrator: '<Root>/Integrator' */
-  _rtXdot->Integrator_CSTATE[0] = lqr_inner_B.Saturation4;
-  _rtXdot->Integrator_CSTATE[1] = lqr_inner_B.Saturation6;
-  _rtXdot->Integrator_CSTATE[2] = lqr_inner_B.Saturation7;
-  _rtXdot->Integrator_CSTATE[3] = lqr_inner_B.Saturation8;
+  _rtXdot->Integrator_CSTATE[0] = lqr_inner_B.Sum1;
+  _rtXdot->Integrator_CSTATE[1] = lqr_inner_B.Sum4;
+  _rtXdot->Integrator_CSTATE[2] = lqr_inner_B.Sum5;
+  _rtXdot->Integrator_CSTATE[3] = lqr_inner_B.Sum6;
 }
 
 /* Model initialize function */
