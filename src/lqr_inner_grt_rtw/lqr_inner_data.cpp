@@ -9,7 +9,7 @@
  *
  * Model version              : 1.531
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 11 09:42:07 2018
+ * C++ source code generated on : Thu Jan 11 10:19:18 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -23,10 +23,10 @@
 
 /* Constant parameters (auto storage) */
 const ConstP_lqr_inner_T lqr_inner_ConstP = {
-  /* Expression: [mass*gra+2 0 0 0]'
+  /* Expression: [mass*gra+5 0 0 0]'
    * Referenced by: '<Root>/              '
    */
-  { 17.141735000000004, 0.0, 0.0, 0.0 },
+  { 20.141735000000004, 0.0, 0.0, 0.0 },
 
   /* Expression: Ki_lqr
    * Referenced by: '<Root>/ '
