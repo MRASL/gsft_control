@@ -1,7 +1,9 @@
 Header header
 
 # references
-geometry_msgs/Vector3 position_ref
+float64 x_ref
+float64 y_ref
+float64 z_ref
 float64 heading_ref
 
 # state
