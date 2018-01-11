@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.536
+ * Model version              : 1.537
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 11 15:06:10 2018
+ * C++ source code generated on : Thu Jan 11 15:10:40 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -294,8 +294,8 @@ void lqr_outerModelClass::step()
     rtb_Clock = 0.5;
 
     /* '<S2>:1:7' psi = 0; */
-  } else if (rtb_Clock <= 25.0) {
-    /* '<S2>:1:8' elseif t <= 25 */
+  } else if (rtb_Clock <= 40.0) {
+    /* '<S2>:1:8' elseif t <= 40 */
     /* '<S2>:1:9' x = -1; */
     x = -1;
 
