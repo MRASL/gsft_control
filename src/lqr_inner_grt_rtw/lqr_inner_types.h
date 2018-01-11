@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_inner".
  *
- * Model version              : 1.530
+ * Model version              : 1.531
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jan 10 22:27:58 2018
+ * C++ source code generated on : Thu Jan 11 09:42:07 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
