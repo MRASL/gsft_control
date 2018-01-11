@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.535
+ * Model version              : 1.536
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 11 14:58:14 2018
+ * C++ source code generated on : Thu Jan 11 15:06:10 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -160,7 +160,6 @@ void lqr_outerModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 void lqr_outerModelClass::step()
 {
   int32_T x;
-  real_T psi;
   real_T rtb_TmpSignalConversionAtInpo_h[4];
   real_T rtb_phi_refteta_ref[2];
   real_T rtb_Clock;
@@ -169,6 +168,7 @@ void lqr_outerModelClass::step()
   int32_T i;
   real_T tmp_1[2];
   real_T u0;
+  real_T rtb_phi_refteta_ref_0;
   if (rtmIsMajorTimeStep((&lqr_outer_M))) {
     /* set solver stop time */
     if (!((&lqr_outer_M)->Timing.clockTick0+1)) {
@@ -203,10 +203,11 @@ void lqr_outerModelClass::step()
      *  Integrator: '<S1>/Integrator'
      *  Sum: '<S1>/Sum'
      */
-    psi = lqr_outer_ConstP._Gain[i + 12] * lqr_outer_X.Integrator_CSTATE[3] +
-      (lqr_outer_ConstP._Gain[i + 8] * lqr_outer_X.Integrator_CSTATE[2] +
-       (lqr_outer_ConstP._Gain[i + 4] * lqr_outer_X.Integrator_CSTATE[1] +
-        lqr_outer_ConstP._Gain[i] * lqr_outer_X.Integrator_CSTATE[0]));
+    rtb_phi_refteta_ref_0 = lqr_outer_ConstP._Gain[i + 12] *
+      lqr_outer_X.Integrator_CSTATE[3] + (lqr_outer_ConstP._Gain[i + 8] *
+      lqr_outer_X.Integrator_CSTATE[2] + (lqr_outer_ConstP._Gain[i + 4] *
+      lqr_outer_X.Integrator_CSTATE[1] + lqr_outer_ConstP._Gain[i] *
+      lqr_outer_X.Integrator_CSTATE[0]));
 
     /* Gain: '<S1>/                   ' incorporates:
      *  Sum: '<S1>/Sum'
@@ -220,7 +221,7 @@ void lqr_outerModelClass::step()
      *  Constant: '<Root>/              '
      *  Sum: '<S1>/Sum'
      */
-    rtb_TmpSignalConversionAtInpo_h[i] = (psi - tmp_0[i]) +
+    rtb_TmpSignalConversionAtInpo_h[i] = (rtb_phi_refteta_ref_0 - tmp_0[i]) +
       lqr_outer_ConstP._Value[i];
   }
 
@@ -233,25 +234,25 @@ void lqr_outerModelClass::step()
     /* Gain: '<Root>/Gain' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    psi = lqr_outer_ConstP.Gain_Gain[i + 18] * rtb_TmpSignalConversionAtInpo_h[3]
-      + (lqr_outer_ConstP.Gain_Gain[i + 12] * rtb_TmpSignalConversionAtInpo_h[2]
-         + (lqr_outer_ConstP.Gain_Gain[i + 6] * rtb_TmpSignalConversionAtInpo_h
-            [1] + lqr_outer_ConstP.Gain_Gain[i] *
-            rtb_TmpSignalConversionAtInpo_h[0]));
+    rtb_phi_refteta_ref_0 = lqr_outer_ConstP.Gain_Gain[i + 18] *
+      rtb_TmpSignalConversionAtInpo_h[3] + (lqr_outer_ConstP.Gain_Gain[i + 12] *
+      rtb_TmpSignalConversionAtInpo_h[2] + (lqr_outer_ConstP.Gain_Gain[i + 6] *
+      rtb_TmpSignalConversionAtInpo_h[1] + lqr_outer_ConstP.Gain_Gain[i] *
+      rtb_TmpSignalConversionAtInpo_h[0]));
 
     /* Sqrt: '<Root>/Sqrt1' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    rtb_Clock = std::sqrt(116978.4923343994 * psi);
+    rtb_Clock = std::sqrt(116978.4923343994 * rtb_phi_refteta_ref_0);
 
     /* Gain: '<Root>/rads_to_RPM' */
-    psi = 9.5493 * rtb_Clock;
+    rtb_phi_refteta_ref_0 = 9.5493 * rtb_Clock;
 
     /* Gain: '<Root>/mapping_0_200' incorporates:
      *  Constant: '<Root>/Constant1'
      *  Sum: '<Root>/Sum3'
      */
-    u0 = (psi - 1250.0) * 0.022857142857142857;
+    u0 = (rtb_phi_refteta_ref_0 - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
     if (u0 > 200.0) {
@@ -271,7 +272,7 @@ void lqr_outerModelClass::step()
     lqr_outer_Y.motor_speed[i] = rtb_Clock;
 
     /* Outport: '<Root>/motor_RPM' */
-    lqr_outer_Y.motor_RPM[i] = psi;
+    lqr_outer_Y.motor_RPM[i] = rtb_phi_refteta_ref_0;
   }
 
   /* Clock: '<Root>/Clock' */
@@ -283,8 +284,8 @@ void lqr_outerModelClass::step()
   /* '<S2>:1:2' y = 0; */
   /* '<S2>:1:2' z = 0; */
   /* '<S2>:1:2' psi = 0; */
-  /* '<S2>:1:3' if t <= 25 */
-  if (rtb_Clock <= 25.0) {
+  /* '<S2>:1:3' if t <= 10 */
+  if (rtb_Clock <= 10.0) {
     /* '<S2>:1:4' x = 0; */
     x = 0;
 
@@ -293,9 +294,8 @@ void lqr_outerModelClass::step()
     rtb_Clock = 0.5;
 
     /* '<S2>:1:7' psi = 0; */
-    psi = 0.0;
-  } else if (rtb_Clock <= 50.0) {
-    /* '<S2>:1:8' elseif t <= 50 */
+  } else if (rtb_Clock <= 25.0) {
+    /* '<S2>:1:8' elseif t <= 25 */
     /* '<S2>:1:9' x = -1; */
     x = -1;
 
@@ -304,29 +304,16 @@ void lqr_outerModelClass::step()
     rtb_Clock = 0.5;
 
     /* '<S2>:1:12' psi = 0; */
-    psi = 0.0;
-  } else if (rtb_Clock <= 75.0) {
-    /* '<S2>:1:13' elseif t <= 75 */
-    /* '<S2>:1:14' x = -1; */
-    x = -1;
-
-    /* '<S2>:1:15' y = 0; */
-    /* '<S2>:1:16' z = 0.5; */
-    rtb_Clock = 0.5;
-
-    /* '<S2>:1:17' psi = 0; */
-    psi = 0.0;
-  } else if (rtb_Clock <= 110.0) {
-    /* '<S2>:1:18' elseif t <= 110 */
-    /* '<S2>:1:19' x = -1; */
-    x = -1;
-
-    /* '<S2>:1:20' y = 0; */
-    /* '<S2>:1:21' z = 0.5; */
-    rtb_Clock = 0.5;
-
-    /* '<S2>:1:22' psi = pi/6; */
-    psi = 0.52359877559829882;
+    /*  elseif t <= 75 */
+    /*      x = -1; */
+    /*      y = 0; */
+    /*      z = 0.5; */
+    /*      psi = 0; */
+    /*  elseif t <= 110 */
+    /*      x = -1; */
+    /*      y = 0; */
+    /*      z = 0.5; */
+    /*      psi = pi/6; */
   } else {
     /* '<S2>:1:23' else */
     /* '<S2>:1:24' x = -1; */
@@ -336,8 +323,7 @@ void lqr_outerModelClass::step()
     /* '<S2>:1:26' z = 0; */
     rtb_Clock = 0.0;
 
-    /* '<S2>:1:27' psi = pi/6; */
-    psi = 0.52359877559829882;
+    /* '<S2>:1:27' psi = 0; */
   }
 
   /* Outport: '<Root>/ref' incorporates:
@@ -358,13 +344,12 @@ void lqr_outerModelClass::step()
   lqr_outer_Y.ref[0] = x;
   lqr_outer_Y.ref[1] = 0.0;
   lqr_outer_Y.ref[2] = rtb_Clock;
-  lqr_outer_Y.ref[3] = psi;
+  lqr_outer_Y.ref[3] = 0.0;
 
   /* Sum: '<S1>/Sum4' incorporates:
    *  Inport: '<Root>/X'
-   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  lqr_outer_B.Sum4 = psi - lqr_outer_U.X[8];
+  lqr_outer_B.Sum4 = 0.0 - lqr_outer_U.X[8];
 
   /* Gain: '<S3>/ ' incorporates:
    *  Integrator: '<S3>/Integrator'
@@ -380,22 +365,22 @@ void lqr_outerModelClass::step()
      *  SignalConversion: '<S3>/TmpSignal ConversionAt                   Inport1'
      *  Sum: '<S3>/Sum'
      */
-    psi = lqr_outer_ConstP._Gain_a[i + 6] * lqr_outer_U.X[4] +
+    rtb_phi_refteta_ref_0 = lqr_outer_ConstP._Gain_a[i + 6] * lqr_outer_U.X[4] +
       (lqr_outer_ConstP._Gain_a[i + 4] * lqr_outer_U.X[3] +
        (lqr_outer_ConstP._Gain_a[i + 2] * lqr_outer_U.X[1] +
         lqr_outer_ConstP._Gain_a[i] * lqr_outer_U.X[0]));
 
     /* Sum: '<S3>/Sum' */
-    rtb_phi_refteta_ref[i] = tmp_1[i] - psi;
+    rtb_phi_refteta_ref[i] = tmp_1[i] - rtb_phi_refteta_ref_0;
   }
 
   /* Saturate: '<S1>/pitch' */
   if (rtb_phi_refteta_ref[1] > 0.52359877559829882) {
-    psi = 0.52359877559829882;
+    rtb_phi_refteta_ref_0 = 0.52359877559829882;
   } else if (rtb_phi_refteta_ref[1] < -0.52359877559829882) {
-    psi = -0.52359877559829882;
+    rtb_phi_refteta_ref_0 = -0.52359877559829882;
   } else {
-    psi = rtb_phi_refteta_ref[1];
+    rtb_phi_refteta_ref_0 = rtb_phi_refteta_ref[1];
   }
 
   /* End of Saturate: '<S1>/pitch' */
@@ -403,15 +388,15 @@ void lqr_outerModelClass::step()
   /* Sum: '<S1>/Sum5' incorporates:
    *  Inport: '<Root>/X'
    */
-  lqr_outer_B.Sum5 = psi - lqr_outer_U.X[7];
+  lqr_outer_B.Sum5 = rtb_phi_refteta_ref_0 - lqr_outer_U.X[7];
 
   /* Saturate: '<S1>/roll' */
   if (rtb_phi_refteta_ref[0] > 0.52359877559829882) {
-    psi = 0.52359877559829882;
+    rtb_phi_refteta_ref_0 = 0.52359877559829882;
   } else if (rtb_phi_refteta_ref[0] < -0.52359877559829882) {
-    psi = -0.52359877559829882;
+    rtb_phi_refteta_ref_0 = -0.52359877559829882;
   } else {
-    psi = rtb_phi_refteta_ref[0];
+    rtb_phi_refteta_ref_0 = rtb_phi_refteta_ref[0];
   }
 
   /* End of Saturate: '<S1>/roll' */
@@ -419,7 +404,7 @@ void lqr_outerModelClass::step()
   /* Sum: '<S1>/Sum6' incorporates:
    *  Inport: '<Root>/X'
    */
-  lqr_outer_B.Sum6 = psi - lqr_outer_U.X[6];
+  lqr_outer_B.Sum6 = rtb_phi_refteta_ref_0 - lqr_outer_U.X[6];
 
   /* Sum: '<S1>/Sum7' incorporates:
    *  Inport: '<Root>/X'
