@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.534
+ * Model version              : 1.535
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 11 14:24:47 2018
+ * C++ source code generated on : Thu Jan 11 14:41:32 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -159,16 +159,16 @@ void lqr_outerModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 /* Model step function */
 void lqr_outerModelClass::step()
 {
-  real_T z;
+  int32_T x;
+  real_T psi;
   real_T rtb_TmpSignalConversionAtInpo_h[4];
   real_T rtb_phi_refteta_ref[2];
+  real_T rtb_Clock;
   real_T tmp[8];
   real_T tmp_0[4];
   int32_T i;
-  int32_T i_0;
   real_T tmp_1[2];
   real_T u0;
-  real_T rtb_phi_refteta_ref_0;
   if (rtmIsMajorTimeStep((&lqr_outer_M))) {
     /* set solver stop time */
     if (!((&lqr_outer_M)->Timing.clockTick0+1)) {
@@ -193,36 +193,35 @@ void lqr_outerModelClass::step()
    *  Inport: '<Root>/X'
    */
   tmp[0] = lqr_outer_U.X[2];
-  for (i_0 = 0; i_0 < 7; i_0++) {
-    tmp[i_0 + 1] = lqr_outer_U.X[5 + i_0];
+  for (i = 0; i < 7; i++) {
+    tmp[i + 1] = lqr_outer_U.X[5 + i];
   }
 
   /* End of SignalConversion: '<S1>/TmpSignal ConversionAt                   Inport1' */
-  for (i_0 = 0; i_0 < 4; i_0++) {
+  for (i = 0; i < 4; i++) {
     /* Gain: '<S1>/ ' incorporates:
      *  Integrator: '<S1>/Integrator'
      *  Sum: '<S1>/Sum'
      */
-    rtb_phi_refteta_ref_0 = lqr_outer_ConstP._Gain[i_0 + 12] *
-      lqr_outer_X.Integrator_CSTATE[3] + (lqr_outer_ConstP._Gain[i_0 + 8] *
-      lqr_outer_X.Integrator_CSTATE[2] + (lqr_outer_ConstP._Gain[i_0 + 4] *
-      lqr_outer_X.Integrator_CSTATE[1] + lqr_outer_ConstP._Gain[i_0] *
-      lqr_outer_X.Integrator_CSTATE[0]));
+    psi = lqr_outer_ConstP._Gain[i + 12] * lqr_outer_X.Integrator_CSTATE[3] +
+      (lqr_outer_ConstP._Gain[i + 8] * lqr_outer_X.Integrator_CSTATE[2] +
+       (lqr_outer_ConstP._Gain[i + 4] * lqr_outer_X.Integrator_CSTATE[1] +
+        lqr_outer_ConstP._Gain[i] * lqr_outer_X.Integrator_CSTATE[0]));
 
     /* Gain: '<S1>/                   ' incorporates:
      *  Sum: '<S1>/Sum'
      */
-    tmp_0[i_0] = 0.0;
-    for (i = 0; i < 8; i++) {
-      tmp_0[i_0] += lqr_outer_ConstP._Gain_i[(i << 2) + i_0] * tmp[i];
+    tmp_0[i] = 0.0;
+    for (x = 0; x < 8; x++) {
+      tmp_0[i] += lqr_outer_ConstP._Gain_i[(x << 2) + i] * tmp[x];
     }
 
     /* Sum: '<Root>/Sum2' incorporates:
      *  Constant: '<Root>/              '
      *  Sum: '<S1>/Sum'
      */
-    rtb_TmpSignalConversionAtInpo_h[i_0] = (rtb_phi_refteta_ref_0 - tmp_0[i_0])
-      + lqr_outer_ConstP._Value[i_0];
+    rtb_TmpSignalConversionAtInpo_h[i] = (psi - tmp_0[i]) +
+      lqr_outer_ConstP._Value[i];
   }
 
   /* Outport: '<Root>/virtual_control' */
@@ -230,116 +229,142 @@ void lqr_outerModelClass::step()
   lqr_outer_Y.virtual_control[1] = rtb_TmpSignalConversionAtInpo_h[1];
   lqr_outer_Y.virtual_control[2] = rtb_TmpSignalConversionAtInpo_h[2];
   lqr_outer_Y.virtual_control[3] = rtb_TmpSignalConversionAtInpo_h[3];
-  for (i_0 = 0; i_0 < 6; i_0++) {
+  for (i = 0; i < 6; i++) {
     /* Gain: '<Root>/Gain' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    rtb_phi_refteta_ref_0 = lqr_outer_ConstP.Gain_Gain[i_0 + 18] *
-      rtb_TmpSignalConversionAtInpo_h[3] + (lqr_outer_ConstP.Gain_Gain[i_0 + 12]
-      * rtb_TmpSignalConversionAtInpo_h[2] + (lqr_outer_ConstP.Gain_Gain[i_0 + 6]
-      * rtb_TmpSignalConversionAtInpo_h[1] + lqr_outer_ConstP.Gain_Gain[i_0] *
-      rtb_TmpSignalConversionAtInpo_h[0]));
+    psi = lqr_outer_ConstP.Gain_Gain[i + 18] * rtb_TmpSignalConversionAtInpo_h[3]
+      + (lqr_outer_ConstP.Gain_Gain[i + 12] * rtb_TmpSignalConversionAtInpo_h[2]
+         + (lqr_outer_ConstP.Gain_Gain[i + 6] * rtb_TmpSignalConversionAtInpo_h
+            [1] + lqr_outer_ConstP.Gain_Gain[i] *
+            rtb_TmpSignalConversionAtInpo_h[0]));
 
     /* Sqrt: '<Root>/Sqrt1' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    z = std::sqrt(116978.4923343994 * rtb_phi_refteta_ref_0);
+    rtb_Clock = std::sqrt(116978.4923343994 * psi);
 
     /* Gain: '<Root>/rads_to_RPM' */
-    rtb_phi_refteta_ref_0 = 9.5493 * z;
+    psi = 9.5493 * rtb_Clock;
 
     /* Gain: '<Root>/mapping_0_200' incorporates:
      *  Constant: '<Root>/Constant1'
      *  Sum: '<Root>/Sum3'
      */
-    u0 = (rtb_phi_refteta_ref_0 - 1250.0) * 0.022857142857142857;
+    u0 = (psi - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
     if (u0 > 200.0) {
       /* Outport: '<Root>/motor_command' */
-      lqr_outer_Y.motor_command[i_0] = 200.0;
+      lqr_outer_Y.motor_command[i] = 200.0;
     } else if (u0 < 0.0) {
       /* Outport: '<Root>/motor_command' */
-      lqr_outer_Y.motor_command[i_0] = 0.0;
+      lqr_outer_Y.motor_command[i] = 0.0;
     } else {
       /* Outport: '<Root>/motor_command' */
-      lqr_outer_Y.motor_command[i_0] = u0;
+      lqr_outer_Y.motor_command[i] = u0;
     }
 
     /* End of Saturate: '<Root>/Saturation' */
 
     /* Outport: '<Root>/motor_speed' */
-    lqr_outer_Y.motor_speed[i_0] = z;
+    lqr_outer_Y.motor_speed[i] = rtb_Clock;
 
     /* Outport: '<Root>/motor_RPM' */
-    lqr_outer_Y.motor_RPM[i_0] = rtb_phi_refteta_ref_0;
+    lqr_outer_Y.motor_RPM[i] = psi;
   }
 
-  /* MATLAB Function: '<Root>/MATLAB Function' incorporates:
-   *  Clock: '<Root>/Clock'
-   */
+  /* Clock: '<Root>/Clock' */
+  rtb_Clock = (&lqr_outer_M)->Timing.t[0];
+
+  /* MATLAB Function: '<Root>/MATLAB Function' */
   /* MATLAB Function 'MATLAB Function': '<S2>:1' */
   /* '<S2>:1:2' x = 0; */
   /* '<S2>:1:2' y = 0; */
   /* '<S2>:1:2' z = 0; */
   /* '<S2>:1:2' psi = 0; */
-  /*  if t <= 25 */
-  /*      x = 0; */
-  /*      y = 0;  */
-  /*      z = 0.5; */
-  /*      psi = 0; */
-  /*  elseif t <= 50 */
-  /*      x = -1; */
-  /*      y = 0; */
-  /*      z = 0.5; */
-  /*      psi = 0; */
-  /*  elseif t <= 75 */
-  /*      x = -1; */
-  /*      y = 1; */
-  /*      z = 0.5; */
-  /*      psi = 0; */
-  /*  elseif t <= 110 */
-  /*      x = -1; */
-  /*      y = 1; */
-  /*      z = 0.5; */
-  /*      psi = pi/6; */
-  /*  else */
-  /*      x = -1; */
-  /*      y = 1; */
-  /*      z = 0; */
-  /*      psi = 0; */
-  /*  end */
-  /* '<S2>:1:29' if t <= 30 */
-  if ((&lqr_outer_M)->Timing.t[0] <= 30.0) {
-    /* '<S2>:1:30' x = 0; */
-    /* '<S2>:1:31' y = 0; */
-    /* '<S2>:1:32' z = 0.5; */
-    z = 0.5;
+  /* '<S2>:1:3' if t <= 25 */
+  if (rtb_Clock <= 25.0) {
+    /* '<S2>:1:4' x = 0; */
+    x = 0;
 
-    /* '<S2>:1:33' psi = 0; */
+    /* '<S2>:1:5' y = 0; */
+    /* '<S2>:1:6' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S2>:1:7' psi = 0; */
+    psi = 0.0;
+  } else if (rtb_Clock <= 50.0) {
+    /* '<S2>:1:8' elseif t <= 50 */
+    /* '<S2>:1:9' x = -1; */
+    x = -1;
+
+    /* '<S2>:1:10' y = 0; */
+    /* '<S2>:1:11' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S2>:1:12' psi = 0; */
+    psi = 0.0;
+  } else if (rtb_Clock <= 75.0) {
+    /* '<S2>:1:13' elseif t <= 75 */
+    /* '<S2>:1:14' x = -1; */
+    x = -1;
+
+    /* '<S2>:1:15' y = 0; */
+    /* '<S2>:1:16' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S2>:1:17' psi = 0; */
+    psi = 0.0;
+  } else if (rtb_Clock <= 110.0) {
+    /* '<S2>:1:18' elseif t <= 110 */
+    /* '<S2>:1:19' x = -1; */
+    x = -1;
+
+    /* '<S2>:1:20' y = 0; */
+    /* '<S2>:1:21' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S2>:1:22' psi = pi/6; */
+    psi = 0.52359877559829882;
   } else {
-    /* '<S2>:1:34' else */
-    /* '<S2>:1:35' x = 0; */
-    /* '<S2>:1:36' y = 0; */
-    /* '<S2>:1:37' z = 0; */
-    z = 0.0;
+    /* '<S2>:1:23' else */
+    /* '<S2>:1:24' x = -1; */
+    x = -1;
 
-    /* '<S2>:1:38' psi = 0; */
+    /* '<S2>:1:25' y = 0; */
+    /* '<S2>:1:26' z = 0; */
+    rtb_Clock = 0.0;
+
+    /* '<S2>:1:27' psi = pi/6; */
+    psi = 0.52359877559829882;
   }
 
   /* Outport: '<Root>/ref' incorporates:
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
+  /*  if t <= 30 */
+  /*      x = 0; */
+  /*      y = 0;  */
+  /*      z = 0.5; */
+  /*      psi = 0; */
+  /*  else */
+  /*      x = 0; */
+  /*      y = 0; */
+  /*      z = 0; */
+  /*      psi = 0; */
+  /*  end */
   /* '<S2>:1:40' ref = [x;y;z;psi]; */
-  lqr_outer_Y.ref[0] = 0.0;
+  lqr_outer_Y.ref[0] = x;
   lqr_outer_Y.ref[1] = 0.0;
-  lqr_outer_Y.ref[2] = z;
-  lqr_outer_Y.ref[3] = 0.0;
+  lqr_outer_Y.ref[2] = rtb_Clock;
+  lqr_outer_Y.ref[3] = psi;
 
   /* Sum: '<S1>/Sum4' incorporates:
    *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  lqr_outer_B.Sum4 = 0.0 - lqr_outer_U.X[8];
+  lqr_outer_B.Sum4 = psi - lqr_outer_U.X[8];
 
   /* Gain: '<S3>/ ' incorporates:
    *  Integrator: '<S3>/Integrator'
@@ -349,28 +374,28 @@ void lqr_outerModelClass::step()
     lqr_outer_X.Integrator_CSTATE_b[1];
   tmp_1[1] = 0.0044721359549995928 * lqr_outer_X.Integrator_CSTATE_b[0];
   tmp_1[1] += -0.0 * lqr_outer_X.Integrator_CSTATE_b[1];
-  for (i_0 = 0; i_0 < 2; i_0++) {
+  for (i = 0; i < 2; i++) {
     /* Gain: '<S3>/                   ' incorporates:
      *  Inport: '<Root>/X'
      *  SignalConversion: '<S3>/TmpSignal ConversionAt                   Inport1'
      *  Sum: '<S3>/Sum'
      */
-    rtb_phi_refteta_ref_0 = lqr_outer_ConstP._Gain_a[i_0 + 6] * lqr_outer_U.X[4]
-      + (lqr_outer_ConstP._Gain_a[i_0 + 4] * lqr_outer_U.X[3] +
-         (lqr_outer_ConstP._Gain_a[i_0 + 2] * lqr_outer_U.X[1] +
-          lqr_outer_ConstP._Gain_a[i_0] * lqr_outer_U.X[0]));
+    psi = lqr_outer_ConstP._Gain_a[i + 6] * lqr_outer_U.X[4] +
+      (lqr_outer_ConstP._Gain_a[i + 4] * lqr_outer_U.X[3] +
+       (lqr_outer_ConstP._Gain_a[i + 2] * lqr_outer_U.X[1] +
+        lqr_outer_ConstP._Gain_a[i] * lqr_outer_U.X[0]));
 
     /* Sum: '<S3>/Sum' */
-    rtb_phi_refteta_ref[i_0] = tmp_1[i_0] - rtb_phi_refteta_ref_0;
+    rtb_phi_refteta_ref[i] = tmp_1[i] - psi;
   }
 
   /* Saturate: '<S1>/pitch' */
   if (rtb_phi_refteta_ref[1] > 0.52359877559829882) {
-    rtb_phi_refteta_ref_0 = 0.52359877559829882;
+    psi = 0.52359877559829882;
   } else if (rtb_phi_refteta_ref[1] < -0.52359877559829882) {
-    rtb_phi_refteta_ref_0 = -0.52359877559829882;
+    psi = -0.52359877559829882;
   } else {
-    rtb_phi_refteta_ref_0 = rtb_phi_refteta_ref[1];
+    psi = rtb_phi_refteta_ref[1];
   }
 
   /* End of Saturate: '<S1>/pitch' */
@@ -378,15 +403,15 @@ void lqr_outerModelClass::step()
   /* Sum: '<S1>/Sum5' incorporates:
    *  Inport: '<Root>/X'
    */
-  lqr_outer_B.Sum5 = rtb_phi_refteta_ref_0 - lqr_outer_U.X[7];
+  lqr_outer_B.Sum5 = psi - lqr_outer_U.X[7];
 
   /* Saturate: '<S1>/roll' */
   if (rtb_phi_refteta_ref[0] > 0.52359877559829882) {
-    rtb_phi_refteta_ref_0 = 0.52359877559829882;
+    psi = 0.52359877559829882;
   } else if (rtb_phi_refteta_ref[0] < -0.52359877559829882) {
-    rtb_phi_refteta_ref_0 = -0.52359877559829882;
+    psi = -0.52359877559829882;
   } else {
-    rtb_phi_refteta_ref_0 = rtb_phi_refteta_ref[0];
+    psi = rtb_phi_refteta_ref[0];
   }
 
   /* End of Saturate: '<S1>/roll' */
@@ -394,18 +419,19 @@ void lqr_outerModelClass::step()
   /* Sum: '<S1>/Sum6' incorporates:
    *  Inport: '<Root>/X'
    */
-  lqr_outer_B.Sum6 = rtb_phi_refteta_ref_0 - lqr_outer_U.X[6];
+  lqr_outer_B.Sum6 = psi - lqr_outer_U.X[6];
 
   /* Sum: '<S1>/Sum7' incorporates:
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  lqr_outer_B.Sum7 = z - lqr_outer_U.X[2];
+  lqr_outer_B.Sum7 = rtb_Clock - lqr_outer_U.X[2];
 
   /* Sum: '<S3>/Sum1' incorporates:
    *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  lqr_outer_B.Sum1 = 0.0 - lqr_outer_U.X[0];
+  lqr_outer_B.Sum1 = (real_T)x - lqr_outer_U.X[0];
 
   /* Sum: '<S3>/Sum2' incorporates:
    *  Inport: '<Root>/X'
