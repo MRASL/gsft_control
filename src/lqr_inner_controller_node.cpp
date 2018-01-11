@@ -252,7 +252,7 @@ int main(int argc, char** argv) {
     if (gEmergency_status)
     {
       ROS_INFO("x = %f, y = %f, z = %f",uav_state_msg->position_W.x,uav_state_msg->position_W.y,uav_state_msg->position_W.z);
-      ROS_ERROR("lqr_hovering_controller_node Emergency status");
+      ROS_ERROR("lqr_outer_controller_node Emergency status");
       ros::Duration(0.5).sleep();
       gController.terminate();
     }
