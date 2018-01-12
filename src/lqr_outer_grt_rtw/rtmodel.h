@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.540
+ * Model version              : 1.541
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 11 21:11:59 2018
+ * C++ source code generated on : Thu Jan 11 21:32:24 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

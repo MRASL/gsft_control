@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.540
+ * Model version              : 1.541
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 11 21:11:59 2018
+ * C++ source code generated on : Thu Jan 11 21:32:24 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -284,8 +284,8 @@ void lqr_outerModelClass::step()
   /* '<S2>:1:2' y = 0; */
   /* '<S2>:1:2' z = 0; */
   /* '<S2>:1:2' psi = 0; */
-  /* '<S2>:1:3' if t <= 10 */
-  if (rtb_Clock <= 10.0) {
+  /* '<S2>:1:3' if t <= 25 */
+  if (rtb_Clock <= 25.0) {
     /* '<S2>:1:4' x = 0; */
     x = 0;
 
@@ -294,8 +294,8 @@ void lqr_outerModelClass::step()
     rtb_Clock = 0.5;
 
     /* '<S2>:1:7' psi = 0; */
-  } else if (rtb_Clock <= 60.0) {
-    /* '<S2>:1:8' elseif t <= 60 */
+  } else if (rtb_Clock <= 75.0) {
+    /* '<S2>:1:8' elseif t <= 75 */
     /* '<S2>:1:9' x = -1; */
     x = -1;
 
@@ -363,9 +363,9 @@ void lqr_outerModelClass::step()
    *  Integrator: '<S3>/Integrator'
    *  Sum: '<S3>/Sum'
    */
-  tmp_1[0] = -0.0 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.0044721359549995659 *
+  tmp_1[0] = -0.0 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.010000000000000023 *
     lqr_outer_X.Integrator_CSTATE_b[1];
-  tmp_1[1] = 0.0044721359549995806 * lqr_outer_X.Integrator_CSTATE_b[0];
+  tmp_1[1] = 0.00999999999999999 * lqr_outer_X.Integrator_CSTATE_b[0];
   tmp_1[1] += -0.0 * lqr_outer_X.Integrator_CSTATE_b[1];
   for (i = 0; i < 2; i++) {
     /* Gain: '<S3>/                   ' incorporates:
