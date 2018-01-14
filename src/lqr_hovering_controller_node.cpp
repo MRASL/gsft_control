@@ -41,11 +41,17 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   gController.lqr_hovering_U.X[2 ]  = odometry.position_W.z();
 
   Eigen::Matrix3d R_W_B = odometry.orientation_W_B.toRotationMatrix();
-  Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
+//  Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
 
+/*
   gController.lqr_hovering_U.X[3 ]  = velocity_W.x();
   gController.lqr_hovering_U.X[4 ]  = velocity_W.y();
   gController.lqr_hovering_U.X[5 ]  = velocity_W.z();
+*/
+
+  gController.lqr_hovering_U.X[3 ]  = odometry.velocity_B.x();
+  gController.lqr_hovering_U.X[4 ]  = odometry.velocity_B.y();
+  gController.lqr_hovering_U.X[5 ]  = odometry.velocity_B.z();
 
   double psi, phi, teta;
   psi = atan2(R_W_B(1,0),R_W_B(0,0));
@@ -56,7 +62,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   gController.lqr_hovering_U.X[7 ]  = teta;
   gController.lqr_hovering_U.X[8 ]  = psi;
 
-  Eigen::Matrix3d H;
+/*  Eigen::Matrix3d H;
   H << 1.0, sin(phi)*tan(teta), cos(phi)*tan(teta),
        0.0, cos(phi),           -sin(phi),
        0.0, sin(phi)/cos(teta), cos(phi)/cos(teta);
@@ -65,7 +71,10 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   gController.lqr_hovering_U.X[9 ]  = euler_rate.x();
   gController.lqr_hovering_U.X[10]  = euler_rate.y();
   gController.lqr_hovering_U.X[11]  = euler_rate.z();
-
+*/
+  gController.lqr_hovering_U.X[9 ]  = odometry.angular_velocity_B.x();
+  gController.lqr_hovering_U.X[10]  = odometry.angular_velocity_B.y();
+  gController.lqr_hovering_U.X[11]  = odometry.angular_velocity_B.z();
 }
 
 /*void MultiDofJointTrajectoryCallback(
