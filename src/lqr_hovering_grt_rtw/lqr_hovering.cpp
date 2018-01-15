@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_hovering".
  *
- * Model version              : 1.501
+ * Model version              : 1.510
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan  8 10:25:27 2018
+ * C++ source code generated on : Sun Jan 14 22:45:22 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -159,12 +159,12 @@ void lqr_hoveringModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 /* Model step function */
 void lqr_hoveringModelClass::step()
 {
+  int32_T x;
+  int32_T y;
+  real_T psi;
   real_T rtb_Sum2[4];
+  real_T rtb_Clock;
   real_T tmp[4];
-  int32_T i;
-  int32_T i_0;
-  real_T u0;
-  real_T rtb_Sqrt;
   real_T rtb_rads_to_RPM;
   if (rtmIsMajorTimeStep((&lqr_hovering_M))) {
     /* set solver stop time */
@@ -185,27 +185,24 @@ void lqr_hoveringModelClass::step()
     (&lqr_hovering_M)->Timing.t[0] = rtsiGetT(&(&lqr_hovering_M)->solverInfo);
   }
 
-  for (i_0 = 0; i_0 < 4; i_0++) {
+  for (x = 0; x < 4; x++) {
     /* Gain: '<Root>/ ' incorporates:
      *  Integrator: '<Root>/Integrator'
      *  Sum: '<Root>/Sum'
      */
-    u0 = lqr_hovering_ConstP._Gain[i_0 + 12] * lqr_hovering_X.Integrator_CSTATE
-      [3] + (lqr_hovering_ConstP._Gain[i_0 + 8] *
-             lqr_hovering_X.Integrator_CSTATE[2] +
-             (lqr_hovering_ConstP._Gain[i_0 + 4] *
-              lqr_hovering_X.Integrator_CSTATE[1] +
-              lqr_hovering_ConstP._Gain[i_0] * lqr_hovering_X.Integrator_CSTATE
-              [0]));
+    rtb_Clock = lqr_hovering_ConstP._Gain[x + 12] *
+      lqr_hovering_X.Integrator_CSTATE[3] + (lqr_hovering_ConstP._Gain[x + 8] *
+      lqr_hovering_X.Integrator_CSTATE[2] + (lqr_hovering_ConstP._Gain[x + 4] *
+      lqr_hovering_X.Integrator_CSTATE[1] + lqr_hovering_ConstP._Gain[x] *
+      lqr_hovering_X.Integrator_CSTATE[0]));
 
     /* Gain: '<Root>/                   ' incorporates:
      *  Inport: '<Root>/X'
      *  Sum: '<Root>/Sum'
      */
-    tmp[i_0] = 0.0;
-    for (i = 0; i < 12; i++) {
-      tmp[i_0] += lqr_hovering_ConstP._Gain_g[(i << 2) + i_0] *
-        lqr_hovering_U.X[i];
+    tmp[x] = 0.0;
+    for (y = 0; y < 12; y++) {
+      tmp[x] += lqr_hovering_ConstP._Gain_g[(y << 2) + x] * lqr_hovering_U.X[y];
     }
 
     /* End of Gain: '<Root>/                   ' */
@@ -214,7 +211,7 @@ void lqr_hoveringModelClass::step()
      *  Constant: '<Root>/              '
      *  Sum: '<Root>/Sum'
      */
-    rtb_Sum2[i_0] = (u0 - tmp[i_0]) + lqr_hovering_ConstP._Value[i_0];
+    rtb_Sum2[x] = (rtb_Clock - tmp[x]) + lqr_hovering_ConstP._Value[x];
   }
 
   /* Outport: '<Root>/virtual_control' */
@@ -222,165 +219,169 @@ void lqr_hoveringModelClass::step()
   lqr_hovering_Y.virtual_control[1] = rtb_Sum2[1];
   lqr_hovering_Y.virtual_control[2] = rtb_Sum2[2];
   lqr_hovering_Y.virtual_control[3] = rtb_Sum2[3];
-  for (i_0 = 0; i_0 < 6; i_0++) {
+  for (x = 0; x < 6; x++) {
     /* Gain: '<Root>/Gain' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    u0 = lqr_hovering_ConstP.Gain_Gain[i_0 + 18] * rtb_Sum2[3] +
-      (lqr_hovering_ConstP.Gain_Gain[i_0 + 12] * rtb_Sum2[2] +
-       (lqr_hovering_ConstP.Gain_Gain[i_0 + 6] * rtb_Sum2[1] +
-        lqr_hovering_ConstP.Gain_Gain[i_0] * rtb_Sum2[0]));
+    rtb_Clock = lqr_hovering_ConstP.Gain_Gain[x + 18] * rtb_Sum2[3] +
+      (lqr_hovering_ConstP.Gain_Gain[x + 12] * rtb_Sum2[2] +
+       (lqr_hovering_ConstP.Gain_Gain[x + 6] * rtb_Sum2[1] +
+        lqr_hovering_ConstP.Gain_Gain[x] * rtb_Sum2[0]));
 
     /* Sqrt: '<Root>/Sqrt' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    rtb_Sqrt = std::sqrt(116978.4923343994 * u0);
+    psi = std::sqrt(116978.4923343994 * rtb_Clock);
 
     /* Gain: '<Root>/rads_to_RPM' */
-    rtb_rads_to_RPM = 9.5493 * rtb_Sqrt;
+    rtb_rads_to_RPM = 9.5493 * psi;
 
     /* Gain: '<Root>/mapping_0_200' incorporates:
      *  Constant: '<Root>/Constant1'
      *  Sum: '<Root>/Sum3'
      */
-    u0 = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
+    rtb_Clock = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
-    if (u0 > 200.0) {
+    if (rtb_Clock > 200.0) {
       /* Outport: '<Root>/motor_command' */
-      lqr_hovering_Y.motor_command[i_0] = 200.0;
-    } else if (u0 < 0.0) {
+      lqr_hovering_Y.motor_command[x] = 200.0;
+    } else if (rtb_Clock < 0.0) {
       /* Outport: '<Root>/motor_command' */
-      lqr_hovering_Y.motor_command[i_0] = 0.0;
+      lqr_hovering_Y.motor_command[x] = 0.0;
     } else {
       /* Outport: '<Root>/motor_command' */
-      lqr_hovering_Y.motor_command[i_0] = u0;
+      lqr_hovering_Y.motor_command[x] = rtb_Clock;
     }
 
     /* End of Saturate: '<Root>/Saturation' */
 
     /* Outport: '<Root>/motor_speed' */
-    lqr_hovering_Y.motor_speed[i_0] = rtb_Sqrt;
+    lqr_hovering_Y.motor_speed[x] = psi;
 
     /* Outport: '<Root>/motor_RPM' */
-    lqr_hovering_Y.motor_RPM[i_0] = rtb_rads_to_RPM;
+    lqr_hovering_Y.motor_RPM[x] = rtb_rads_to_RPM;
   }
 
-  /* Saturate: '<Root>/Saturation1' incorporates:
-   *  Inport: '<Root>/x_ref'
-   */
-  if (lqr_hovering_U.x_ref > 1.0) {
-    u0 = 1.0;
-  } else if (lqr_hovering_U.x_ref < -1.0) {
-    u0 = -1.0;
+  /* Clock: '<Root>/Clock' */
+  rtb_Clock = (&lqr_hovering_M)->Timing.t[0];
+
+  /* MATLAB Function: '<Root>/MATLAB Function' */
+  /* MATLAB Function 'MATLAB Function': '<S1>:1' */
+  /* '<S1>:1:2' x = 0; */
+  /* '<S1>:1:2' y = 0; */
+  /* '<S1>:1:2' z = 0; */
+  /* '<S1>:1:2' psi = 0; */
+  /* '<S1>:1:3' if t <= 10 */
+  if (rtb_Clock <= 10.0) {
+    /* '<S1>:1:4' x = 0; */
+    x = 0;
+
+    /* '<S1>:1:5' y = 0; */
+    y = 0;
+
+    /* '<S1>:1:6' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S1>:1:7' psi = 0; */
+    psi = 0.0;
+  } else if (rtb_Clock <= 20.0) {
+    /* '<S1>:1:8' elseif t <= 20 */
+    /* '<S1>:1:9' x = -1; */
+    x = -1;
+
+    /* '<S1>:1:10' y = 0; */
+    y = 0;
+
+    /* '<S1>:1:11' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S1>:1:12' psi = 0; */
+    psi = 0.0;
+  } else if (rtb_Clock <= 30.0) {
+    /* '<S1>:1:13' elseif t <= 30 */
+    /* '<S1>:1:14' x = -1; */
+    x = -1;
+
+    /* '<S1>:1:15' y = 1; */
+    y = 1;
+
+    /* '<S1>:1:16' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S1>:1:17' psi = 0; */
+    psi = 0.0;
+  } else if (rtb_Clock <= 50.0) {
+    /* '<S1>:1:18' elseif t <= 50 */
+    /* '<S1>:1:19' x = -1; */
+    x = -1;
+
+    /* '<S1>:1:20' y = 1; */
+    y = 1;
+
+    /* '<S1>:1:21' z = 0.5; */
+    rtb_Clock = 0.5;
+
+    /* '<S1>:1:22' psi = pi/4; */
+    psi = 0.78539816339744828;
   } else {
-    u0 = lqr_hovering_U.x_ref;
+    /* '<S1>:1:23' else */
+    /* '<S1>:1:24' x = -1; */
+    x = -1;
+
+    /* '<S1>:1:25' y = 1; */
+    y = 1;
+
+    /* '<S1>:1:26' z = 0; */
+    rtb_Clock = 0.0;
+
+    /* '<S1>:1:27' psi = pi/4; */
+    psi = 0.78539816339744828;
   }
 
-  /* End of Saturate: '<Root>/Saturation1' */
+  /* Outport: '<Root>/ref' incorporates:
+   *  MATLAB Function: '<Root>/MATLAB Function'
+   */
+  /* '<S1>:1:29' ref = [x;y;z;psi]; */
+  lqr_hovering_Y.ref[0] = x;
+  lqr_hovering_Y.ref[1] = y;
+  lqr_hovering_Y.ref[2] = rtb_Clock;
+  lqr_hovering_Y.ref[3] = psi;
 
   /* Sum: '<Root>/Sum1' incorporates:
    *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  u0 -= lqr_hovering_U.X[0];
-
-  /* Saturate: '<Root>/Saturation4' */
-  if (u0 > 1.0) {
-    lqr_hovering_B.Saturation4 = 1.0;
-  } else if (u0 < -1.0) {
-    lqr_hovering_B.Saturation4 = -1.0;
-  } else {
-    lqr_hovering_B.Saturation4 = u0;
-  }
-
-  /* End of Saturate: '<Root>/Saturation4' */
-
-  /* Saturate: '<Root>/Saturation2' incorporates:
-   *  Inport: '<Root>/y_ref'
-   */
-  if (lqr_hovering_U.y_ref > 1.0) {
-    u0 = 1.0;
-  } else if (lqr_hovering_U.y_ref < -1.0) {
-    u0 = -1.0;
-  } else {
-    u0 = lqr_hovering_U.y_ref;
-  }
-
-  /* End of Saturate: '<Root>/Saturation2' */
+  lqr_hovering_B.Sum1 = (real_T)x - lqr_hovering_U.X[0];
 
   /* Sum: '<Root>/Sum4' incorporates:
    *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  u0 -= lqr_hovering_U.X[1];
-
-  /* Saturate: '<Root>/Saturation6' */
-  if (u0 > 1.0) {
-    lqr_hovering_B.Saturation6 = 1.0;
-  } else if (u0 < -1.0) {
-    lqr_hovering_B.Saturation6 = -1.0;
-  } else {
-    lqr_hovering_B.Saturation6 = u0;
-  }
-
-  /* End of Saturate: '<Root>/Saturation6' */
-
-  /* Saturate: '<Root>/Saturation3' incorporates:
-   *  Inport: '<Root>/z_ref'
-   */
-  if (lqr_hovering_U.z_ref > 1.0) {
-    u0 = 1.0;
-  } else if (lqr_hovering_U.z_ref < 0.0) {
-    u0 = 0.0;
-  } else {
-    u0 = lqr_hovering_U.z_ref;
-  }
-
-  /* End of Saturate: '<Root>/Saturation3' */
+  lqr_hovering_B.Sum4 = (real_T)y - lqr_hovering_U.X[1];
 
   /* Sum: '<Root>/Sum5' incorporates:
    *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  u0 -= lqr_hovering_U.X[2];
-
-  /* Saturate: '<Root>/Saturation7' */
-  if (u0 > 0.5) {
-    lqr_hovering_B.Saturation7 = 0.5;
-  } else if (u0 < -0.5) {
-    lqr_hovering_B.Saturation7 = -0.5;
-  } else {
-    lqr_hovering_B.Saturation7 = u0;
-  }
-
-  /* End of Saturate: '<Root>/Saturation7' */
-
-  /* Saturate: '<Root>/Saturation5' incorporates:
-   *  Inport: '<Root>/psi_ref'
-   */
-  if (lqr_hovering_U.psi_ref > 6.2831853071795862) {
-    u0 = 6.2831853071795862;
-  } else if (lqr_hovering_U.psi_ref < -6.2831853071795862) {
-    u0 = -6.2831853071795862;
-  } else {
-    u0 = lqr_hovering_U.psi_ref;
-  }
-
-  /* End of Saturate: '<Root>/Saturation5' */
+  lqr_hovering_B.Sum5 = rtb_Clock - lqr_hovering_U.X[2];
 
   /* Sum: '<Root>/Sum6' incorporates:
    *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  u0 -= lqr_hovering_U.X[8];
+  rtb_Clock = psi - lqr_hovering_U.X[8];
 
-  /* Saturate: '<Root>/Saturation8' */
-  if (u0 > 0.17453292519943295) {
-    lqr_hovering_B.Saturation8 = 0.17453292519943295;
-  } else if (u0 < -0.17453292519943295) {
-    lqr_hovering_B.Saturation8 = -0.17453292519943295;
+  /* Saturate: '<Root>/psi_e' */
+  if (rtb_Clock > 0.52359877559829882) {
+    lqr_hovering_B.psi_e = 0.52359877559829882;
+  } else if (rtb_Clock < -0.52359877559829882) {
+    lqr_hovering_B.psi_e = -0.52359877559829882;
   } else {
-    lqr_hovering_B.Saturation8 = u0;
+    lqr_hovering_B.psi_e = rtb_Clock;
   }
 
-  /* End of Saturate: '<Root>/Saturation8' */
+  /* End of Saturate: '<Root>/psi_e' */
   if (rtmIsMajorTimeStep((&lqr_hovering_M))) {
     rt_ertODEUpdateContinuousStates(&(&lqr_hovering_M)->solverInfo);
 
@@ -401,9 +402,9 @@ void lqr_hoveringModelClass::step()
       ->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.016666666666666666s, 0.0s] */
+      /* Update absolute timer for sample time: [0.01s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.016666666666666666, which is the step size
+       * been executed. The resolution of this integer timer is 0.01, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -425,10 +426,10 @@ void lqr_hoveringModelClass::lqr_hovering_derivatives()
   _rtXdot = ((XDot_lqr_hovering_T *) (&lqr_hovering_M)->derivs);
 
   /* Derivatives for Integrator: '<Root>/Integrator' */
-  _rtXdot->Integrator_CSTATE[0] = lqr_hovering_B.Saturation4;
-  _rtXdot->Integrator_CSTATE[1] = lqr_hovering_B.Saturation6;
-  _rtXdot->Integrator_CSTATE[2] = lqr_hovering_B.Saturation7;
-  _rtXdot->Integrator_CSTATE[3] = lqr_hovering_B.Saturation8;
+  _rtXdot->Integrator_CSTATE[0] = lqr_hovering_B.Sum1;
+  _rtXdot->Integrator_CSTATE[1] = lqr_hovering_B.Sum4;
+  _rtXdot->Integrator_CSTATE[2] = lqr_hovering_B.Sum5;
+  _rtXdot->Integrator_CSTATE[3] = lqr_hovering_B.psi_e;
 }
 
 /* Model initialize function */
@@ -476,7 +477,7 @@ void lqr_hoveringModelClass::initialize()
                     ->intgData);
   rtsiSetSolverName(&(&lqr_hovering_M)->solverInfo,"ode5");
   rtmSetTPtr(getRTM(), &(&lqr_hovering_M)->Timing.tArray[0]);
-  (&lqr_hovering_M)->Timing.stepSize0 = 0.016666666666666666;
+  (&lqr_hovering_M)->Timing.stepSize0 = 0.01;
 
   /* block I/O */
   (void) memset(((void *) &lqr_hovering_B), 0,

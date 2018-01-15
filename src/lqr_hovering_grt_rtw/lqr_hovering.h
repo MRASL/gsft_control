@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_hovering".
  *
- * Model version              : 1.501
+ * Model version              : 1.510
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan  8 10:25:27 2018
+ * C++ source code generated on : Sun Jan 14 22:45:22 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,10 +149,10 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T Saturation4;                  /* '<Root>/Saturation4' */
-  real_T Saturation6;                  /* '<Root>/Saturation6' */
-  real_T Saturation7;                  /* '<Root>/Saturation7' */
-  real_T Saturation8;                  /* '<Root>/Saturation8' */
+  real_T Sum1;                         /* '<Root>/Sum1' */
+  real_T Sum4;                         /* '<Root>/Sum4' */
+  real_T Sum5;                         /* '<Root>/Sum5' */
+  real_T psi_e;                        /* '<Root>/psi_e' */
 } B_lqr_hovering_T;
 
 /* Continuous states (auto storage) */
@@ -183,6 +183,11 @@ typedef struct {
 
 /* Constant parameters (auto storage) */
 typedef struct {
+  /* Expression: [mass*gra 0 0 0]'
+   * Referenced by: '<Root>/              '
+   */
+  real_T _Value[4];
+
   /* Expression: Ki_lqr
    * Referenced by: '<Root>/ '
    */
@@ -193,11 +198,6 @@ typedef struct {
    */
   real_T _Gain_g[48];
 
-  /* Expression: [mass*gra 0 0 0]'
-   * Referenced by: '<Root>/              '
-   */
-  real_T _Value[4];
-
   /* Expression: B_ENU_inv
    * Referenced by: '<Root>/Gain'
    */
@@ -206,10 +206,6 @@ typedef struct {
 
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
-  real_T x_ref;                        /* '<Root>/x_ref' */
-  real_T y_ref;                        /* '<Root>/y_ref' */
-  real_T z_ref;                        /* '<Root>/z_ref' */
-  real_T psi_ref;                      /* '<Root>/psi_ref' */
   real_T X[12];                        /* '<Root>/X' */
 } ExtU_lqr_hovering_T;
 
@@ -219,6 +215,7 @@ typedef struct {
   real_T virtual_control[4];           /* '<Root>/virtual_control' */
   real_T motor_speed[6];               /* '<Root>/motor_speed' */
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
+  real_T ref[4];                       /* '<Root>/ref' */
 } ExtY_lqr_hovering_T;
 
 /* Real-time Model Data Structure */
@@ -340,5 +337,6 @@ class lqr_hoveringModelClass {
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'lqr_hovering'
+ * '<S1>'   : 'lqr_hovering/MATLAB Function'
  */
 #endif                                 /* RTW_HEADER_lqr_hovering_h_ */

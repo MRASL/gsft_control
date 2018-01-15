@@ -17,6 +17,9 @@
 #include <gsft_control/UAVState.h>
 #include <lqr_hovering.h>
 
+#include <dynamic_reconfigure/server.h>
+#include <gsft_control/controllerDynConfig.h>
+
 lqr_hoveringModelClass gController;
 
 bool gCommand_active;
@@ -90,7 +93,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
     }
 }*/
 
-void CommandPoseCallback(const geometry_msgs::PoseStampedConstPtr& pose_msg) {
+/*void CommandPoseCallback(const geometry_msgs::PoseStampedConstPtr& pose_msg) {
   mav_msgs::EigenTrajectoryPoint eigen_reference;
   mav_msgs::eigenTrajectoryPointFromPoseMsg(*pose_msg, &eigen_reference);
   gController.lqr_hovering_U.x_ref    = eigen_reference.position_W.x();
@@ -99,6 +102,18 @@ void CommandPoseCallback(const geometry_msgs::PoseStampedConstPtr& pose_msg) {
   gController.lqr_hovering_U.psi_ref  = 0.0;
   if (!gCommand_active){
     gCommand_active      = true;
+  }
+}
+*/
+
+void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t level) {
+  ROS_INFO("Controller Active Request: %s",config.active_controller?"True":"False");
+  if (config.active_controller == true){
+      if (!gCommand_active){
+        gCommand_active      = true;
+        // gCommand_time        = ros::Time::now();
+      }
+      config.active_controller = false;
   }
 }
 
@@ -120,8 +135,8 @@ int main(int argc, char** argv) {
   ros::Subscriber odometry_sub_;
   odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1, OdometryCallback);
 
-  ros::Subscriber cmd_pose_sub_;                    // references (position and yaw)
-  cmd_pose_sub_ = nh.subscribe(mav_msgs::default_topics::COMMAND_POSE, 1, CommandPoseCallback);
+  /*ros::Subscriber cmd_pose_sub_;                    // references (position and yaw)
+  cmd_pose_sub_ = nh.subscribe(mav_msgs::default_topics::COMMAND_POSE, 1, CommandPoseCallback);*/
 
   /*ros::Subscriber cmd_multi_dof_joint_trajectory_sub;
   cmd_multi_dof_joint_trajectory_sub = nh.subscribe(mav_msgs::default_topics::COMMAND_TRAJECTORY, 1, MultiDofJointTrajectoryCallback);*/
@@ -149,6 +164,11 @@ int main(int argc, char** argv) {
     gLOE[i] = 0.0;
   }
   gController.initialize();
+
+  dynamic_reconfigure::Server<gsft_control::controllerDynConfig> server;
+  dynamic_reconfigure::Server<gsft_control::controllerDynConfig>::CallbackType f;
+  f = boost::bind(&controller_dyn_callback, _1, _2);
+  server.setCallback(f);
 
   while(ros::ok()) {
     if (gCommand_active) {
@@ -209,18 +229,24 @@ int main(int argc, char** argv) {
 
     // Publish: UAV state in World frame
     gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
+    uav_state_msg->position_ref.x  = gController.lqr_hovering_Y.ref[0];
+    uav_state_msg->position_ref.y  = gController.lqr_hovering_Y.ref[1];
+    uav_state_msg->position_ref.z  = gController.lqr_hovering_Y.ref[2];
+    uav_state_msg->heading_ref     = gController.lqr_hovering_Y.ref[3];
+
+
     uav_state_msg->position_W.x  = gController.lqr_hovering_U.X[0];
     uav_state_msg->position_W.y  = gController.lqr_hovering_U.X[1];
     uav_state_msg->position_W.z  = gController.lqr_hovering_U.X[2];
-    uav_state_msg->velocity_W.x  = gController.lqr_hovering_U.X[3];
-    uav_state_msg->velocity_W.y  = gController.lqr_hovering_U.X[4];
-    uav_state_msg->velocity_W.z  = gController.lqr_hovering_U.X[5];
+    uav_state_msg->velocity_B.x  = gController.lqr_hovering_U.X[3];
+    uav_state_msg->velocity_B.y  = gController.lqr_hovering_U.X[4];
+    uav_state_msg->velocity_B.z  = gController.lqr_hovering_U.X[5];
     uav_state_msg->euler_angle.x = gController.lqr_hovering_U.X[6];
     uav_state_msg->euler_angle.y = gController.lqr_hovering_U.X[7];
     uav_state_msg->euler_angle.z = gController.lqr_hovering_U.X[8];
-    uav_state_msg->euler_rate.x  = gController.lqr_hovering_U.X[9];
-    uav_state_msg->euler_rate.y  = gController.lqr_hovering_U.X[10];
-    uav_state_msg->euler_rate.z  = gController.lqr_hovering_U.X[11];
+    uav_state_msg->rotation_speed_B.x  = gController.lqr_hovering_U.X[9];
+    uav_state_msg->rotation_speed_B.y  = gController.lqr_hovering_U.X[10];
+    uav_state_msg->rotation_speed_B.z  = gController.lqr_hovering_U.X[11];
     uav_state_msg->total_thrust  = gController.lqr_hovering_Y.virtual_control[0];
     uav_state_msg->moment.x      = gController.lqr_hovering_Y.virtual_control[1];
     uav_state_msg->moment.y      = gController.lqr_hovering_Y.virtual_control[2];

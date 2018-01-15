@@ -129,10 +129,10 @@ include_directories(
  R2017a/extern/include
  R2017a/simulink/include
  src/lqr_hovering_grt_rtw
- src/lqr_tracking_grt_rtw
- src/lqr_identification_grt_rtw
- src/lqr_inner_grt_rtw
- src/lqr_outer_grt_rtw
+ ##src/lqr_tracking_grt_rtw
+ ##src/lqr_identification_grt_rtw
+ ##src/lqr_inner_grt_rtw
+ ##src/lqr_outer_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
@@ -140,14 +140,14 @@ include_directories(
 add_library(matlab_lqr
     src/lqr_hovering_grt_rtw/lqr_hovering_data.cpp
     src/lqr_hovering_grt_rtw/lqr_hovering.cpp
-    src/lqr_tracking_grt_rtw/lqr_tracking_data.cpp
-    src/lqr_tracking_grt_rtw/lqr_tracking.cpp
-    src/lqr_identification_grt_rtw/lqr_identification_data.cpp
-    src/lqr_identification_grt_rtw/lqr_identification.cpp
-    src/lqr_inner_grt_rtw/lqr_inner_data.cpp
-    src/lqr_inner_grt_rtw/lqr_inner.cpp
-    src/lqr_outer_grt_rtw/lqr_outer_data.cpp
-    src/lqr_outer_grt_rtw/lqr_outer.cpp
+    ##src/lqr_tracking_grt_rtw/lqr_tracking_data.cpp
+    ##src/lqr_tracking_grt_rtw/lqr_tracking.cpp
+    ##src/lqr_identification_grt_rtw/lqr_identification_data.cpp
+    ##src/lqr_identification_grt_rtw/lqr_identification.cpp
+    ##src/lqr_inner_grt_rtw/lqr_inner_data.cpp
+    ##src/lqr_inner_grt_rtw/lqr_inner.cpp
+    ##src/lqr_outer_grt_rtw/lqr_outer_data.cpp
+    ##src/lqr_outer_grt_rtw/lqr_outer.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -168,62 +168,62 @@ target_link_libraries(lqr_hovering_controller_node
     ${catkin_LIBRARIES}
 )
 
-add_executable(lqr_tracking_controller_node
-    src/lqr_tracking_controller_node.cpp
-)
-add_dependencies(lqr_tracking_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    ${PROJECT_NAME}_gencfg
-    matlab_lqr
-)
-target_link_libraries(lqr_tracking_controller_node
-    matlab_lqr
-    ${catkin_LIBRARIES}
-)
+##add_executable(lqr_tracking_controller_node
+##    src/lqr_tracking_controller_node.cpp
+##)
+##add_dependencies(lqr_tracking_controller_node
+##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+##    ${catkin_EXPORTED_TARGETS}
+##    ${PROJECT_NAME}_gencfg
+##    matlab_lqr
+##)
+##target_link_libraries(lqr_tracking_controller_node
+##    matlab_lqr
+##    ${catkin_LIBRARIES}
+#)
 
-add_executable(lqr_identification_controller_node
-    src/lqr_identification_controller_node.cpp
-)
-add_dependencies(lqr_identification_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    ${PROJECT_NAME}_gencfg
-    matlab_lqr
-)
-target_link_libraries(lqr_identification_controller_node
-    matlab_lqr
-    ${catkin_LIBRARIES}
-)
+##add_executable(lqr_identification_controller_node
+##    src/lqr_identification_controller_node.cpp
+##)
+##add_dependencies(lqr_identification_controller_node
+##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+##    ${catkin_EXPORTED_TARGETS}
+##    ${PROJECT_NAME}_gencfg
+##    matlab_lqr
+##)
+#target_link_libraries(lqr_identification_controller_node
+##    matlab_lqr
+##    ${catkin_LIBRARIES}
+##)
 
-add_executable(lqr_inner_controller_node
-    src/lqr_inner_controller_node.cpp
-)
-add_dependencies(lqr_inner_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    ${PROJECT_NAME}_gencfg
-    matlab_lqr
-)
-target_link_libraries(lqr_inner_controller_node
-    matlab_lqr
-    ${catkin_LIBRARIES}
-)
+##add_executable(lqr_inner_controller_node
+##    src/lqr_inner_controller_node.cpp
+##)
+##add_dependencies(lqr_inner_controller_node
+##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+##    ${catkin_EXPORTED_TARGETS}
+##    ${PROJECT_NAME}_gencfg
+##    matlab_lqr
+##)
+##target_link_libraries(lqr_inner_controller_node
+##    matlab_lqr
+##    ${catkin_LIBRARIES}
+##)
 
 
-add_executable(lqr_outer_controller_node
-    src/lqr_outer_controller_node.cpp
-)
-add_dependencies(lqr_outer_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    ${PROJECT_NAME}_gencfg
-    matlab_lqr
-)
-target_link_libraries(lqr_outer_controller_node
-    matlab_lqr
-    ${catkin_LIBRARIES}
-)
+##add_executable(lqr_outer_controller_node
+##    src/lqr_outer_controller_node.cpp
+##)
+##add_dependencies(lqr_outer_controller_node
+##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+##    ${catkin_EXPORTED_TARGETS}
+##    ${PROJECT_NAME}_gencfg
+##    matlab_lqr
+##)
+##target_link_libraries(lqr_outer_controller_node
+##    matlab_lqr
+##    ${catkin_LIBRARIES}
+##)
 #############
 ## Install ##
 #############
