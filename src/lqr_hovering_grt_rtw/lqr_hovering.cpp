@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_hovering".
  *
- * Model version              : 1.524
+ * Model version              : 1.525
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 15 23:23:56 2018
+ * C++ source code generated on : Tue Jan 16 11:44:46 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -161,7 +161,6 @@ void lqr_hoveringModelClass::step()
 {
   int32_T x;
   int32_T y;
-  int32_T z;
   real_T rtb_Sum2[4];
   real_T rtb_Clock;
   real_T tmp[4];
@@ -281,8 +280,8 @@ void lqr_hoveringModelClass::step()
     /* '<S1>:1:5' y = 0; */
     y = 0;
 
-    /* '<S1>:1:6' z = 1; */
-    z = 1;
+    /* '<S1>:1:6' z = 0.5; */
+    rtb_Clock = 0.5;
 
     /* '<S1>:1:7' psi = 0; */
   } else if (rtb_Clock <= 30.0) {
@@ -293,8 +292,8 @@ void lqr_hoveringModelClass::step()
     /* '<S1>:1:10' y = 0; */
     y = 0;
 
-    /* '<S1>:1:11' z = 1; */
-    z = 1;
+    /* '<S1>:1:11' z = 0.5; */
+    rtb_Clock = 0.5;
 
     /* '<S1>:1:12' psi = 0; */
   } else if (rtb_Clock <= 45.0) {
@@ -305,8 +304,8 @@ void lqr_hoveringModelClass::step()
     /* '<S1>:1:15' y = 1; */
     y = 1;
 
-    /* '<S1>:1:16' z = 1; */
-    z = 1;
+    /* '<S1>:1:16' z = 0.5; */
+    rtb_Clock = 0.5;
 
     /* '<S1>:1:17' psi = 0; */
   } else {
@@ -318,7 +317,7 @@ void lqr_hoveringModelClass::step()
     y = 1;
 
     /* '<S1>:1:21' z = 0; */
-    z = 0;
+    rtb_Clock = 0.0;
 
     /* '<S1>:1:22' psi = 0; */
   }
@@ -329,7 +328,7 @@ void lqr_hoveringModelClass::step()
   /* '<S1>:1:24' ref = [x;y;z;psi]; */
   lqr_hovering_Y.ref[0] = x;
   lqr_hovering_Y.ref[1] = y;
-  lqr_hovering_Y.ref[2] = z;
+  lqr_hovering_Y.ref[2] = rtb_Clock;
   lqr_hovering_Y.ref[3] = 0.0;
 
   /* Sum: '<Root>/Sum1' incorporates:
@@ -348,7 +347,7 @@ void lqr_hoveringModelClass::step()
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  lqr_hovering_B.Sum5 = (real_T)z - lqr_hovering_U.X[2];
+  lqr_hovering_B.Sum5 = rtb_Clock - lqr_hovering_U.X[2];
 
   /* Saturate: '<Root>/psi_e' incorporates:
    *  Inport: '<Root>/X'
