@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_hovering".
  *
- * Model version              : 1.520
+ * Model version              : 1.521
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 15 22:18:07 2018
+ * C++ source code generated on : Mon Jan 15 23:01:08 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -161,10 +161,10 @@ void lqr_hoveringModelClass::step()
 {
   int32_T x;
   int32_T y;
-  real_T psi;
   real_T rtb_Sum2[4];
   real_T rtb_Clock;
   real_T tmp[4];
+  real_T u0;
   real_T rtb_rads_to_RPM;
   if (rtmIsMajorTimeStep((&lqr_hovering_M))) {
     /* set solver stop time */
@@ -231,33 +231,33 @@ void lqr_hoveringModelClass::step()
     /* Sqrt: '<Root>/Sqrt' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    psi = std::sqrt(116978.4923343994 * rtb_Clock);
+    rtb_Clock = std::sqrt(116978.4923343994 * rtb_Clock);
 
     /* Gain: '<Root>/rads_to_RPM' */
-    rtb_rads_to_RPM = 9.5493 * psi;
+    rtb_rads_to_RPM = 9.5493 * rtb_Clock;
 
     /* Gain: '<Root>/mapping_0_200' incorporates:
      *  Constant: '<Root>/Constant1'
      *  Sum: '<Root>/Sum3'
      */
-    rtb_Clock = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
+    u0 = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
-    if (rtb_Clock > 200.0) {
+    if (u0 > 200.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_hovering_Y.motor_command[x] = 200.0;
-    } else if (rtb_Clock < 1.0) {
+    } else if (u0 < 1.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_hovering_Y.motor_command[x] = 1.0;
     } else {
       /* Outport: '<Root>/motor_command' */
-      lqr_hovering_Y.motor_command[x] = rtb_Clock;
+      lqr_hovering_Y.motor_command[x] = u0;
     }
 
     /* End of Saturate: '<Root>/Saturation' */
 
     /* Outport: '<Root>/motor_speed' */
-    lqr_hovering_Y.motor_speed[x] = psi;
+    lqr_hovering_Y.motor_speed[x] = rtb_Clock;
 
     /* Outport: '<Root>/motor_RPM' */
     lqr_hovering_Y.motor_RPM[x] = rtb_rads_to_RPM;
@@ -280,11 +280,10 @@ void lqr_hoveringModelClass::step()
     /* '<S1>:1:5' y = 0; */
     y = 0;
 
-    /* '<S1>:1:6' z = 0.5; */
-    rtb_Clock = 0.5;
+    /* '<S1>:1:6' z = 0.8; */
+    rtb_Clock = 0.8;
 
     /* '<S1>:1:7' psi = 0; */
-    psi = 0.0;
   } else if (rtb_Clock <= 30.0) {
     /* '<S1>:1:8' elseif t <= 30 */
     /* '<S1>:1:9' x = -1; */
@@ -293,11 +292,10 @@ void lqr_hoveringModelClass::step()
     /* '<S1>:1:10' y = 0; */
     y = 0;
 
-    /* '<S1>:1:11' z = 0.5; */
-    rtb_Clock = 0.5;
+    /* '<S1>:1:11' z = 0.8; */
+    rtb_Clock = 0.8;
 
     /* '<S1>:1:12' psi = 0; */
-    psi = 0.0;
   } else if (rtb_Clock <= 45.0) {
     /* '<S1>:1:13' elseif t <= 45 */
     /* '<S1>:1:14' x = -1; */
@@ -306,47 +304,32 @@ void lqr_hoveringModelClass::step()
     /* '<S1>:1:15' y = 1; */
     y = 1;
 
-    /* '<S1>:1:16' z = 0.5; */
-    rtb_Clock = 0.5;
+    /* '<S1>:1:16' z = 0.8; */
+    rtb_Clock = 0.8;
 
     /* '<S1>:1:17' psi = 0; */
-    psi = 0.0;
-  } else if (rtb_Clock <= 60.0) {
-    /* '<S1>:1:18' elseif t <= 60 */
+  } else {
+    /* '<S1>:1:18' else */
     /* '<S1>:1:19' x = -1; */
     x = -1;
 
     /* '<S1>:1:20' y = 1; */
     y = 1;
 
-    /* '<S1>:1:21' z = 0.5; */
-    rtb_Clock = 0.5;
-
-    /* '<S1>:1:22' psi = pi/6; */
-    psi = 0.52359877559829882;
-  } else {
-    /* '<S1>:1:23' else */
-    /* '<S1>:1:24' x = -1; */
-    x = -1;
-
-    /* '<S1>:1:25' y = 1; */
-    y = 1;
-
-    /* '<S1>:1:26' z = 0; */
+    /* '<S1>:1:21' z = 0; */
     rtb_Clock = 0.0;
 
-    /* '<S1>:1:27' psi = pi/6; */
-    psi = 0.52359877559829882;
+    /* '<S1>:1:22' psi = 0; */
   }
 
   /* Outport: '<Root>/ref' incorporates:
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  /* '<S1>:1:29' ref = [x;y;z;psi]; */
+  /* '<S1>:1:24' ref = [x;y;z;psi]; */
   lqr_hovering_Y.ref[0] = x;
   lqr_hovering_Y.ref[1] = y;
   lqr_hovering_Y.ref[2] = rtb_Clock;
-  lqr_hovering_Y.ref[3] = psi;
+  lqr_hovering_Y.ref[3] = 0.0;
 
   /* Sum: '<Root>/Sum1' incorporates:
    *  Inport: '<Root>/X'
@@ -366,19 +349,16 @@ void lqr_hoveringModelClass::step()
    */
   lqr_hovering_B.Sum5 = rtb_Clock - lqr_hovering_U.X[2];
 
-  /* Sum: '<Root>/Sum6' incorporates:
+  /* Saturate: '<Root>/psi_e' incorporates:
    *  Inport: '<Root>/X'
-   *  MATLAB Function: '<Root>/MATLAB Function'
+   *  Sum: '<Root>/Sum6'
    */
-  rtb_Clock = psi - lqr_hovering_U.X[8];
-
-  /* Saturate: '<Root>/psi_e' */
-  if (rtb_Clock > 0.52359877559829882) {
+  if (0.0 - lqr_hovering_U.X[8] > 0.52359877559829882) {
     lqr_hovering_B.psi_e = 0.52359877559829882;
-  } else if (rtb_Clock < -0.52359877559829882) {
+  } else if (0.0 - lqr_hovering_U.X[8] < -0.52359877559829882) {
     lqr_hovering_B.psi_e = -0.52359877559829882;
   } else {
-    lqr_hovering_B.psi_e = rtb_Clock;
+    lqr_hovering_B.psi_e = 0.0 - lqr_hovering_U.X[8];
   }
 
   /* End of Saturate: '<Root>/psi_e' */
