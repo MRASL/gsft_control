@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_tracking".
  *
- * Model version              : 1.509
+ * Model version              : 1.515
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan  8 10:24:36 2018
+ * C++ source code generated on : Tue Jan 16 17:45:31 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -160,7 +160,6 @@ void lqr_trackingModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 void lqr_trackingModelClass::step()
 {
   real_T x;
-  real_T y;
   real_T z;
   real_T rtb_Sum2[4];
   real_T rtb_Clock;
@@ -191,7 +190,7 @@ void lqr_trackingModelClass::step()
      *  Integrator: '<Root>/Integrator'
      *  Sum: '<Root>/Sum'
      */
-    y = lqr_tracking_ConstP._Gain[i_0 + 12] * lqr_tracking_X.Integrator_CSTATE[3]
+    x = lqr_tracking_ConstP._Gain[i_0 + 12] * lqr_tracking_X.Integrator_CSTATE[3]
       + (lqr_tracking_ConstP._Gain[i_0 + 8] * lqr_tracking_X.Integrator_CSTATE[2]
          + (lqr_tracking_ConstP._Gain[i_0 + 4] *
             lqr_tracking_X.Integrator_CSTATE[1] + lqr_tracking_ConstP._Gain[i_0]
@@ -213,7 +212,7 @@ void lqr_trackingModelClass::step()
      *  Constant: '<Root>/              '
      *  Sum: '<Root>/Sum'
      */
-    rtb_Sum2[i_0] = (y - tmp[i_0]) + lqr_tracking_ConstP._Value[i_0];
+    rtb_Sum2[i_0] = (x - tmp[i_0]) + lqr_tracking_ConstP._Value[i_0];
   }
 
   /* Outport: '<Root>/virtual_control' */
@@ -225,7 +224,7 @@ void lqr_trackingModelClass::step()
     /* Gain: '<Root>/Gain' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    y = lqr_tracking_ConstP.Gain_Gain[i_0 + 18] * rtb_Sum2[3] +
+    x = lqr_tracking_ConstP.Gain_Gain[i_0 + 18] * rtb_Sum2[3] +
       (lqr_tracking_ConstP.Gain_Gain[i_0 + 12] * rtb_Sum2[2] +
        (lqr_tracking_ConstP.Gain_Gain[i_0 + 6] * rtb_Sum2[1] +
         lqr_tracking_ConstP.Gain_Gain[i_0] * rtb_Sum2[0]));
@@ -233,33 +232,33 @@ void lqr_trackingModelClass::step()
     /* Sqrt: '<Root>/Sqrt1' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    y = std::sqrt(116978.4923343994 * y);
+    rtb_Clock = std::sqrt(116978.4923343994 * x);
 
     /* Gain: '<Root>/rads_to_RPM' */
-    z = 9.5493 * y;
+    z = 9.5493 * rtb_Clock;
 
     /* Gain: '<Root>/mapping_0_200' incorporates:
      *  Constant: '<Root>/Constant1'
      *  Sum: '<Root>/Sum3'
      */
-    rtb_Clock = (z - 1250.0) * 0.022857142857142857;
+    x = (z - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
-    if (rtb_Clock > 200.0) {
+    if (x > 200.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_tracking_Y.motor_command[i_0] = 200.0;
-    } else if (rtb_Clock < 0.0) {
+    } else if (x < 0.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_tracking_Y.motor_command[i_0] = 0.0;
     } else {
       /* Outport: '<Root>/motor_command' */
-      lqr_tracking_Y.motor_command[i_0] = rtb_Clock;
+      lqr_tracking_Y.motor_command[i_0] = x;
     }
 
     /* End of Saturate: '<Root>/Saturation' */
 
     /* Outport: '<Root>/motor_speed' */
-    lqr_tracking_Y.motor_speed[i_0] = y;
+    lqr_tracking_Y.motor_speed[i_0] = rtb_Clock;
 
     /* Outport: '<Root>/motor_RPM' */
     lqr_tracking_Y.motor_RPM[i_0] = z;
@@ -271,54 +270,71 @@ void lqr_trackingModelClass::step()
   /* MATLAB Function: '<Root>/MATLAB Function' */
   /* MATLAB Function 'MATLAB Function': '<S1>:1' */
   /* '<S1>:1:2' x = 0; */
-  x = 0.0;
-
   /* '<S1>:1:2' y = 0; */
-  y = 0.0;
-
   /* '<S1>:1:2' z = 0; */
-  z = 0.0;
-
   /* '<S1>:1:3' if t<=5 */
   if (rtb_Clock <= 5.0) {
     /* '<S1>:1:4' x = 0; */
+    x = 0.0;
+
     /* '<S1>:1:5' y = 0; */
+    rtb_Clock = 0.0;
+
     /* '<S1>:1:6' z = 0.5; */
     z = 0.5;
-  } else if (rtb_Clock <= 30.0) {
-    /* '<S1>:1:7' elseif t <= 30 */
-    /* '<S1>:1:8' x = cos(0.5*(t-5)); */
-    x = std::cos((rtb_Clock - 5.0) * 0.5);
+  } else if (rtb_Clock <= 45.0) {
+    /* '<S1>:1:7' elseif t <= 45 */
+    /* '<S1>:1:8' x = cos(0.4*(t-5)); */
+    x = std::cos((rtb_Clock - 5.0) * 0.4);
 
-    /* '<S1>:1:9' y = sin(0.5*(t-5)); */
-    y = std::sin((rtb_Clock - 5.0) * 0.5);
+    /* '<S1>:1:9' y = sin(0.4*(t-5)); */
+    rtb_Clock = std::sin((rtb_Clock - 5.0) * 0.4);
 
     /* '<S1>:1:10' z = 0.5; */
     z = 0.5;
+  } else if (rtb_Clock <= 55.0) {
+    /* '<S1>:1:11' elseif t <= 55 */
+    /* '<S1>:1:12' x = 0; */
+    x = 0.0;
+
+    /* '<S1>:1:13' y = 0; */
+    rtb_Clock = 0.0;
+
+    /* '<S1>:1:14' z = 0.5; */
+    z = 0.5;
   } else {
-    if (rtb_Clock <= 35.0) {
-      /* '<S1>:1:11' elseif t <= 35 */
-      /* '<S1>:1:12' x = 0; */
-      /* '<S1>:1:13' y = 0; */
-      /* '<S1>:1:14' z = 0.5; */
-      z = 0.5;
-    }
+    /* '<S1>:1:15' else */
+    /* '<S1>:1:16' x = 0; */
+    x = 0.0;
+
+    /* '<S1>:1:17' y = 0; */
+    rtb_Clock = 0.0;
+
+    /* '<S1>:1:18' z = 0; */
+    z = 0.0;
   }
+
+  /* Outport: '<Root>/ref' incorporates:
+   *  MATLAB Function: '<Root>/MATLAB Function'
+   */
+  /* '<S1>:1:20' ref = [x;y;z]; */
+  lqr_tracking_Y.ref[0] = x;
+  lqr_tracking_Y.ref[1] = rtb_Clock;
+  lqr_tracking_Y.ref[2] = z;
 
   /* Sum: '<Root>/Sum1' incorporates:
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  /* '<S1>:1:16' ref = [x;y;z]; */
-  rtb_Clock = x - lqr_tracking_U.X[0];
+  x -= lqr_tracking_U.X[0];
 
   /* Saturate: '<Root>/Saturation4' */
-  if (rtb_Clock > 1.0) {
+  if (x > 1.0) {
     lqr_tracking_B.Saturation4 = 1.0;
-  } else if (rtb_Clock < -1.0) {
+  } else if (x < -1.0) {
     lqr_tracking_B.Saturation4 = -1.0;
   } else {
-    lqr_tracking_B.Saturation4 = rtb_Clock;
+    lqr_tracking_B.Saturation4 = x;
   }
 
   /* End of Saturate: '<Root>/Saturation4' */
@@ -327,15 +343,15 @@ void lqr_trackingModelClass::step()
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  rtb_Clock = y - lqr_tracking_U.X[1];
+  x = rtb_Clock - lqr_tracking_U.X[1];
 
   /* Saturate: '<Root>/Saturation6' */
-  if (rtb_Clock > 1.0) {
+  if (x > 1.0) {
     lqr_tracking_B.Saturation6 = 1.0;
-  } else if (rtb_Clock < -1.0) {
+  } else if (x < -1.0) {
     lqr_tracking_B.Saturation6 = -1.0;
   } else {
-    lqr_tracking_B.Saturation6 = rtb_Clock;
+    lqr_tracking_B.Saturation6 = x;
   }
 
   /* End of Saturate: '<Root>/Saturation6' */
@@ -344,15 +360,15 @@ void lqr_trackingModelClass::step()
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  rtb_Clock = z - lqr_tracking_U.X[2];
+  x = z - lqr_tracking_U.X[2];
 
   /* Saturate: '<Root>/Saturation7' */
-  if (rtb_Clock > 0.5) {
+  if (x > 0.5) {
     lqr_tracking_B.Saturation7 = 0.5;
-  } else if (rtb_Clock < -0.5) {
+  } else if (x < -0.5) {
     lqr_tracking_B.Saturation7 = -0.5;
   } else {
-    lqr_tracking_B.Saturation7 = rtb_Clock;
+    lqr_tracking_B.Saturation7 = x;
   }
 
   /* End of Saturate: '<Root>/Saturation7' */
@@ -390,9 +406,9 @@ void lqr_trackingModelClass::step()
       ->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.016666666666666666s, 0.0s] */
+      /* Update absolute timer for sample time: [0.01s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.016666666666666666, which is the step size
+       * been executed. The resolution of this integer timer is 0.01, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -465,7 +481,7 @@ void lqr_trackingModelClass::initialize()
                     ->intgData);
   rtsiSetSolverName(&(&lqr_tracking_M)->solverInfo,"ode5");
   rtmSetTPtr(getRTM(), &(&lqr_tracking_M)->Timing.tArray[0]);
-  (&lqr_tracking_M)->Timing.stepSize0 = 0.016666666666666666;
+  (&lqr_tracking_M)->Timing.stepSize0 = 0.01;
 
   /* block I/O */
   (void) memset(((void *) &lqr_tracking_B), 0,

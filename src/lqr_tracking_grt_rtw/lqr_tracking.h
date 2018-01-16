@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_tracking".
  *
- * Model version              : 1.509
+ * Model version              : 1.515
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan  8 10:24:36 2018
+ * C++ source code generated on : Tue Jan 16 17:45:31 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -215,6 +215,7 @@ typedef struct {
   real_T virtual_control[4];           /* '<Root>/virtual_control' */
   real_T motor_speed[6];               /* '<Root>/motor_speed' */
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
+  real_T ref[3];                       /* '<Root>/ref' */
 } ExtY_lqr_tracking_T;
 
 /* Real-time Model Data Structure */

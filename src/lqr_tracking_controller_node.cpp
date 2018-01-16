@@ -44,11 +44,15 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   gController.lqr_tracking_U.X[2 ]  = odometry.position_W.z();
 
   Eigen::Matrix3d R_W_B = odometry.orientation_W_B.toRotationMatrix();
-  Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
+/*  Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
 
   gController.lqr_tracking_U.X[3 ]  = velocity_W.x();
   gController.lqr_tracking_U.X[4 ]  = velocity_W.y();
-  gController.lqr_tracking_U.X[5 ]  = velocity_W.z();
+  gController.lqr_tracking_U.X[5 ]  = velocity_W.z();*/
+
+  gController.lqr_tracking_U.X[3 ]  = odometry.velocity_B.x();
+  gController.lqr_tracking_U.X[4 ]  = odometry.velocity_B.y();
+  gController.lqr_tracking_U.X[5 ]  = odometry.velocity_B.z();
 
   double psi, phi, teta;
   psi = atan2(R_W_B(1,0),R_W_B(0,0));
@@ -59,7 +63,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   gController.lqr_tracking_U.X[7 ]  = teta;
   gController.lqr_tracking_U.X[8 ]  = psi;
 
-  Eigen::Matrix3d H;
+  /*Eigen::Matrix3d H;
   H << 1.0, sin(phi)*tan(teta), cos(phi)*tan(teta),
        0.0, cos(phi),           -sin(phi),
        0.0, sin(phi)/cos(teta), cos(phi)/cos(teta);
@@ -67,7 +71,10 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
 
   gController.lqr_tracking_U.X[9 ]  = euler_rate.x();
   gController.lqr_tracking_U.X[10]  = euler_rate.y();
-  gController.lqr_tracking_U.X[11]  = euler_rate.z();
+  gController.lqr_tracking_U.X[11]  = euler_rate.z();*/
+  gController.lqr_tracking_U.X[9 ]  = odometry.angular_velocity_B.x();
+  gController.lqr_tracking_U.X[10]  = odometry.angular_velocity_B.y();
+  gController.lqr_tracking_U.X[11]  = odometry.angular_velocity_B.z();
 }
 
 /*void MultiDofJointTrajectoryCallback(
@@ -217,18 +224,23 @@ int main(int argc, char** argv) {
 
     // Publish: UAV state in World frame
     gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
+    uav_state_msg->position_ref.x  = gController.lqr_tracking_Y.ref[0];
+    uav_state_msg->position_ref.y  = gController.lqr_tracking_Y.ref[1];
+    uav_state_msg->position_ref.z  = gController.lqr_tracking_Y.ref[2];
+    uav_state_msg->heading_ref     = 0.0;
+
     uav_state_msg->position_W.x  = gController.lqr_tracking_U.X[0];
     uav_state_msg->position_W.y  = gController.lqr_tracking_U.X[1];
     uav_state_msg->position_W.z  = gController.lqr_tracking_U.X[2];
-    uav_state_msg->velocity_W.x  = gController.lqr_tracking_U.X[3];
-    uav_state_msg->velocity_W.y  = gController.lqr_tracking_U.X[4];
-    uav_state_msg->velocity_W.z  = gController.lqr_tracking_U.X[5];
+    uav_state_msg->velocity_B.x  = gController.lqr_tracking_U.X[3];
+    uav_state_msg->velocity_B.y  = gController.lqr_tracking_U.X[4];
+    uav_state_msg->velocity_B.z  = gController.lqr_tracking_U.X[5];
     uav_state_msg->euler_angle.x = gController.lqr_tracking_U.X[6];
     uav_state_msg->euler_angle.y = gController.lqr_tracking_U.X[7];
     uav_state_msg->euler_angle.z = gController.lqr_tracking_U.X[8];
-    uav_state_msg->euler_rate.x  = gController.lqr_tracking_U.X[9];
-    uav_state_msg->euler_rate.y  = gController.lqr_tracking_U.X[10];
-    uav_state_msg->euler_rate.z  = gController.lqr_tracking_U.X[11];
+    uav_state_msg->rotation_speed_B.x  = gController.lqr_tracking_U.X[9];
+    uav_state_msg->rotation_speed_B.y  = gController.lqr_tracking_U.X[10];
+    uav_state_msg->rotation_speed_B.z  = gController.lqr_tracking_U.X[11];
     uav_state_msg->total_thrust  = gController.lqr_tracking_Y.virtual_control[0];
     uav_state_msg->moment.x      = gController.lqr_tracking_Y.virtual_control[1];
     uav_state_msg->moment.y      = gController.lqr_tracking_Y.virtual_control[2];
