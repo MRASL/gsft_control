@@ -234,7 +234,6 @@ int main(int argc, char** argv) {
     uav_state_msg->position_ref.z  = gController.lqr_hovering_Y.ref[2];
     uav_state_msg->heading_ref     = gController.lqr_hovering_Y.ref[3];
 
-
     uav_state_msg->position_W.x  = gController.lqr_hovering_U.X[0];
     uav_state_msg->position_W.y  = gController.lqr_hovering_U.X[1];
     uav_state_msg->position_W.z  = gController.lqr_hovering_U.X[2];
