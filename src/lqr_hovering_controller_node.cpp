@@ -155,7 +155,7 @@ int main(int argc, char** argv) {
   ros::Publisher uav_state_pub_;
   uav_state_pub_ = nh.advertise<gsft_control::UAVState>(gsft_control::default_topics::UAV_STATE, 1);
 
-  ros::Rate r(100);
+  ros::Rate r(225);
 
   gCommand_active = false;
   gEmergency_status = false;
