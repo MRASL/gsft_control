@@ -9,7 +9,7 @@
  *
  * Model version              : 1.571
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 17:06:32 2018
+ * C++ source code generated on : Thu Jan 18 17:22:03 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -37,10 +37,10 @@ const ConstP_lqr_outer_T lqr_outer_ConstP = {
   /* Expression: Kx_lqr
    * Referenced by: '<S1>/                   '
    */
-  { 13.693372885112028, 0.0, 0.0, 0.0, 6.8754230485360583, 0.0, 0.0, 0.0, 0.0,
-    1.1547005383792508, 0.0, 0.0, 0.0, 0.0, 1.1547005383792512, 0.0, 0.0, 0.0,
-    0.0, 0.1172776626404315, 0.0, 0.30594046802846264, 0.0, 0.0, 0.0, 0.0,
-    0.34542502226807992, 0.0, 0.0, 0.0, 0.0, 0.15182025099858598 },
+  { 13.693372885112037, 0.0, 0.0, 0.0, 6.8754230485360592, 0.0, 0.0, 0.0, 0.0,
+    1.1547005383792492, 0.0, 0.0, 0.0, 0.0, 1.1547005383792501, 0.0, 0.0, 0.0,
+    0.0, 0.32441256794444173, 0.0, 0.305940468028462, 0.0, 0.0, 0.0, 0.0,
+    0.34542502226807947, 0.0, 0.0, 0.0, 0.0, 0.25375227245552678 },
 
   /* Expression: B_ENU_inv
    * Referenced by: '<Root>/Gain'

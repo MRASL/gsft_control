@@ -9,7 +9,7 @@
  *
  * Model version              : 1.571
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 17:06:32 2018
+ * C++ source code generated on : Thu Jan 18 17:22:03 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -305,11 +305,11 @@ void lqr_outerModelClass::step()
    *  Gain: '<S1>/ '
    *  Integrator: '<S1>/Integrator'
    */
-  rtb_u_0[0] = 10.000000000000007 * lqr_outer_X.Integrator_CSTATE[0] + -0.0 *
+  rtb_u_0[0] = 10.0 * lqr_outer_X.Integrator_CSTATE[0] + -0.0 *
     lqr_outer_X.Integrator_CSTATE[1];
   rtb_u_0[1] = lqr_outer_B.roll;
   rtb_u_0[2] = lqr_outer_B.pitch;
-  rtb_u_0[3] = -0.0 * lqr_outer_X.Integrator_CSTATE[0] + 0.036514837167011 *
+  rtb_u_0[3] = -0.0 * lqr_outer_X.Integrator_CSTATE[0] + 0.1581138830084188 *
     lqr_outer_X.Integrator_CSTATE[1];
   for (x = 0; x < 4; x++) {
     /* Gain: '<S1>/                   ' incorporates:
