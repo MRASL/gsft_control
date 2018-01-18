@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.568
+ * Model version              : 1.571
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 16:39:44 2018
+ * C++ source code generated on : Thu Jan 18 17:06:32 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,10 +149,20 @@
 
 /* Block signals (auto storage) */
 typedef struct {
+  real_T RateTransition2[12];          /* '<S3>/Rate Transition2' */
+  real_T u[2];                         /* '<S3>/                   ' */
+  real_T Fcn1;                         /* '<S3>/Fcn1' */
+  real_T Fcn;                          /* '<S3>/Fcn' */
+  real_T ZeroOrderHold[2];             /* '<S3>/Zero-Order Hold' */
+  real_T roll;                         /* '<S1>/roll' */
+  real_T pitch;                        /* '<S1>/pitch' */
   real_T Sum7;                         /* '<S1>/Sum7' */
   real_T psi_e;                        /* '<S1>/psi_e' */
+  real_T RateTransition;               /* '<S3>/Rate Transition' */
+  real_T RateTransition1;              /* '<S3>/Rate Transition1' */
   real_T xe;                           /* '<S3>/xe' */
   real_T ye;                           /* '<S3>/ye' */
+  real_T ref[4];                       /* '<Root>/MATLAB Function' */
 } B_lqr_outer_T;
 
 /* Continuous states (auto storage) */
@@ -260,10 +270,14 @@ struct tag_RTM_lqr_outer_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
