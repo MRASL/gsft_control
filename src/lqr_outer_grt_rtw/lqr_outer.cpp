@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.560
+ * Model version              : 1.563
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 14:17:51 2018
+ * C++ source code generated on : Thu Jan 18 14:47:05 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -375,10 +375,10 @@ void lqr_outerModelClass::step()
    *  Integrator: '<S3>/Integrator'
    *  Sum: '<S3>/Sum'
    */
-  tmp_1[0] = 0.11180339887498933 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.0 *
+  tmp_1[0] = 0.22360679774997852 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.0 *
     lqr_outer_X.Integrator_CSTATE_b[1];
   tmp_1[1] = -0.0 * lqr_outer_X.Integrator_CSTATE_b[0];
-  tmp_1[1] += 0.1118033988749899 * lqr_outer_X.Integrator_CSTATE_b[1];
+  tmp_1[1] += 0.22360679774997935 * lqr_outer_X.Integrator_CSTATE_b[1];
   for (i = 0; i < 2; i++) {
     /* Gain: '<S3>/                   ' incorporates:
      *  Inport: '<Root>/X'
@@ -394,77 +394,25 @@ void lqr_outerModelClass::step()
     rtb_xddydd[i] = tmp_1[i] - rtb_rads_to_RPM;
   }
 
+  /* Sum: '<S1>/Sum5' incorporates:
+   *  Fcn: '<S3>/Fcn'
+   *  Inport: '<Root>/X'
+   */
+  lqr_outer_B.Sum5 = (rtb_xddydd[0] * std::cos(lqr_outer_U.X[8]) + rtb_xddydd[1]
+                      * std::sin(lqr_outer_U.X[8])) / 9.81 - lqr_outer_U.X[7];
+
+  /* Sum: '<S1>/Sum6' incorporates:
+   *  Fcn: '<S3>/Fcn1'
+   *  Inport: '<Root>/X'
+   */
+  lqr_outer_B.Sum6 = (rtb_xddydd[0] * std::sin(lqr_outer_U.X[8]) - rtb_xddydd[1]
+                      * std::cos(lqr_outer_U.X[8])) / 9.81 - lqr_outer_U.X[6];
+
   /* Sum: '<S1>/Sum7' incorporates:
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
   lqr_outer_B.Sum7 = rtb_Clock - lqr_outer_U.X[2];
-
-  /* Fcn: '<S3>/Fcn' incorporates:
-   *  Inport: '<Root>/X'
-   */
-  rtb_Clock = (rtb_xddydd[0] * std::cos(lqr_outer_U.X[8]) + rtb_xddydd[1] * std::
-               sin(lqr_outer_U.X[8])) / 9.81;
-
-  /* Saturate: '<S1>/pitch' */
-  if (rtb_Clock > 0.52359877559829882) {
-    rtb_Clock = 0.52359877559829882;
-  } else {
-    if (rtb_Clock < -0.52359877559829882) {
-      rtb_Clock = -0.52359877559829882;
-    }
-  }
-
-  /* End of Saturate: '<S1>/pitch' */
-
-  /* Sum: '<S1>/Sum5' incorporates:
-   *  Inport: '<Root>/X'
-   */
-  rtb_Clock -= lqr_outer_U.X[7];
-
-  /* Saturate: '<S1>/pitch_e' */
-  if (rtb_Clock > 0.52359877559829882) {
-    lqr_outer_B.pitch_e = 0.52359877559829882;
-  } else if (rtb_Clock < -0.52359877559829882) {
-    lqr_outer_B.pitch_e = -0.52359877559829882;
-  } else {
-    lqr_outer_B.pitch_e = rtb_Clock;
-  }
-
-  /* End of Saturate: '<S1>/pitch_e' */
-
-  /* Fcn: '<S3>/Fcn1' incorporates:
-   *  Inport: '<Root>/X'
-   */
-  rtb_Clock = (rtb_xddydd[0] * std::sin(lqr_outer_U.X[8]) - rtb_xddydd[1] * std::
-               cos(lqr_outer_U.X[8])) / 9.81;
-
-  /* Saturate: '<S1>/roll' */
-  if (rtb_Clock > 0.52359877559829882) {
-    rtb_Clock = 0.52359877559829882;
-  } else {
-    if (rtb_Clock < -0.52359877559829882) {
-      rtb_Clock = -0.52359877559829882;
-    }
-  }
-
-  /* End of Saturate: '<S1>/roll' */
-
-  /* Sum: '<S1>/Sum6' incorporates:
-   *  Inport: '<Root>/X'
-   */
-  rtb_Clock -= lqr_outer_U.X[6];
-
-  /* Saturate: '<S1>/roll_e' */
-  if (rtb_Clock > 0.52359877559829882) {
-    lqr_outer_B.roll_e = 0.52359877559829882;
-  } else if (rtb_Clock < -0.52359877559829882) {
-    lqr_outer_B.roll_e = -0.52359877559829882;
-  } else {
-    lqr_outer_B.roll_e = rtb_Clock;
-  }
-
-  /* End of Saturate: '<S1>/roll_e' */
 
   /* Sum: '<S1>/Sum4' incorporates:
    *  Inport: '<Root>/X'
@@ -472,50 +420,28 @@ void lqr_outerModelClass::step()
    */
   rtb_Clock = psi - lqr_outer_U.X[8];
 
-  /* Saturate: '<S1>/yaw_e' */
-  if (rtb_Clock > 0.52359877559829882) {
-    lqr_outer_B.yaw_e = 0.52359877559829882;
-  } else if (rtb_Clock < -0.52359877559829882) {
-    lqr_outer_B.yaw_e = -0.52359877559829882;
+  /* Saturate: '<S1>/psi_e' */
+  if (rtb_Clock > 0.78539816339744828) {
+    lqr_outer_B.psi_e = 0.78539816339744828;
+  } else if (rtb_Clock < -0.78539816339744828) {
+    lqr_outer_B.psi_e = -0.78539816339744828;
   } else {
-    lqr_outer_B.yaw_e = rtb_Clock;
+    lqr_outer_B.psi_e = rtb_Clock;
   }
 
-  /* End of Saturate: '<S1>/yaw_e' */
+  /* End of Saturate: '<S1>/psi_e' */
 
   /* Sum: '<S3>/Sum1' incorporates:
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  rtb_Clock = (real_T)x - lqr_outer_U.X[0];
-
-  /* Saturate: '<S3>/x_e' */
-  if (rtb_Clock > 1.0) {
-    lqr_outer_B.x_e = 1.0;
-  } else if (rtb_Clock < -1.0) {
-    lqr_outer_B.x_e = -1.0;
-  } else {
-    lqr_outer_B.x_e = rtb_Clock;
-  }
-
-  /* End of Saturate: '<S3>/x_e' */
+  lqr_outer_B.Sum1 = (real_T)x - lqr_outer_U.X[0];
 
   /* Sum: '<S3>/Sum2' incorporates:
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  rtb_Clock = (real_T)y - lqr_outer_U.X[1];
-
-  /* Saturate: '<S3>/y_e' */
-  if (rtb_Clock > 1.0) {
-    lqr_outer_B.y_e = 1.0;
-  } else if (rtb_Clock < -1.0) {
-    lqr_outer_B.y_e = -1.0;
-  } else {
-    lqr_outer_B.y_e = rtb_Clock;
-  }
-
-  /* End of Saturate: '<S3>/y_e' */
+  lqr_outer_B.Sum2 = (real_T)y - lqr_outer_U.X[1];
   if (rtmIsMajorTimeStep((&lqr_outer_M))) {
     rt_ertODEUpdateContinuousStates(&(&lqr_outer_M)->solverInfo);
 
@@ -561,13 +487,13 @@ void lqr_outerModelClass::lqr_outer_derivatives()
 
   /* Derivatives for Integrator: '<S1>/Integrator' */
   _rtXdot->Integrator_CSTATE[0] = lqr_outer_B.Sum7;
-  _rtXdot->Integrator_CSTATE[1] = lqr_outer_B.roll_e;
-  _rtXdot->Integrator_CSTATE[2] = lqr_outer_B.pitch_e;
-  _rtXdot->Integrator_CSTATE[3] = lqr_outer_B.yaw_e;
+  _rtXdot->Integrator_CSTATE[1] = lqr_outer_B.Sum6;
+  _rtXdot->Integrator_CSTATE[2] = lqr_outer_B.Sum5;
+  _rtXdot->Integrator_CSTATE[3] = lqr_outer_B.psi_e;
 
   /* Derivatives for Integrator: '<S3>/Integrator' */
-  _rtXdot->Integrator_CSTATE_b[0] = lqr_outer_B.x_e;
-  _rtXdot->Integrator_CSTATE_b[1] = lqr_outer_B.y_e;
+  _rtXdot->Integrator_CSTATE_b[0] = lqr_outer_B.Sum1;
+  _rtXdot->Integrator_CSTATE_b[1] = lqr_outer_B.Sum2;
 }
 
 /* Model initialize function */
