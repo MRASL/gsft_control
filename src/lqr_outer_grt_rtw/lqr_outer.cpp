@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.571
+ * Model version              : 1.572
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 17:39:40 2018
+ * C++ source code generated on : Thu Jan 18 17:48:19 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -20,25 +20,6 @@
 
 #include "lqr_outer.h"
 #include "lqr_outer_private.h"
-
-static void rate_scheduler(RT_MODEL_lqr_outer_T *const lqr_outer_M);
-
-/*
- *   This function updates active task flag for each subrate.
- * The function is called at model base rate, hence the
- * generated code self-manages all its subrates.
- */
-static void rate_scheduler(RT_MODEL_lqr_outer_T *const lqr_outer_M)
-{
-  /* Compute which subrates run during the next base time step.  Subrates
-   * are an integer multiple of the base rate counter.  Therefore, the subtask
-   * counter is reset when it reaches its limit (zero means run).
-   */
-  (lqr_outer_M->Timing.TaskCounters.TID[2])++;
-  if ((lqr_outer_M->Timing.TaskCounters.TID[2]) > 1) {/* Sample time: [0.02s, 0.0s] */
-    lqr_outer_M->Timing.TaskCounters.TID[2] = 0;
-  }
-}
 
 /*
  * This function updates continuous states using the ODE5 fixed-step
@@ -180,12 +161,12 @@ void lqr_outerModelClass::step()
 {
   int32_T x;
   int32_T y;
+  real_T psi;
   real_T rtb_Sum2_h[4];
+  real_T rtb_Clock;
   real_T tmp[8];
   real_T rtb_u_0[4];
   real_T tmp_0[4];
-  real_T rtb_xddydd_idx_0;
-  real_T rtb_xddydd_idx_1;
   real_T rtb_rads_to_RPM;
   if (rtmIsMajorTimeStep((&lqr_outer_M))) {
     /* set solver stop time */
@@ -206,90 +187,6 @@ void lqr_outerModelClass::step()
     (&lqr_outer_M)->Timing.t[0] = rtsiGetT(&(&lqr_outer_M)->solverInfo);
   }
 
-  /* RateTransition: '<S3>/Rate Transition2' incorporates:
-   *  Inport: '<Root>/X'
-   */
-  if ((rtmIsMajorTimeStep((&lqr_outer_M)) &&
-       (&lqr_outer_M)->Timing.TaskCounters.TID[1] == 0) && (rtmIsMajorTimeStep((
-         &lqr_outer_M)) &&
-       (&lqr_outer_M)->Timing.TaskCounters.TID[2] == 0)) {
-    memcpy(&lqr_outer_B.RateTransition2[0], &lqr_outer_U.X[0], 12U * sizeof
-           (real_T));
-  }
-
-  /* End of RateTransition: '<S3>/Rate Transition2' */
-  if (rtmIsMajorTimeStep((&lqr_outer_M)) &&
-      (&lqr_outer_M)->Timing.TaskCounters.TID[2] == 0) {
-    /* Gain: '<S3>/                   ' incorporates:
-     *  SignalConversion: '<S3>/TmpSignal ConversionAt                   Inport1'
-     */
-    for (x = 0; x < 2; x++) {
-      lqr_outer_B.u[x] = 0.0;
-      lqr_outer_B.u[x] += lqr_outer_ConstP._Gain_a[x] *
-        lqr_outer_B.RateTransition2[0];
-      lqr_outer_B.u[x] += lqr_outer_ConstP._Gain_a[x + 2] *
-        lqr_outer_B.RateTransition2[1];
-      lqr_outer_B.u[x] += lqr_outer_ConstP._Gain_a[x + 4] *
-        lqr_outer_B.RateTransition2[3];
-      lqr_outer_B.u[x] += lqr_outer_ConstP._Gain_a[x + 6] *
-        lqr_outer_B.RateTransition2[4];
-    }
-
-    /* End of Gain: '<S3>/                   ' */
-  }
-
-  /* Sum: '<S3>/Sum' incorporates:
-   *  Gain: '<S3>/ '
-   *  Integrator: '<S3>/Integrator'
-   */
-  rtb_xddydd_idx_0 = (0.22360679774997846 * lqr_outer_X.Integrator_CSTATE_b[0] +
-                      -0.0 * lqr_outer_X.Integrator_CSTATE_b[1]) -
-    lqr_outer_B.u[0];
-  rtb_xddydd_idx_1 = (-0.0 * lqr_outer_X.Integrator_CSTATE_b[0] +
-                      0.2236067977499793 * lqr_outer_X.Integrator_CSTATE_b[1]) -
-    lqr_outer_B.u[1];
-
-  /* Fcn: '<S3>/Fcn1' */
-  lqr_outer_B.Fcn1 = (rtb_xddydd_idx_0 * std::sin(lqr_outer_B.RateTransition2[8])
-                      - rtb_xddydd_idx_1 * std::cos(lqr_outer_B.RateTransition2
-    [8])) / 9.81;
-
-  /* Fcn: '<S3>/Fcn' */
-  lqr_outer_B.Fcn = (rtb_xddydd_idx_0 * std::cos(lqr_outer_B.RateTransition2[8])
-                     + rtb_xddydd_idx_1 * std::sin(lqr_outer_B.RateTransition2[8]))
-    / 9.81;
-
-  /* ZeroOrderHold: '<S3>/Zero-Order Hold' */
-  if (rtmIsMajorTimeStep((&lqr_outer_M)) &&
-      (&lqr_outer_M)->Timing.TaskCounters.TID[2] == 0) {
-    lqr_outer_B.ZeroOrderHold[0] = lqr_outer_B.Fcn1;
-    lqr_outer_B.ZeroOrderHold[1] = lqr_outer_B.Fcn;
-
-    /* Saturate: '<S1>/roll' */
-    if (lqr_outer_B.ZeroOrderHold[0] > 0.52359877559829882) {
-      lqr_outer_B.roll = 0.52359877559829882;
-    } else if (lqr_outer_B.ZeroOrderHold[0] < -0.52359877559829882) {
-      lqr_outer_B.roll = -0.52359877559829882;
-    } else {
-      lqr_outer_B.roll = lqr_outer_B.ZeroOrderHold[0];
-    }
-
-    /* End of Saturate: '<S1>/roll' */
-
-    /* Saturate: '<S1>/pitch' */
-    if (lqr_outer_B.ZeroOrderHold[1] > 0.52359877559829882) {
-      lqr_outer_B.pitch = 0.52359877559829882;
-    } else if (lqr_outer_B.ZeroOrderHold[1] < -0.52359877559829882) {
-      lqr_outer_B.pitch = -0.52359877559829882;
-    } else {
-      lqr_outer_B.pitch = lqr_outer_B.ZeroOrderHold[1];
-    }
-
-    /* End of Saturate: '<S1>/pitch' */
-  }
-
-  /* End of ZeroOrderHold: '<S3>/Zero-Order Hold' */
-
   /* SignalConversion: '<S1>/TmpSignal ConversionAt                   Inport1' incorporates:
    *  Gain: '<S1>/                   '
    *  Inport: '<Root>/X'
@@ -307,8 +204,8 @@ void lqr_outerModelClass::step()
    */
   rtb_u_0[0] = 10.000000000000007 * lqr_outer_X.Integrator_CSTATE[0] + -0.0 *
     lqr_outer_X.Integrator_CSTATE[1];
-  rtb_u_0[1] = lqr_outer_B.roll;
-  rtb_u_0[2] = lqr_outer_B.pitch;
+  rtb_u_0[1] = lqr_outer_ConstB.roll;
+  rtb_u_0[2] = lqr_outer_ConstB.pitch;
   rtb_u_0[3] = -0.0 * lqr_outer_X.Integrator_CSTATE[0] + 0.036514837167011 *
     lqr_outer_X.Integrator_CSTATE[1];
   for (x = 0; x < 4; x++) {
@@ -336,7 +233,7 @@ void lqr_outerModelClass::step()
     /* Gain: '<Root>/Gain' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    rtb_xddydd_idx_0 = lqr_outer_ConstP.Gain_Gain[x + 18] * rtb_Sum2_h[3] +
+    rtb_Clock = lqr_outer_ConstP.Gain_Gain[x + 18] * rtb_Sum2_h[3] +
       (lqr_outer_ConstP.Gain_Gain[x + 12] * rtb_Sum2_h[2] +
        (lqr_outer_ConstP.Gain_Gain[x + 6] * rtb_Sum2_h[1] +
         lqr_outer_ConstP.Gain_Gain[x] * rtb_Sum2_h[0]));
@@ -344,40 +241,40 @@ void lqr_outerModelClass::step()
     /* Sqrt: '<Root>/Sqrt1' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    rtb_xddydd_idx_1 = std::sqrt(116978.4923343994 * rtb_xddydd_idx_0);
+    psi = std::sqrt(116978.4923343994 * rtb_Clock);
 
     /* Gain: '<Root>/rads_to_RPM' */
-    rtb_rads_to_RPM = 9.5493 * rtb_xddydd_idx_1;
+    rtb_rads_to_RPM = 9.5493 * psi;
 
     /* Gain: '<Root>/mapping_0_200' incorporates:
      *  Constant: '<Root>/Constant1'
      *  Sum: '<Root>/Sum3'
      */
-    rtb_xddydd_idx_0 = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
+    rtb_Clock = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
-    if (rtb_xddydd_idx_0 > 200.0) {
+    if (rtb_Clock > 200.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_outer_Y.motor_command[x] = 200.0;
-    } else if (rtb_xddydd_idx_0 < 0.0) {
+    } else if (rtb_Clock < 0.0) {
       /* Outport: '<Root>/motor_command' */
       lqr_outer_Y.motor_command[x] = 0.0;
     } else {
       /* Outport: '<Root>/motor_command' */
-      lqr_outer_Y.motor_command[x] = rtb_xddydd_idx_0;
+      lqr_outer_Y.motor_command[x] = rtb_Clock;
     }
 
     /* End of Saturate: '<Root>/Saturation' */
 
     /* Outport: '<Root>/motor_speed' */
-    lqr_outer_Y.motor_speed[x] = rtb_xddydd_idx_1;
+    lqr_outer_Y.motor_speed[x] = psi;
 
     /* Outport: '<Root>/motor_RPM' */
     lqr_outer_Y.motor_RPM[x] = rtb_rads_to_RPM;
   }
 
   /* Clock: '<Root>/Clock' */
-  rtb_xddydd_idx_0 = (&lqr_outer_M)->Timing.t[0];
+  rtb_Clock = (&lqr_outer_M)->Timing.t[0];
 
   /* MATLAB Function: '<Root>/MATLAB Function' */
   /* MATLAB Function 'MATLAB Function': '<S2>:1' */
@@ -386,7 +283,7 @@ void lqr_outerModelClass::step()
   /* '<S2>:1:2' z = 0; */
   /* '<S2>:1:2' psi = 0; */
   /* '<S2>:1:3' if t <= 10 */
-  if (rtb_xddydd_idx_0 <= 10.0) {
+  if (rtb_Clock <= 10.0) {
     /* '<S2>:1:4' x = 0; */
     x = 0;
 
@@ -394,11 +291,11 @@ void lqr_outerModelClass::step()
     y = 0;
 
     /* '<S2>:1:6' z = 0.5; */
-    rtb_xddydd_idx_0 = 0.5;
+    rtb_Clock = 0.5;
 
     /* '<S2>:1:7' psi = 0; */
-    rtb_xddydd_idx_1 = 0.0;
-  } else if (rtb_xddydd_idx_0 <= 30.0) {
+    psi = 0.0;
+  } else if (rtb_Clock <= 30.0) {
     /* '<S2>:1:8' elseif t <= 30 */
     /* '<S2>:1:9' x = -1; */
     x = -1;
@@ -407,11 +304,11 @@ void lqr_outerModelClass::step()
     y = 0;
 
     /* '<S2>:1:11' z = 0.5; */
-    rtb_xddydd_idx_0 = 0.5;
+    rtb_Clock = 0.5;
 
     /* '<S2>:1:12' psi = 0; */
-    rtb_xddydd_idx_1 = 0.0;
-  } else if (rtb_xddydd_idx_0 <= 50.0) {
+    psi = 0.0;
+  } else if (rtb_Clock <= 50.0) {
     /* '<S2>:1:13' elseif t <= 50 */
     /* '<S2>:1:14' x = -1; */
     x = -1;
@@ -420,11 +317,11 @@ void lqr_outerModelClass::step()
     y = 1;
 
     /* '<S2>:1:16' z = 0.5; */
-    rtb_xddydd_idx_0 = 0.5;
+    rtb_Clock = 0.5;
 
     /* '<S2>:1:17' psi = 0; */
-    rtb_xddydd_idx_1 = 0.0;
-  } else if (rtb_xddydd_idx_0 <= 70.0) {
+    psi = 0.0;
+  } else if (rtb_Clock <= 70.0) {
     /* '<S2>:1:18' elseif t <= 70 */
     /* '<S2>:1:19' x = -1; */
     x = -1;
@@ -433,10 +330,10 @@ void lqr_outerModelClass::step()
     y = 1;
 
     /* '<S2>:1:21' z = 0.5; */
-    rtb_xddydd_idx_0 = 0.5;
+    rtb_Clock = 0.5;
 
     /* '<S2>:1:22' psi = pi/4; */
-    rtb_xddydd_idx_1 = 0.78539816339744828;
+    psi = 0.78539816339744828;
   } else {
     /* '<S2>:1:23' else */
     /* '<S2>:1:24' x = -1; */
@@ -446,134 +343,77 @@ void lqr_outerModelClass::step()
     y = 1;
 
     /* '<S2>:1:26' z = 0; */
-    rtb_xddydd_idx_0 = 0.0;
+    rtb_Clock = 0.0;
 
     /* '<S2>:1:27' psi = pi/4; */
-    rtb_xddydd_idx_1 = 0.78539816339744828;
+    psi = 0.78539816339744828;
   }
 
+  /* Outport: '<Root>/ref' incorporates:
+   *  MATLAB Function: '<Root>/MATLAB Function'
+   */
   /* '<S2>:1:29' ref = [x;y;z;psi]; */
-  lqr_outer_B.ref[0] = x;
-  lqr_outer_B.ref[1] = y;
-  lqr_outer_B.ref[2] = rtb_xddydd_idx_0;
-  lqr_outer_B.ref[3] = rtb_xddydd_idx_1;
-
-  /* End of MATLAB Function: '<Root>/MATLAB Function' */
-
-  /* Outport: '<Root>/ref' */
-  lqr_outer_Y.ref[0] = lqr_outer_B.ref[0];
-  lqr_outer_Y.ref[1] = lqr_outer_B.ref[1];
-  lqr_outer_Y.ref[2] = lqr_outer_B.ref[2];
-  lqr_outer_Y.ref[3] = lqr_outer_B.ref[3];
-
-  /* Saturate: '<S1>/z' */
-  if (lqr_outer_B.ref[2] > 1.0) {
-    rtb_xddydd_idx_0 = 1.0;
-  } else if (lqr_outer_B.ref[2] < 0.0) {
-    rtb_xddydd_idx_0 = 0.0;
-  } else {
-    rtb_xddydd_idx_0 = lqr_outer_B.ref[2];
-  }
-
-  /* End of Saturate: '<S1>/z' */
+  lqr_outer_Y.ref[0] = x;
+  lqr_outer_Y.ref[1] = y;
+  lqr_outer_Y.ref[2] = rtb_Clock;
+  lqr_outer_Y.ref[3] = psi;
 
   /* Sum: '<S1>/Sum7' incorporates:
    *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  lqr_outer_B.Sum7 = rtb_xddydd_idx_0 - lqr_outer_U.X[2];
-
-  /* Saturate: '<S1>/yaw' */
-  if (lqr_outer_B.ref[3] > 6.2831853071795862) {
-    rtb_xddydd_idx_0 = 6.2831853071795862;
-  } else if (lqr_outer_B.ref[3] < -6.2831853071795862) {
-    rtb_xddydd_idx_0 = -6.2831853071795862;
-  } else {
-    rtb_xddydd_idx_0 = lqr_outer_B.ref[3];
-  }
-
-  /* End of Saturate: '<S1>/yaw' */
+  lqr_outer_B.Sum7 = rtb_Clock - lqr_outer_U.X[2];
 
   /* Sum: '<S1>/Sum4' incorporates:
    *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  rtb_xddydd_idx_0 -= lqr_outer_U.X[8];
+  rtb_Clock = psi - lqr_outer_U.X[8];
 
   /* Saturate: '<S1>/psi_e' */
-  if (rtb_xddydd_idx_0 > 0.52359877559829882) {
+  if (rtb_Clock > 0.52359877559829882) {
     lqr_outer_B.psi_e = 0.52359877559829882;
-  } else if (rtb_xddydd_idx_0 < -0.52359877559829882) {
+  } else if (rtb_Clock < -0.52359877559829882) {
     lqr_outer_B.psi_e = -0.52359877559829882;
   } else {
-    lqr_outer_B.psi_e = rtb_xddydd_idx_0;
+    lqr_outer_B.psi_e = rtb_Clock;
   }
 
   /* End of Saturate: '<S1>/psi_e' */
 
-  /* RateTransition: '<S3>/Rate Transition' incorporates:
-   *  RateTransition: '<S3>/Rate Transition1'
+  /* Sum: '<S3>/Sum1' incorporates:
+   *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  if ((rtmIsMajorTimeStep((&lqr_outer_M)) &&
-       (&lqr_outer_M)->Timing.TaskCounters.TID[1] == 0) && (rtmIsMajorTimeStep((
-         &lqr_outer_M)) &&
-       (&lqr_outer_M)->Timing.TaskCounters.TID[2] == 0)) {
-    lqr_outer_B.RateTransition = lqr_outer_B.ref[0];
-    lqr_outer_B.RateTransition1 = lqr_outer_B.ref[1];
+  rtb_Clock = (real_T)x - lqr_outer_U.X[0];
+
+  /* Saturate: '<S3>/xe' */
+  if (rtb_Clock > 1.0) {
+    lqr_outer_B.xe = 1.0;
+  } else if (rtb_Clock < -1.0) {
+    lqr_outer_B.xe = -1.0;
+  } else {
+    lqr_outer_B.xe = rtb_Clock;
   }
 
-  /* End of RateTransition: '<S3>/Rate Transition' */
-  if (rtmIsMajorTimeStep((&lqr_outer_M)) &&
-      (&lqr_outer_M)->Timing.TaskCounters.TID[2] == 0) {
-    /* Saturate: '<S3>/x' */
-    if (lqr_outer_B.RateTransition > 1.0) {
-      rtb_xddydd_idx_0 = 1.0;
-    } else if (lqr_outer_B.RateTransition < -1.0) {
-      rtb_xddydd_idx_0 = -1.0;
-    } else {
-      rtb_xddydd_idx_0 = lqr_outer_B.RateTransition;
-    }
+  /* End of Saturate: '<S3>/xe' */
 
-    /* End of Saturate: '<S3>/x' */
+  /* Sum: '<S3>/Sum2' incorporates:
+   *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
+   */
+  rtb_Clock = (real_T)y - lqr_outer_U.X[1];
 
-    /* Sum: '<S3>/Sum1' */
-    rtb_xddydd_idx_0 -= lqr_outer_B.RateTransition2[0];
-
-    /* Saturate: '<S3>/xe' */
-    if (rtb_xddydd_idx_0 > 1.0) {
-      lqr_outer_B.xe = 1.0;
-    } else if (rtb_xddydd_idx_0 < -1.0) {
-      lqr_outer_B.xe = -1.0;
-    } else {
-      lqr_outer_B.xe = rtb_xddydd_idx_0;
-    }
-
-    /* End of Saturate: '<S3>/xe' */
-
-    /* Saturate: '<S3>/y' */
-    if (lqr_outer_B.RateTransition1 > 1.0) {
-      rtb_xddydd_idx_0 = 1.0;
-    } else if (lqr_outer_B.RateTransition1 < -1.0) {
-      rtb_xddydd_idx_0 = -1.0;
-    } else {
-      rtb_xddydd_idx_0 = lqr_outer_B.RateTransition1;
-    }
-
-    /* End of Saturate: '<S3>/y' */
-
-    /* Sum: '<S3>/Sum2' */
-    rtb_xddydd_idx_0 -= lqr_outer_B.RateTransition2[1];
-
-    /* Saturate: '<S3>/ye' */
-    if (rtb_xddydd_idx_0 > 1.0) {
-      lqr_outer_B.ye = 1.0;
-    } else if (rtb_xddydd_idx_0 < -1.0) {
-      lqr_outer_B.ye = -1.0;
-    } else {
-      lqr_outer_B.ye = rtb_xddydd_idx_0;
-    }
-
-    /* End of Saturate: '<S3>/ye' */
+  /* Saturate: '<S3>/ye' */
+  if (rtb_Clock > 1.0) {
+    lqr_outer_B.ye = 1.0;
+  } else if (rtb_Clock < -1.0) {
+    lqr_outer_B.ye = -1.0;
+  } else {
+    lqr_outer_B.ye = rtb_Clock;
   }
 
+  /* End of Saturate: '<S3>/ye' */
   if (rtmIsMajorTimeStep((&lqr_outer_M))) {
     rt_ertODEUpdateContinuousStates(&(&lqr_outer_M)->solverInfo);
 
@@ -608,8 +448,6 @@ void lqr_outerModelClass::step()
         (&lqr_outer_M)->Timing.clockTickH1++;
       }
     }
-
-    rate_scheduler((&lqr_outer_M));
   }                                    /* end MajorTimeStep */
 }
 

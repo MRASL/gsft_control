@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.571
+ * Model version              : 1.572
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 17:39:40 2018
+ * C++ source code generated on : Thu Jan 18 17:48:19 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,20 +149,10 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T RateTransition2[12];          /* '<S3>/Rate Transition2' */
-  real_T u[2];                         /* '<S3>/                   ' */
-  real_T Fcn1;                         /* '<S3>/Fcn1' */
-  real_T Fcn;                          /* '<S3>/Fcn' */
-  real_T ZeroOrderHold[2];             /* '<S3>/Zero-Order Hold' */
-  real_T roll;                         /* '<S1>/roll' */
-  real_T pitch;                        /* '<S1>/pitch' */
   real_T Sum7;                         /* '<S1>/Sum7' */
   real_T psi_e;                        /* '<S1>/psi_e' */
-  real_T RateTransition;               /* '<S3>/Rate Transition' */
-  real_T RateTransition1;              /* '<S3>/Rate Transition1' */
   real_T xe;                           /* '<S3>/xe' */
   real_T ye;                           /* '<S3>/ye' */
-  real_T ref[4];                       /* '<Root>/MATLAB Function' */
 } B_lqr_outer_T;
 
 /* Continuous states (auto storage) */
@@ -183,6 +173,12 @@ typedef struct {
   boolean_T Integrator_CSTATE_b[2];    /* '<S3>/Integrator' */
 } XDis_lqr_outer_T;
 
+/* Invariant block signals (auto storage) */
+typedef const struct tag_ConstB_lqr_outer_T {
+  real_T roll;                         /* '<S1>/roll' */
+  real_T pitch;                        /* '<S1>/pitch' */
+} ConstB_lqr_outer_T;
+
 #ifndef ODE5_INTG
 #define ODE5_INTG
 
@@ -200,11 +196,6 @@ typedef struct {
    * Referenced by: '<Root>/              '
    */
   real_T _Value[4];
-
-  /* Expression: Kxo_lqr
-   * Referenced by: '<S3>/                   '
-   */
-  real_T _Gain_a[8];
 
   /* Expression: Kx_lqr
    * Referenced by: '<S1>/                   '
@@ -270,14 +261,10 @@ struct tag_RTM_lqr_outer_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
-    struct {
-      uint8_T TID[3];
-    } TaskCounters;
-
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[3];
+    time_T tArray[2];
   } Timing;
 };
 
@@ -291,6 +278,8 @@ extern "C" {
 
 }
 #endif
+
+extern const ConstB_lqr_outer_T lqr_outer_ConstB;/* constant block i/o */
 
 /* Constant parameters (auto storage) */
 extern const ConstP_lqr_outer_T lqr_outer_ConstP;
@@ -338,6 +327,16 @@ class lqr_outerModelClass {
   /* Derivatives member function */
   void lqr_outer_derivatives();
 };
+
+/*-
+ * These blocks were eliminated from the model due to optimizations:
+ *
+ * Block '<S3>/ ' : Unused code path elimination
+ * Block '<S3>/                   ' : Unused code path elimination
+ * Block '<S3>/Fcn' : Unused code path elimination
+ * Block '<S3>/Fcn1' : Unused code path elimination
+ * Block '<S3>/Sum' : Unused code path elimination
+ */
 
 /*-
  * The generated code includes comments that allow you to trace directly
