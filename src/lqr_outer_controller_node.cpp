@@ -217,26 +217,26 @@ int main(int argc, char** argv) {
 
     // Publish: UAV state in World frame
     gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-    uav_state_msg->x_ref         = gController.lqr_outer_Y.x_ref;
-    uav_state_msg->y_ref         = gController.lqr_outer_Y.y_ref;
-    uav_state_msg->z_ref         = gController.lqr_outer_Y.z_ref;
-    uav_state_msg->heading_ref   = gController.lqr_outer_Y.psi_ref;
+    uav_state_msg->position_ref.x  = gController.lqr_outer_Y.ref[0];
+    uav_state_msg->position_ref.y  = gController.lqr_outer_Y.ref[1];
+    uav_state_msg->position_ref.z  = gController.lqr_outer_Y.ref[2];
+    uav_state_msg->heading_ref     = gController.lqr_outer_Y.ref[3];
 
     uav_state_msg->position_W.x  = gController.lqr_outer_U.X[0];
     uav_state_msg->position_W.y  = gController.lqr_outer_U.X[1];
     uav_state_msg->position_W.z  = gController.lqr_outer_U.X[2];
 
-    uav_state_msg->velocity_W.x  = gController.lqr_outer_U.X[3];
-    uav_state_msg->velocity_W.y  = gController.lqr_outer_U.X[4];
-    uav_state_msg->velocity_W.z  = gController.lqr_outer_U.X[5];
+    uav_state_msg->velocity_B.x  = gController.lqr_outer_U.X[3];
+    uav_state_msg->velocity_B.y  = gController.lqr_outer_U.X[4];
+    uav_state_msg->velocity_B.z  = gController.lqr_outer_U.X[5];
 
     uav_state_msg->euler_angle.x = gController.lqr_outer_U.X[6];
     uav_state_msg->euler_angle.y = gController.lqr_outer_U.X[7];
     uav_state_msg->euler_angle.z = gController.lqr_outer_U.X[8];
 
-    uav_state_msg->euler_rate.x  = gController.lqr_outer_U.X[9];
-    uav_state_msg->euler_rate.y  = gController.lqr_outer_U.X[10];
-    uav_state_msg->euler_rate.z  = gController.lqr_outer_U.X[11];
+    uav_state_msg->rotation_speed_B.x  = gController.lqr_outer_U.X[9];
+    uav_state_msg->rotation_speed_B.y  = gController.lqr_outer_U.X[10];
+    uav_state_msg->rotation_speed_B.z  = gController.lqr_outer_U.X[11];
 
     uav_state_msg->total_thrust  = gController.lqr_outer_Y.virtual_control[0];
     uav_state_msg->moment.x      = gController.lqr_outer_Y.virtual_control[1];

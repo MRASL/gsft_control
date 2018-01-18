@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.544
+ * Model version              : 1.559
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 11 22:38:30 2018
+ * C++ source code generated on : Thu Jan 18 11:36:18 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,20 +149,12 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T Sum4;                         /* '<S1>/Sum4' */
-  real_T RateTransition2[12];          /* '<S3>/Rate Transition2' */
-  real_T u[2];                         /* '<S3>/                   ' */
-  real_T phi_refteta_ref[2];           /* '<S3>/Sum' */
-  real_T pitch;                        /* '<S1>/pitch' */
-  real_T Sum5;                         /* '<S1>/Sum5' */
-  real_T roll;                         /* '<S1>/roll' */
-  real_T Sum6;                         /* '<S1>/Sum6' */
   real_T Sum7;                         /* '<S1>/Sum7' */
-  real_T RateTransition;               /* '<S3>/Rate Transition' */
-  real_T RateTransition1;              /* '<S3>/Rate Transition1' */
+  real_T pitch_e;                      /* '<S1>/pitch_e' */
+  real_T roll_e;                       /* '<S1>/roll_e' */
+  real_T yaw_e;                        /* '<S1>/yaw_e' */
   real_T Sum1;                         /* '<S3>/Sum1' */
   real_T Sum2;                         /* '<S3>/Sum2' */
-  real_T ref[4];                       /* '<Root>/MATLAB Function' */
 } B_lqr_outer_T;
 
 /* Continuous states (auto storage) */
@@ -233,8 +225,7 @@ typedef struct {
   real_T virtual_control[4];           /* '<Root>/virtual_control' */
   real_T motor_speed[6];               /* '<Root>/motor_speed' */
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
-  real_T x_ref;                        /* '<Root>/x_ref' */
-  real_T y_ref;                        /* '<Root>/y_ref' */
+  real_T ref[4];                       /* '<Root>/ref' */
   real_T z_ref;                        /* '<Root>/z_ref' */
   real_T psi_ref;                      /* '<Root>/psi_ref' */
 } ExtY_lqr_outer_T;
@@ -278,14 +269,10 @@ struct tag_RTM_lqr_outer_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
-    struct {
-      uint8_T TID[3];
-    } TaskCounters;
-
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[3];
+    time_T tArray[2];
   } Timing;
 };
 
