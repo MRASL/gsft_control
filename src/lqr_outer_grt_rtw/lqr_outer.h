@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.559
+ * Model version              : 1.560
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 13:39:51 2018
+ * C++ source code generated on : Thu Jan 18 13:55:41 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -153,8 +153,8 @@ typedef struct {
   real_T pitch_e;                      /* '<S1>/pitch_e' */
   real_T roll_e;                       /* '<S1>/roll_e' */
   real_T yaw_e;                        /* '<S1>/yaw_e' */
-  real_T Sum1;                         /* '<S3>/Sum1' */
-  real_T Sum2;                         /* '<S3>/Sum2' */
+  real_T x_e;                          /* '<S3>/x_e' */
+  real_T y_e;                          /* '<S3>/y_e' */
 } B_lqr_outer_T;
 
 /* Continuous states (auto storage) */

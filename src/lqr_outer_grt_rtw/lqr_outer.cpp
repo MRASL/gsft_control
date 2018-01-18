@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.559
+ * Model version              : 1.560
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 13:39:51 2018
+ * C++ source code generated on : Thu Jan 18 13:55:41 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -375,10 +375,10 @@ void lqr_outerModelClass::step()
    *  Integrator: '<S3>/Integrator'
    *  Sum: '<S3>/Sum'
    */
-  tmp_1[0] = 0.00707106781186545 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.0 *
+  tmp_1[0] = 0.070710678118654738 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.0 *
     lqr_outer_X.Integrator_CSTATE_b[1];
   tmp_1[1] = -0.0 * lqr_outer_X.Integrator_CSTATE_b[0];
-  tmp_1[1] += 0.0070710678118654779 * lqr_outer_X.Integrator_CSTATE_b[1];
+  tmp_1[1] += 0.070710678118654863 * lqr_outer_X.Integrator_CSTATE_b[1];
   for (i = 0; i < 2; i++) {
     /* Gain: '<S3>/                   ' incorporates:
      *  Inport: '<Root>/X'
@@ -487,13 +487,35 @@ void lqr_outerModelClass::step()
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  lqr_outer_B.Sum1 = (real_T)x - lqr_outer_U.X[0];
+  rtb_Clock = (real_T)x - lqr_outer_U.X[0];
+
+  /* Saturate: '<S3>/x_e' */
+  if (rtb_Clock > 1.0) {
+    lqr_outer_B.x_e = 1.0;
+  } else if (rtb_Clock < -1.0) {
+    lqr_outer_B.x_e = -1.0;
+  } else {
+    lqr_outer_B.x_e = rtb_Clock;
+  }
+
+  /* End of Saturate: '<S3>/x_e' */
 
   /* Sum: '<S3>/Sum2' incorporates:
    *  Inport: '<Root>/X'
    *  MATLAB Function: '<Root>/MATLAB Function'
    */
-  lqr_outer_B.Sum2 = (real_T)y - lqr_outer_U.X[1];
+  rtb_Clock = (real_T)y - lqr_outer_U.X[1];
+
+  /* Saturate: '<S3>/y_e' */
+  if (rtb_Clock > 1.0) {
+    lqr_outer_B.y_e = 1.0;
+  } else if (rtb_Clock < -1.0) {
+    lqr_outer_B.y_e = -1.0;
+  } else {
+    lqr_outer_B.y_e = rtb_Clock;
+  }
+
+  /* End of Saturate: '<S3>/y_e' */
   if (rtmIsMajorTimeStep((&lqr_outer_M))) {
     rt_ertODEUpdateContinuousStates(&(&lqr_outer_M)->solverInfo);
 
@@ -544,8 +566,8 @@ void lqr_outerModelClass::lqr_outer_derivatives()
   _rtXdot->Integrator_CSTATE[3] = lqr_outer_B.yaw_e;
 
   /* Derivatives for Integrator: '<S3>/Integrator' */
-  _rtXdot->Integrator_CSTATE_b[0] = lqr_outer_B.Sum1;
-  _rtXdot->Integrator_CSTATE_b[1] = lqr_outer_B.Sum2;
+  _rtXdot->Integrator_CSTATE_b[0] = lqr_outer_B.x_e;
+  _rtXdot->Integrator_CSTATE_b[1] = lqr_outer_B.y_e;
 }
 
 /* Model initialize function */
