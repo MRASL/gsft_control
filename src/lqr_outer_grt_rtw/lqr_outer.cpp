@@ -9,7 +9,7 @@
  *
  * Model version              : 1.572
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 17:48:19 2018
+ * C++ source code generated on : Thu Jan 18 17:56:24 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -164,9 +164,14 @@ void lqr_outerModelClass::step()
   real_T psi;
   real_T rtb_Sum2_h[4];
   real_T rtb_Clock;
-  real_T tmp[8];
+  real_T tmp[2];
+  real_T rtb_xddydd_0[3];
+  real_T rtb_xddydd_1[3];
+  real_T rtb_xddydd_2[3];
+  real_T rtb_xddydd_3[3];
+  real_T tmp_0[8];
   real_T rtb_u_0[4];
-  real_T tmp_0[4];
+  real_T tmp_1[4];
   real_T rtb_rads_to_RPM;
   if (rtmIsMajorTimeStep((&lqr_outer_M))) {
     /* set solver stop time */
@@ -187,13 +192,44 @@ void lqr_outerModelClass::step()
     (&lqr_outer_M)->Timing.t[0] = rtsiGetT(&(&lqr_outer_M)->solverInfo);
   }
 
+  /* Gain: '<S3>/ ' incorporates:
+   *  Integrator: '<S3>/Integrator'
+   *  Sum: '<S3>/Sum'
+   */
+  tmp[0] = 0.22360679774997846 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.0 *
+    lqr_outer_X.Integrator_CSTATE_b[1];
+  tmp[1] = -0.0 * lqr_outer_X.Integrator_CSTATE_b[0];
+  tmp[1] += 0.2236067977499793 * lqr_outer_X.Integrator_CSTATE_b[1];
+  for (x = 0; x < 2; x++) {
+    /* Gain: '<S3>/                   ' incorporates:
+     *  Inport: '<Root>/X'
+     *  SignalConversion: '<S3>/TmpSignal ConversionAt                   Inport1'
+     *  Sum: '<S3>/Sum'
+     */
+    rtb_Clock = lqr_outer_ConstP._Gain_a[x + 6] * lqr_outer_U.X[4] +
+      (lqr_outer_ConstP._Gain_a[x + 4] * lqr_outer_U.X[3] +
+       (lqr_outer_ConstP._Gain_a[x + 2] * lqr_outer_U.X[1] +
+        lqr_outer_ConstP._Gain_a[x] * lqr_outer_U.X[0]));
+
+    /* Sum: '<S3>/Sum' */
+    rtb_Clock = tmp[x] - rtb_Clock;
+
+    /* Fcn: '<S3>/Fcn1' */
+    rtb_xddydd_0[x] = rtb_Clock;
+    rtb_xddydd_1[x] = rtb_Clock;
+
+    /* Fcn: '<S3>/Fcn' */
+    rtb_xddydd_2[x] = rtb_Clock;
+    rtb_xddydd_3[x] = rtb_Clock;
+  }
+
   /* SignalConversion: '<S1>/TmpSignal ConversionAt                   Inport1' incorporates:
    *  Gain: '<S1>/                   '
    *  Inport: '<Root>/X'
    */
-  tmp[0] = lqr_outer_U.X[2];
+  tmp_0[0] = lqr_outer_U.X[2];
   for (x = 0; x < 7; x++) {
-    tmp[x + 1] = lqr_outer_U.X[5 + x];
+    tmp_0[x + 1] = lqr_outer_U.X[5 + x];
   }
 
   /* End of SignalConversion: '<S1>/TmpSignal ConversionAt                   Inport1' */
@@ -204,24 +240,65 @@ void lqr_outerModelClass::step()
    */
   rtb_u_0[0] = 10.000000000000007 * lqr_outer_X.Integrator_CSTATE[0] + -0.0 *
     lqr_outer_X.Integrator_CSTATE[1];
-  rtb_u_0[1] = lqr_outer_ConstB.roll;
-  rtb_u_0[2] = lqr_outer_ConstB.pitch;
+
+  /* Saturate: '<S1>/roll' incorporates:
+   *  Fcn: '<S3>/Fcn1'
+   *  Inport: '<Root>/X'
+   */
+  rtb_Clock = (rtb_xddydd_0[0] * std::sin(lqr_outer_U.X[8]) - rtb_xddydd_1[1] *
+               std::cos(lqr_outer_U.X[8])) / 9.81;
+  if (rtb_Clock > 0.52359877559829882) {
+    /* Sum: '<S1>/Sum' */
+    rtb_u_0[1] = 0.52359877559829882;
+  } else if (rtb_Clock < -0.52359877559829882) {
+    /* Sum: '<S1>/Sum' */
+    rtb_u_0[1] = -0.52359877559829882;
+  } else {
+    /* Sum: '<S1>/Sum' */
+    rtb_u_0[1] = rtb_Clock;
+  }
+
+  /* End of Saturate: '<S1>/roll' */
+
+  /* Saturate: '<S1>/pitch' incorporates:
+   *  Fcn: '<S3>/Fcn'
+   *  Inport: '<Root>/X'
+   */
+  rtb_Clock = (rtb_xddydd_2[0] * std::cos(lqr_outer_U.X[8]) + rtb_xddydd_3[1] *
+               std::sin(lqr_outer_U.X[8])) / 9.81;
+  if (rtb_Clock > 0.52359877559829882) {
+    /* Sum: '<S1>/Sum' */
+    rtb_u_0[2] = 0.52359877559829882;
+  } else if (rtb_Clock < -0.52359877559829882) {
+    /* Sum: '<S1>/Sum' */
+    rtb_u_0[2] = -0.52359877559829882;
+  } else {
+    /* Sum: '<S1>/Sum' */
+    rtb_u_0[2] = rtb_Clock;
+  }
+
+  /* End of Saturate: '<S1>/pitch' */
+
+  /* Sum: '<S1>/Sum' incorporates:
+   *  Gain: '<S1>/ '
+   *  Integrator: '<S1>/Integrator'
+   */
   rtb_u_0[3] = -0.0 * lqr_outer_X.Integrator_CSTATE[0] + 0.036514837167011 *
     lqr_outer_X.Integrator_CSTATE[1];
   for (x = 0; x < 4; x++) {
     /* Gain: '<S1>/                   ' incorporates:
      *  Sum: '<S1>/Sum'
      */
-    tmp_0[x] = 0.0;
+    tmp_1[x] = 0.0;
     for (y = 0; y < 8; y++) {
-      tmp_0[x] += lqr_outer_ConstP._Gain_c[(y << 2) + x] * tmp[y];
+      tmp_1[x] += lqr_outer_ConstP._Gain_c[(y << 2) + x] * tmp_0[y];
     }
 
     /* Sum: '<Root>/Sum2' incorporates:
      *  Constant: '<Root>/              '
      *  Sum: '<S1>/Sum'
      */
-    rtb_Sum2_h[x] = (rtb_u_0[x] - tmp_0[x]) + lqr_outer_ConstP._Value[x];
+    rtb_Sum2_h[x] = (rtb_u_0[x] - tmp_1[x]) + lqr_outer_ConstP._Value[x];
   }
 
   /* Outport: '<Root>/virtual_control' */

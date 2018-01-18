@@ -9,7 +9,7 @@
  *
  * Model version              : 1.572
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 18 17:48:19 2018
+ * C++ source code generated on : Thu Jan 18 17:56:24 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -21,20 +21,18 @@
 #include "lqr_outer.h"
 #include "lqr_outer_private.h"
 
-/* Invariant block signals (auto storage) */
-const ConstB_lqr_outer_T lqr_outer_ConstB = {
-  0.0
-  ,                                    /* '<S1>/roll' */
-  0.0
-  /* '<S1>/pitch' */
-};
-
 /* Constant parameters (auto storage) */
 const ConstP_lqr_outer_T lqr_outer_ConstP = {
   /* Expression: [mass*gra 0 0 0]'
    * Referenced by: '<Root>/              '
    */
   { 15.141735000000002, 0.0, 0.0, 0.0 },
+
+  /* Expression: Kxo_lqr
+   * Referenced by: '<S3>/                   '
+   */
+  { 0.82025583495169885, 0.0, 0.0, 0.82025583495169918, 1.2808636421974828, 0.0,
+    0.0, 1.2808636421974824 },
 
   /* Expression: Kx_lqr
    * Referenced by: '<S1>/                   '
