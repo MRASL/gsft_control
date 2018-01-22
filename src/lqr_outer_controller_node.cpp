@@ -65,9 +65,12 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
        0.0, sin(phi)/cos(teta), cos(phi)/cos(teta);
   Eigen::Vector3d euler_rate = H*odometry.angular_velocity_B;
 
-  gController.lqr_outer_U.X[9 ]  = euler_rate.x();
+/*  gController.lqr_outer_U.X[9 ]  = euler_rate.x();
   gController.lqr_outer_U.X[10]  = euler_rate.y();
-  gController.lqr_outer_U.X[11]  = euler_rate.z();
+  gController.lqr_outer_U.X[11]  = euler_rate.z();*/
+    gController.lqr_outer_U.X[9 ]  = odometry.angular_velocity_B.x();
+    gController.lqr_outer_U.X[10]  = odometry.angular_velocity_B.y();
+    gController.lqr_outer_U.X[11]  = odometry.angular_velocity_B.z();
 }
 
 /*void MultiDofJointTrajectoryCallback(
