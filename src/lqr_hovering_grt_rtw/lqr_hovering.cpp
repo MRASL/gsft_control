@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_hovering".
  *
- * Model version              : 1.527
+ * Model version              : 1.528
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 16 17:09:25 2018
+ * C++ source code generated on : Mon Jan 22 14:11:43 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -190,11 +190,11 @@ void lqr_hoveringModelClass::step()
      *  Integrator: '<Root>/Integrator'
      *  Sum: '<Root>/Sum'
      */
-    rtb_Clock = lqr_hovering_ConstP._Gain[x + 12] *
-      lqr_hovering_X.Integrator_CSTATE[3] + (lqr_hovering_ConstP._Gain[x + 8] *
-      lqr_hovering_X.Integrator_CSTATE[2] + (lqr_hovering_ConstP._Gain[x + 4] *
-      lqr_hovering_X.Integrator_CSTATE[1] + lqr_hovering_ConstP._Gain[x] *
-      lqr_hovering_X.Integrator_CSTATE[0]));
+    u0 = lqr_hovering_ConstP._Gain[x + 12] * lqr_hovering_X.Integrator_CSTATE[3]
+      + (lqr_hovering_ConstP._Gain[x + 8] * lqr_hovering_X.Integrator_CSTATE[2]
+         + (lqr_hovering_ConstP._Gain[x + 4] * lqr_hovering_X.Integrator_CSTATE
+            [1] + lqr_hovering_ConstP._Gain[x] *
+            lqr_hovering_X.Integrator_CSTATE[0]));
 
     /* Gain: '<Root>/                   ' incorporates:
      *  Inport: '<Root>/X'
@@ -211,7 +211,7 @@ void lqr_hoveringModelClass::step()
      *  Constant: '<Root>/              '
      *  Sum: '<Root>/Sum'
      */
-    rtb_Sum2[x] = (rtb_Clock - tmp[x]) + lqr_hovering_ConstP._Value[x];
+    rtb_Sum2[x] = (u0 - tmp[x]) + lqr_hovering_ConstP._Value[x];
   }
 
   /* Outport: '<Root>/virtual_control' */
@@ -223,7 +223,7 @@ void lqr_hoveringModelClass::step()
     /* Gain: '<Root>/Gain' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    rtb_Clock = lqr_hovering_ConstP.Gain_Gain[x + 18] * rtb_Sum2[3] +
+    u0 = lqr_hovering_ConstP.Gain_Gain[x + 18] * rtb_Sum2[3] +
       (lqr_hovering_ConstP.Gain_Gain[x + 12] * rtb_Sum2[2] +
        (lqr_hovering_ConstP.Gain_Gain[x + 6] * rtb_Sum2[1] +
         lqr_hovering_ConstP.Gain_Gain[x] * rtb_Sum2[0]));
@@ -231,7 +231,7 @@ void lqr_hoveringModelClass::step()
     /* Sqrt: '<Root>/Sqrt' incorporates:
      *  Gain: '<Root>/Gain2'
      */
-    rtb_Clock = std::sqrt(116978.4923343994 * rtb_Clock);
+    rtb_Clock = std::sqrt(149253.73134328358 * u0);
 
     /* Gain: '<Root>/rads_to_RPM' */
     rtb_rads_to_RPM = 9.5493 * rtb_Clock;
@@ -331,24 +331,6 @@ void lqr_hoveringModelClass::step()
   lqr_hovering_Y.ref[2] = rtb_Clock;
   lqr_hovering_Y.ref[3] = 0.0;
 
-  /* Sum: '<Root>/Sum1' incorporates:
-   *  Inport: '<Root>/X'
-   *  MATLAB Function: '<Root>/MATLAB Function'
-   */
-  lqr_hovering_B.Sum1 = (real_T)x - lqr_hovering_U.X[0];
-
-  /* Sum: '<Root>/Sum4' incorporates:
-   *  Inport: '<Root>/X'
-   *  MATLAB Function: '<Root>/MATLAB Function'
-   */
-  lqr_hovering_B.Sum4 = (real_T)y - lqr_hovering_U.X[1];
-
-  /* Sum: '<Root>/Sum5' incorporates:
-   *  Inport: '<Root>/X'
-   *  MATLAB Function: '<Root>/MATLAB Function'
-   */
-  lqr_hovering_B.Sum5 = rtb_Clock - lqr_hovering_U.X[2];
-
   /* Saturate: '<Root>/psi_e' incorporates:
    *  Inport: '<Root>/X'
    *  Sum: '<Root>/Sum6'
@@ -362,6 +344,57 @@ void lqr_hoveringModelClass::step()
   }
 
   /* End of Saturate: '<Root>/psi_e' */
+
+  /* Sum: '<Root>/Sum1' incorporates:
+   *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
+   */
+  u0 = (real_T)x - lqr_hovering_U.X[0];
+
+  /* Saturate: '<Root>/xe' */
+  if (u0 > 1.0) {
+    lqr_hovering_B.xe = 1.0;
+  } else if (u0 < -1.0) {
+    lqr_hovering_B.xe = -1.0;
+  } else {
+    lqr_hovering_B.xe = u0;
+  }
+
+  /* End of Saturate: '<Root>/xe' */
+
+  /* Sum: '<Root>/Sum4' incorporates:
+   *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
+   */
+  u0 = (real_T)y - lqr_hovering_U.X[1];
+
+  /* Saturate: '<Root>/ye' */
+  if (u0 > 1.0) {
+    lqr_hovering_B.ye = 1.0;
+  } else if (u0 < -1.0) {
+    lqr_hovering_B.ye = -1.0;
+  } else {
+    lqr_hovering_B.ye = u0;
+  }
+
+  /* End of Saturate: '<Root>/ye' */
+
+  /* Sum: '<Root>/Sum5' incorporates:
+   *  Inport: '<Root>/X'
+   *  MATLAB Function: '<Root>/MATLAB Function'
+   */
+  u0 = rtb_Clock - lqr_hovering_U.X[2];
+
+  /* Saturate: '<Root>/ze' */
+  if (u0 > 0.5) {
+    lqr_hovering_B.ze = 0.5;
+  } else if (u0 < -0.5) {
+    lqr_hovering_B.ze = -0.5;
+  } else {
+    lqr_hovering_B.ze = u0;
+  }
+
+  /* End of Saturate: '<Root>/ze' */
   if (rtmIsMajorTimeStep((&lqr_hovering_M))) {
     rt_ertODEUpdateContinuousStates(&(&lqr_hovering_M)->solverInfo);
 
@@ -406,9 +439,9 @@ void lqr_hoveringModelClass::lqr_hovering_derivatives()
   _rtXdot = ((XDot_lqr_hovering_T *) (&lqr_hovering_M)->derivs);
 
   /* Derivatives for Integrator: '<Root>/Integrator' */
-  _rtXdot->Integrator_CSTATE[0] = lqr_hovering_B.Sum1;
-  _rtXdot->Integrator_CSTATE[1] = lqr_hovering_B.Sum4;
-  _rtXdot->Integrator_CSTATE[2] = lqr_hovering_B.Sum5;
+  _rtXdot->Integrator_CSTATE[0] = lqr_hovering_B.xe;
+  _rtXdot->Integrator_CSTATE[1] = lqr_hovering_B.ye;
+  _rtXdot->Integrator_CSTATE[2] = lqr_hovering_B.ze;
   _rtXdot->Integrator_CSTATE[3] = lqr_hovering_B.psi_e;
 }
 
