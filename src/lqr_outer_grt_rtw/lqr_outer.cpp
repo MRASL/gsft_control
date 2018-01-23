@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.576
+ * Model version              : 1.577
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 22 22:28:19 2018
+ * C++ source code generated on : Mon Jan 22 22:31:25 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -392,6 +392,8 @@ void lqr_outerModelClass::step()
     y = 0;
 
     /* '<S2>:1:6' z = 0.5; */
+    rtb_xddydd_idx_0 = 0.5;
+
     /* '<S2>:1:7' psi = 0; */
   } else if (rtb_xddydd_idx_0 <= 30.0) {
     /* '<S2>:1:8' elseif t <= 30 */
@@ -402,6 +404,8 @@ void lqr_outerModelClass::step()
     y = 0;
 
     /* '<S2>:1:11' z = 0.5; */
+    rtb_xddydd_idx_0 = 0.5;
+
     /* '<S2>:1:12' psi = 0; */
   } else if (rtb_xddydd_idx_0 <= 50.0) {
     /* '<S2>:1:13' elseif t <= 50 */
@@ -412,6 +416,8 @@ void lqr_outerModelClass::step()
     y = 1;
 
     /* '<S2>:1:16' z = 0.5; */
+    rtb_xddydd_idx_0 = 0.5;
+
     /* '<S2>:1:17' psi = 0; */
   } else {
     /* '<S2>:1:18' else */
@@ -421,14 +427,16 @@ void lqr_outerModelClass::step()
     /* '<S2>:1:20' y = 1; */
     y = 1;
 
-    /* '<S2>:1:21' z = 0.5; */
+    /* '<S2>:1:21' z = 0.0; */
+    rtb_xddydd_idx_0 = 0.0;
+
     /* '<S2>:1:22' psi = 0; */
   }
 
   /* '<S2>:1:24' ref = [x;y;z;psi]; */
   lqr_outer_B.ref[0] = x;
   lqr_outer_B.ref[1] = y;
-  lqr_outer_B.ref[2] = 0.5;
+  lqr_outer_B.ref[2] = rtb_xddydd_idx_0;
   lqr_outer_B.ref[3] = 0.0;
 
   /* End of MATLAB Function: '<Root>/MATLAB Function' */
