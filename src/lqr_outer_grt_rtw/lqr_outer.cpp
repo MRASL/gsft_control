@@ -9,7 +9,7 @@
  *
  * Model version              : 1.577
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 22 20:47:38 2018
+ * C++ source code generated on : Mon Jan 22 20:55:54 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -404,10 +404,10 @@ void lqr_outerModelClass::step()
    *  Gain: '<S3>/ '
    *  Integrator: '<S3>/Integrator'
    */
-  rtb_Clock = (0.14142135623730959 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.0 *
+  rtb_Clock = (0.049999999999999954 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.0 *
                lqr_outer_X.Integrator_CSTATE_b[1]) - lqr_outer_B.u[0];
   rtb_xddydd_idx_1 = (-0.0 * lqr_outer_X.Integrator_CSTATE_b[0] +
-                      0.14142135623730936 * lqr_outer_X.Integrator_CSTATE_b[1])
+                      0.05000000000000019 * lqr_outer_X.Integrator_CSTATE_b[1])
     - lqr_outer_B.u[1];
 
   /* Fcn: '<S3>/Fcn1' */
