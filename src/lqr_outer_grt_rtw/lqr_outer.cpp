@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.577
+ * Model version              : 1.576
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 22 21:27:37 2018
+ * C++ source code generated on : Mon Jan 22 22:28:19 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -80,7 +80,7 @@ void lqr_outerModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   real_T *f5 = id->f[5];
   real_T hB[6];
   int_T i;
-  int_T nXc = 6;
+  int_T nXc = 4;
   rtsiSetSimTimeStep(si,MINOR_TIME_STEP);
 
   /* Save the state values at time t in y, we'll use x as ynew. */
@@ -180,10 +180,11 @@ void lqr_outerModelClass::step()
 {
   int32_T x;
   int32_T y;
-  real_T rtb_FMxMyMz[4];
-  real_T rtb_Clock;
+  real_T rtb_Sum2_h[4];
   real_T tmp[8];
+  real_T rtb_u_0[4];
   real_T tmp_0[4];
+  real_T rtb_xddydd_idx_0;
   real_T rtb_xddydd_idx_1;
   real_T rtb_rads_to_RPM;
   if (rtmIsMajorTimeStep((&lqr_outer_M))) {
@@ -204,169 +205,6 @@ void lqr_outerModelClass::step()
   if (rtmIsMinorTimeStep((&lqr_outer_M))) {
     (&lqr_outer_M)->Timing.t[0] = rtsiGetT(&(&lqr_outer_M)->solverInfo);
   }
-
-  /* SignalConversion: '<S1>/TmpSignal ConversionAt                   Inport1' incorporates:
-   *  Gain: '<S1>/                   '
-   *  Inport: '<Root>/X'
-   */
-  tmp[0] = lqr_outer_U.X[2];
-  for (x = 0; x < 7; x++) {
-    tmp[x + 1] = lqr_outer_U.X[5 + x];
-  }
-
-  /* End of SignalConversion: '<S1>/TmpSignal ConversionAt                   Inport1' */
-  for (x = 0; x < 4; x++) {
-    /* Gain: '<S1>/                   ' incorporates:
-     *  Sum: '<S1>/Sum'
-     */
-    tmp_0[x] = 0.0;
-    for (y = 0; y < 8; y++) {
-      tmp_0[x] += lqr_outer_ConstP._Gain_i[(y << 2) + x] * tmp[y];
-    }
-
-    /* Sum: '<S1>/Sum' incorporates:
-     *  Constant: '<S1>/              '
-     *  Gain: '<S1>/ '
-     *  Integrator: '<S1>/Integrator'
-     */
-    rtb_FMxMyMz[x] = ((((lqr_outer_ConstP._Gain[x + 4] *
-                         lqr_outer_X.Integrator_CSTATE[1] +
-                         lqr_outer_ConstP._Gain[x] *
-                         lqr_outer_X.Integrator_CSTATE[0]) +
-                        lqr_outer_ConstP._Gain[x + 8] *
-                        lqr_outer_X.Integrator_CSTATE[2]) +
-                       lqr_outer_ConstP._Gain[x + 12] *
-                       lqr_outer_X.Integrator_CSTATE[3]) +
-                      lqr_outer_ConstP._Value[x]) - tmp_0[x];
-  }
-
-  /* Outport: '<Root>/virtual_control' */
-  lqr_outer_Y.virtual_control[0] = rtb_FMxMyMz[0];
-  lqr_outer_Y.virtual_control[1] = rtb_FMxMyMz[1];
-  lqr_outer_Y.virtual_control[2] = rtb_FMxMyMz[2];
-  lqr_outer_Y.virtual_control[3] = rtb_FMxMyMz[3];
-  for (x = 0; x < 6; x++) {
-    /* Gain: '<Root>/Gain' incorporates:
-     *  Gain: '<Root>/Gain2'
-     */
-    rtb_Clock = lqr_outer_ConstP.Gain_Gain[x + 18] * rtb_FMxMyMz[3] +
-      (lqr_outer_ConstP.Gain_Gain[x + 12] * rtb_FMxMyMz[2] +
-       (lqr_outer_ConstP.Gain_Gain[x + 6] * rtb_FMxMyMz[1] +
-        lqr_outer_ConstP.Gain_Gain[x] * rtb_FMxMyMz[0]));
-
-    /* Sqrt: '<Root>/Sqrt1' incorporates:
-     *  Gain: '<Root>/Gain2'
-     */
-    rtb_xddydd_idx_1 = std::sqrt(149253.73134328358 * rtb_Clock);
-
-    /* Gain: '<Root>/rads_to_RPM' */
-    rtb_rads_to_RPM = 9.5493 * rtb_xddydd_idx_1;
-
-    /* Gain: '<Root>/mapping_0_200' incorporates:
-     *  Constant: '<Root>/Constant1'
-     *  Sum: '<Root>/Sum3'
-     */
-    rtb_Clock = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
-
-    /* Saturate: '<Root>/Saturation' */
-    if (rtb_Clock > 200.0) {
-      /* Outport: '<Root>/motor_command' */
-      lqr_outer_Y.motor_command[x] = 200.0;
-    } else if (rtb_Clock < 0.0) {
-      /* Outport: '<Root>/motor_command' */
-      lqr_outer_Y.motor_command[x] = 0.0;
-    } else {
-      /* Outport: '<Root>/motor_command' */
-      lqr_outer_Y.motor_command[x] = rtb_Clock;
-    }
-
-    /* End of Saturate: '<Root>/Saturation' */
-
-    /* Outport: '<Root>/motor_speed' */
-    lqr_outer_Y.motor_speed[x] = rtb_xddydd_idx_1;
-
-    /* Outport: '<Root>/motor_RPM' */
-    lqr_outer_Y.motor_RPM[x] = rtb_rads_to_RPM;
-  }
-
-  /* Clock: '<Root>/Clock' */
-  rtb_Clock = (&lqr_outer_M)->Timing.t[0];
-
-  /* MATLAB Function: '<Root>/MATLAB Function' */
-  /* MATLAB Function 'MATLAB Function': '<S2>:1' */
-  /* '<S2>:1:2' x = 0; */
-  /* '<S2>:1:2' y = 0; */
-  /* '<S2>:1:2' z = 0; */
-  /* '<S2>:1:2' psi = 0; */
-  /* '<S2>:1:3' if t <= 10 */
-  if (rtb_Clock <= 10.0) {
-    /* '<S2>:1:4' x = 0; */
-    x = 0;
-
-    /* '<S2>:1:5' y = 0; */
-    y = 0;
-
-    /* '<S2>:1:6' z = 0.5; */
-    rtb_Clock = 0.5;
-
-    /* '<S2>:1:7' psi = 0; */
-  } else if (rtb_Clock <= 30.0) {
-    /* '<S2>:1:8' elseif t <= 30 */
-    /* '<S2>:1:9' x = -1; */
-    x = -1;
-
-    /* '<S2>:1:10' y = 0; */
-    y = 0;
-
-    /* '<S2>:1:11' z = 0.5; */
-    rtb_Clock = 0.5;
-
-    /* '<S2>:1:12' psi = 0; */
-  } else if (rtb_Clock <= 50.0) {
-    /* '<S2>:1:13' elseif t <= 50 */
-    /* '<S2>:1:14' x = -1; */
-    x = -1;
-
-    /* '<S2>:1:15' y = 1; */
-    y = 1;
-
-    /* '<S2>:1:16' z = 0.5; */
-    rtb_Clock = 0.5;
-
-    /* '<S2>:1:17' psi = 0; */
-  } else {
-    /* '<S2>:1:18' else */
-    /* '<S2>:1:19' x = -1; */
-    x = -1;
-
-    /* '<S2>:1:20' y = 1; */
-    y = 1;
-
-    /* '<S2>:1:21' z = 0; */
-    rtb_Clock = 0.0;
-
-    /* '<S2>:1:22' psi = 0; */
-  }
-
-  /* '<S2>:1:24' ref = [x;y;z;psi]; */
-  lqr_outer_B.ref[0] = x;
-  lqr_outer_B.ref[1] = y;
-  lqr_outer_B.ref[2] = rtb_Clock;
-  lqr_outer_B.ref[3] = 0.0;
-
-  /* End of MATLAB Function: '<Root>/MATLAB Function' */
-
-  /* Outport: '<Root>/ref' */
-  lqr_outer_Y.ref[0] = lqr_outer_B.ref[0];
-  lqr_outer_Y.ref[1] = lqr_outer_B.ref[1];
-  lqr_outer_Y.ref[2] = lqr_outer_B.ref[2];
-  lqr_outer_Y.ref[3] = lqr_outer_B.ref[3];
-
-  /* Outport: '<Root>/z_ref' */
-  lqr_outer_Y.z_ref = lqr_outer_B.ref[2];
-
-  /* Outport: '<Root>/psi_ref' */
-  lqr_outer_Y.psi_ref = lqr_outer_B.ref[3];
 
   /* RateTransition: '<S3>/Rate Transition2' incorporates:
    *  Inport: '<Root>/X'
@@ -404,27 +242,37 @@ void lqr_outerModelClass::step()
    *  Gain: '<S3>/ '
    *  Integrator: '<S3>/Integrator'
    */
-  rtb_Clock = (0.086602540378443962 * lqr_outer_X.Integrator_CSTATE_b[0] + -0.0 *
-               lqr_outer_X.Integrator_CSTATE_b[1]) - lqr_outer_B.u[0];
-  rtb_xddydd_idx_1 = (-0.0 * lqr_outer_X.Integrator_CSTATE_b[0] +
-                      0.086602540378443935 * lqr_outer_X.Integrator_CSTATE_b[1])
-    - lqr_outer_B.u[1];
+  rtb_xddydd_idx_0 = (-0.0 * lqr_outer_X.Integrator_CSTATE_b[0] +
+                      -0.099999999999999936 * lqr_outer_X.Integrator_CSTATE_b[1])
+    - lqr_outer_B.u[0];
+  rtb_xddydd_idx_1 = (0.099999999999999756 * lqr_outer_X.Integrator_CSTATE_b[0]
+                      + -0.0 * lqr_outer_X.Integrator_CSTATE_b[1]) -
+    lqr_outer_B.u[1];
 
   /* Fcn: '<S3>/Fcn1' */
-  lqr_outer_B.Fcn1 = (rtb_Clock * std::sin(lqr_outer_B.RateTransition2[8]) -
-                      rtb_xddydd_idx_1 * std::cos(lqr_outer_B.RateTransition2[8]))
-    / 9.81;
+  lqr_outer_B.Fcn1 = rtb_xddydd_idx_0 * std::cos(lqr_outer_B.RateTransition2[8])
+    + rtb_xddydd_idx_1 * std::sin(lqr_outer_B.RateTransition2[8]);
 
   /* Fcn: '<S3>/Fcn' */
-  lqr_outer_B.Fcn = (rtb_Clock * std::cos(lqr_outer_B.RateTransition2[8]) +
-                     rtb_xddydd_idx_1 * std::sin(lqr_outer_B.RateTransition2[8]))
-    / 9.81;
+  lqr_outer_B.Fcn = -rtb_xddydd_idx_0 * std::sin(lqr_outer_B.RateTransition2[8])
+    + rtb_xddydd_idx_1 * std::cos(lqr_outer_B.RateTransition2[8]);
 
   /* ZeroOrderHold: '<S3>/Zero-Order Hold' */
   if (rtmIsMajorTimeStep((&lqr_outer_M)) &&
       (&lqr_outer_M)->Timing.TaskCounters.TID[2] == 0) {
     lqr_outer_B.ZeroOrderHold[0] = lqr_outer_B.Fcn1;
     lqr_outer_B.ZeroOrderHold[1] = lqr_outer_B.Fcn;
+
+    /* Saturate: '<S1>/roll' */
+    if (lqr_outer_B.ZeroOrderHold[0] > 0.52359877559829882) {
+      lqr_outer_B.roll = 0.52359877559829882;
+    } else if (lqr_outer_B.ZeroOrderHold[0] < -0.52359877559829882) {
+      lqr_outer_B.roll = -0.52359877559829882;
+    } else {
+      lqr_outer_B.roll = lqr_outer_B.ZeroOrderHold[0];
+    }
+
+    /* End of Saturate: '<S1>/roll' */
 
     /* Saturate: '<S1>/pitch' */
     if (lqr_outer_B.ZeroOrderHold[1] > 0.52359877559829882) {
@@ -436,87 +284,168 @@ void lqr_outerModelClass::step()
     }
 
     /* End of Saturate: '<S1>/pitch' */
-
-    /* Saturate: '<S1>/roll ' */
-    if (lqr_outer_B.ZeroOrderHold[0] > 0.52359877559829882) {
-      lqr_outer_B.roll = 0.52359877559829882;
-    } else if (lqr_outer_B.ZeroOrderHold[0] < -0.52359877559829882) {
-      lqr_outer_B.roll = -0.52359877559829882;
-    } else {
-      lqr_outer_B.roll = lqr_outer_B.ZeroOrderHold[0];
-    }
-
-    /* End of Saturate: '<S1>/roll ' */
   }
 
   /* End of ZeroOrderHold: '<S3>/Zero-Order Hold' */
 
-  /* Sum: '<S1>/Sum5' incorporates:
+  /* SignalConversion: '<S1>/TmpSignal ConversionAt                   Inport1' incorporates:
+   *  Gain: '<S1>/                   '
    *  Inport: '<Root>/X'
    */
-  rtb_Clock = lqr_outer_B.pitch - lqr_outer_U.X[7];
-
-  /* Saturate: '<S1>/pitch_e' */
-  if (rtb_Clock > 0.52359877559829882) {
-    lqr_outer_B.pitch_e = 0.52359877559829882;
-  } else if (rtb_Clock < -0.52359877559829882) {
-    lqr_outer_B.pitch_e = -0.52359877559829882;
-  } else {
-    lqr_outer_B.pitch_e = rtb_Clock;
+  tmp[0] = lqr_outer_U.X[2];
+  for (x = 0; x < 7; x++) {
+    tmp[x + 1] = lqr_outer_U.X[5 + x];
   }
 
-  /* End of Saturate: '<S1>/pitch_e' */
+  /* End of SignalConversion: '<S1>/TmpSignal ConversionAt                   Inport1' */
 
-  /* Saturate: '<S1>/psi' */
-  if (lqr_outer_B.ref[3] > 6.2831853071795862) {
-    rtb_Clock = 6.2831853071795862;
-  } else if (lqr_outer_B.ref[3] < -6.2831853071795862) {
-    rtb_Clock = -6.2831853071795862;
-  } else {
-    rtb_Clock = lqr_outer_B.ref[3];
-  }
-
-  /* End of Saturate: '<S1>/psi' */
-
-  /* Sum: '<S1>/Sum4' incorporates:
-   *  Inport: '<Root>/X'
+  /* Sum: '<S1>/Sum' incorporates:
+   *  Gain: '<S1>/ '
+   *  Integrator: '<S1>/Integrator'
    */
-  rtb_Clock -= lqr_outer_U.X[8];
+  rtb_u_0[0] = 9.9999999999999751 * lqr_outer_X.Integrator_CSTATE[0] + -0.0 *
+    lqr_outer_X.Integrator_CSTATE[1];
+  rtb_u_0[1] = lqr_outer_B.roll;
+  rtb_u_0[2] = lqr_outer_B.pitch;
+  rtb_u_0[3] = -0.0 * lqr_outer_X.Integrator_CSTATE[0] + 0.036514837167011018 *
+    lqr_outer_X.Integrator_CSTATE[1];
+  for (x = 0; x < 4; x++) {
+    /* Gain: '<S1>/                   ' incorporates:
+     *  Sum: '<S1>/Sum'
+     */
+    tmp_0[x] = 0.0;
+    for (y = 0; y < 8; y++) {
+      tmp_0[x] += lqr_outer_ConstP._Gain_c[(y << 2) + x] * tmp[y];
+    }
 
-  /* Saturate: '<S1>/psi_e' */
-  if (rtb_Clock > 0.52359877559829882) {
-    lqr_outer_B.psi_e = 0.52359877559829882;
-  } else if (rtb_Clock < -0.52359877559829882) {
-    lqr_outer_B.psi_e = -0.52359877559829882;
-  } else {
-    lqr_outer_B.psi_e = rtb_Clock;
+    /* Sum: '<Root>/Sum2' incorporates:
+     *  Constant: '<Root>/              '
+     *  Sum: '<S1>/Sum'
+     */
+    rtb_Sum2_h[x] = (rtb_u_0[x] - tmp_0[x]) + lqr_outer_ConstP._Value[x];
   }
 
-  /* End of Saturate: '<S1>/psi_e' */
+  /* Outport: '<Root>/virtual_control' */
+  lqr_outer_Y.virtual_control[0] = rtb_Sum2_h[0];
+  lqr_outer_Y.virtual_control[1] = rtb_Sum2_h[1];
+  lqr_outer_Y.virtual_control[2] = rtb_Sum2_h[2];
+  lqr_outer_Y.virtual_control[3] = rtb_Sum2_h[3];
+  for (x = 0; x < 6; x++) {
+    /* Gain: '<Root>/Gain' incorporates:
+     *  Gain: '<Root>/Gain2'
+     */
+    rtb_xddydd_idx_0 = lqr_outer_ConstP.Gain_Gain[x + 18] * rtb_Sum2_h[3] +
+      (lqr_outer_ConstP.Gain_Gain[x + 12] * rtb_Sum2_h[2] +
+       (lqr_outer_ConstP.Gain_Gain[x + 6] * rtb_Sum2_h[1] +
+        lqr_outer_ConstP.Gain_Gain[x] * rtb_Sum2_h[0]));
 
-  /* Sum: '<S1>/Sum6' incorporates:
-   *  Inport: '<Root>/X'
-   */
-  rtb_Clock = lqr_outer_B.roll - lqr_outer_U.X[6];
+    /* Sqrt: '<Root>/Sqrt1' incorporates:
+     *  Gain: '<Root>/Gain2'
+     */
+    rtb_xddydd_idx_1 = std::sqrt(149253.73134328358 * rtb_xddydd_idx_0);
 
-  /* Saturate: '<S1>/roll_e' */
-  if (rtb_Clock > 0.52359877559829882) {
-    lqr_outer_B.roll_e = 0.52359877559829882;
-  } else if (rtb_Clock < -0.52359877559829882) {
-    lqr_outer_B.roll_e = -0.52359877559829882;
-  } else {
-    lqr_outer_B.roll_e = rtb_Clock;
+    /* Gain: '<Root>/rads_to_RPM' */
+    rtb_rads_to_RPM = 9.5493 * rtb_xddydd_idx_1;
+
+    /* Gain: '<Root>/mapping_0_200' incorporates:
+     *  Constant: '<Root>/Constant1'
+     *  Sum: '<Root>/Sum3'
+     */
+    rtb_xddydd_idx_0 = (rtb_rads_to_RPM - 1250.0) * 0.022857142857142857;
+
+    /* Saturate: '<Root>/Saturation' */
+    if (rtb_xddydd_idx_0 > 200.0) {
+      /* Outport: '<Root>/motor_command' */
+      lqr_outer_Y.motor_command[x] = 200.0;
+    } else if (rtb_xddydd_idx_0 < 0.0) {
+      /* Outport: '<Root>/motor_command' */
+      lqr_outer_Y.motor_command[x] = 0.0;
+    } else {
+      /* Outport: '<Root>/motor_command' */
+      lqr_outer_Y.motor_command[x] = rtb_xddydd_idx_0;
+    }
+
+    /* End of Saturate: '<Root>/Saturation' */
+
+    /* Outport: '<Root>/motor_speed' */
+    lqr_outer_Y.motor_speed[x] = rtb_xddydd_idx_1;
+
+    /* Outport: '<Root>/motor_RPM' */
+    lqr_outer_Y.motor_RPM[x] = rtb_rads_to_RPM;
   }
 
-  /* End of Saturate: '<S1>/roll_e' */
+  /* Clock: '<Root>/Clock' */
+  rtb_xddydd_idx_0 = (&lqr_outer_M)->Timing.t[0];
+
+  /* MATLAB Function: '<Root>/MATLAB Function' */
+  /* MATLAB Function 'MATLAB Function': '<S2>:1' */
+  /* '<S2>:1:2' x = 0; */
+  /* '<S2>:1:2' y = 0; */
+  /* '<S2>:1:2' z = 0; */
+  /* '<S2>:1:2' psi = 0; */
+  /* '<S2>:1:3' if t <= 10 */
+  if (rtb_xddydd_idx_0 <= 10.0) {
+    /* '<S2>:1:4' x = 0; */
+    x = 0;
+
+    /* '<S2>:1:5' y = 0; */
+    y = 0;
+
+    /* '<S2>:1:6' z = 0.5; */
+    /* '<S2>:1:7' psi = 0; */
+  } else if (rtb_xddydd_idx_0 <= 30.0) {
+    /* '<S2>:1:8' elseif t <= 30 */
+    /* '<S2>:1:9' x = -1; */
+    x = -1;
+
+    /* '<S2>:1:10' y = 0; */
+    y = 0;
+
+    /* '<S2>:1:11' z = 0.5; */
+    /* '<S2>:1:12' psi = 0; */
+  } else if (rtb_xddydd_idx_0 <= 50.0) {
+    /* '<S2>:1:13' elseif t <= 50 */
+    /* '<S2>:1:14' x = -1; */
+    x = -1;
+
+    /* '<S2>:1:15' y = 1; */
+    y = 1;
+
+    /* '<S2>:1:16' z = 0.5; */
+    /* '<S2>:1:17' psi = 0; */
+  } else {
+    /* '<S2>:1:18' else */
+    /* '<S2>:1:19' x = -1; */
+    x = -1;
+
+    /* '<S2>:1:20' y = 1; */
+    y = 1;
+
+    /* '<S2>:1:21' z = 0.5; */
+    /* '<S2>:1:22' psi = 0; */
+  }
+
+  /* '<S2>:1:24' ref = [x;y;z;psi]; */
+  lqr_outer_B.ref[0] = x;
+  lqr_outer_B.ref[1] = y;
+  lqr_outer_B.ref[2] = 0.5;
+  lqr_outer_B.ref[3] = 0.0;
+
+  /* End of MATLAB Function: '<Root>/MATLAB Function' */
+
+  /* Outport: '<Root>/ref' */
+  lqr_outer_Y.ref[0] = lqr_outer_B.ref[0];
+  lqr_outer_Y.ref[1] = lqr_outer_B.ref[1];
+  lqr_outer_Y.ref[2] = lqr_outer_B.ref[2];
+  lqr_outer_Y.ref[3] = lqr_outer_B.ref[3];
 
   /* Saturate: '<S1>/z' */
   if (lqr_outer_B.ref[2] > 1.0) {
-    rtb_Clock = 1.0;
+    rtb_xddydd_idx_0 = 1.0;
   } else if (lqr_outer_B.ref[2] < 0.0) {
-    rtb_Clock = 0.0;
+    rtb_xddydd_idx_0 = 0.0;
   } else {
-    rtb_Clock = lqr_outer_B.ref[2];
+    rtb_xddydd_idx_0 = lqr_outer_B.ref[2];
   }
 
   /* End of Saturate: '<S1>/z' */
@@ -524,18 +453,34 @@ void lqr_outerModelClass::step()
   /* Sum: '<S1>/Sum7' incorporates:
    *  Inport: '<Root>/X'
    */
-  rtb_Clock -= lqr_outer_U.X[2];
+  lqr_outer_B.Sum7 = rtb_xddydd_idx_0 - lqr_outer_U.X[2];
 
-  /* Saturate: '<S1>/z_e' */
-  if (rtb_Clock > 0.5) {
-    lqr_outer_B.z_e = 0.5;
-  } else if (rtb_Clock < -0.5) {
-    lqr_outer_B.z_e = -0.5;
+  /* Saturate: '<S1>/yaw' */
+  if (lqr_outer_B.ref[3] > 6.2831853071795862) {
+    rtb_xddydd_idx_0 = 6.2831853071795862;
+  } else if (lqr_outer_B.ref[3] < -6.2831853071795862) {
+    rtb_xddydd_idx_0 = -6.2831853071795862;
   } else {
-    lqr_outer_B.z_e = rtb_Clock;
+    rtb_xddydd_idx_0 = lqr_outer_B.ref[3];
   }
 
-  /* End of Saturate: '<S1>/z_e' */
+  /* End of Saturate: '<S1>/yaw' */
+
+  /* Sum: '<S1>/Sum4' incorporates:
+   *  Inport: '<Root>/X'
+   */
+  rtb_xddydd_idx_0 -= lqr_outer_U.X[8];
+
+  /* Saturate: '<S1>/psi_e' */
+  if (rtb_xddydd_idx_0 > 0.52359877559829882) {
+    lqr_outer_B.psi_e = 0.52359877559829882;
+  } else if (rtb_xddydd_idx_0 < -0.52359877559829882) {
+    lqr_outer_B.psi_e = -0.52359877559829882;
+  } else {
+    lqr_outer_B.psi_e = rtb_xddydd_idx_0;
+  }
+
+  /* End of Saturate: '<S1>/psi_e' */
 
   /* RateTransition: '<S3>/Rate Transition' incorporates:
    *  RateTransition: '<S3>/Rate Transition1'
@@ -553,50 +498,50 @@ void lqr_outerModelClass::step()
       (&lqr_outer_M)->Timing.TaskCounters.TID[2] == 0) {
     /* Saturate: '<S3>/x' */
     if (lqr_outer_B.RateTransition > 1.0) {
-      rtb_Clock = 1.0;
+      rtb_xddydd_idx_0 = 1.0;
     } else if (lqr_outer_B.RateTransition < -1.0) {
-      rtb_Clock = -1.0;
+      rtb_xddydd_idx_0 = -1.0;
     } else {
-      rtb_Clock = lqr_outer_B.RateTransition;
+      rtb_xddydd_idx_0 = lqr_outer_B.RateTransition;
     }
 
     /* End of Saturate: '<S3>/x' */
 
     /* Sum: '<S3>/Sum1' */
-    rtb_Clock -= lqr_outer_B.RateTransition2[0];
+    rtb_xddydd_idx_0 -= lqr_outer_B.RateTransition2[0];
 
     /* Saturate: '<S3>/xe' */
-    if (rtb_Clock > 1.0) {
+    if (rtb_xddydd_idx_0 > 1.0) {
       lqr_outer_B.xe = 1.0;
-    } else if (rtb_Clock < -1.0) {
+    } else if (rtb_xddydd_idx_0 < -1.0) {
       lqr_outer_B.xe = -1.0;
     } else {
-      lqr_outer_B.xe = rtb_Clock;
+      lqr_outer_B.xe = rtb_xddydd_idx_0;
     }
 
     /* End of Saturate: '<S3>/xe' */
 
     /* Saturate: '<S3>/y' */
     if (lqr_outer_B.RateTransition1 > 1.0) {
-      rtb_Clock = 1.0;
+      rtb_xddydd_idx_0 = 1.0;
     } else if (lqr_outer_B.RateTransition1 < -1.0) {
-      rtb_Clock = -1.0;
+      rtb_xddydd_idx_0 = -1.0;
     } else {
-      rtb_Clock = lqr_outer_B.RateTransition1;
+      rtb_xddydd_idx_0 = lqr_outer_B.RateTransition1;
     }
 
     /* End of Saturate: '<S3>/y' */
 
     /* Sum: '<S3>/Sum2' */
-    rtb_Clock -= lqr_outer_B.RateTransition2[1];
+    rtb_xddydd_idx_0 -= lqr_outer_B.RateTransition2[1];
 
     /* Saturate: '<S3>/ye' */
-    if (rtb_Clock > 1.0) {
+    if (rtb_xddydd_idx_0 > 1.0) {
       lqr_outer_B.ye = 1.0;
-    } else if (rtb_Clock < -1.0) {
+    } else if (rtb_xddydd_idx_0 < -1.0) {
       lqr_outer_B.ye = -1.0;
     } else {
-      lqr_outer_B.ye = rtb_Clock;
+      lqr_outer_B.ye = rtb_xddydd_idx_0;
     }
 
     /* End of Saturate: '<S3>/ye' */
@@ -648,10 +593,8 @@ void lqr_outerModelClass::lqr_outer_derivatives()
   _rtXdot = ((XDot_lqr_outer_T *) (&lqr_outer_M)->derivs);
 
   /* Derivatives for Integrator: '<S1>/Integrator' */
-  _rtXdot->Integrator_CSTATE[0] = lqr_outer_B.z_e;
-  _rtXdot->Integrator_CSTATE[1] = lqr_outer_B.roll_e;
-  _rtXdot->Integrator_CSTATE[2] = lqr_outer_B.pitch_e;
-  _rtXdot->Integrator_CSTATE[3] = lqr_outer_B.psi_e;
+  _rtXdot->Integrator_CSTATE[0] = lqr_outer_B.Sum7;
+  _rtXdot->Integrator_CSTATE[1] = lqr_outer_B.psi_e;
 
   /* Derivatives for Integrator: '<S3>/Integrator' */
   _rtXdot->Integrator_CSTATE_b[0] = lqr_outer_B.xe;
@@ -724,12 +667,14 @@ void lqr_outerModelClass::initialize()
 
   /* InitializeConditions for Integrator: '<S1>/Integrator' */
   lqr_outer_X.Integrator_CSTATE[0] = 0.0;
-  lqr_outer_X.Integrator_CSTATE[1] = 0.0;
-  lqr_outer_X.Integrator_CSTATE[2] = 0.0;
-  lqr_outer_X.Integrator_CSTATE[3] = 0.0;
 
   /* InitializeConditions for Integrator: '<S3>/Integrator' */
   lqr_outer_X.Integrator_CSTATE_b[0] = 0.0;
+
+  /* InitializeConditions for Integrator: '<S1>/Integrator' */
+  lqr_outer_X.Integrator_CSTATE[1] = 0.0;
+
+  /* InitializeConditions for Integrator: '<S3>/Integrator' */
   lqr_outer_X.Integrator_CSTATE_b[1] = 0.0;
 }
 

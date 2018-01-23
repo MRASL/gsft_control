@@ -7,9 +7,9 @@
  *
  * Code generation for model "lqr_outer".
  *
- * Model version              : 1.577
+ * Model version              : 1.576
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 22 21:27:37 2018
+ * C++ source code generated on : Mon Jan 22 22:28:19 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -154,12 +154,10 @@ typedef struct {
   real_T Fcn1;                         /* '<S3>/Fcn1' */
   real_T Fcn;                          /* '<S3>/Fcn' */
   real_T ZeroOrderHold[2];             /* '<S3>/Zero-Order Hold' */
+  real_T roll;                         /* '<S1>/roll' */
   real_T pitch;                        /* '<S1>/pitch' */
-  real_T roll;                         /* '<S1>/roll ' */
-  real_T pitch_e;                      /* '<S1>/pitch_e' */
+  real_T Sum7;                         /* '<S1>/Sum7' */
   real_T psi_e;                        /* '<S1>/psi_e' */
-  real_T roll_e;                       /* '<S1>/roll_e' */
-  real_T z_e;                          /* '<S1>/z_e' */
   real_T RateTransition;               /* '<S3>/Rate Transition' */
   real_T RateTransition1;              /* '<S3>/Rate Transition1' */
   real_T xe;                           /* '<S3>/xe' */
@@ -169,19 +167,19 @@ typedef struct {
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator_CSTATE[4];         /* '<S1>/Integrator' */
+  real_T Integrator_CSTATE[2];         /* '<S1>/Integrator' */
   real_T Integrator_CSTATE_b[2];       /* '<S3>/Integrator' */
 } X_lqr_outer_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator_CSTATE[4];         /* '<S1>/Integrator' */
+  real_T Integrator_CSTATE[2];         /* '<S1>/Integrator' */
   real_T Integrator_CSTATE_b[2];       /* '<S3>/Integrator' */
 } XDot_lqr_outer_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator_CSTATE[4];      /* '<S1>/Integrator' */
+  boolean_T Integrator_CSTATE[2];      /* '<S1>/Integrator' */
   boolean_T Integrator_CSTATE_b[2];    /* '<S3>/Integrator' */
 } XDis_lqr_outer_T;
 
@@ -199,29 +197,24 @@ typedef struct {
 /* Constant parameters (auto storage) */
 typedef struct {
   /* Expression: [mass*gra 0 0 0]'
-   * Referenced by: '<S1>/              '
+   * Referenced by: '<Root>/              '
    */
   real_T _Value[4];
-
-  /* Expression: Ki_lqr
-   * Referenced by: '<S1>/ '
-   */
-  real_T _Gain[16];
-
-  /* Expression: Kx_lqr
-   * Referenced by: '<S1>/                   '
-   */
-  real_T _Gain_i[32];
-
-  /* Expression: B_ENU_inv
-   * Referenced by: '<Root>/Gain'
-   */
-  real_T Gain_Gain[24];
 
   /* Expression: Kxo_lqr
    * Referenced by: '<S3>/                   '
    */
   real_T _Gain_a[8];
+
+  /* Expression: Kx_lqr
+   * Referenced by: '<S1>/                   '
+   */
+  real_T _Gain_c[32];
+
+  /* Expression: B_ENU_inv
+   * Referenced by: '<Root>/Gain'
+   */
+  real_T Gain_Gain[24];
 } ConstP_lqr_outer_T;
 
 /* External inputs (root inport signals with auto storage) */
@@ -236,8 +229,6 @@ typedef struct {
   real_T motor_speed[6];               /* '<Root>/motor_speed' */
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
   real_T ref[4];                       /* '<Root>/ref' */
-  real_T z_ref;                        /* '<Root>/z_ref' */
-  real_T psi_ref;                      /* '<Root>/psi_ref' */
 } ExtY_lqr_outer_T;
 
 /* Real-time Model Data Structure */
@@ -252,8 +243,8 @@ struct tag_RTM_lqr_outer_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T blkStateChange;
-  real_T odeY[6];
-  real_T odeF[6][6];
+  real_T odeY[4];
+  real_T odeF[6][4];
   ODE5_IntgData intgData;
 
   /*
