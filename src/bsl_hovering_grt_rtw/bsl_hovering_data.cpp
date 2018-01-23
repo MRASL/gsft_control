@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.536
+ * Model version              : 1.538
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 23 12:14:15 2018
+ * C++ source code generated on : Tue Jan 23 12:36:04 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -97,7 +97,7 @@ const ConstB_bsl_hovering_T bsl_hovering_ConstB = {
     0.0,
     0.0
   }
-  /* '<S6>/Transpose' */
+  /* '<S7>/Transpose' */
 };
 
 /* Constant parameters (auto storage) */
@@ -137,14 +137,14 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
     -4.5662100456621006, 4.5662100456620989 },
 
   /* Expression: Qgamma
-   * Referenced by: '<S5>/Q_gamma'
+   * Referenced by: '<S6>/Q_gamma'
    */
   { 0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0002 },
 
   /* Expression: Pgamma0
-   * Referenced by: '<S5>/Unit Delay1'
+   * Referenced by: '<S6>/Unit Delay1'
    */
   { 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0,
@@ -152,12 +152,12 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
 
   /* Pooled Parameter (Expression: C)
    * Referenced by:
-   *   '<S2>/     '
-   *   '<S2>/C'
-   *   '<S2>/C1'
-   *   '<S3>/                      '
-   *   '<S6>/     '
-   *   '<S6>/C'
+   *   '<S3>/     '
+   *   '<S3>/C'
+   *   '<S3>/C1'
+   *   '<S4>/                      '
+   *   '<S7>/     '
+   *   '<S7>/C'
    */
   { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -167,9 +167,9 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
 
   /* Pooled Parameter (Expression: A)
    * Referenced by:
-   *   '<S2>/A'
-   *   '<S2>/A1'
-   *   '<S3>/     '
+   *   '<S3>/A'
+   *   '<S3>/A1'
+   *   '<S4>/     '
    */
   { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
@@ -188,8 +188,8 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
 
   /* Pooled Parameter (Expression: B)
    * Referenced by:
-   *   '<S2>/B'
-   *   '<S3>/          '
+   *   '<S3>/B'
+   *   '<S4>/          '
    */
   { -1.6583697046020462E-8, -1.2642492152501861E-8, 3.2467532467532474E-5,
     -6.6334788184081836E-6, -5.0569968610007424E-6, 0.0064935064935064939,
@@ -215,7 +215,7 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
     0.0037359263050153529 },
 
   /* Expression: Qx
-   * Referenced by: '<S2>/Q_x'
+   * Referenced by: '<S3>/Q_x'
    */
   { 3.3333333333333342E-9, 0.0, 0.0, 5.0000000000000008E-7, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 3.3333333333333342E-9, 0.0, 0.0,
@@ -234,7 +234,7 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
     0.0, 0.0, 5.0000000000000008E-7, 0.0, 0.0, 0.0001 },
 
   /* Expression: Px_tilde0
-   * Referenced by: '<S2>/Unit Delay1'
+   * Referenced by: '<S3>/Unit Delay1'
    */
   { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
@@ -248,7 +248,7 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 },
 
   /* Expression: A'
-   * Referenced by: '<S2>/A''
+   * Referenced by: '<S3>/A''
    */
   { 1.0, 0.0, 0.0, 0.010000000000000002, 0.0, 0.0, 0.0, 0.00049050000000000027,
     0.0, 0.0, 1.6350000000000009E-6, 0.0, 0.0, 1.0, 0.0, 0.0,
@@ -267,20 +267,20 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
 
   /* Pooled Parameter (Expression: R)
    * Referenced by:
-   *   '<S2>/R'
-   *   '<S6>/R'
+   *   '<S3>/R'
+   *   '<S7>/R'
    */
   { 0.001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0001 },
 
   /* Expression: [0 0 0 0 0 bias 0 0 0 0 0 0]
-   * Referenced by: '<S2>/Constant'
+   * Referenced by: '<S3>/Constant'
    */
   { 0.0, 0.0, 0.0, 0.0, 0.0, -0.0981, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   /* Expression: C'
-   * Referenced by: '<S2>/C''
+   * Referenced by: '<S3>/C''
    */
   { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
