@@ -13,3 +13,6 @@ geometry_msgs/Vector3 rotation_speed_B
 # virtual control
 float64 total_thrust
 geometry_msgs/Vector3 moment
+
+geometry_msgs/Vector3 LOE13
+geometry_msgs/Vector3 LOE46
