@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.538
+ * Model version              : 1.539
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 23 12:36:04 2018
+ * C++ source code generated on : Tue Jan 23 13:17:47 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -419,7 +419,7 @@ void bsl_hoveringModelClass::step()
 
   {
     real_T rtb_Sum2_h[4];
-    real_T rtb_z_ref;
+    int32_T rtb_z_ref;
     real_T rtb_P_gamma_k1k[36];
     real_T rtb_Product2_o[72];
     real_T rtb_H_k1k[36];
@@ -445,16 +445,19 @@ void bsl_hoveringModelClass::step()
     int32_T i_1;
     real_T rtb_Sqrt;
     real_T rtb_Product1;
+    real_T u0;
     for (i = 0; i < 4; i++) {
       /* Gain: '<Root>/ ' incorporates:
        *  Integrator: '<Root>/Integrator'
        *  Sum: '<Root>/Sum'
        */
-      rtb_Sqrt = bsl_hovering_ConstP._Gain[i + 12] *
-        bsl_hovering_X.Integrator_CSTATE[3] + (bsl_hovering_ConstP._Gain[i + 8] *
-        bsl_hovering_X.Integrator_CSTATE[2] + (bsl_hovering_ConstP._Gain[i + 4] *
-        bsl_hovering_X.Integrator_CSTATE[1] + bsl_hovering_ConstP._Gain[i] *
-        bsl_hovering_X.Integrator_CSTATE[0]));
+      u0 = bsl_hovering_ConstP._Gain[i + 12] * bsl_hovering_X.Integrator_CSTATE
+        [3] + (bsl_hovering_ConstP._Gain[i + 8] *
+               bsl_hovering_X.Integrator_CSTATE[2] +
+               (bsl_hovering_ConstP._Gain[i + 4] *
+                bsl_hovering_X.Integrator_CSTATE[1] +
+                bsl_hovering_ConstP._Gain[i] * bsl_hovering_X.Integrator_CSTATE
+                [0]));
 
       /* Gain: '<Root>/                   ' incorporates:
        *  Inport: '<Root>/X'
@@ -472,7 +475,7 @@ void bsl_hoveringModelClass::step()
        *  Constant: '<Root>/              '
        *  Sum: '<Root>/Sum'
        */
-      rtb_Sum2_h[i] = (rtb_Sqrt - tmp[i]) + bsl_hovering_ConstP._Value[i];
+      rtb_Sum2_h[i] = (u0 - tmp[i]) + bsl_hovering_ConstP._Value[i];
     }
 
     /* Outport: '<Root>/virtual_control' */
@@ -504,18 +507,18 @@ void bsl_hoveringModelClass::step()
        *  Constant: '<Root>/Constant1'
        *  Sum: '<Root>/Sum3'
        */
-      rtb_z_ref = (rtb_Product1 - 1250.0) * 0.022857142857142857;
+      u0 = (rtb_Product1 - 1250.0) * 0.022857142857142857;
 
       /* Saturate: '<Root>/Saturation' */
-      if (rtb_z_ref > 200.0) {
+      if (u0 > 200.0) {
         /* Outport: '<Root>/motor_command' */
         bsl_hovering_Y.motor_command[i_0] = 200.0;
-      } else if (rtb_z_ref < 1.0) {
+      } else if (u0 < 1.0) {
         /* Outport: '<Root>/motor_command' */
         bsl_hovering_Y.motor_command[i_0] = 1.0;
       } else {
         /* Outport: '<Root>/motor_command' */
-        bsl_hovering_Y.motor_command[i_0] = rtb_z_ref;
+        bsl_hovering_Y.motor_command[i_0] = u0;
       }
 
       /* End of Saturate: '<Root>/Saturation' */
@@ -711,15 +714,15 @@ void bsl_hoveringModelClass::step()
            *  Sum: '<S3>/Sum2'
            *  Sum: '<S3>/Sum9'
            */
-          rtb_Sqrt = 0.0;
+          u0 = 0.0;
           for (i_1 = 0; i_1 < 12; i_1++) {
-            rtb_Sqrt += rtb_Product3[12 * i_1 + i] * bsl_hovering_ConstP.A_Gain
-              [12 * i_0 + i_1];
+            u0 += rtb_Product3[12 * i_1 + i] * bsl_hovering_ConstP.A_Gain[12 *
+              i_0 + i_1];
           }
 
           rtb_Sum4_p[i + 12 * i_0] = ((rtb_Product2_h_0[12 * i_0 + i] -
-            rtb_Divide_1[12 * i_0 + i]) + rtb_Sqrt) +
-            bsl_hovering_ConstP.Q_x_Value[12 * i_0 + i];
+            rtb_Divide_1[12 * i_0 + i]) + u0) + bsl_hovering_ConstP.Q_x_Value[12
+            * i_0 + i];
 
           /* End of Sum: '<S3>/Sum4' */
         }
@@ -757,14 +760,13 @@ void bsl_hoveringModelClass::step()
            *  Product: '<S7>/Product7'
            *  Sum: '<S6>/Sum2'
            */
-          rtb_Sqrt = 0.0;
+          u0 = 0.0;
           for (i_1 = 0; i_1 < 12; i_1++) {
-            rtb_Sqrt += bsl_hovering_ConstP.pooled2[6 * i_1 + i_0] * rtb_Sum4_g
-              [12 * i + i_1];
+            u0 += bsl_hovering_ConstP.pooled2[6 * i_1 + i_0] * rtb_Sum4_g[12 * i
+              + i_1];
           }
 
-          tmp_0[i_0 + 6 * i] = bsl_hovering_ConstP.pooled5[6 * i + i_0] +
-            rtb_Sqrt;
+          tmp_0[i_0 + 6 * i] = bsl_hovering_ConstP.pooled5[6 * i + i_0] + u0;
 
           /* End of Sum: '<S7>/Sum1' */
         }
@@ -819,13 +821,12 @@ void bsl_hoveringModelClass::step()
         tmp_2[i] = 0.0;
 
         /* Sum: '<S3>/Sum1' */
-        rtb_Sqrt = 0.0;
+        u0 = 0.0;
         for (i_0 = 0; i_0 < 6; i_0++) {
           /* Sum: '<S3>/Sum1' incorporates:
            *  Product: '<S3>/Product'
            */
-          rtb_Sqrt += rtb_Product2_o[12 * i_0 + i] *
-            bsl_hovering_B.gamma_hat_k1k[i_0];
+          u0 += rtb_Product2_o[12 * i_0 + i] * bsl_hovering_B.gamma_hat_k1k[i_0];
 
           /* Gain: '<S3>/B' incorporates:
            *  Memory: '<Root>/Memory'
@@ -841,7 +842,7 @@ void bsl_hoveringModelClass::step()
          *  Sum: '<S3>/Sum'
          */
         bsl_hovering_B.X_tildle_k1k[i] = ((tmp_1[i] + tmp_2[i]) +
-          bsl_hovering_ConstP.Constant_Value[i]) + rtb_Sqrt;
+          bsl_hovering_ConstP.Constant_Value[i]) + u0;
       }
 
       /* Gain: '<S7>/C' */
@@ -879,12 +880,12 @@ void bsl_hoveringModelClass::step()
       /* Sum: '<S6>/Sum1' incorporates:
        *  Product: '<S6>/Product1'
        */
-      rtb_Sqrt = 0.0;
+      u0 = 0.0;
       for (i = 0; i < 6; i++) {
-        rtb_Sqrt += bsl_hovering_B.K_gamma_k1[6 * i + i_0] * tmp_4[i];
+        u0 += bsl_hovering_B.K_gamma_k1[6 * i + i_0] * tmp_4[i];
       }
 
-      bsl_hovering_B.Sum1[i_0] = bsl_hovering_B.gamma_hat_k1k[i_0] + rtb_Sqrt;
+      bsl_hovering_B.Sum1[i_0] = bsl_hovering_B.gamma_hat_k1k[i_0] + u0;
 
       /* End of Sum: '<S6>/Sum1' */
 
@@ -899,12 +900,12 @@ void bsl_hoveringModelClass::step()
     /* '<S1>:1:2' z_ref = 0; */
     /* '<S1>:1:3' if t <= 50 */
     if ((&bsl_hovering_M)->Timing.t[0] <= 50.0) {
-      /* '<S1>:1:4' z_ref = 0.5; */
-      rtb_z_ref = 0.5;
+      /* '<S1>:1:4' z_ref = 1.0; */
+      rtb_z_ref = 1;
     } else {
       /* '<S1>:1:5' else */
       /* '<S1>:1:6' z_ref = 0; */
-      rtb_z_ref = 0.0;
+      rtb_z_ref = 0;
     }
 
     /* End of MATLAB Function: '<Root>/MATLAB Function' */
@@ -935,14 +936,13 @@ void bsl_hoveringModelClass::step()
        */
       for (i = 0; i < 6; i++) {
         for (i_0 = 0; i_0 < 6; i_0++) {
-          rtb_Sqrt = 0.0;
+          u0 = 0.0;
           for (i_1 = 0; i_1 < 12; i_1++) {
-            rtb_Sqrt += bsl_hovering_ConstP.pooled2[6 * i_1 + i_0] *
-              rtb_Product2_o[12 * i + i_1];
+            u0 += bsl_hovering_ConstP.pooled2[6 * i_1 + i_0] * rtb_Product2_o[12
+              * i + i_1];
           }
 
-          tmp_0[i_0 + 6 * i] = bsl_hovering_ConstP.pooled5[6 * i + i_0] +
-            rtb_Sqrt;
+          tmp_0[i_0 + 6 * i] = bsl_hovering_ConstP.pooled5[6 * i + i_0] + u0;
         }
       }
 
@@ -1000,12 +1000,12 @@ void bsl_hoveringModelClass::step()
      *  Product: '<S3>/Product2'
      */
     for (i = 0; i < 12; i++) {
-      rtb_Sqrt = 0.0;
+      u0 = 0.0;
       for (i_0 = 0; i_0 < 6; i_0++) {
-        rtb_Sqrt += bsl_hovering_B.K_tildle_x_k1[12 * i_0 + i] * tmp_4[i_0];
+        u0 += bsl_hovering_B.K_tildle_x_k1[12 * i_0 + i] * tmp_4[i_0];
       }
 
-      bsl_hovering_B.Sum3[i] = bsl_hovering_B.X_tildle_k1k[i] + rtb_Sqrt;
+      bsl_hovering_B.Sum3[i] = bsl_hovering_B.X_tildle_k1k[i] + u0;
     }
 
     /* End of Sum: '<S3>/Sum3' */
@@ -1021,13 +1021,13 @@ void bsl_hoveringModelClass::step()
          *  Product: '<S4>/Product2'
          */
         for (i_0 = 0; i_0 < 12; i_0++) {
-          rtb_Sqrt = 0.0;
+          u0 = 0.0;
           for (i_1 = 0; i_1 < 6; i_1++) {
-            rtb_Sqrt += bsl_hovering_B.K_tildle_x_k1[12 * i_1 + i_0] *
-              rtb_H_k1k[6 * i + i_1];
+            u0 += bsl_hovering_B.K_tildle_x_k1[12 * i_1 + i_0] * rtb_H_k1k[6 * i
+              + i_1];
           }
 
-          rtb_Sum1_e[i_0 + 12 * i] = rtb_Divide[12 * i + i_0] - rtb_Sqrt;
+          rtb_Sum1_e[i_0 + 12 * i] = rtb_Divide[12 * i + i_0] - u0;
         }
 
         /* End of Sum: '<S4>/Sum1' */
@@ -1051,13 +1051,13 @@ void bsl_hoveringModelClass::step()
        */
       for (i = 0; i < 6; i++) {
         for (i_0 = 0; i_0 < 6; i_0++) {
-          rtb_Sqrt = 0.0;
+          u0 = 0.0;
           for (i_1 = 0; i_1 < 6; i_1++) {
-            rtb_Sqrt += bsl_hovering_B.K_gamma_k1[6 * i_1 + i_0] * rtb_H_k1k_0[6
-              * i + i_1];
+            u0 += bsl_hovering_B.K_gamma_k1[6 * i_1 + i_0] * rtb_H_k1k_0[6 * i +
+              i_1];
           }
 
-          rtb_P_gamma_k1[i_0 + 6 * i] = rtb_P_gamma_k1k[6 * i + i_0] - rtb_Sqrt;
+          rtb_P_gamma_k1[i_0 + 6 * i] = rtb_P_gamma_k1k[6 * i + i_0] - u0;
         }
       }
 
@@ -1110,15 +1110,15 @@ void bsl_hoveringModelClass::step()
      *  Inport: '<Root>/X'
      *  Saturate: '<Root>/z'
      */
-    rtb_z_ref -= bsl_hovering_U.X[2];
+    u0 = (real_T)rtb_z_ref - bsl_hovering_U.X[2];
 
     /* Saturate: '<Root>/ze' */
-    if (rtb_z_ref > 0.5) {
+    if (u0 > 0.5) {
       bsl_hovering_B.ze = 0.5;
-    } else if (rtb_z_ref < -0.5) {
+    } else if (u0 < -0.5) {
       bsl_hovering_B.ze = -0.5;
     } else {
-      bsl_hovering_B.ze = rtb_z_ref;
+      bsl_hovering_B.ze = u0;
     }
 
     /* End of Saturate: '<Root>/ze' */
