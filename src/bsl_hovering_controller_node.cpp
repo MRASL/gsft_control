@@ -46,15 +46,13 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   Eigen::Matrix3d R_W_B = odometry.orientation_W_B.toRotationMatrix();
 //  Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
 
-/*
   gController.bsl_hovering_U.X[3 ]  = velocity_W.x();
   gController.bsl_hovering_U.X[4 ]  = velocity_W.y();
   gController.bsl_hovering_U.X[5 ]  = velocity_W.z();
-*/
 
-  gController.bsl_hovering_U.X[3 ]  = odometry.velocity_B.x();
+/*  gController.bsl_hovering_U.X[3 ]  = odometry.velocity_B.x();
   gController.bsl_hovering_U.X[4 ]  = odometry.velocity_B.y();
-  gController.bsl_hovering_U.X[5 ]  = odometry.velocity_B.z();
+  gController.bsl_hovering_U.X[5 ]  = odometry.velocity_B.z(); */
 
   double psi, phi, teta;
   psi = atan2(R_W_B(1,0),R_W_B(0,0));
