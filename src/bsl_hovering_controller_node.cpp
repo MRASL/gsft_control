@@ -44,7 +44,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   gController.bsl_hovering_U.X[2 ]  = odometry.position_W.z();
 
   Eigen::Matrix3d R_W_B = odometry.orientation_W_B.toRotationMatrix();
-//  Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
+  Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
 
   gController.bsl_hovering_U.X[3 ]  = velocity_W.x();
   gController.bsl_hovering_U.X[4 ]  = velocity_W.y();
