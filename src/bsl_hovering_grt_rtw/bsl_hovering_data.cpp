@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.539
+ * Model version              : 1.586
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 23 13:17:47 2018
+ * C++ source code generated on : Wed Jan 24 14:14:38 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -97,29 +97,26 @@ const ConstB_bsl_hovering_T bsl_hovering_ConstB = {
     0.0,
     0.0
   }
-  /* '<S7>/Transpose' */
+  /* '<S9>/Transpose' */
 };
 
 /* Constant parameters (auto storage) */
 const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
   /* Expression: [mass*gra 0 0 0]'
-   * Referenced by: '<Root>/              '
+   * Referenced by: '<S1>/              '
    */
   { 15.107400000000002, 0.0, 0.0, 0.0 },
 
-  /* Expression: Ki_lqr
-   * Referenced by: '<Root>/ '
+  /* Expression: Kx_outer
+   * Referenced by: '<S3>/                   '
    */
-  { -0.0, -0.0, 0.14142135623731211, -0.0, -0.0, -0.14142135623731064, -0.0,
-    -0.0, 9.9999999999999964, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0,
-    0.15811388300841847 },
+  { 0.28539255246475276, 0.0, 0.0, 0.2768800243873325, 0.25261004031969275, 0.0,
+    0.0, 0.23568769837303391 },
 
-  /* Expression: Kx_lqr
-   * Referenced by: '<Root>/                   '
+  /* Expression: Kx_inner
+   * Referenced by: '<S1>/                   '
    */
-  { 0.0, 0.0, 0.28539255246475276, 0.0, 0.0, -0.2768800243873325, 0.0, 0.0,
-    12.219481695651943, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25261004031969275, 0.0, 0.0,
-    -0.23568769837303391, 0.0, 0.0, 6.2157866455186532, 0.0, 0.0, 0.0, 0.0,
+  { 12.219481695651943, 0.0, 0.0, 0.0, 6.2157866455186532, 0.0, 0.0, 0.0, 0.0,
     1.0895658919683182, 0.0, 0.0, 0.0, 0.0, 1.229083043763761, 0.0, 0.0, 0.0,
     0.0, 0.30355520549478565, 0.0, 0.27593216199283005, 0.0, 0.0, 0.0, 0.0,
     0.33647045997872133, 0.0, 0.0, 0.0, 0.0, 0.24395632222527286 },
@@ -137,14 +134,14 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
     -4.5662100456621006, 4.5662100456620989 },
 
   /* Expression: Qgamma
-   * Referenced by: '<S6>/Q_gamma'
+   * Referenced by: '<S8>/Q_gamma'
    */
   { 0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0002, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0002 },
 
   /* Expression: Pgamma0
-   * Referenced by: '<S6>/Unit Delay1'
+   * Referenced by: '<S8>/Unit Delay1'
    */
   { 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0,
@@ -152,12 +149,12 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
 
   /* Pooled Parameter (Expression: C)
    * Referenced by:
-   *   '<S3>/     '
-   *   '<S3>/C'
-   *   '<S3>/C1'
-   *   '<S4>/                      '
-   *   '<S7>/     '
-   *   '<S7>/C'
+   *   '<S5>/     '
+   *   '<S5>/C'
+   *   '<S5>/C1'
+   *   '<S6>/                      '
+   *   '<S9>/     '
+   *   '<S9>/C'
    */
   { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -167,9 +164,9 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
 
   /* Pooled Parameter (Expression: A)
    * Referenced by:
-   *   '<S3>/A'
-   *   '<S3>/A1'
-   *   '<S4>/     '
+   *   '<S5>/A'
+   *   '<S5>/A1'
+   *   '<S6>/     '
    */
   { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
@@ -188,8 +185,8 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
 
   /* Pooled Parameter (Expression: B)
    * Referenced by:
-   *   '<S3>/B'
-   *   '<S4>/          '
+   *   '<S5>/B'
+   *   '<S6>/          '
    */
   { -1.6583697046020462E-8, -1.2642492152501861E-8, 3.2467532467532474E-5,
     -6.6334788184081836E-6, -5.0569968610007424E-6, 0.0064935064935064939,
@@ -215,7 +212,7 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
     0.0037359263050153529 },
 
   /* Expression: Qx
-   * Referenced by: '<S3>/Q_x'
+   * Referenced by: '<S5>/Q_x'
    */
   { 3.3333333333333342E-9, 0.0, 0.0, 5.0000000000000008E-7, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 3.3333333333333342E-9, 0.0, 0.0,
@@ -234,7 +231,7 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
     0.0, 0.0, 5.0000000000000008E-7, 0.0, 0.0, 0.0001 },
 
   /* Expression: Px_tilde0
-   * Referenced by: '<S3>/Unit Delay1'
+   * Referenced by: '<S5>/Unit Delay1'
    */
   { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
@@ -248,7 +245,7 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 },
 
   /* Expression: A'
-   * Referenced by: '<S3>/A''
+   * Referenced by: '<S5>/A''
    */
   { 1.0, 0.0, 0.0, 0.010000000000000002, 0.0, 0.0, 0.0, 0.00049050000000000027,
     0.0, 0.0, 1.6350000000000009E-6, 0.0, 0.0, 1.0, 0.0, 0.0,
@@ -267,20 +264,20 @@ const ConstP_bsl_hovering_T bsl_hovering_ConstP = {
 
   /* Pooled Parameter (Expression: R)
    * Referenced by:
-   *   '<S3>/R'
-   *   '<S7>/R'
+   *   '<S5>/R'
+   *   '<S9>/R'
    */
   { 0.001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0001 },
 
   /* Expression: [0 0 0 0 0 bias 0 0 0 0 0 0]
-   * Referenced by: '<S3>/Constant'
+   * Referenced by: '<S5>/Constant'
    */
   { 0.0, 0.0, 0.0, 0.0, 0.0, -0.0981, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   /* Expression: C'
-   * Referenced by: '<S3>/C''
+   * Referenced by: '<S5>/C''
    */
   { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
