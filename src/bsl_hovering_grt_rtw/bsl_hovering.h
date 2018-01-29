@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.598
+ * Model version              : 1.602
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 29 15:10:54 2018
+ * C++ source code generated on : Mon Jan 29 18:59:21 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,13 +149,22 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T u[6];                         /* '<Root>/                 ' */
+  real_T RateTransition2[12];          /* '<Root>/Rate Transition2' */
+  real_T u;                            /* '<S6>/                    ' */
+  real_T Sum1;                         /* '<S6>/Sum1' */
+  real_T ZeroOrderHold;                /* '<Root>/Zero-Order Hold' */
+  real_T u_m;                          /* '<S7>/                     ' */
+  real_T Sum1_l;                       /* '<S7>/Sum1' */
+  real_T ZeroOrderHold1;               /* '<Root>/Zero-Order Hold1' */
+  real_T u_d[6];                       /* '<Root>/                 ' */
   real_T gamma_hat_k1k[6];             /* '<S12>/       ' */
   real_T K_gamma_k1[36];               /* '<S12>/Divide' */
   real_T Product[6];                   /* '<S12>/Product' */
   real_T X_tildle_k1k[12];             /* '<S9>/Sum1' */
   real_T C[6];                         /* '<S13>/C' */
-  real_T Sum1[6];                      /* '<S12>/Sum1' */
+  real_T Sum1_lc[6];                   /* '<S12>/Sum1' */
+  real_T RateTransition;               /* '<Root>/Rate Transition' */
+  real_T RateTransition1;              /* '<Root>/Rate Transition1' */
   real_T C_h[6];                       /* '<S9>/C' */
   real_T K_tildle_x_k1[72];            /* '<S9>/Divide' */
   real_T Sum3[12];                     /* '<S9>/Sum3' */
@@ -163,6 +172,7 @@ typedef struct {
   real_T xe;                           /* '<S6>/xe' */
   real_T ye;                           /* '<S7>/ye' */
   real_T ze;                           /* '<S8>/ze' */
+  real_T ref[4];                       /* '<Root>/MATLAB Function' */
 } B_bsl_hovering_T;
 
 /* Block states (auto storage) for system '<Root>' */
@@ -348,10 +358,14 @@ struct tag_RTM_bsl_hovering_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
