@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.587
+ * Model version              : 1.594
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jan 24 14:30:39 2018
+ * C++ source code generated on : Fri Jan 26 17:39:43 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,66 +149,62 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T RateTransition2[12];          /* '<S3>/Rate Transition2' */
-  real_T u[2];                         /* '<S3>/                   ' */
-  real_T Fcn1;                         /* '<S3>/Fcn1' */
-  real_T Fcn;                          /* '<S3>/Fcn' */
-  real_T ZeroOrderHold[2];             /* '<S3>/Zero-Order Hold' */
-  real_T roll;                         /* '<S1>/roll' */
-  real_T pitch;                        /* '<S1>/pitch' */
-  real_T Gain[6];                      /* '<Root>/Gain' */
-  real_T gamma_hat_k1k[6];             /* '<S8>/       ' */
-  real_T K_gamma_k1[36];               /* '<S8>/Divide' */
-  real_T Product[6];                   /* '<S8>/Product' */
-  real_T X_tildle_k1k[12];             /* '<S5>/Sum1' */
-  real_T C[6];                         /* '<S9>/C' */
-  real_T Sum1[6];                      /* '<S8>/Sum1' */
-  real_T psi_e;                        /* '<S1>/psi_e' */
-  real_T ze;                           /* '<S1>/ze' */
-  real_T RateTransition;               /* '<S3>/Rate Transition' */
-  real_T RateTransition1;              /* '<S3>/Rate Transition1' */
-  real_T xe;                           /* '<S3>/xe' */
-  real_T ye;                           /* '<S3>/ye' */
-  real_T C_i[6];                       /* '<S5>/C' */
-  real_T K_tildle_x_k1[72];            /* '<S5>/Divide' */
-  real_T Sum3[12];                     /* '<S5>/Sum3' */
-  real_T ref[4];                       /* '<Root>/MATLAB Function' */
+  real_T u[6];                         /* '<Root>/                 ' */
+  real_T gamma_hat_k1k[6];             /* '<S12>/       ' */
+  real_T K_gamma_k1[36];               /* '<S12>/Divide' */
+  real_T Product[6];                   /* '<S12>/Product' */
+  real_T X_tildle_k1k[12];             /* '<S9>/Sum1' */
+  real_T C[6];                         /* '<S13>/C' */
+  real_T Sum1[6];                      /* '<S12>/Sum1' */
+  real_T C_h[6];                       /* '<S9>/C' */
+  real_T K_tildle_x_k1[72];            /* '<S9>/Divide' */
+  real_T Sum3[12];                     /* '<S9>/Sum3' */
+  real_T psi_e;                        /* '<S4>/psi_e' */
+  real_T xe;                           /* '<S6>/xe' */
+  real_T ye;                           /* '<S7>/ye' */
+  real_T ze;                           /* '<S8>/ze' */
 } B_bsl_hovering_T;
 
 /* Block states (auto storage) for system '<Root>' */
 typedef struct {
-  real_T _DSTATE[6];                   /* '<S8>/       ' */
-  real_T UnitDelay1_DSTATE[36];        /* '<S8>/Unit Delay1' */
-  real_T UnitDelay_DSTATE[72];         /* '<S6>/Unit Delay' */
-  real_T UnitDelay1_DSTATE_l[144];     /* '<S5>/Unit Delay1' */
-  real_T UnitDelay_DSTATE_l[12];       /* '<S5>/Unit Delay' */
-  real_T Memory_PreviousInput[6];      /* '<Root>/Memory' */
-  real_T Divide_DWORK4[36];            /* '<S6>/Divide' */
-  real_T Divide_DWORK4_e[36];          /* '<S8>/Divide' */
-  real_T Divide_DWORK4_n[36];          /* '<S5>/Divide' */
+  real_T _DSTATE[6];                   /* '<S12>/       ' */
+  real_T UnitDelay1_DSTATE[36];        /* '<S12>/Unit Delay1' */
+  real_T UnitDelay_DSTATE[72];         /* '<S10>/Unit Delay' */
+  real_T UnitDelay1_DSTATE_e[144];     /* '<S9>/Unit Delay1' */
+  real_T UnitDelay_DSTATE_i[12];       /* '<S9>/Unit Delay' */
+  real_T Memory1_PreviousInput[6];     /* '<Root>/Memory1' */
+  real_T Divide_DWORK4[36];            /* '<S10>/Divide' */
+  real_T Divide_DWORK4_c[36];          /* '<S12>/Divide' */
+  real_T Divide_DWORK4_e[36];          /* '<S9>/Divide' */
 } DW_bsl_hovering_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator_CSTATE[2];         /* '<S1>/Integrator' */
-  real_T Integrator_CSTATE_b[2];       /* '<S3>/Integrator' */
+  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_a;         /* '<S4>/Integrator1' */
 } X_bsl_hovering_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator_CSTATE[2];         /* '<S1>/Integrator' */
-  real_T Integrator_CSTATE_b[2];       /* '<S3>/Integrator' */
+  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_a;         /* '<S4>/Integrator1' */
 } XDot_bsl_hovering_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator_CSTATE[2];      /* '<S1>/Integrator' */
-  boolean_T Integrator_CSTATE_b[2];    /* '<S3>/Integrator' */
+  boolean_T Integrator1_CSTATE;        /* '<S8>/Integrator1' */
+  boolean_T Integrator1_CSTATE_d;      /* '<S6>/Integrator1' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S7>/Integrator1' */
+  boolean_T Integrator1_CSTATE_a;      /* '<S4>/Integrator1' */
 } XDis_bsl_hovering_T;
 
 /* Invariant block signals (auto storage) */
 typedef const struct tag_ConstB_bsl_hovering_T {
-  real_T Transpose[72];                /* '<S9>/Transpose' */
+  real_T Transpose[72];                /* '<S13>/Transpose' */
 } ConstB_bsl_hovering_T;
 
 #ifndef ODE5_INTG
@@ -224,91 +220,76 @@ typedef struct {
 
 /* Constant parameters (auto storage) */
 typedef struct {
-  /* Expression: [mass*gra 0 0 0]'
-   * Referenced by: '<S1>/              '
-   */
-  real_T _Value[4];
-
-  /* Expression: Kx_outer
-   * Referenced by: '<S3>/                   '
-   */
-  real_T _Gain_a[8];
-
-  /* Expression: Kx_inner
-   * Referenced by: '<S1>/                   '
-   */
-  real_T _Gain_p[32];
-
   /* Expression: B_ENU_inv
-   * Referenced by: '<Root>/Gain'
+   * Referenced by: '<Root>/                 '
    */
-  real_T Gain_Gain[24];
+  real_T _Gain_dz[24];
 
   /* Expression: Qgamma
-   * Referenced by: '<S8>/Q_gamma'
+   * Referenced by: '<S12>/Q_gamma'
    */
   real_T Q_gamma_Value[36];
 
   /* Expression: Pgamma0
-   * Referenced by: '<S8>/Unit Delay1'
+   * Referenced by: '<S12>/Unit Delay1'
    */
   real_T UnitDelay1_InitialCondition[36];
 
   /* Pooled Parameter (Expression: C)
    * Referenced by:
-   *   '<S5>/     '
-   *   '<S5>/C'
-   *   '<S5>/C1'
-   *   '<S6>/                      '
    *   '<S9>/     '
    *   '<S9>/C'
+   *   '<S9>/C1'
+   *   '<S10>/                      '
+   *   '<S13>/     '
+   *   '<S13>/C'
    */
-  real_T pooled5[72];
+  real_T pooled4[72];
 
   /* Pooled Parameter (Expression: A)
    * Referenced by:
-   *   '<S5>/A'
-   *   '<S5>/A1'
-   *   '<S6>/     '
+   *   '<S9>/A'
+   *   '<S9>/A1'
+   *   '<S10>/     '
    */
-  real_T pooled6[144];
+  real_T pooled5[144];
 
   /* Pooled Parameter (Expression: B)
    * Referenced by:
-   *   '<S5>/B'
-   *   '<S6>/          '
+   *   '<S9>/B'
+   *   '<S10>/          '
    */
-  real_T pooled7[72];
+  real_T pooled6[72];
 
   /* Expression: Qx
-   * Referenced by: '<S5>/Q_x'
+   * Referenced by: '<S9>/Q_x'
    */
   real_T Q_x_Value[144];
 
   /* Expression: Px_tilde0
-   * Referenced by: '<S5>/Unit Delay1'
+   * Referenced by: '<S9>/Unit Delay1'
    */
-  real_T UnitDelay1_InitialCondition_n[144];
+  real_T UnitDelay1_InitialCondition_g[144];
 
   /* Expression: A'
-   * Referenced by: '<S5>/A''
+   * Referenced by: '<S9>/A''
    */
   real_T A_Gain[144];
 
   /* Pooled Parameter (Expression: R)
    * Referenced by:
-   *   '<S5>/R'
    *   '<S9>/R'
+   *   '<S13>/R'
    */
-  real_T pooled8[36];
+  real_T pooled7[36];
 
   /* Expression: [0 0 0 0 0 bias 0 0 0 0 0 0]
-   * Referenced by: '<S5>/Constant'
+   * Referenced by: '<S9>/Constant'
    */
-  real_T Constant_Value[12];
+  real_T Constant_Value_g[12];
 
   /* Expression: C'
-   * Referenced by: '<S5>/C''
+   * Referenced by: '<S9>/C''
    */
   real_T C_Gain[72];
 } ConstP_bsl_hovering_T;
@@ -367,14 +348,10 @@ struct tag_RTM_bsl_hovering_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
-    struct {
-      uint8_T TID[3];
-    } TaskCounters;
-
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[3];
+    time_T tArray[2];
   } Timing;
 };
 
@@ -444,13 +421,13 @@ class bsl_hoveringModelClass {
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<S7>/Product' : Unused code path elimination
- * Block '<S7>/Product1' : Unused code path elimination
- * Block '<S7>/Product2' : Unused code path elimination
- * Block '<S7>/Sum1' : Unused code path elimination
- * Block '<S7>/Sum4' : Unused code path elimination
- * Block '<S7>/Transpose' : Unused code path elimination
- * Block '<S8>/Scope' : Unused code path elimination
+ * Block '<S11>/Product' : Unused code path elimination
+ * Block '<S11>/Product1' : Unused code path elimination
+ * Block '<S11>/Product2' : Unused code path elimination
+ * Block '<S11>/Sum1' : Unused code path elimination
+ * Block '<S11>/Sum4' : Unused code path elimination
+ * Block '<S11>/Transpose' : Unused code path elimination
+ * Block '<S12>/Scope' : Unused code path elimination
  */
 
 /*-
@@ -468,14 +445,18 @@ class bsl_hoveringModelClass {
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'bsl_hovering'
- * '<S1>'   : 'bsl_hovering/Inner'
- * '<S2>'   : 'bsl_hovering/MATLAB Function'
- * '<S3>'   : 'bsl_hovering/Outer'
- * '<S4>'   : 'bsl_hovering/Two-Stage KF1'
- * '<S5>'   : 'bsl_hovering/Two-Stage KF1/Bias-Free State Estimator'
- * '<S6>'   : 'bsl_hovering/Two-Stage KF1/Coupling'
- * '<S7>'   : 'bsl_hovering/Two-Stage KF1/Error Compensator'
- * '<S8>'   : 'bsl_hovering/Two-Stage KF1/Optimal bias estimator'
- * '<S9>'   : 'bsl_hovering/Two-Stage KF1/Residual Generator'
+ * '<S1>'   : 'bsl_hovering/MATLAB Function'
+ * '<S2>'   : 'bsl_hovering/Two-Stage KF2'
+ * '<S3>'   : 'bsl_hovering/phi_controller1'
+ * '<S4>'   : 'bsl_hovering/psi_controller '
+ * '<S5>'   : 'bsl_hovering/teta_controller1'
+ * '<S6>'   : 'bsl_hovering/x_controller '
+ * '<S7>'   : 'bsl_hovering/y_controller '
+ * '<S8>'   : 'bsl_hovering/z_controller '
+ * '<S9>'   : 'bsl_hovering/Two-Stage KF2/Bias-Free State Estimator'
+ * '<S10>'  : 'bsl_hovering/Two-Stage KF2/Coupling'
+ * '<S11>'  : 'bsl_hovering/Two-Stage KF2/Error Compensator'
+ * '<S12>'  : 'bsl_hovering/Two-Stage KF2/Optimal bias estimator'
+ * '<S13>'  : 'bsl_hovering/Two-Stage KF2/Residual Generator'
  */
 #endif                                 /* RTW_HEADER_bsl_hovering_h_ */
