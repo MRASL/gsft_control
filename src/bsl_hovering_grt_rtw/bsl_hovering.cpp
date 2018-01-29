@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.595
+ * Model version              : 1.597
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 29 14:14:25 2018
+ * C++ source code generated on : Mon Jan 29 14:52:51 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -604,20 +604,20 @@ void bsl_hoveringModelClass::step()
     /* '<S1>:1:2' y = 0; */
     /* '<S1>:1:2' z = 0; */
     /* '<S1>:1:2' psi = 0; */
-    /* '<S1>:1:3' if t <= 10 */
-    if (rtb_Sum1_j <= 10.0) {
+    /* '<S1>:1:3' if t <= 20 */
+    if (rtb_Sum1_j <= 20.0) {
       /* '<S1>:1:4' x = 0; */
       x = 0;
 
       /* '<S1>:1:5' y = 0; */
       y = 0;
 
-      /* '<S1>:1:6' z = 0.5; */
-      rtb_Sum1_j = 0.5;
+      /* '<S1>:1:6' z = 0.75; */
+      rtb_Sum1_j = 0.75;
 
       /* '<S1>:1:7' psi = 0; */
-    } else if (rtb_Sum1_j <= 30.0) {
-      /* '<S1>:1:8' elseif t <= 30 */
+    } else if (rtb_Sum1_j <= 40.0) {
+      /* '<S1>:1:8' elseif t <= 40 */
       /* '<S1>:1:9' x = -1; */
       x = -1;
 
@@ -628,8 +628,8 @@ void bsl_hoveringModelClass::step()
       rtb_Sum1_j = 0.5;
 
       /* '<S1>:1:12' psi = 0; */
-    } else if (rtb_Sum1_j <= 50.0) {
-      /* '<S1>:1:13' elseif t <= 50 */
+    } else if (rtb_Sum1_j <= 60.0) {
+      /* '<S1>:1:13' elseif t <= 60 */
       /* '<S1>:1:14' x = -1; */
       x = -1;
 
