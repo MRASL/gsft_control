@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
   ros::Publisher uav_state_pub_;
   uav_state_pub_ = nh.advertise<gsft_control::UAVState>(gsft_control::default_topics::UAV_STATE, 1);
 
-  ros::Rate r(100);
+  ros::Rate r(50);
 
   gCommand_active = false;
   gEmergency_status = false;
@@ -230,7 +230,7 @@ int main(int argc, char** argv) {
     uav_state_msg->position_ref.x  = gController.bsl_hovering_Y.ref[0];
     uav_state_msg->position_ref.y  = gController.bsl_hovering_Y.ref[1];
     uav_state_msg->position_ref.z  = gController.bsl_hovering_Y.ref[2];
-    uav_state_msg->heading_ref     = gController.bsl_hovering_Y.ref[3]; 
+    uav_state_msg->heading_ref     = gController.bsl_hovering_Y.ref[3];
 
     uav_state_msg->position_W.x  = gController.bsl_hovering_U.X[0];
     uav_state_msg->position_W.y  = gController.bsl_hovering_U.X[1];

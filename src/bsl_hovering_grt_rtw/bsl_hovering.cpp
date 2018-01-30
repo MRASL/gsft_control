@@ -9,7 +9,7 @@
  *
  * Model version              : 1.606
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 11:08:28 2018
+ * C++ source code generated on : Tue Jan 30 11:16:55 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -1321,9 +1321,9 @@ void bsl_hoveringModelClass::step()
       ->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.01s, 0.0s] */
+      /* Update absolute timer for sample time: [0.02s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.01, which is the step size
+       * been executed. The resolution of this integer timer is 0.02, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -1402,7 +1402,7 @@ void bsl_hoveringModelClass::initialize()
                     ->intgData);
   rtsiSetSolverName(&(&bsl_hovering_M)->solverInfo,"ode5");
   rtmSetTPtr(getRTM(), &(&bsl_hovering_M)->Timing.tArray[0]);
-  (&bsl_hovering_M)->Timing.stepSize0 = 0.01;
+  (&bsl_hovering_M)->Timing.stepSize0 = 0.02;
 
   /* block I/O */
   (void) memset(((void *) &bsl_hovering_B), 0,
