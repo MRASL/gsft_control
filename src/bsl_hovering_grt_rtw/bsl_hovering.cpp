@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.606
+ * Model version              : 1.607
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 11:27:59 2018
+ * C++ source code generated on : Tue Jan 30 11:37:36 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -35,7 +35,7 @@ static void rate_scheduler(RT_MODEL_bsl_hovering_T *const bsl_hovering_M)
    * counter is reset when it reaches its limit (zero means run).
    */
   (bsl_hovering_M->Timing.TaskCounters.TID[2])++;
-  if ((bsl_hovering_M->Timing.TaskCounters.TID[2]) > 3) {/* Sample time: [0.04s, 0.0s] */
+  if ((bsl_hovering_M->Timing.TaskCounters.TID[2]) > 1) {/* Sample time: [0.02s, 0.0s] */
     bsl_hovering_M->Timing.TaskCounters.TID[2] = 0;
   }
 }
