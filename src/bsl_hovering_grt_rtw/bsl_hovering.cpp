@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.613
+ * Model version              : 1.614
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 12:42:55 2018
+ * C++ source code generated on : Tue Jan 30 12:45:59 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -624,17 +624,17 @@ void bsl_hoveringModelClass::step()
     /* MATLAB Function: '<Root>/Actuator_Fault' */
     /* '<S1>:1:3' if time >= 30 */
     if (rtb_Clock >= 30.0) {
-      /* '<S1>:1:4' T1 = T(1)*0.8; */
+      /* '<S1>:1:4' T1 = T(1); */
       /* '<S1>:1:5' T2 = T(2); */
       /* '<S1>:1:6' T3 = T(3); */
-      /* '<S1>:1:7' T4 = T(4); */
+      /* '<S1>:1:7' T4 = T(4)*0.85; */
       /* '<S1>:1:8' T5 = T(5); */
       /* '<S1>:1:9' T6 = T(6); */
       /* '<S1>:1:10' T_f = [T1;T2;T3;T4;T5;T6]; */
-      rtb_T_f[0] = bsl_hovering_B.u_dq[0] * 0.8;
+      rtb_T_f[0] = bsl_hovering_B.u_dq[0];
       rtb_T_f[1] = bsl_hovering_B.u_dq[1];
       rtb_T_f[2] = bsl_hovering_B.u_dq[2];
-      rtb_T_f[3] = bsl_hovering_B.u_dq[3];
+      rtb_T_f[3] = bsl_hovering_B.u_dq[3] * 0.85;
       rtb_T_f[4] = bsl_hovering_B.u_dq[4];
       rtb_T_f[5] = bsl_hovering_B.u_dq[5];
     }
