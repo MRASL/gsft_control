@@ -227,10 +227,10 @@ int main(int argc, char** argv) {
 
     // Publish: UAV state in World frame
     gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-  /*  uav_state_msg->position_ref.x  = gController.bsl_hovering_Y.ref[0];
+    uav_state_msg->position_ref.x  = gController.bsl_hovering_Y.ref[0];
     uav_state_msg->position_ref.y  = gController.bsl_hovering_Y.ref[1];
     uav_state_msg->position_ref.z  = gController.bsl_hovering_Y.ref[2];
-    uav_state_msg->heading_ref     = gController.bsl_hovering_Y.ref[3]; */
+    uav_state_msg->heading_ref     = gController.bsl_hovering_Y.ref[3]; 
 
     uav_state_msg->position_W.x  = gController.bsl_hovering_U.X[0];
     uav_state_msg->position_W.y  = gController.bsl_hovering_U.X[1];

@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.604
+ * Model version              : 1.605
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 29 19:32:49 2018
+ * C++ source code generated on : Mon Jan 29 20:32:45 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -456,8 +456,8 @@ void bsl_hoveringModelClass::step()
      *  Integrator: '<S6>/Integrator1'
      *  SignalConversion: '<S6>/TmpSignal ConversionAt                    Inport1'
      */
-    rtb_Sum1_j = 0.14142135623731211 * bsl_hovering_X.Integrator1_CSTATE_d -
-      (0.28539255246475276 * bsl_hovering_U.X[0] + 0.25261004031969275 *
+    rtb_Sum1_j = 0.17320508075688945 * bsl_hovering_X.Integrator1_CSTATE_d -
+      (0.32349951352988149 * bsl_hovering_U.X[0] + 0.27323660149127732 *
        bsl_hovering_U.X[3]);
 
     /* Sum: '<S7>/Sum1' incorporates:
@@ -467,8 +467,8 @@ void bsl_hoveringModelClass::step()
      *  Integrator: '<S7>/Integrator1'
      *  SignalConversion: '<S7>/TmpSignal ConversionAt                     Inport1'
      */
-    rtb_Sum1_b = -0.14142135623731064 * bsl_hovering_X.Integrator1_CSTATE_j -
-      (-0.2768800243873325 * bsl_hovering_U.X[1] + -0.23568769837303391 *
+    rtb_Sum1_b = -0.17320508075688285 * bsl_hovering_X.Integrator1_CSTATE_j -
+      (-0.31312578517366618 * bsl_hovering_U.X[1] + -0.25417198201077135 *
        bsl_hovering_U.X[4]);
 
     /* Fcn: '<Root>/Fcn1' incorporates:
@@ -493,8 +493,8 @@ void bsl_hoveringModelClass::step()
      *  Inport: '<Root>/X'
      *  SignalConversion: '<S3>/TmpSignal ConversionAt                    Inport1'
      */
-    rtb_Sum3_g = u0 - (1.0895658919683182 * bsl_hovering_U.X[6] +
-                       0.27593216199283005 * bsl_hovering_U.X[9]);
+    rtb_Sum3_g = u0 - (1.1365283480217743 * bsl_hovering_U.X[6] +
+                       0.28178545108769903 * bsl_hovering_U.X[9]);
 
     /* Fcn: '<Root>/Fcn' incorporates:
      *  Inport: '<Root>/X'
@@ -510,8 +510,8 @@ void bsl_hoveringModelClass::step()
      *  SignalConversion: '<S8>/TmpSignal ConversionAt                     Inport1'
      *  Sum: '<S8>/Sum1'
      */
-    rtb_Sum1_b = 9.9999999999999964 * bsl_hovering_X.Integrator1_CSTATE -
-      (12.219481695651943 * bsl_hovering_U.X[2] + 6.2157866455186532 *
+    rtb_Sum1_b = 9.99999999999999 * bsl_hovering_X.Integrator1_CSTATE -
+      (13.421454320471341 * bsl_hovering_U.X[2] + 6.506771803824976 *
        bsl_hovering_U.X[5]);
 
     /* Sum: '<S5>/Sum1' incorporates:
@@ -536,10 +536,10 @@ void bsl_hoveringModelClass::step()
      *  Sum: '<S4>/Sum1'
      *  Sum: '<S5>/Sum1'
      */
-    rtb_Sum1_j -= 1.229083043763761 * bsl_hovering_U.X[7] + 0.33647045997872133 *
-      bsl_hovering_U.X[10];
-    tmp_4 = 0.15811388300841847 * bsl_hovering_X.Integrator1_CSTATE_a -
-      (0.30355520549478565 * bsl_hovering_U.X[8] + 0.24395632222527286 *
+    rtb_Sum1_j -= 1.2859205994736846 * bsl_hovering_U.X[7] + 0.34413551249351126
+      * bsl_hovering_U.X[10];
+    tmp_4 = 0.17320508075688795 * bsl_hovering_X.Integrator1_CSTATE_a -
+      (0.31872952292625267 * bsl_hovering_U.X[8] + 0.24995949427815264 *
        bsl_hovering_U.X[11]);
 
     /* Outport: '<Root>/virtual_control' incorporates:
@@ -563,7 +563,7 @@ void bsl_hoveringModelClass::step()
       /* Sqrt: '<Root>/Sqrt1' incorporates:
        *  Gain: '<Root>/      '
        */
-      rtb_Sqrt1 = std::sqrt(149253.73134328358 * bsl_hovering_B.u[i]);
+      rtb_Sqrt1 = std::sqrt(116978.4923343994 * bsl_hovering_B.u[i]);
 
       /* Gain: '<Root>/rads_to_RPM' */
       rtb_Product1 = 9.5493 * rtb_Sqrt1;
@@ -654,8 +654,8 @@ void bsl_hoveringModelClass::step()
       /* '<S1>:1:21' z = 0.5; */
       rtb_Sum1_j = 0.5;
 
-      /* '<S1>:1:22' psi = pi/4; */
-      rtb_Sum1_b = 0.78539816339744828;
+      /* '<S1>:1:22' psi = pi/2; */
+      rtb_Sum1_b = 1.5707963267948966;
     } else {
       /* '<S1>:1:23' else */
       /* '<S1>:1:24' x = -1; */
@@ -667,8 +667,8 @@ void bsl_hoveringModelClass::step()
       /* '<S1>:1:26' z = 0; */
       rtb_Sum1_j = 0.0;
 
-      /* '<S1>:1:27' psi = pi/4; */
-      rtb_Sum1_b = 0.78539816339744828;
+      /* '<S1>:1:27' psi = pi/2; */
+      rtb_Sum1_b = 1.5707963267948966;
     }
 
     /* '<S1>:1:29' ref = [x;y;z;psi]; */
