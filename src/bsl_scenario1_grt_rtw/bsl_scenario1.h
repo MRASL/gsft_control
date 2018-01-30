@@ -1,15 +1,15 @@
 /*
- * bsl_hovering.h
+ * bsl_scenario1.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "bsl_hovering".
+ * Code generation for model "bsl_scenario1".
  *
- * Model version              : 1.612
+ * Model version              : 1.615
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 12:16:57 2018
+ * C++ source code generated on : Tue Jan 30 12:08:10 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,18 +18,18 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_bsl_hovering_h_
-#define RTW_HEADER_bsl_hovering_h_
+#ifndef RTW_HEADER_bsl_scenario1_h_
+#define RTW_HEADER_bsl_scenario1_h_
 #include <cmath>
 #include <string.h>
-#ifndef bsl_hovering_COMMON_INCLUDES_
-# define bsl_hovering_COMMON_INCLUDES_
+#ifndef bsl_scenario1_COMMON_INCLUDES_
+# define bsl_scenario1_COMMON_INCLUDES_
 #include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#endif                                 /* bsl_hovering_COMMON_INCLUDES_ */
+#endif                                 /* bsl_scenario1_COMMON_INCLUDES_ */
 
-#include "bsl_hovering_types.h"
+#include "bsl_scenario1_types.h"
 
 /* Shared type includes */
 #include "multiword_types.h"
@@ -163,7 +163,7 @@ typedef struct {
   real_T xe;                           /* '<S7>/xe' */
   real_T ye;                           /* '<S8>/ye' */
   real_T ze;                           /* '<S9>/ze' */
-} B_bsl_hovering_T;
+} B_bsl_scenario1_T;
 
 /* Block states (auto storage) for system '<Root>' */
 typedef struct {
@@ -176,7 +176,7 @@ typedef struct {
   real_T Divide_DWORK4[36];            /* '<S11>/Divide' */
   real_T Divide_DWORK4_c[36];          /* '<S13>/Divide' */
   real_T Divide_DWORK4_e[36];          /* '<S10>/Divide' */
-} DW_bsl_hovering_T;
+} DW_bsl_scenario1_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
@@ -184,7 +184,7 @@ typedef struct {
   real_T Integrator1_CSTATE_d;         /* '<S7>/Integrator1' */
   real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
   real_T Integrator1_CSTATE_a;         /* '<S5>/Integrator1' */
-} X_bsl_hovering_T;
+} X_bsl_scenario1_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
@@ -192,7 +192,7 @@ typedef struct {
   real_T Integrator1_CSTATE_d;         /* '<S7>/Integrator1' */
   real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
   real_T Integrator1_CSTATE_a;         /* '<S5>/Integrator1' */
-} XDot_bsl_hovering_T;
+} XDot_bsl_scenario1_T;
 
 /* State disabled  */
 typedef struct {
@@ -200,12 +200,12 @@ typedef struct {
   boolean_T Integrator1_CSTATE_d;      /* '<S7>/Integrator1' */
   boolean_T Integrator1_CSTATE_j;      /* '<S8>/Integrator1' */
   boolean_T Integrator1_CSTATE_a;      /* '<S5>/Integrator1' */
-} XDis_bsl_hovering_T;
+} XDis_bsl_scenario1_T;
 
 /* Invariant block signals (auto storage) */
-typedef const struct tag_ConstB_bsl_hovering_T {
+typedef const struct tag_ConstB_bsl_scenario1_T {
   real_T Transpose[72];                /* '<S14>/Transpose' */
-} ConstB_bsl_hovering_T;
+} ConstB_bsl_scenario1_T;
 
 #ifndef ODE5_INTG
 #define ODE5_INTG
@@ -292,12 +292,12 @@ typedef struct {
    * Referenced by: '<S10>/C''
    */
   real_T C_Gain[72];
-} ConstP_bsl_hovering_T;
+} ConstP_bsl_scenario1_T;
 
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
   real_T X[12];                        /* '<Root>/X' */
-} ExtU_bsl_hovering_T;
+} ExtU_bsl_scenario1_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
 typedef struct {
@@ -307,13 +307,13 @@ typedef struct {
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
   real_T ref[4];                       /* '<Root>/ref' */
   real_T gamma[6];                     /* '<Root>/gamma' */
-} ExtY_bsl_hovering_T;
+} ExtY_bsl_scenario1_T;
 
 /* Real-time Model Data Structure */
-struct tag_RTM_bsl_hovering_T {
+struct tag_RTM_bsl_scenario1_T {
   const char_T *errorStatus;
   RTWSolverInfo solverInfo;
-  X_bsl_hovering_T *contStates;
+  X_bsl_scenario1_T *contStates;
   int_T *periodicContStateIndices;
   real_T *periodicContStateRanges;
   real_T *derivs;
@@ -366,20 +366,20 @@ extern "C" {
 }
 #endif
 
-extern const ConstB_bsl_hovering_T bsl_hovering_ConstB;/* constant block i/o */
+extern const ConstB_bsl_scenario1_T bsl_scenario1_ConstB;/* constant block i/o */
 
 /* Constant parameters (auto storage) */
-extern const ConstP_bsl_hovering_T bsl_hovering_ConstP;
+extern const ConstP_bsl_scenario1_T bsl_scenario1_ConstP;
 
-/* Class declaration for model bsl_hovering */
-class bsl_hoveringModelClass {
+/* Class declaration for model bsl_scenario1 */
+class bsl_scenario1ModelClass {
   /* public data and function members */
  public:
   /* External inputs */
-  ExtU_bsl_hovering_T bsl_hovering_U;
+  ExtU_bsl_scenario1_T bsl_scenario1_U;
 
   /* External outputs */
-  ExtY_bsl_hovering_T bsl_hovering_Y;
+  ExtY_bsl_scenario1_T bsl_scenario1_Y;
 
   /* model initialize function */
   void initialize();
@@ -391,31 +391,31 @@ class bsl_hoveringModelClass {
   void terminate();
 
   /* Constructor */
-  bsl_hoveringModelClass();
+  bsl_scenario1ModelClass();
 
   /* Destructor */
-  ~bsl_hoveringModelClass();
+  ~bsl_scenario1ModelClass();
 
   /* Real-Time Model get method */
-  RT_MODEL_bsl_hovering_T * getRTM();
+  RT_MODEL_bsl_scenario1_T * getRTM();
 
   /* private data and function members */
  private:
   /* Block signals */
-  B_bsl_hovering_T bsl_hovering_B;
+  B_bsl_scenario1_T bsl_scenario1_B;
 
   /* Block states */
-  DW_bsl_hovering_T bsl_hovering_DW;
-  X_bsl_hovering_T bsl_hovering_X;     /* Block continuous states */
+  DW_bsl_scenario1_T bsl_scenario1_DW;
+  X_bsl_scenario1_T bsl_scenario1_X;   /* Block continuous states */
 
   /* Real-Time Model */
-  RT_MODEL_bsl_hovering_T bsl_hovering_M;
+  RT_MODEL_bsl_scenario1_T bsl_scenario1_M;
 
   /* Continuous states update member function*/
   void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si );
 
   /* Derivatives member function */
-  void bsl_hovering_derivatives();
+  void bsl_scenario1_derivatives();
 };
 
 /*-
@@ -444,20 +444,20 @@ class bsl_hoveringModelClass {
  *
  * Here is the system hierarchy for this model
  *
- * '<Root>' : 'bsl_hovering'
- * '<S1>'   : 'bsl_hovering/Actuator_Fault'
- * '<S2>'   : 'bsl_hovering/MATLAB Function'
- * '<S3>'   : 'bsl_hovering/Two-Stage KF2'
- * '<S4>'   : 'bsl_hovering/phi_controller1'
- * '<S5>'   : 'bsl_hovering/psi_controller '
- * '<S6>'   : 'bsl_hovering/teta_controller1'
- * '<S7>'   : 'bsl_hovering/x_controller '
- * '<S8>'   : 'bsl_hovering/y_controller '
- * '<S9>'   : 'bsl_hovering/z_controller '
- * '<S10>'  : 'bsl_hovering/Two-Stage KF2/Bias-Free State Estimator'
- * '<S11>'  : 'bsl_hovering/Two-Stage KF2/Coupling'
- * '<S12>'  : 'bsl_hovering/Two-Stage KF2/Error Compensator'
- * '<S13>'  : 'bsl_hovering/Two-Stage KF2/Optimal bias estimator'
- * '<S14>'  : 'bsl_hovering/Two-Stage KF2/Residual Generator'
+ * '<Root>' : 'bsl_scenario1'
+ * '<S1>'   : 'bsl_scenario1/Actuator_Fault'
+ * '<S2>'   : 'bsl_scenario1/MATLAB Function'
+ * '<S3>'   : 'bsl_scenario1/Two-Stage KF2'
+ * '<S4>'   : 'bsl_scenario1/phi_controller1'
+ * '<S5>'   : 'bsl_scenario1/psi_controller '
+ * '<S6>'   : 'bsl_scenario1/teta_controller1'
+ * '<S7>'   : 'bsl_scenario1/x_controller '
+ * '<S8>'   : 'bsl_scenario1/y_controller '
+ * '<S9>'   : 'bsl_scenario1/z_controller '
+ * '<S10>'  : 'bsl_scenario1/Two-Stage KF2/Bias-Free State Estimator'
+ * '<S11>'  : 'bsl_scenario1/Two-Stage KF2/Coupling'
+ * '<S12>'  : 'bsl_scenario1/Two-Stage KF2/Error Compensator'
+ * '<S13>'  : 'bsl_scenario1/Two-Stage KF2/Optimal bias estimator'
+ * '<S14>'  : 'bsl_scenario1/Two-Stage KF2/Residual Generator'
  */
-#endif                                 /* RTW_HEADER_bsl_hovering_h_ */
+#endif                                 /* RTW_HEADER_bsl_scenario1_h_ */
