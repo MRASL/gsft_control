@@ -9,7 +9,7 @@
  *
  * Model version              : 1.661
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 18:51:04 2018
+ * C++ source code generated on : Tue Jan 30 18:55:54 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -257,15 +257,15 @@ void scenario1_lqrModelClass::step()
     /* Gain: '<S6>/                    ' incorporates:
      *  SignalConversion: '<S6>/TmpSignal ConversionAt                    Inport1'
      */
-    scenario1_lqr_B.u = 0.32349951352987977 * scenario1_lqr_B.RateTransition5[0]
-      + 0.2732366014912751 * scenario1_lqr_B.RateTransition5[3];
+    scenario1_lqr_B.u = 0.32349951352986844 * scenario1_lqr_B.RateTransition5[0]
+      + 0.2732366014912686 * scenario1_lqr_B.RateTransition5[3];
   }
 
   /* Sum: '<S6>/Sum1' incorporates:
    *  Gain: '<S6>/ '
    *  Integrator: '<S6>/Integrator1'
    */
-  scenario1_lqr_B.Sum1 = 0.17320508075688992 *
+  scenario1_lqr_B.Sum1 = 0.17320508075688268 *
     scenario1_lqr_X.Integrator1_CSTATE_h - scenario1_lqr_B.u;
   if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
       (&scenario1_lqr_M)->Timing.TaskCounters.TID[1] == 0) {
@@ -278,8 +278,8 @@ void scenario1_lqrModelClass::step()
     /* Gain: '<S7>/                     ' incorporates:
      *  SignalConversion: '<S7>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr_B.u_m = -0.31312578517366968 *
-      scenario1_lqr_B.RateTransition5[1] + -0.25417198201077484 *
+    scenario1_lqr_B.u_m = -0.31312578517365397 *
+      scenario1_lqr_B.RateTransition5[1] + -0.254171982010764 *
       scenario1_lqr_B.RateTransition5[4];
   }
 
@@ -287,7 +287,7 @@ void scenario1_lqrModelClass::step()
    *  Gain: '<S7>/  '
    *  Integrator: '<S7>/Integrator1'
    */
-  scenario1_lqr_B.Sum1_i = -0.173205080756885 *
+  scenario1_lqr_B.Sum1_i = -0.17320508075687535 *
     scenario1_lqr_X.Integrator1_CSTATE_j - scenario1_lqr_B.u_m;
 
   /* RateTransition: '<Root>/Rate Transition3' */
@@ -308,15 +308,15 @@ void scenario1_lqrModelClass::step()
     /* Gain: '<S4>/                     ' incorporates:
      *  SignalConversion: '<S4>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr_B.u_n = 0.3035552054947866 * scenario1_lqr_B.RateTransition3[8]
-      + 0.24395632222527311 * scenario1_lqr_B.RateTransition3[11];
+    scenario1_lqr_B.u_n = 0.31372450116883577 * scenario1_lqr_B.RateTransition3
+      [8] + 0.24799549900832987 * scenario1_lqr_B.RateTransition3[11];
   }
 
   /* Sum: '<S4>/Sum1' incorporates:
    *  Gain: '<S4>/  '
    *  Integrator: '<S4>/Integrator1'
    */
-  scenario1_lqr_B.Sum1_a = 0.15811388300841925 *
+  scenario1_lqr_B.Sum1_a = 0.15811388300841872 *
     scenario1_lqr_X.Integrator1_CSTATE_b - scenario1_lqr_B.u_n;
   if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
       (&scenario1_lqr_M)->Timing.TaskCounters.TID[1] == 0) {
@@ -331,8 +331,8 @@ void scenario1_lqrModelClass::step()
    *  SignalConversion: '<S8>/TmpSignal ConversionAt                     Inport1'
    *  Sum: '<S8>/Sum1'
    */
-  z = 10.000000000000018 * scenario1_lqr_X.Integrator1_CSTATE -
-    (12.219481695651957 * scenario1_lqr_B.dX[2] + 6.215786645518647 *
+  z = 10.000000000000032 * scenario1_lqr_X.Integrator1_CSTATE -
+    (12.219481695651995 * scenario1_lqr_B.dX[2] + 6.2157866455186639 *
      scenario1_lqr_B.dX[5]);
 
   /* Sum: '<S3>/Sum1' incorporates:
@@ -355,7 +355,7 @@ void scenario1_lqrModelClass::step()
    *  SignalConversion: '<S3>/TmpSignal ConversionAt                    Inport1'
    *  Sum: '<S3>/Sum1'
    */
-  tmp = psi - (1.1365283480217869 * scenario1_lqr_B.dX[6] + 0.28178545108770103 *
+  tmp = psi - (1.1365283480217518 * scenario1_lqr_B.dX[6] + 0.28178545108769576 *
                scenario1_lqr_B.dX[9]);
 
   /* Sum: '<S5>/Sum1' incorporates:
@@ -378,7 +378,7 @@ void scenario1_lqrModelClass::step()
    *  SignalConversion: '<S5>/TmpSignal ConversionAt                    Inport1'
    *  Sum: '<S5>/Sum1'
    */
-  psi -= 1.2859205994736729 * scenario1_lqr_B.dX[7] + 0.34413551249350854 *
+  psi -= 1.2859205994736529 * scenario1_lqr_B.dX[7] + 0.3441355124935061 *
     scenario1_lqr_B.dX[10];
 
   /* MATLAB Function 'Actuator_Fault': '<S1>:1' */
