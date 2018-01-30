@@ -5,7 +5,7 @@
   <arg name="debug" default="false"/>
 
  <group ns="firefly">
-    <node name="gsft_control_lqr_identification" pkg="gsft_control" type="lqr_identification_controller_node" output="screen">
+    <node name="gsft_control_scenario1_lqr" pkg="gsft_control" type="scenario1_lqr_controller_node" output="screen">
        <remap from="odometry" to="odometry_sensor1/odometry" />
     </node>
   </group>

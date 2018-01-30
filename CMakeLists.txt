@@ -129,12 +129,12 @@ include_directories(
  R2017a/extern/include
  R2017a/simulink/include
  ##src/lqr_hovering_grt_rtw
- src/bsl_hovering_grt_rtw
- ##src/bsl_scenario1_grt_rtw
+ ##src/bsl_hovering_grt_rtw
+ src/scenario1_lqr_grt_rtw
  ##src/lqr_tracking_grt_rtw
  ##src/lqr_identification_grt_rtw
  ##src/lqr_inner_grt_rtw
- src/lqr_outer_grt_rtw
+## src/lqr_outer_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
@@ -144,11 +144,11 @@ add_library(matlab_lqr
     ##src/lqr_hovering_grt_rtw/lqr_hovering.cpp
     ##src/lqr_tracking_grt_rtw/lqr_tracking_data.cpp
     ##src/lqr_tracking_grt_rtw/lqr_tracking.cpp
-    src/bsl_hovering_grt_rtw/bsl_hovering_data.cpp
-    src/bsl_hovering_grt_rtw/bsl_hovering.cpp
+  ##  src/bsl_hovering_grt_rtw/bsl_hovering_data.cpp
+  ##  src/bsl_hovering_grt_rtw/bsl_hovering.cpp
 
-  ##  src/bsl_scenario1_grt_rtw/bsl_scenario1_data.cpp
-  ##  src/bsl_scenario1_grt_rtw/bsl_scenario1.cpp
+    src/scenario1_lqr_grt_rtw/scenario1_lqr_data.cpp
+    src/scenario1_lqr_grt_rtw/scenario1_lqr.cpp
     ##src/lqr_identification_grt_rtw/lqr_identification_data.cpp
     ##src/lqr_identification_grt_rtw/lqr_identification.cpp
     ##src/lqr_inner_grt_rtw/lqr_inner_data.cpp
@@ -161,6 +161,20 @@ add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
+
+
+add_executable(scenario1_lqr_controller_node
+    src/scenario1_lqr_controller_node.cpp
+)
+add_dependencies(scenario1_lqr_controller_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_lqr
+)
+target_link_libraries(scenario1_lqr_controller_node
+    matlab_lqr
+    ${catkin_LIBRARIES}
+)
 
 ##add_executable(lqr_hovering_controller_node
 ##    src/lqr_hovering_controller_node.cpp
@@ -175,34 +189,20 @@ add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 ##    ${catkin_LIBRARIES}
 ##)
 
-add_executable(bsl_hovering_controller_node
-    src/bsl_hovering_controller_node.cpp
-)
-add_dependencies(bsl_hovering_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    matlab_lqr
-)
-target_link_libraries(bsl_hovering_controller_node
-    matlab_lqr
-    ${catkin_LIBRARIES}
-)
-
-
-
-
-##add_executable(bsl_scenario1_controller_node
-##    src/bsl_scenario1_controller_node.cpp
+##add_executable(bsl_hovering_controller_node
+##    src/bsl_hovering_controller_node.cpp
 ##)
-##add_dependencies(bsl_scenario1_controller_node
+##add_dependencies(bsl_hovering_controller_node
 ##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
 ##    ${catkin_EXPORTED_TARGETS}
 ##    matlab_lqr
 ##)
-##target_link_libraries(bsl_scenario1_controller_node
+##target_link_libraries(bsl_hovering_controller_node
 ##    matlab_lqr
 ##    ${catkin_LIBRARIES}
 ##)
+
+
 
 ##add_executable(lqr_tracking_controller_node
 ##    src/lqr_tracking_controller_node.cpp

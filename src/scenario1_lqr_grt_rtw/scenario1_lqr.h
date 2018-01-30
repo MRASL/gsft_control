@@ -1,15 +1,15 @@
 /*
- * bsl_scenario1.h
+ * scenario1_lqr.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "bsl_scenario1".
+ * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.615
+ * Model version              : 1.661
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 12:08:10 2018
+ * C++ source code generated on : Tue Jan 30 18:51:04 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,18 +18,18 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_bsl_scenario1_h_
-#define RTW_HEADER_bsl_scenario1_h_
+#ifndef RTW_HEADER_scenario1_lqr_h_
+#define RTW_HEADER_scenario1_lqr_h_
 #include <cmath>
 #include <string.h>
-#ifndef bsl_scenario1_COMMON_INCLUDES_
-# define bsl_scenario1_COMMON_INCLUDES_
+#ifndef scenario1_lqr_COMMON_INCLUDES_
+# define scenario1_lqr_COMMON_INCLUDES_
 #include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#endif                                 /* bsl_scenario1_COMMON_INCLUDES_ */
+#endif                                 /* scenario1_lqr_COMMON_INCLUDES_ */
 
-#include "bsl_scenario1_types.h"
+#include "scenario1_lqr_types.h"
 
 /* Shared type includes */
 #include "multiword_types.h"
@@ -149,63 +149,51 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T u[6];                         /* '<Root>/                 ' */
-  real_T gamma_hat_k1k[6];             /* '<S13>/       ' */
-  real_T K_gamma_k1[36];               /* '<S13>/Divide' */
-  real_T Product[6];                   /* '<S13>/Product' */
-  real_T X_tildle_k1k[12];             /* '<S10>/Sum1' */
-  real_T C[6];                         /* '<S14>/C' */
-  real_T Sum1[6];                      /* '<S13>/Sum1' */
-  real_T C_h[6];                       /* '<S10>/C' */
-  real_T K_tildle_x_k1[72];            /* '<S10>/Divide' */
-  real_T Sum3[12];                     /* '<S10>/Sum3' */
-  real_T psi_e;                        /* '<S5>/psi_e' */
-  real_T xe;                           /* '<S7>/xe' */
-  real_T ye;                           /* '<S8>/ye' */
-  real_T ze;                           /* '<S9>/ze' */
-} B_bsl_scenario1_T;
-
-/* Block states (auto storage) for system '<Root>' */
-typedef struct {
-  real_T _DSTATE[6];                   /* '<S13>/       ' */
-  real_T UnitDelay1_DSTATE[36];        /* '<S13>/Unit Delay1' */
-  real_T UnitDelay_DSTATE[72];         /* '<S11>/Unit Delay' */
-  real_T UnitDelay1_DSTATE_e[144];     /* '<S10>/Unit Delay1' */
-  real_T UnitDelay_DSTATE_i[12];       /* '<S10>/Unit Delay' */
-  real_T Memory1_PreviousInput[6];     /* '<Root>/Memory1' */
-  real_T Divide_DWORK4[36];            /* '<S11>/Divide' */
-  real_T Divide_DWORK4_c[36];          /* '<S13>/Divide' */
-  real_T Divide_DWORK4_e[36];          /* '<S10>/Divide' */
-} DW_bsl_scenario1_T;
+  real_T dX[12];                       /* '<Root>/Sum' */
+  real_T RateTransition5[12];          /* '<Root>/Rate Transition5' */
+  real_T u;                            /* '<S6>/                    ' */
+  real_T Sum1;                         /* '<S6>/Sum1' */
+  real_T ZeroOrderHold;                /* '<Root>/Zero-Order Hold' */
+  real_T u_m;                          /* '<S7>/                     ' */
+  real_T Sum1_i;                       /* '<S7>/Sum1' */
+  real_T ZeroOrderHold1;               /* '<Root>/Zero-Order Hold1' */
+  real_T RateTransition3[12];          /* '<Root>/Rate Transition3' */
+  real_T u_n;                          /* '<S4>/                     ' */
+  real_T Sum1_a;                       /* '<S4>/Sum1' */
+  real_T ZeroOrderHold2;               /* '<Root>/Zero-Order Hold2' */
+  real_T d_ref[4];                     /* '<Root>/Sum1' */
+  real_T RateTransition;               /* '<Root>/Rate Transition' */
+  real_T RateTransition1;              /* '<Root>/Rate Transition1' */
+  real_T RateTransition2;              /* '<Root>/Rate Transition2' */
+  real_T psi_e;                        /* '<S4>/psi_e' */
+  real_T xe;                           /* '<S6>/xe' */
+  real_T ye;                           /* '<S7>/ye' */
+  real_T ze;                           /* '<S8>/ze' */
+} B_scenario1_lqr_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
-  real_T Integrator1_CSTATE_d;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
-  real_T Integrator1_CSTATE_a;         /* '<S5>/Integrator1' */
-} X_bsl_scenario1_T;
+  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_h;         /* '<S6>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_b;         /* '<S4>/Integrator1' */
+} X_scenario1_lqr_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
-  real_T Integrator1_CSTATE_d;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
-  real_T Integrator1_CSTATE_a;         /* '<S5>/Integrator1' */
-} XDot_bsl_scenario1_T;
+  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_h;         /* '<S6>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_b;         /* '<S4>/Integrator1' */
+} XDot_scenario1_lqr_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S9>/Integrator1' */
-  boolean_T Integrator1_CSTATE_d;      /* '<S7>/Integrator1' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S8>/Integrator1' */
-  boolean_T Integrator1_CSTATE_a;      /* '<S5>/Integrator1' */
-} XDis_bsl_scenario1_T;
-
-/* Invariant block signals (auto storage) */
-typedef const struct tag_ConstB_bsl_scenario1_T {
-  real_T Transpose[72];                /* '<S14>/Transpose' */
-} ConstB_bsl_scenario1_T;
+  boolean_T Integrator1_CSTATE;        /* '<S8>/Integrator1' */
+  boolean_T Integrator1_CSTATE_h;      /* '<S6>/Integrator1' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S7>/Integrator1' */
+  boolean_T Integrator1_CSTATE_b;      /* '<S4>/Integrator1' */
+} XDis_scenario1_lqr_T;
 
 #ifndef ODE5_INTG
 #define ODE5_INTG
@@ -223,81 +211,14 @@ typedef struct {
   /* Expression: B_ENU_inv
    * Referenced by: '<Root>/                 '
    */
-  real_T _Gain_dz[24];
-
-  /* Expression: Qgamma
-   * Referenced by: '<S13>/Q_gamma'
-   */
-  real_T Q_gamma_Value[36];
-
-  /* Expression: Pgamma0
-   * Referenced by: '<S13>/Unit Delay1'
-   */
-  real_T UnitDelay1_InitialCondition[36];
-
-  /* Pooled Parameter (Expression: C)
-   * Referenced by:
-   *   '<S10>/     '
-   *   '<S10>/C'
-   *   '<S10>/C1'
-   *   '<S11>/                      '
-   *   '<S14>/     '
-   *   '<S14>/C'
-   */
-  real_T pooled4[72];
-
-  /* Pooled Parameter (Expression: A)
-   * Referenced by:
-   *   '<S10>/A'
-   *   '<S10>/A1'
-   *   '<S11>/     '
-   */
-  real_T pooled5[144];
-
-  /* Pooled Parameter (Expression: B)
-   * Referenced by:
-   *   '<S10>/B'
-   *   '<S11>/          '
-   */
-  real_T pooled6[72];
-
-  /* Expression: Qx
-   * Referenced by: '<S10>/Q_x'
-   */
-  real_T Q_x_Value[144];
-
-  /* Expression: Px_tilde0
-   * Referenced by: '<S10>/Unit Delay1'
-   */
-  real_T UnitDelay1_InitialCondition_g[144];
-
-  /* Expression: A'
-   * Referenced by: '<S10>/A''
-   */
-  real_T A_Gain[144];
-
-  /* Pooled Parameter (Expression: R)
-   * Referenced by:
-   *   '<S10>/R'
-   *   '<S14>/R'
-   */
-  real_T pooled7[36];
-
-  /* Expression: [0 0 0 0 0 bias 0 0 0 0 0 0]
-   * Referenced by: '<S10>/Constant'
-   */
-  real_T Constant_Value_g[12];
-
-  /* Expression: C'
-   * Referenced by: '<S10>/C''
-   */
-  real_T C_Gain[72];
-} ConstP_bsl_scenario1_T;
+  real_T _Gain_m[24];
+} ConstP_scenario1_lqr_T;
 
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
   real_T X[12];                        /* '<Root>/X' */
-} ExtU_bsl_scenario1_T;
+  real_T X0[4];                        /* '<Root>/X0' */
+} ExtU_scenario1_lqr_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
 typedef struct {
@@ -306,14 +227,13 @@ typedef struct {
   real_T motor_speed[6];               /* '<Root>/motor_speed' */
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
   real_T ref[4];                       /* '<Root>/ref' */
-  real_T gamma[6];                     /* '<Root>/gamma' */
-} ExtY_bsl_scenario1_T;
+} ExtY_scenario1_lqr_T;
 
 /* Real-time Model Data Structure */
-struct tag_RTM_bsl_scenario1_T {
+struct tag_RTM_scenario1_lqr_T {
   const char_T *errorStatus;
   RTWSolverInfo solverInfo;
-  X_bsl_scenario1_T *contStates;
+  X_scenario1_lqr_T *contStates;
   int_T *periodicContStateIndices;
   real_T *periodicContStateRanges;
   real_T *derivs;
@@ -348,10 +268,14 @@ struct tag_RTM_bsl_scenario1_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
@@ -366,20 +290,18 @@ extern "C" {
 }
 #endif
 
-extern const ConstB_bsl_scenario1_T bsl_scenario1_ConstB;/* constant block i/o */
-
 /* Constant parameters (auto storage) */
-extern const ConstP_bsl_scenario1_T bsl_scenario1_ConstP;
+extern const ConstP_scenario1_lqr_T scenario1_lqr_ConstP;
 
-/* Class declaration for model bsl_scenario1 */
-class bsl_scenario1ModelClass {
+/* Class declaration for model scenario1_lqr */
+class scenario1_lqrModelClass {
   /* public data and function members */
  public:
   /* External inputs */
-  ExtU_bsl_scenario1_T bsl_scenario1_U;
+  ExtU_scenario1_lqr_T scenario1_lqr_U;
 
   /* External outputs */
-  ExtY_bsl_scenario1_T bsl_scenario1_Y;
+  ExtY_scenario1_lqr_T scenario1_lqr_Y;
 
   /* model initialize function */
   void initialize();
@@ -391,44 +313,29 @@ class bsl_scenario1ModelClass {
   void terminate();
 
   /* Constructor */
-  bsl_scenario1ModelClass();
+  scenario1_lqrModelClass();
 
   /* Destructor */
-  ~bsl_scenario1ModelClass();
+  ~scenario1_lqrModelClass();
 
   /* Real-Time Model get method */
-  RT_MODEL_bsl_scenario1_T * getRTM();
+  RT_MODEL_scenario1_lqr_T * getRTM();
 
   /* private data and function members */
  private:
   /* Block signals */
-  B_bsl_scenario1_T bsl_scenario1_B;
-
-  /* Block states */
-  DW_bsl_scenario1_T bsl_scenario1_DW;
-  X_bsl_scenario1_T bsl_scenario1_X;   /* Block continuous states */
+  B_scenario1_lqr_T scenario1_lqr_B;
+  X_scenario1_lqr_T scenario1_lqr_X;   /* Block continuous states */
 
   /* Real-Time Model */
-  RT_MODEL_bsl_scenario1_T bsl_scenario1_M;
+  RT_MODEL_scenario1_lqr_T scenario1_lqr_M;
 
   /* Continuous states update member function*/
   void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si );
 
   /* Derivatives member function */
-  void bsl_scenario1_derivatives();
+  void scenario1_lqr_derivatives();
 };
-
-/*-
- * These blocks were eliminated from the model due to optimizations:
- *
- * Block '<S12>/Product' : Unused code path elimination
- * Block '<S12>/Product1' : Unused code path elimination
- * Block '<S12>/Product2' : Unused code path elimination
- * Block '<S12>/Sum1' : Unused code path elimination
- * Block '<S12>/Sum4' : Unused code path elimination
- * Block '<S12>/Transpose' : Unused code path elimination
- * Block '<S13>/Scope' : Unused code path elimination
- */
 
 /*-
  * The generated code includes comments that allow you to trace directly
@@ -444,20 +351,14 @@ class bsl_scenario1ModelClass {
  *
  * Here is the system hierarchy for this model
  *
- * '<Root>' : 'bsl_scenario1'
- * '<S1>'   : 'bsl_scenario1/Actuator_Fault'
- * '<S2>'   : 'bsl_scenario1/MATLAB Function'
- * '<S3>'   : 'bsl_scenario1/Two-Stage KF2'
- * '<S4>'   : 'bsl_scenario1/phi_controller1'
- * '<S5>'   : 'bsl_scenario1/psi_controller '
- * '<S6>'   : 'bsl_scenario1/teta_controller1'
- * '<S7>'   : 'bsl_scenario1/x_controller '
- * '<S8>'   : 'bsl_scenario1/y_controller '
- * '<S9>'   : 'bsl_scenario1/z_controller '
- * '<S10>'  : 'bsl_scenario1/Two-Stage KF2/Bias-Free State Estimator'
- * '<S11>'  : 'bsl_scenario1/Two-Stage KF2/Coupling'
- * '<S12>'  : 'bsl_scenario1/Two-Stage KF2/Error Compensator'
- * '<S13>'  : 'bsl_scenario1/Two-Stage KF2/Optimal bias estimator'
- * '<S14>'  : 'bsl_scenario1/Two-Stage KF2/Residual Generator'
+ * '<Root>' : 'scenario1_lqr'
+ * '<S1>'   : 'scenario1_lqr/Actuator_Fault'
+ * '<S2>'   : 'scenario1_lqr/MATLAB Function'
+ * '<S3>'   : 'scenario1_lqr/phi_controller1'
+ * '<S4>'   : 'scenario1_lqr/psi_controller '
+ * '<S5>'   : 'scenario1_lqr/teta_controller1'
+ * '<S6>'   : 'scenario1_lqr/x_controller '
+ * '<S7>'   : 'scenario1_lqr/y_controller '
+ * '<S8>'   : 'scenario1_lqr/z_controller '
  */
-#endif                                 /* RTW_HEADER_bsl_scenario1_h_ */
+#endif                                 /* RTW_HEADER_scenario1_lqr_h_ */
