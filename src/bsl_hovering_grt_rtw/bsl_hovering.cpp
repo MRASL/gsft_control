@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.603
+ * Model version              : 1.604
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 29 19:12:14 2018
+ * C++ source code generated on : Mon Jan 29 19:32:49 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -563,7 +563,7 @@ void bsl_hoveringModelClass::step()
       /* Sqrt: '<Root>/Sqrt1' incorporates:
        *  Gain: '<Root>/      '
        */
-      rtb_Sqrt1 = std::sqrt(116978.4923343994 * bsl_hovering_B.u[i]);
+      rtb_Sqrt1 = std::sqrt(149253.73134328358 * bsl_hovering_B.u[i]);
 
       /* Gain: '<Root>/rads_to_RPM' */
       rtb_Product1 = 9.5493 * rtb_Sqrt1;
