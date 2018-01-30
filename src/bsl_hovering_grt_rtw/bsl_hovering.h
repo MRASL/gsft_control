@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.617
+ * Model version              : 1.620
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 13:06:14 2018
+ * C++ source code generated on : Tue Jan 30 13:21:14 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,16 +149,14 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T RateTransition4[12];          /* '<Root>/Rate Transition4' */
-  real_T u;                            /* '<S9>/                     ' */
-  real_T Sum1;                         /* '<S9>/Sum1' */
-  real_T ZeroOrderHold2;               /* '<Root>/Zero-Order Hold2' */
-  real_T u_o;                          /* '<S7>/                    ' */
-  real_T Sum1_l;                       /* '<S7>/Sum1' */
+  real_T RateTransition5[12];          /* '<Root>/Rate Transition5' */
+  real_T u;                            /* '<S7>/                    ' */
+  real_T Sum1;                         /* '<S7>/Sum1' */
   real_T ZeroOrderHold;                /* '<Root>/Zero-Order Hold' */
   real_T u_m;                          /* '<S8>/                     ' */
-  real_T Sum1_lg;                      /* '<S8>/Sum1' */
+  real_T Sum1_l;                       /* '<S8>/Sum1' */
   real_T ZeroOrderHold1;               /* '<Root>/Zero-Order Hold1' */
+  real_T RateTransition4[12];          /* '<Root>/Rate Transition4' */
   real_T u_d;                          /* '<S5>/                     ' */
   real_T Sum1_o;                       /* '<S5>/Sum1' */
   real_T ZeroOrderHold3;               /* '<Root>/Zero-Order Hold3' */
@@ -172,7 +170,6 @@ typedef struct {
   real_T RateTransition;               /* '<Root>/Rate Transition' */
   real_T RateTransition1;              /* '<Root>/Rate Transition1' */
   real_T RateTransition2;              /* '<Root>/Rate Transition2' */
-  real_T RateTransition3;              /* '<Root>/Rate Transition3' */
   real_T C_h[6];                       /* '<S10>/C' */
   real_T K_tildle_x_k1[72];            /* '<S10>/Divide' */
   real_T Sum3[12];                     /* '<S10>/Sum3' */
