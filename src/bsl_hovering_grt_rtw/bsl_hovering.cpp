@@ -7,9 +7,9 @@
  *
  * Code generation for model "bsl_hovering".
  *
- * Model version              : 1.612
+ * Model version              : 1.613
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 12:16:57 2018
+ * C++ source code generated on : Tue Jan 30 12:42:55 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -20,6 +20,25 @@
 
 #include "bsl_hovering.h"
 #include "bsl_hovering_private.h"
+
+static void rate_scheduler(RT_MODEL_bsl_hovering_T *const bsl_hovering_M);
+
+/*
+ *   This function updates active task flag for each subrate.
+ * The function is called at model base rate, hence the
+ * generated code self-manages all its subrates.
+ */
+static void rate_scheduler(RT_MODEL_bsl_hovering_T *const bsl_hovering_M)
+{
+  /* Compute which subrates run during the next base time step.  Subrates
+   * are an integer multiple of the base rate counter.  Therefore, the subtask
+   * counter is reset when it reaches its limit (zero means run).
+   */
+  (bsl_hovering_M->Timing.TaskCounters.TID[2])++;
+  if ((bsl_hovering_M->Timing.TaskCounters.TID[2]) > 1) {/* Sample time: [0.02s, 0.0s] */
+    bsl_hovering_M->Timing.TaskCounters.TID[2] = 0;
+  }
+}
 
 /*
  * This function updates continuous states using the ODE5 fixed-step
@@ -418,18 +437,15 @@ void bsl_hoveringModelClass::step()
   }
 
   {
-    real_T rtb_Sum1_j;
-    real_T rtb_Sum1_b;
-    real_T rtb_Sum3_g;
     real_T rtb_T_f[6];
     real_T rtb_Clock;
     real_T rtb_P_gamma_k1k[36];
     real_T rtb_Product2_o[72];
     real_T rtb_H_k1k[36];
-    real_T rtb_Product5[36];
     real_T rtb_Sum4[144];
     real_T rtb_Product3[144];
     real_T rtb_Divide[72];
+    real_T rtb_Product5[36];
     real_T rtb_H_k1k_0[36];
     real_T rtb_Product2_e[72];
     int32_T i;
@@ -444,103 +460,148 @@ void bsl_hoveringModelClass::step()
     real_T tmp_1[12];
     real_T tmp_2[6];
     int32_T i_1;
+    real_T rtb_Product1;
     real_T tmp_3;
+    real_T u0;
 
     /* Clock: '<Root>/Clock' */
     rtb_Clock = (&bsl_hovering_M)->Timing.t[0];
 
+    /* RateTransition: '<Root>/Rate Transition4' incorporates:
+     *  Inport: '<Root>/X'
+     */
+    if ((rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+         (&bsl_hovering_M)->Timing.TaskCounters.TID[1] == 0) &&
+        (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+         (&bsl_hovering_M)->Timing.TaskCounters.TID[2] == 0)) {
+      memcpy(&bsl_hovering_B.RateTransition4[0], &bsl_hovering_U.X[0], 12U *
+             sizeof(real_T));
+    }
+
+    /* End of RateTransition: '<Root>/Rate Transition4' */
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[2] == 0) {
+      /* Gain: '<S9>/                     ' incorporates:
+       *  SignalConversion: '<S9>/TmpSignal ConversionAt                     Inport1'
+       */
+      bsl_hovering_B.u = 12.219481695651957 * bsl_hovering_B.RateTransition4[2]
+        + 6.215786645518647 * bsl_hovering_B.RateTransition4[5];
+    }
+
+    /* Sum: '<S9>/Sum1' incorporates:
+     *  Gain: '<S9>/  '
+     *  Integrator: '<S9>/Integrator1'
+     */
+    bsl_hovering_B.Sum1 = 10.000000000000018 * bsl_hovering_X.Integrator1_CSTATE
+      - bsl_hovering_B.u;
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[2] == 0) {
+      /* ZeroOrderHold: '<Root>/Zero-Order Hold2' */
+      bsl_hovering_B.ZeroOrderHold2 = bsl_hovering_B.Sum1;
+
+      /* Gain: '<S7>/                    ' incorporates:
+       *  SignalConversion: '<S7>/TmpSignal ConversionAt                    Inport1'
+       */
+      bsl_hovering_B.u_o = 0.32349951352987977 * bsl_hovering_B.RateTransition4
+        [0] + 0.2732366014912751 * bsl_hovering_B.RateTransition4[3];
+    }
+
     /* Sum: '<S7>/Sum1' incorporates:
      *  Gain: '<S7>/ '
-     *  Gain: '<S7>/                    '
-     *  Inport: '<Root>/X'
      *  Integrator: '<S7>/Integrator1'
-     *  SignalConversion: '<S7>/TmpSignal ConversionAt                    Inport1'
      */
-    rtb_Sum1_j = 0.17320508075688992 * bsl_hovering_X.Integrator1_CSTATE_d -
-      (0.32349951352987977 * bsl_hovering_U.X[0] + 0.2732366014912751 *
-       bsl_hovering_U.X[3]);
+    bsl_hovering_B.Sum1_l = 0.17320508075688992 *
+      bsl_hovering_X.Integrator1_CSTATE_d - bsl_hovering_B.u_o;
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[2] == 0) {
+      /* ZeroOrderHold: '<Root>/Zero-Order Hold' */
+      bsl_hovering_B.ZeroOrderHold = bsl_hovering_B.Sum1_l;
+
+      /* Gain: '<S8>/                     ' incorporates:
+       *  SignalConversion: '<S8>/TmpSignal ConversionAt                     Inport1'
+       */
+      bsl_hovering_B.u_m = -0.31312578517366968 *
+        bsl_hovering_B.RateTransition4[1] + -0.25417198201077484 *
+        bsl_hovering_B.RateTransition4[4];
+    }
 
     /* Sum: '<S8>/Sum1' incorporates:
      *  Gain: '<S8>/  '
-     *  Gain: '<S8>/                     '
-     *  Inport: '<Root>/X'
      *  Integrator: '<S8>/Integrator1'
-     *  SignalConversion: '<S8>/TmpSignal ConversionAt                     Inport1'
      */
-    rtb_Sum1_b = -0.173205080756885 * bsl_hovering_X.Integrator1_CSTATE_j -
-      (-0.31312578517366968 * bsl_hovering_U.X[1] + -0.25417198201077484 *
-       bsl_hovering_U.X[4]);
+    bsl_hovering_B.Sum1_lg = -0.173205080756885 *
+      bsl_hovering_X.Integrator1_CSTATE_j - bsl_hovering_B.u_m;
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[2] == 0) {
+      /* ZeroOrderHold: '<Root>/Zero-Order Hold1' */
+      bsl_hovering_B.ZeroOrderHold1 = bsl_hovering_B.Sum1_lg;
 
-    /* Fcn: '<Root>/Fcn1' incorporates:
+      /* Gain: '<S5>/                     ' incorporates:
+       *  SignalConversion: '<S5>/TmpSignal ConversionAt                     Inport1'
+       */
+      bsl_hovering_B.u_d = 0.3035552054947866 * bsl_hovering_B.RateTransition4[8]
+        + 0.24395632222527311 * bsl_hovering_B.RateTransition4[11];
+    }
+
+    /* Sum: '<S5>/Sum1' incorporates:
+     *  Gain: '<S5>/  '
+     *  Integrator: '<S5>/Integrator1'
+     */
+    bsl_hovering_B.Sum1_o = 0.15811388300841925 *
+      bsl_hovering_X.Integrator1_CSTATE_a - bsl_hovering_B.u_d;
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[2] == 0) {
+      /* ZeroOrderHold: '<Root>/Zero-Order Hold3' */
+      bsl_hovering_B.ZeroOrderHold3 = bsl_hovering_B.Sum1_o;
+    }
+
+    /* Sum: '<S4>/Sum1' incorporates:
+     *  Fcn: '<Root>/Fcn1'
      *  Inport: '<Root>/X'
+     *  Saturate: '<S4>/roll'
      */
-    rtb_Sum3_g = rtb_Sum1_b * std::cos(bsl_hovering_U.X[8]) + rtb_Sum1_j * std::
-      sin(bsl_hovering_U.X[8]);
-
-    /* Saturate: '<S4>/roll' */
-    if (rtb_Sum3_g > 0.52359877559829882) {
-      rtb_Sum3_g = 0.52359877559829882;
+    u0 = bsl_hovering_B.ZeroOrderHold1 * std::cos(bsl_hovering_U.X[8]) +
+      bsl_hovering_B.ZeroOrderHold * std::sin(bsl_hovering_U.X[8]);
+    if (u0 > 0.52359877559829882) {
+      u0 = 0.52359877559829882;
     } else {
-      if (rtb_Sum3_g < -0.52359877559829882) {
-        rtb_Sum3_g = -0.52359877559829882;
+      if (u0 < -0.52359877559829882) {
+        u0 = -0.52359877559829882;
       }
     }
 
-    /* End of Saturate: '<S4>/roll' */
-
-    /* Sum: '<S4>/Sum1' incorporates:
+    /* Sum: '<Root>/Sum2' incorporates:
      *  Gain: '<S4>/                    '
      *  Inport: '<Root>/X'
      *  SignalConversion: '<S4>/TmpSignal ConversionAt                    Inport1'
+     *  Sum: '<S4>/Sum1'
      */
-    rtb_Sum3_g -= 1.1365283480217869 * bsl_hovering_U.X[6] + 0.28178545108770103
-      * bsl_hovering_U.X[9];
-
-    /* Fcn: '<Root>/Fcn' incorporates:
-     *  Inport: '<Root>/X'
-     */
-    rtb_Sum1_j = -rtb_Sum1_b * std::sin(bsl_hovering_U.X[8]) + rtb_Sum1_j * std::
-      cos(bsl_hovering_U.X[8]);
-
-    /* Sum: '<Root>/Sum2' incorporates:
-     *  Gain: '<S9>/  '
-     *  Gain: '<S9>/                     '
-     *  Inport: '<Root>/X'
-     *  Integrator: '<S9>/Integrator1'
-     *  SignalConversion: '<S9>/TmpSignal ConversionAt                     Inport1'
-     *  Sum: '<S9>/Sum1'
-     */
-    rtb_Sum1_b = 10.000000000000018 * bsl_hovering_X.Integrator1_CSTATE -
-      (12.219481695651957 * bsl_hovering_U.X[2] + 6.215786645518647 *
-       bsl_hovering_U.X[5]);
+    tmp_3 = u0 - (1.1365283480217869 * bsl_hovering_U.X[6] + 0.28178545108770103
+                  * bsl_hovering_U.X[9]);
 
     /* Sum: '<S6>/Sum1' incorporates:
+     *  Fcn: '<Root>/Fcn'
+     *  Inport: '<Root>/X'
      *  Saturate: '<S6>/pitch'
      */
-    if (rtb_Sum1_j > 0.52359877559829882) {
-      rtb_Sum1_j = 0.52359877559829882;
+    u0 = -bsl_hovering_B.ZeroOrderHold1 * std::sin(bsl_hovering_U.X[8]) +
+      bsl_hovering_B.ZeroOrderHold * std::cos(bsl_hovering_U.X[8]);
+    if (u0 > 0.52359877559829882) {
+      u0 = 0.52359877559829882;
     } else {
-      if (rtb_Sum1_j < -0.52359877559829882) {
-        rtb_Sum1_j = -0.52359877559829882;
+      if (u0 < -0.52359877559829882) {
+        u0 = -0.52359877559829882;
       }
     }
 
     /* Sum: '<Root>/Sum2' incorporates:
-     *  Gain: '<S5>/  '
-     *  Gain: '<S5>/                     '
      *  Gain: '<S6>/                    '
      *  Inport: '<Root>/X'
-     *  Integrator: '<S5>/Integrator1'
-     *  SignalConversion: '<S5>/TmpSignal ConversionAt                     Inport1'
      *  SignalConversion: '<S6>/TmpSignal ConversionAt                    Inport1'
-     *  Sum: '<S5>/Sum1'
      *  Sum: '<S6>/Sum1'
      */
-    rtb_Sum1_j -= 1.2859205994736729 * bsl_hovering_U.X[7] + 0.34413551249350854
-      * bsl_hovering_U.X[10];
-    tmp_3 = 0.15811388300841925 * bsl_hovering_X.Integrator1_CSTATE_a -
-      (0.3035552054947866 * bsl_hovering_U.X[8] + 0.24395632222527311 *
-       bsl_hovering_U.X[11]);
+    u0 -= 1.2859205994736729 * bsl_hovering_U.X[7] + 0.34413551249350854 *
+      bsl_hovering_U.X[10];
 
     /* MATLAB Function 'Actuator_Fault': '<S1>:1' */
     /* '<S1>:1:2' T_f = T; */
@@ -548,76 +609,78 @@ void bsl_hoveringModelClass::step()
       /* Gain: '<Root>/                 ' incorporates:
        *  Sum: '<Root>/Sum2'
        */
-      bsl_hovering_B.u[i] = 0.0;
-      bsl_hovering_B.u[i] += (rtb_Sum1_b + 15.107400000000002) *
-        bsl_hovering_ConstP._Gain_dz[i];
-      bsl_hovering_B.u[i] += bsl_hovering_ConstP._Gain_dz[i + 6] * rtb_Sum3_g;
-      bsl_hovering_B.u[i] += bsl_hovering_ConstP._Gain_dz[i + 12] * rtb_Sum1_j;
-      bsl_hovering_B.u[i] += bsl_hovering_ConstP._Gain_dz[i + 18] * tmp_3;
+      bsl_hovering_B.u_dq[i] = 0.0;
+      bsl_hovering_B.u_dq[i] += (bsl_hovering_B.ZeroOrderHold2 +
+        15.107400000000002) * bsl_hovering_ConstP._Gain_dz[i];
+      bsl_hovering_B.u_dq[i] += bsl_hovering_ConstP._Gain_dz[i + 6] * tmp_3;
+      bsl_hovering_B.u_dq[i] += bsl_hovering_ConstP._Gain_dz[i + 12] * u0;
+      bsl_hovering_B.u_dq[i] += bsl_hovering_ConstP._Gain_dz[i + 18] *
+        bsl_hovering_B.ZeroOrderHold3;
 
       /* MATLAB Function: '<Root>/Actuator_Fault' */
-      rtb_T_f[i] = bsl_hovering_B.u[i];
+      rtb_T_f[i] = bsl_hovering_B.u_dq[i];
     }
 
     /* MATLAB Function: '<Root>/Actuator_Fault' */
     /* '<S1>:1:3' if time >= 30 */
     if (rtb_Clock >= 30.0) {
       /* '<S1>:1:4' T1 = T(1)*0.8; */
-      /* '<S1>:1:5' T2 = T(2)*0.8; */
-      /* '<S1>:1:6' T3 = T(3)*0.8; */
-      /* '<S1>:1:7' T4 = T(4)*0.8; */
-      /* '<S1>:1:8' T5 = T(5)*0.8; */
-      /* '<S1>:1:9' T6 = T(6)*0.8; */
+      /* '<S1>:1:5' T2 = T(2); */
+      /* '<S1>:1:6' T3 = T(3); */
+      /* '<S1>:1:7' T4 = T(4); */
+      /* '<S1>:1:8' T5 = T(5); */
+      /* '<S1>:1:9' T6 = T(6); */
       /* '<S1>:1:10' T_f = [T1;T2;T3;T4;T5;T6]; */
-      rtb_T_f[0] = bsl_hovering_B.u[0] * 0.8;
-      rtb_T_f[1] = bsl_hovering_B.u[1] * 0.8;
-      rtb_T_f[2] = bsl_hovering_B.u[2] * 0.8;
-      rtb_T_f[3] = bsl_hovering_B.u[3] * 0.8;
-      rtb_T_f[4] = bsl_hovering_B.u[4] * 0.8;
-      rtb_T_f[5] = bsl_hovering_B.u[5] * 0.8;
+      rtb_T_f[0] = bsl_hovering_B.u_dq[0] * 0.8;
+      rtb_T_f[1] = bsl_hovering_B.u_dq[1];
+      rtb_T_f[2] = bsl_hovering_B.u_dq[2];
+      rtb_T_f[3] = bsl_hovering_B.u_dq[3];
+      rtb_T_f[4] = bsl_hovering_B.u_dq[4];
+      rtb_T_f[5] = bsl_hovering_B.u_dq[5];
     }
 
     /* Outport: '<Root>/virtual_control' incorporates:
      *  Sum: '<Root>/Sum2'
      */
-    bsl_hovering_Y.virtual_control[0] = rtb_Sum1_b + 15.107400000000002;
-    bsl_hovering_Y.virtual_control[1] = rtb_Sum3_g;
-    bsl_hovering_Y.virtual_control[2] = rtb_Sum1_j;
-    bsl_hovering_Y.virtual_control[3] = tmp_3;
+    bsl_hovering_Y.virtual_control[0] = bsl_hovering_B.ZeroOrderHold2 +
+      15.107400000000002;
+    bsl_hovering_Y.virtual_control[1] = tmp_3;
+    bsl_hovering_Y.virtual_control[2] = u0;
+    bsl_hovering_Y.virtual_control[3] = bsl_hovering_B.ZeroOrderHold3;
     for (i = 0; i < 6; i++) {
       /* Sqrt: '<Root>/Sqrt1' incorporates:
        *  Gain: '<Root>/      '
        */
-      rtb_Sum1_j = std::sqrt(116978.4923343994 * rtb_T_f[i]);
+      tmp_3 = std::sqrt(116978.4923343994 * rtb_T_f[i]);
 
       /* Gain: '<Root>/rads_to_RPM' */
-      rtb_Sum1_b = 9.5493 * rtb_Sum1_j;
+      rtb_Product1 = 9.5493 * tmp_3;
 
       /* Gain: '<Root>/mapping_0_200' incorporates:
        *  Constant: '<Root>/Constant '
        *  Sum: '<Root>/Sum3'
        */
-      rtb_Sum3_g = (rtb_Sum1_b - 1250.0) * 0.022857142857142857;
+      u0 = (rtb_Product1 - 1250.0) * 0.022857142857142857;
 
       /* Saturate: '<Root>/Saturation' */
-      if (rtb_Sum3_g > 200.0) {
+      if (u0 > 200.0) {
         /* Outport: '<Root>/motor_command' */
         bsl_hovering_Y.motor_command[i] = 200.0;
-      } else if (rtb_Sum3_g < 0.0) {
+      } else if (u0 < 0.0) {
         /* Outport: '<Root>/motor_command' */
         bsl_hovering_Y.motor_command[i] = 0.0;
       } else {
         /* Outport: '<Root>/motor_command' */
-        bsl_hovering_Y.motor_command[i] = rtb_Sum3_g;
+        bsl_hovering_Y.motor_command[i] = u0;
       }
 
       /* End of Saturate: '<Root>/Saturation' */
 
       /* Outport: '<Root>/motor_speed' */
-      bsl_hovering_Y.motor_speed[i] = rtb_Sum1_j;
+      bsl_hovering_Y.motor_speed[i] = tmp_3;
 
       /* Outport: '<Root>/motor_RPM' */
-      bsl_hovering_Y.motor_RPM[i] = rtb_Sum1_b;
+      bsl_hovering_Y.motor_RPM[i] = rtb_Product1;
     }
 
     /* MATLAB Function: '<Root>/MATLAB Function' */
@@ -644,15 +707,21 @@ void bsl_hoveringModelClass::step()
       /* '<S2>:1:12' psi = 0; */
     }
 
-    /* Outport: '<Root>/ref' incorporates:
-     *  MATLAB Function: '<Root>/MATLAB Function'
-     */
     /* '<S2>:1:14' ref = [x;y;z;psi]; */
-    bsl_hovering_Y.ref[0] = 0.0;
-    bsl_hovering_Y.ref[1] = 0.0;
-    bsl_hovering_Y.ref[2] = rtb_Clock;
-    bsl_hovering_Y.ref[3] = 0.0;
-    if (rtmIsMajorTimeStep((&bsl_hovering_M))) {
+    bsl_hovering_B.ref[0] = 0.0;
+    bsl_hovering_B.ref[1] = 0.0;
+    bsl_hovering_B.ref[2] = rtb_Clock;
+    bsl_hovering_B.ref[3] = 0.0;
+
+    /* End of MATLAB Function: '<Root>/MATLAB Function' */
+
+    /* Outport: '<Root>/ref' */
+    bsl_hovering_Y.ref[0] = bsl_hovering_B.ref[0];
+    bsl_hovering_Y.ref[1] = bsl_hovering_B.ref[1];
+    bsl_hovering_Y.ref[2] = bsl_hovering_B.ref[2];
+    bsl_hovering_Y.ref[3] = bsl_hovering_B.ref[3];
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[1] == 0) {
       /* UnitDelay: '<S13>/       ' */
       for (i = 0; i < 6; i++) {
         bsl_hovering_B.gamma_hat_k1k[i] = bsl_hovering_DW._DSTATE[i];
@@ -836,14 +905,14 @@ void bsl_hoveringModelClass::step()
            *  Sum: '<S10>/Sum2'
            *  Sum: '<S10>/Sum9'
            */
-          rtb_Sum3_g = 0.0;
+          rtb_Clock = 0.0;
           for (i_1 = 0; i_1 < 12; i_1++) {
-            rtb_Sum3_g += rtb_Product3[12 * i_1 + i_0] *
+            rtb_Clock += rtb_Product3[12 * i_1 + i_0] *
               bsl_hovering_ConstP.A_Gain[12 * i + i_1];
           }
 
           rtb_Sum4[i_0 + 12 * i] = ((rtb_Product2_e_0[12 * i + i_0] -
-            rtb_Divide_1[12 * i + i_0]) + rtb_Sum3_g) +
+            rtb_Divide_1[12 * i + i_0]) + rtb_Clock) +
             bsl_hovering_ConstP.Q_x_Value[12 * i + i_0];
 
           /* End of Sum: '<S10>/Sum4' */
@@ -882,14 +951,14 @@ void bsl_hoveringModelClass::step()
            *  Product: '<S14>/Product7'
            *  Sum: '<S13>/Sum2'
            */
-          rtb_Sum3_g = 0.0;
+          rtb_Clock = 0.0;
           for (i_1 = 0; i_1 < 12; i_1++) {
-            rtb_Sum3_g += bsl_hovering_ConstP.pooled4[6 * i_1 + i] * rtb_Sum4_0
+            rtb_Clock += bsl_hovering_ConstP.pooled4[6 * i_1 + i] * rtb_Sum4_0
               [12 * i_0 + i_1];
           }
 
           tmp[i + 6 * i_0] = bsl_hovering_ConstP.pooled7[6 * i_0 + i] +
-            rtb_Sum3_g;
+            rtb_Clock;
 
           /* End of Sum: '<S14>/Sum1' */
         }
@@ -943,12 +1012,12 @@ void bsl_hoveringModelClass::step()
         tmp_1[i_0] = 0.0;
 
         /* Sum: '<S10>/Sum1' */
-        rtb_Sum3_g = 0.0;
+        rtb_Clock = 0.0;
         for (i = 0; i < 6; i++) {
           /* Sum: '<S10>/Sum1' incorporates:
            *  Product: '<S10>/Product'
            */
-          rtb_Sum3_g += rtb_Product2_o[12 * i + i_0] *
+          rtb_Clock += rtb_Product2_o[12 * i + i_0] *
             bsl_hovering_B.gamma_hat_k1k[i];
 
           /* Gain: '<S10>/B' incorporates:
@@ -965,7 +1034,7 @@ void bsl_hoveringModelClass::step()
          *  Sum: '<S10>/Sum'
          */
         bsl_hovering_B.X_tildle_k1k[i_0] = ((tmp_0[i_0] + tmp_1[i_0]) +
-          bsl_hovering_ConstP.Constant_Value_g[i_0]) + rtb_Sum3_g;
+          bsl_hovering_ConstP.Constant_Value_g[i_0]) + rtb_Clock;
       }
 
       /* Gain: '<S14>/C' */
@@ -1004,20 +1073,35 @@ void bsl_hoveringModelClass::step()
       /* Sum: '<S13>/Sum1' incorporates:
        *  Product: '<S13>/Product1'
        */
-      rtb_Sum3_g = 0.0;
+      rtb_Clock = 0.0;
       for (i_0 = 0; i_0 < 6; i_0++) {
-        rtb_Sum3_g += bsl_hovering_B.K_gamma_k1[6 * i_0 + i] * tmp_2[i_0];
+        rtb_Clock += bsl_hovering_B.K_gamma_k1[6 * i_0 + i] * tmp_2[i_0];
       }
 
-      bsl_hovering_B.Sum1[i] = bsl_hovering_B.gamma_hat_k1k[i] + rtb_Sum3_g;
+      bsl_hovering_B.Sum1_lc[i] = bsl_hovering_B.gamma_hat_k1k[i] + rtb_Clock;
 
       /* End of Sum: '<S13>/Sum1' */
 
       /* Outport: '<Root>/gamma' */
-      bsl_hovering_Y.gamma[i] = bsl_hovering_B.Sum1[i];
+      bsl_hovering_Y.gamma[i] = bsl_hovering_B.Sum1_lc[i];
     }
 
-    if (rtmIsMajorTimeStep((&bsl_hovering_M))) {
+    /* RateTransition: '<Root>/Rate Transition' */
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[1] == 0) {
+      /* RateTransition: '<Root>/Rate Transition1' incorporates:
+       *  RateTransition: '<Root>/Rate Transition2'
+       *  RateTransition: '<Root>/Rate Transition3'
+       */
+      if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+          (&bsl_hovering_M)->Timing.TaskCounters.TID[2] == 0) {
+        bsl_hovering_B.RateTransition = bsl_hovering_B.ref[0];
+        bsl_hovering_B.RateTransition1 = bsl_hovering_B.ref[1];
+        bsl_hovering_B.RateTransition2 = bsl_hovering_B.ref[3];
+        bsl_hovering_B.RateTransition3 = bsl_hovering_B.ref[2];
+      }
+
+      /* End of RateTransition: '<Root>/Rate Transition1' */
       for (i_0 = 0; i_0 < 6; i_0++) {
         /* Gain: '<S10>/C' */
         bsl_hovering_B.C_h[i_0] = 0.0;
@@ -1044,14 +1128,14 @@ void bsl_hoveringModelClass::step()
        */
       for (i_0 = 0; i_0 < 6; i_0++) {
         for (i = 0; i < 6; i++) {
-          rtb_Sum3_g = 0.0;
+          rtb_Clock = 0.0;
           for (i_1 = 0; i_1 < 12; i_1++) {
-            rtb_Sum3_g += bsl_hovering_ConstP.pooled4[6 * i_1 + i] *
+            rtb_Clock += bsl_hovering_ConstP.pooled4[6 * i_1 + i] *
               rtb_Product2_o[12 * i_0 + i_1];
           }
 
           tmp[i + 6 * i_0] = bsl_hovering_ConstP.pooled7[6 * i_0 + i] +
-            rtb_Sum3_g;
+            rtb_Clock;
         }
       }
 
@@ -1089,6 +1173,8 @@ void bsl_hoveringModelClass::step()
       }
     }
 
+    /* End of RateTransition: '<Root>/Rate Transition' */
+
     /* Sum: '<S10>/Sum6' incorporates:
      *  Inport: '<Root>/X'
      *  Product: '<S10>/Product2'
@@ -1109,16 +1195,17 @@ void bsl_hoveringModelClass::step()
      *  Product: '<S10>/Product2'
      */
     for (i_0 = 0; i_0 < 12; i_0++) {
-      rtb_Sum3_g = 0.0;
+      rtb_Clock = 0.0;
       for (i = 0; i < 6; i++) {
-        rtb_Sum3_g += bsl_hovering_B.K_tildle_x_k1[12 * i + i_0] * tmp_2[i];
+        rtb_Clock += bsl_hovering_B.K_tildle_x_k1[12 * i + i_0] * tmp_2[i];
       }
 
-      bsl_hovering_B.Sum3[i_0] = bsl_hovering_B.X_tildle_k1k[i_0] + rtb_Sum3_g;
+      bsl_hovering_B.Sum3[i_0] = bsl_hovering_B.X_tildle_k1k[i_0] + rtb_Clock;
     }
 
     /* End of Sum: '<S10>/Sum3' */
-    if (rtmIsMajorTimeStep((&bsl_hovering_M))) {
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[1] == 0) {
       /* Sum: '<S10>/Sum7' */
       for (i = 0; i < 144; i++) {
         rtb_P_tildle_x_k1[i] = rtb_Sum4[i] - rtb_Product3[i];
@@ -1130,13 +1217,13 @@ void bsl_hoveringModelClass::step()
          *  Product: '<S11>/Product2'
          */
         for (i = 0; i < 12; i++) {
-          rtb_Sum3_g = 0.0;
+          rtb_Clock = 0.0;
           for (i_1 = 0; i_1 < 6; i_1++) {
-            rtb_Sum3_g += bsl_hovering_B.K_tildle_x_k1[12 * i_1 + i] *
-              rtb_H_k1k[6 * i_0 + i_1];
+            rtb_Clock += bsl_hovering_B.K_tildle_x_k1[12 * i_1 + i] * rtb_H_k1k
+              [6 * i_0 + i_1];
           }
 
-          rtb_Sum1_a[i + 12 * i_0] = rtb_Divide[12 * i_0 + i] - rtb_Sum3_g;
+          rtb_Sum1_a[i + 12 * i_0] = rtb_Divide[12 * i_0 + i] - rtb_Clock;
         }
 
         /* End of Sum: '<S11>/Sum1' */
@@ -1160,89 +1247,130 @@ void bsl_hoveringModelClass::step()
        */
       for (i_0 = 0; i_0 < 6; i_0++) {
         for (i = 0; i < 6; i++) {
-          rtb_Sum3_g = 0.0;
+          rtb_Clock = 0.0;
           for (i_1 = 0; i_1 < 6; i_1++) {
-            rtb_Sum3_g += bsl_hovering_B.K_gamma_k1[6 * i_1 + i] * rtb_H_k1k_0[6
-              * i_0 + i_1];
+            rtb_Clock += bsl_hovering_B.K_gamma_k1[6 * i_1 + i] * rtb_H_k1k_0[6 *
+              i_0 + i_1];
           }
 
-          rtb_P_gamma_k1[i + 6 * i_0] = rtb_P_gamma_k1k[6 * i_0 + i] -
-            rtb_Sum3_g;
+          rtb_P_gamma_k1[i + 6 * i_0] = rtb_P_gamma_k1k[6 * i_0 + i] - rtb_Clock;
         }
       }
 
       /* End of Sum: '<S13>/Sum5' */
     }
 
-    /* Saturate: '<S5>/psi_e' incorporates:
-     *  Inport: '<Root>/X'
-     *  Saturate: '<S5>/yaw'
-     *  Sum: '<S5>/Sum3'
-     */
-    if (0.0 - bsl_hovering_U.X[8] > 0.78539816339744828) {
-      bsl_hovering_B.psi_e = 0.78539816339744828;
-    } else if (0.0 - bsl_hovering_U.X[8] < -0.78539816339744828) {
-      bsl_hovering_B.psi_e = -0.78539816339744828;
-    } else {
-      bsl_hovering_B.psi_e = 0.0 - bsl_hovering_U.X[8];
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[2] == 0) {
+      /* Saturate: '<S5>/yaw' */
+      if (bsl_hovering_B.RateTransition2 > 3.1415926535897931) {
+        rtb_Clock = 3.1415926535897931;
+      } else if (bsl_hovering_B.RateTransition2 < -3.1415926535897931) {
+        rtb_Clock = -3.1415926535897931;
+      } else {
+        rtb_Clock = bsl_hovering_B.RateTransition2;
+      }
+
+      /* End of Saturate: '<S5>/yaw' */
+
+      /* Sum: '<S5>/Sum3' */
+      u0 = rtb_Clock - bsl_hovering_B.RateTransition4[8];
+
+      /* Saturate: '<S5>/psi_e' */
+      if (u0 > 0.78539816339744828) {
+        bsl_hovering_B.psi_e = 0.78539816339744828;
+      } else if (u0 < -0.78539816339744828) {
+        bsl_hovering_B.psi_e = -0.78539816339744828;
+      } else {
+        bsl_hovering_B.psi_e = u0;
+      }
+
+      /* End of Saturate: '<S5>/psi_e' */
+
+      /* Saturate: '<S7>/x' */
+      if (bsl_hovering_B.RateTransition > 1.0) {
+        rtb_Clock = 1.0;
+      } else if (bsl_hovering_B.RateTransition < -1.0) {
+        rtb_Clock = -1.0;
+      } else {
+        rtb_Clock = bsl_hovering_B.RateTransition;
+      }
+
+      /* End of Saturate: '<S7>/x' */
+
+      /* Sum: '<S7>/Sum3' */
+      u0 = rtb_Clock - bsl_hovering_B.RateTransition4[0];
+
+      /* Saturate: '<S7>/xe' */
+      if (u0 > 1.0) {
+        bsl_hovering_B.xe = 1.0;
+      } else if (u0 < -1.0) {
+        bsl_hovering_B.xe = -1.0;
+      } else {
+        bsl_hovering_B.xe = u0;
+      }
+
+      /* End of Saturate: '<S7>/xe' */
+
+      /* Saturate: '<S8>/y' */
+      if (bsl_hovering_B.RateTransition1 > 1.0) {
+        rtb_Clock = 1.0;
+      } else if (bsl_hovering_B.RateTransition1 < -1.0) {
+        rtb_Clock = -1.0;
+      } else {
+        rtb_Clock = bsl_hovering_B.RateTransition1;
+      }
+
+      /* End of Saturate: '<S8>/y' */
+
+      /* Sum: '<S8>/Sum3' */
+      u0 = rtb_Clock - bsl_hovering_B.RateTransition4[1];
+
+      /* Saturate: '<S8>/ye' */
+      if (u0 > 1.0) {
+        bsl_hovering_B.ye = 1.0;
+      } else if (u0 < -1.0) {
+        bsl_hovering_B.ye = -1.0;
+      } else {
+        bsl_hovering_B.ye = u0;
+      }
+
+      /* End of Saturate: '<S8>/ye' */
+
+      /* Saturate: '<S9>/z' */
+      if (bsl_hovering_B.RateTransition3 > 1.0) {
+        rtb_Clock = 1.0;
+      } else if (bsl_hovering_B.RateTransition3 < 0.0) {
+        rtb_Clock = 0.0;
+      } else {
+        rtb_Clock = bsl_hovering_B.RateTransition3;
+      }
+
+      /* End of Saturate: '<S9>/z' */
+
+      /* Sum: '<S9>/Sum3' */
+      u0 = rtb_Clock - bsl_hovering_B.RateTransition4[2];
+
+      /* Saturate: '<S9>/ze' */
+      if (u0 > 0.5) {
+        bsl_hovering_B.ze = 0.5;
+      } else if (u0 < -0.5) {
+        bsl_hovering_B.ze = -0.5;
+      } else {
+        bsl_hovering_B.ze = u0;
+      }
+
+      /* End of Saturate: '<S9>/ze' */
     }
-
-    /* End of Saturate: '<S5>/psi_e' */
-
-    /* Saturate: '<S7>/xe' incorporates:
-     *  Inport: '<Root>/X'
-     *  Saturate: '<S7>/x'
-     *  Sum: '<S7>/Sum3'
-     */
-    if (0.0 - bsl_hovering_U.X[0] > 1.0) {
-      bsl_hovering_B.xe = 1.0;
-    } else if (0.0 - bsl_hovering_U.X[0] < -1.0) {
-      bsl_hovering_B.xe = -1.0;
-    } else {
-      bsl_hovering_B.xe = 0.0 - bsl_hovering_U.X[0];
-    }
-
-    /* End of Saturate: '<S7>/xe' */
-
-    /* Saturate: '<S8>/ye' incorporates:
-     *  Inport: '<Root>/X'
-     *  Saturate: '<S8>/y'
-     *  Sum: '<S8>/Sum3'
-     */
-    if (0.0 - bsl_hovering_U.X[1] > 1.0) {
-      bsl_hovering_B.ye = 1.0;
-    } else if (0.0 - bsl_hovering_U.X[1] < -1.0) {
-      bsl_hovering_B.ye = -1.0;
-    } else {
-      bsl_hovering_B.ye = 0.0 - bsl_hovering_U.X[1];
-    }
-
-    /* End of Saturate: '<S8>/ye' */
-
-    /* Sum: '<S9>/Sum3' incorporates:
-     *  Inport: '<Root>/X'
-     *  MATLAB Function: '<Root>/MATLAB Function'
-     */
-    rtb_Sum3_g = rtb_Clock - bsl_hovering_U.X[2];
-
-    /* Saturate: '<S9>/ze' */
-    if (rtb_Sum3_g > 0.5) {
-      bsl_hovering_B.ze = 0.5;
-    } else if (rtb_Sum3_g < -0.5) {
-      bsl_hovering_B.ze = -0.5;
-    } else {
-      bsl_hovering_B.ze = rtb_Sum3_g;
-    }
-
-    /* End of Saturate: '<S9>/ze' */
   }
 
   if (rtmIsMajorTimeStep((&bsl_hovering_M))) {
     int32_T i;
-    if (rtmIsMajorTimeStep((&bsl_hovering_M))) {
+    if (rtmIsMajorTimeStep((&bsl_hovering_M)) &&
+        (&bsl_hovering_M)->Timing.TaskCounters.TID[1] == 0) {
       /* Update for UnitDelay: '<S13>/       ' */
       for (i = 0; i < 6; i++) {
-        bsl_hovering_DW._DSTATE[i] = bsl_hovering_B.Sum1[i];
+        bsl_hovering_DW._DSTATE[i] = bsl_hovering_B.Sum1_lc[i];
       }
 
       /* End of Update for UnitDelay: '<S13>/       ' */
@@ -1257,7 +1385,7 @@ void bsl_hoveringModelClass::step()
 
       /* Update for Memory: '<Root>/Memory1' */
       for (i = 0; i < 6; i++) {
-        bsl_hovering_DW.Memory1_PreviousInput[i] = bsl_hovering_B.u[i];
+        bsl_hovering_DW.Memory1_PreviousInput[i] = bsl_hovering_B.u_dq[i];
       }
 
       /* End of Update for Memory: '<Root>/Memory1' */
@@ -1306,6 +1434,8 @@ void bsl_hoveringModelClass::step()
         (&bsl_hovering_M)->Timing.clockTickH1++;
       }
     }
+
+    rate_scheduler((&bsl_hovering_M));
   }                                    /* end MajorTimeStep */
 }
 
