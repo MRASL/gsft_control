@@ -9,7 +9,7 @@
  *
  * Model version              : 1.606
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 10:15:50 2018
+ * C++ source code generated on : Tue Jan 30 10:59:13 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -456,8 +456,8 @@ void bsl_hoveringModelClass::step()
      *  Integrator: '<S6>/Integrator1'
      *  SignalConversion: '<S6>/TmpSignal ConversionAt                    Inport1'
      */
-    rtb_Sum1_j = 0.19999999999999488 * bsl_hovering_X.Integrator1_CSTATE_d -
-      (0.32722957366450639 * bsl_hovering_U.X[0] + 0.25769798470164151 *
+    rtb_Sum1_j = 0.19493588689617977 * bsl_hovering_X.Integrator1_CSTATE_d -
+      (0.32967843024125693 * bsl_hovering_U.X[0] + 0.26338882234913996 *
        bsl_hovering_U.X[3]);
 
     /* Sum: '<S7>/Sum1' incorporates:
@@ -467,8 +467,8 @@ void bsl_hoveringModelClass::step()
      *  Integrator: '<S7>/Integrator1'
      *  SignalConversion: '<S7>/TmpSignal ConversionAt                     Inport1'
      */
-    rtb_Sum1_b = -0.20000000000000157 * bsl_hovering_X.Integrator1_CSTATE_j -
-      (-0.31341877756534303 * bsl_hovering_U.X[1] + -0.23557832532638295 *
+    rtb_Sum1_b = -0.17320508075689486 * bsl_hovering_X.Integrator1_CSTATE_j -
+      (-0.31312578517368472 * bsl_hovering_U.X[1] + -0.25417198201078345 *
        bsl_hovering_U.X[4]);
 
     /* Fcn: '<Root>/Fcn1' incorporates:
@@ -493,8 +493,8 @@ void bsl_hoveringModelClass::step()
      *  Inport: '<Root>/X'
      *  SignalConversion: '<S3>/TmpSignal ConversionAt                    Inport1'
      */
-    rtb_Sum3_g = u0 - (1.0338083698290259 * bsl_hovering_U.X[6] +
-                       0.26881723845128885 * bsl_hovering_U.X[9]);
+    rtb_Sum3_g = u0 - (1.136528348021814 * bsl_hovering_U.X[6] +
+                       0.28178545108770453 * bsl_hovering_U.X[9]);
 
     /* Fcn: '<Root>/Fcn' incorporates:
      *  Inport: '<Root>/X'
@@ -510,8 +510,8 @@ void bsl_hoveringModelClass::step()
      *  SignalConversion: '<S8>/TmpSignal ConversionAt                     Inport1'
      *  Sum: '<S8>/Sum1'
      */
-    rtb_Sum1_b = 10.000000000000005 * bsl_hovering_X.Integrator1_CSTATE -
-      (13.687280729337093 * bsl_hovering_U.X[2] + 6.8670826881841283 *
+    rtb_Sum1_b = 9.9999999999999645 * bsl_hovering_X.Integrator1_CSTATE -
+      (12.219481695651909 * bsl_hovering_U.X[2] + 6.215786645518631 *
        bsl_hovering_U.X[5]);
 
     /* Sum: '<S5>/Sum1' incorporates:
@@ -536,10 +536,10 @@ void bsl_hoveringModelClass::step()
      *  Sum: '<S4>/Sum1'
      *  Sum: '<S5>/Sum1'
      */
-    rtb_Sum1_j -= 1.1919586170534315 * bsl_hovering_U.X[7] + 0.33136818681512359
+    rtb_Sum1_j -= 1.2183312364850705 * bsl_hovering_U.X[7] + 0.33500075702268411
       * bsl_hovering_U.X[10];
-    tmp_4 = 0.15811388300841894 * bsl_hovering_X.Integrator1_CSTATE_a -
-      (0.30355520549478637 * bsl_hovering_U.X[8] + 0.24395632222527322 *
+    tmp_4 = 0.15811388300841897 * bsl_hovering_X.Integrator1_CSTATE_a -
+      (0.30355520549478615 * bsl_hovering_U.X[8] + 0.24395632222527316 *
        bsl_hovering_U.X[11]);
 
     /* Outport: '<Root>/virtual_control' incorporates:
