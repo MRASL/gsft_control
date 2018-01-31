@@ -1,15 +1,15 @@
 /*
- * scenario2_lqr.h
+ * scenario2_gs.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "scenario2_lqr".
+ * Code generation for model "scenario2_gs".
  *
- * Model version              : 1.670
+ * Model version              : 1.683
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jan 31 12:20:32 2018
+ * C++ source code generated on : Wed Jan 31 12:21:17 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,18 +18,18 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_scenario2_lqr_h_
-#define RTW_HEADER_scenario2_lqr_h_
+#ifndef RTW_HEADER_scenario2_gs_h_
+#define RTW_HEADER_scenario2_gs_h_
 #include <cmath>
 #include <string.h>
-#ifndef scenario2_lqr_COMMON_INCLUDES_
-# define scenario2_lqr_COMMON_INCLUDES_
+#ifndef scenario2_gs_COMMON_INCLUDES_
+# define scenario2_gs_COMMON_INCLUDES_
 #include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#endif                                 /* scenario2_lqr_COMMON_INCLUDES_ */
+#endif                                 /* scenario2_gs_COMMON_INCLUDES_ */
 
-#include "scenario2_lqr_types.h"
+#include "scenario2_gs_types.h"
 
 /* Shared type includes */
 #include "multiword_types.h"
@@ -151,44 +151,44 @@
 typedef struct {
   real_T dX[12];                       /* '<Root>/Sum' */
   real_T RateTransition5[12];          /* '<Root>/Rate Transition5' */
-  real_T u;                            /* '<S6>/                    ' */
-  real_T Sum1;                         /* '<S6>/Sum1' */
+  real_T u;                            /* '<S7>/                    ' */
+  real_T Sum1;                         /* '<S7>/Sum1' */
   real_T ZeroOrderHold;                /* '<Root>/Zero-Order Hold' */
-  real_T u_m;                          /* '<S7>/                     ' */
-  real_T Sum1_i;                       /* '<S7>/Sum1' */
+  real_T u_m;                          /* '<S8>/                     ' */
+  real_T Sum1_i;                       /* '<S8>/Sum1' */
   real_T ZeroOrderHold1;               /* '<Root>/Zero-Order Hold1' */
   real_T d_ref[4];                     /* '<Root>/Sum1' */
   real_T RateTransition;               /* '<Root>/Rate Transition' */
   real_T RateTransition1;              /* '<Root>/Rate Transition1' */
-  real_T psi_e;                        /* '<S4>/psi_e' */
-  real_T xe;                           /* '<S6>/xe' */
-  real_T ye;                           /* '<S7>/ye' */
-  real_T ze;                           /* '<S8>/ze' */
-} B_scenario2_lqr_T;
+  real_T psi_e;                        /* '<S5>/psi_e' */
+  real_T xe;                           /* '<S7>/xe' */
+  real_T ye;                           /* '<S8>/ye' */
+  real_T Product[6];                   /* '<S9>/Product' */
+} B_scenario2_gs_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
-  real_T Integrator1_CSTATE_h;         /* '<S6>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_b;         /* '<S4>/Integrator1' */
-} X_scenario2_lqr_T;
+  real_T Integrator1_CSTATE;           /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_b;         /* '<S5>/Integrator1' */
+  real_T Integrator1_CSTATE_k[6];      /* '<S9>/Integrator1' */
+} X_scenario2_gs_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
-  real_T Integrator1_CSTATE_h;         /* '<S6>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_b;         /* '<S4>/Integrator1' */
-} XDot_scenario2_lqr_T;
+  real_T Integrator1_CSTATE;           /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_b;         /* '<S5>/Integrator1' */
+  real_T Integrator1_CSTATE_k[6];      /* '<S9>/Integrator1' */
+} XDot_scenario2_gs_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S8>/Integrator1' */
-  boolean_T Integrator1_CSTATE_h;      /* '<S6>/Integrator1' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S7>/Integrator1' */
-  boolean_T Integrator1_CSTATE_b;      /* '<S4>/Integrator1' */
-} XDis_scenario2_lqr_T;
+  boolean_T Integrator1_CSTATE;        /* '<S7>/Integrator1' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S8>/Integrator1' */
+  boolean_T Integrator1_CSTATE_b;      /* '<S5>/Integrator1' */
+  boolean_T Integrator1_CSTATE_k[6];   /* '<S9>/Integrator1' */
+} XDis_scenario2_gs_T;
 
 #ifndef ODE5_INTG
 #define ODE5_INTG
@@ -207,13 +207,13 @@ typedef struct {
    * Referenced by: '<Root>/                 '
    */
   real_T _Gain_m[24];
-} ConstP_scenario2_lqr_T;
+} ConstP_scenario2_gs_T;
 
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
   real_T X[12];                        /* '<Root>/X' */
   real_T X0[4];                        /* '<Root>/X0' */
-} ExtU_scenario2_lqr_T;
+} ExtU_scenario2_gs_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
 typedef struct {
@@ -222,13 +222,13 @@ typedef struct {
   real_T motor_speed[6];               /* '<Root>/motor_speed' */
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
   real_T ref[4];                       /* '<Root>/ref' */
-} ExtY_scenario2_lqr_T;
+} ExtY_scenario2_gs_T;
 
 /* Real-time Model Data Structure */
-struct tag_RTM_scenario2_lqr_T {
+struct tag_RTM_scenario2_gs_T {
   const char_T *errorStatus;
   RTWSolverInfo solverInfo;
-  X_scenario2_lqr_T *contStates;
+  X_scenario2_gs_T *contStates;
   int_T *periodicContStateIndices;
   real_T *periodicContStateRanges;
   real_T *derivs;
@@ -236,8 +236,8 @@ struct tag_RTM_scenario2_lqr_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T blkStateChange;
-  real_T odeY[4];
-  real_T odeF[6][4];
+  real_T odeY[9];
+  real_T odeF[6][9];
   ODE5_IntgData intgData;
 
   /*
@@ -286,17 +286,17 @@ extern "C" {
 #endif
 
 /* Constant parameters (auto storage) */
-extern const ConstP_scenario2_lqr_T scenario2_lqr_ConstP;
+extern const ConstP_scenario2_gs_T scenario2_gs_ConstP;
 
-/* Class declaration for model scenario2_lqr */
-class scenario2_lqrModelClass {
+/* Class declaration for model scenario2_gs */
+class scenario2_gsModelClass {
   /* public data and function members */
  public:
   /* External inputs */
-  ExtU_scenario2_lqr_T scenario2_lqr_U;
+  ExtU_scenario2_gs_T scenario2_gs_U;
 
   /* External outputs */
-  ExtY_scenario2_lqr_T scenario2_lqr_Y;
+  ExtY_scenario2_gs_T scenario2_gs_Y;
 
   /* model initialize function */
   void initialize();
@@ -308,28 +308,28 @@ class scenario2_lqrModelClass {
   void terminate();
 
   /* Constructor */
-  scenario2_lqrModelClass();
+  scenario2_gsModelClass();
 
   /* Destructor */
-  ~scenario2_lqrModelClass();
+  ~scenario2_gsModelClass();
 
   /* Real-Time Model get method */
-  RT_MODEL_scenario2_lqr_T * getRTM();
+  RT_MODEL_scenario2_gs_T * getRTM();
 
   /* private data and function members */
  private:
   /* Block signals */
-  B_scenario2_lqr_T scenario2_lqr_B;
-  X_scenario2_lqr_T scenario2_lqr_X;   /* Block continuous states */
+  B_scenario2_gs_T scenario2_gs_B;
+  X_scenario2_gs_T scenario2_gs_X;     /* Block continuous states */
 
   /* Real-Time Model */
-  RT_MODEL_scenario2_lqr_T scenario2_lqr_M;
+  RT_MODEL_scenario2_gs_T scenario2_gs_M;
 
   /* Continuous states update member function*/
   void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si );
 
   /* Derivatives member function */
-  void scenario2_lqr_derivatives();
+  void scenario2_gs_derivatives();
 };
 
 /*-
@@ -346,14 +346,16 @@ class scenario2_lqrModelClass {
  *
  * Here is the system hierarchy for this model
  *
- * '<Root>' : 'scenario2_lqr'
- * '<S1>'   : 'scenario2_lqr/Actuator_Fault'
- * '<S2>'   : 'scenario2_lqr/MATLAB Function1'
- * '<S3>'   : 'scenario2_lqr/phi_controller1'
- * '<S4>'   : 'scenario2_lqr/psi_controller '
- * '<S5>'   : 'scenario2_lqr/teta_controller1'
- * '<S6>'   : 'scenario2_lqr/x_controller '
- * '<S7>'   : 'scenario2_lqr/y_controller '
- * '<S8>'   : 'scenario2_lqr/z_controller '
+ * '<Root>' : 'scenario2_gs'
+ * '<S1>'   : 'scenario2_gs/Actuator_Fault'
+ * '<S2>'   : 'scenario2_gs/FDD'
+ * '<S3>'   : 'scenario2_gs/MATLAB Function1'
+ * '<S4>'   : 'scenario2_gs/phi_controller1'
+ * '<S5>'   : 'scenario2_gs/psi_controller '
+ * '<S6>'   : 'scenario2_gs/teta_controller1'
+ * '<S7>'   : 'scenario2_gs/x_controller '
+ * '<S8>'   : 'scenario2_gs/y_controller '
+ * '<S9>'   : 'scenario2_gs/z_controller '
+ * '<S10>'  : 'scenario2_gs/z_controller /MATLAB Function'
  */
-#endif                                 /* RTW_HEADER_scenario2_lqr_h_ */
+#endif                                 /* RTW_HEADER_scenario2_gs_h_ */

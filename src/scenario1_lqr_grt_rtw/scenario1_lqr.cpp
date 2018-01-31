@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.666
+ * Model version              : 1.669
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jan 31 11:44:26 2018
+ * C++ source code generated on : Wed Jan 31 12:17:29 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -382,19 +382,19 @@ void scenario1_lqrModelClass::step()
   /* MATLAB Function: '<Root>/Actuator_Fault' */
   /* '<S1>:1:3' if time >= 12 */
   if (rtb_Clock >= 12.0) {
-    /* '<S1>:1:4' T1 = T(1)*0.7; */
-    /* '<S1>:1:5' T2 = T(2)*0.7; */
-    /* '<S1>:1:6' T3 = T(3)*0.7; */
-    /* '<S1>:1:7' T4 = T(4)*0.7; */
-    /* '<S1>:1:8' T5 = T(5)*0.7; */
-    /* '<S1>:1:9' T6 = T(6)*0.7; */
+    /* '<S1>:1:4' T1 = T(1)*0.6; */
+    /* '<S1>:1:5' T2 = T(2)*0.6; */
+    /* '<S1>:1:6' T3 = T(3)*0.6; */
+    /* '<S1>:1:7' T4 = T(4)*0.6; */
+    /* '<S1>:1:8' T5 = T(5)*0.6; */
+    /* '<S1>:1:9' T6 = T(6)*0.6; */
     /* '<S1>:1:10' T_f = [T1;T2;T3;T4;T5;T6]; */
-    rtb_T_f[0] = rtb_u_i[0] * 0.7;
-    rtb_T_f[1] = rtb_u_i[1] * 0.7;
-    rtb_T_f[2] = rtb_u_i[2] * 0.7;
-    rtb_T_f[3] = rtb_u_i[3] * 0.7;
-    rtb_T_f[4] = rtb_u_i[4] * 0.7;
-    rtb_T_f[5] = rtb_u_i[5] * 0.7;
+    rtb_T_f[0] = rtb_u_i[0] * 0.6;
+    rtb_T_f[1] = rtb_u_i[1] * 0.6;
+    rtb_T_f[2] = rtb_u_i[2] * 0.6;
+    rtb_T_f[3] = rtb_u_i[3] * 0.6;
+    rtb_T_f[4] = rtb_u_i[4] * 0.6;
+    rtb_T_f[5] = rtb_u_i[5] * 0.6;
   }
 
   /* Outport: '<Root>/virtual_control' incorporates:
@@ -456,8 +456,8 @@ void scenario1_lqrModelClass::step()
     /* '<S2>:1:5' y = X0(2); */
     y = scenario1_lqr_U.X0[1];
 
-    /* '<S2>:1:6' z = 0.75; */
-    z = 0.75;
+    /* '<S2>:1:6' z = 1.0; */
+    z = 1.0;
 
     /* '<S2>:1:7' psi = X0(4); */
     psi = scenario1_lqr_U.X0[3];
@@ -469,8 +469,8 @@ void scenario1_lqrModelClass::step()
     /* '<S2>:1:10' y = X0(2); */
     y = scenario1_lqr_U.X0[1];
 
-    /* '<S2>:1:11' z = X0(3); */
-    z = scenario1_lqr_U.X0[2];
+    /* '<S2>:1:11' z = 0.12; */
+    z = 0.12;
 
     /* '<S2>:1:12' psi = X0(4); */
     psi = scenario1_lqr_U.X0[3];
