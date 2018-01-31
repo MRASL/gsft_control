@@ -131,6 +131,7 @@ include_directories(
  ##src/lqr_hovering_grt_rtw
  ##src/bsl_hovering_grt_rtw
  src/scenario1_lqr_grt_rtw
+ src/scenario2_lqr_grt_rtw
  ##src/lqr_tracking_grt_rtw
  ##src/lqr_identification_grt_rtw
  ##src/lqr_inner_grt_rtw
@@ -149,6 +150,9 @@ add_library(matlab_lqr
 
     src/scenario1_lqr_grt_rtw/scenario1_lqr_data.cpp
     src/scenario1_lqr_grt_rtw/scenario1_lqr.cpp
+
+    src/scenario2_lqr_grt_rtw/scenario2_lqr_data.cpp
+    src/scenario2_lqr_grt_rtw/scenario2_lqr.cpp
     ##src/lqr_identification_grt_rtw/lqr_identification_data.cpp
     ##src/lqr_identification_grt_rtw/lqr_identification.cpp
     ##src/lqr_inner_grt_rtw/lqr_inner_data.cpp
@@ -176,6 +180,18 @@ target_link_libraries(scenario1_lqr_controller_node
     ${catkin_LIBRARIES}
 )
 
+add_executable(scenario2_lqr_controller_node
+    src/scenario2_lqr_controller_node.cpp
+)
+add_dependencies(scenario2_lqr_controller_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_lqr
+)
+target_link_libraries(scenario2_lqr_controller_node
+    matlab_lqr
+    ${catkin_LIBRARIES}
+)
 ##add_executable(lqr_hovering_controller_node
 ##    src/lqr_hovering_controller_node.cpp
 ##)

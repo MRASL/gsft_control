@@ -1,15 +1,15 @@
 /*
- * scenario1_lqr_private.h
+ * scenario2_lqr_private.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "scenario1_lqr".
+ * Code generation for model "scenario2_lqr".
  *
- * Model version              : 1.661
+ * Model version              : 1.672
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 20:39:05 2018
+ * C++ source code generated on : Tue Jan 30 19:13:26 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,8 +18,8 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_scenario1_lqr_private_h_
-#define RTW_HEADER_scenario1_lqr_private_h_
+#ifndef RTW_HEADER_scenario2_lqr_private_h_
+#define RTW_HEADER_scenario2_lqr_private_h_
 #include "rtwtypes.h"
 #include "multiword_types.h"
 
@@ -41,6 +41,6 @@
 #endif
 
 /* private model entry point functions */
-extern void scenario1_lqr_derivatives();
+extern void scenario2_lqr_derivatives();
 
-#endif                                 /* RTW_HEADER_scenario1_lqr_private_h_ */
+#endif                                 /* RTW_HEADER_scenario2_lqr_private_h_ */

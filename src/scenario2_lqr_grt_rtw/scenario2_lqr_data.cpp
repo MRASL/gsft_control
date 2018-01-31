@@ -1,15 +1,15 @@
 /*
- * scenario1_lqr_data.cpp
+ * scenario2_lqr_data.cpp
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "scenario1_lqr".
+ * Code generation for model "scenario2_lqr".
  *
- * Model version              : 1.661
+ * Model version              : 1.672
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 30 20:39:05 2018
+ * C++ source code generated on : Tue Jan 30 19:13:26 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,11 +18,11 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#include "scenario1_lqr.h"
-#include "scenario1_lqr_private.h"
+#include "scenario2_lqr.h"
+#include "scenario2_lqr_private.h"
 
 /* Constant parameters (auto storage) */
-const ConstP_scenario1_lqr_T scenario1_lqr_ConstP = {
+const ConstP_scenario2_lqr_T scenario2_lqr_ConstP = {
   /* Expression: B_ENU_inv
    * Referenced by: '<Root>/                 '
    */
