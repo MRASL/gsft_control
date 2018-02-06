@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.675
+ * Model version              : 1.676
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Feb  5 15:01:15 2018
+ * C++ source code generated on : Mon Feb  5 20:20:34 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -162,6 +162,7 @@ typedef struct {
   real_T RateTransition1;              /* '<Root>/Rate Transition1' */
   real_T psi_e;                        /* '<S4>/psi_e' */
   real_T xe;                           /* '<S6>/xe' */
+  real_T y;                            /* '<S7>/y' */
   real_T ye;                           /* '<S7>/ye' */
   real_T ze;                           /* '<S8>/ze' */
 } B_scenario1_lqr_T;
@@ -264,13 +265,13 @@ struct tag_RTM_scenario1_lqr_T {
     uint32_T clockTick1;
     uint32_T clockTickH1;
     struct {
-      uint8_T TID[3];
+      uint8_T TID[4];
     } TaskCounters;
 
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[3];
+    time_T tArray[4];
   } Timing;
 };
 
