@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.685
+ * Model version              : 1.686
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Feb  5 22:29:03 2018
+ * C++ source code generated on : Mon Feb  5 22:35:43 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -187,7 +187,6 @@ void scenario1_lqrModelClass::step()
   real_T rtb_Clock;
   int32_T i;
   real_T tmp;
-  real_T u0;
   if (rtmIsMajorTimeStep((&scenario1_lqr_M))) {
     /* set solver stop time */
     if (!((&scenario1_lqr_M)->Timing.clockTick0+1)) {
@@ -290,10 +289,39 @@ void scenario1_lqrModelClass::step()
    */
   scenario1_lqr_B.Sum1_i = -0.23452078799117312 *
     scenario1_lqr_X.Integrator1_CSTATE_j - scenario1_lqr_B.u_m;
+
+  /* RateTransition: '<Root>/Rate Transition3' */
   if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
       (&scenario1_lqr_M)->Timing.TaskCounters.TID[1] == 0) {
     /* ZeroOrderHold: '<Root>/Zero-Order Hold1' */
     scenario1_lqr_B.ZeroOrderHold1 = scenario1_lqr_B.Sum1_i;
+    if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
+        (&scenario1_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
+      memcpy(&scenario1_lqr_B.RateTransition3[0], &scenario1_lqr_B.dX[0], 12U *
+             sizeof(real_T));
+    }
+  }
+
+  /* End of RateTransition: '<Root>/Rate Transition3' */
+  if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
+      (&scenario1_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
+    /* Gain: '<S4>/                     ' incorporates:
+     *  SignalConversion: '<S4>/TmpSignal ConversionAt                     Inport1'
+     */
+    scenario1_lqr_B.u_n = 0.3234605910802571 * scenario1_lqr_B.RateTransition3[8]
+      + 0.25180190526896767 * scenario1_lqr_B.RateTransition3[11];
+  }
+
+  /* Sum: '<S4>/Sum1' incorporates:
+   *  Gain: '<S4>/  '
+   *  Integrator: '<S4>/Integrator1'
+   */
+  scenario1_lqr_B.Sum1_a = 0.1581138830084193 *
+    scenario1_lqr_X.Integrator1_CSTATE_b - scenario1_lqr_B.u_n;
+  if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
+      (&scenario1_lqr_M)->Timing.TaskCounters.TID[1] == 0) {
+    /* ZeroOrderHold: '<Root>/Zero-Order Hold2' */
+    scenario1_lqr_B.ZeroOrderHold2 = scenario1_lqr_B.Sum1_a;
   }
 
   /* Sum: '<Root>/Sum2' incorporates:
@@ -312,13 +340,13 @@ void scenario1_lqrModelClass::step()
    *  Inport: '<Root>/X'
    *  Saturate: '<S3>/roll'
    */
-  u0 = scenario1_lqr_B.ZeroOrderHold1 * std::cos(scenario1_lqr_U.X[8]) +
+  psi = scenario1_lqr_B.ZeroOrderHold1 * std::cos(scenario1_lqr_U.X[8]) +
     scenario1_lqr_B.ZeroOrderHold * std::sin(scenario1_lqr_U.X[8]);
-  if (u0 > 0.52359877559829882) {
-    u0 = 0.52359877559829882;
+  if (psi > 0.52359877559829882) {
+    psi = 0.52359877559829882;
   } else {
-    if (u0 < -0.52359877559829882) {
-      u0 = -0.52359877559829882;
+    if (psi < -0.52359877559829882) {
+      psi = -0.52359877559829882;
     }
   }
 
@@ -327,39 +355,31 @@ void scenario1_lqrModelClass::step()
    *  SignalConversion: '<S3>/TmpSignal ConversionAt                    Inport1'
    *  Sum: '<S3>/Sum1'
    */
-  psi = u0 - (1.3154711181455194 * scenario1_lqr_B.dX[6] + 0.30404246027027565 *
-              scenario1_lqr_B.dX[9]);
+  tmp = psi - (1.3154711181455194 * scenario1_lqr_B.dX[6] + 0.30404246027027565 *
+               scenario1_lqr_B.dX[9]);
 
   /* Sum: '<S5>/Sum1' incorporates:
    *  Fcn: '<Root>/Fcn'
    *  Inport: '<Root>/X'
    *  Saturate: '<S5>/pitch'
    */
-  u0 = -scenario1_lqr_B.ZeroOrderHold1 * std::sin(scenario1_lqr_U.X[8]) +
+  psi = -scenario1_lqr_B.ZeroOrderHold1 * std::sin(scenario1_lqr_U.X[8]) +
     scenario1_lqr_B.ZeroOrderHold * std::cos(scenario1_lqr_U.X[8]);
-  if (u0 > 0.52359877559829882) {
-    u0 = 0.52359877559829882;
+  if (psi > 0.52359877559829882) {
+    psi = 0.52359877559829882;
   } else {
-    if (u0 < -0.52359877559829882) {
-      u0 = -0.52359877559829882;
+    if (psi < -0.52359877559829882) {
+      psi = -0.52359877559829882;
     }
   }
 
   /* Sum: '<Root>/Sum2' incorporates:
-   *  Gain: '<S4>/  '
-   *  Gain: '<S4>/                     '
    *  Gain: '<S5>/                    '
-   *  Integrator: '<S4>/Integrator1'
-   *  SignalConversion: '<S4>/TmpSignal ConversionAt                     Inport1'
    *  SignalConversion: '<S5>/TmpSignal ConversionAt                    Inport1'
-   *  Sum: '<S4>/Sum1'
    *  Sum: '<S5>/Sum1'
    */
-  u0 -= 1.4845335175794758 * scenario1_lqr_B.dX[7] + 0.37048494778850005 *
+  psi -= 1.4845335175794758 * scenario1_lqr_B.dX[7] + 0.37048494778850005 *
     scenario1_lqr_B.dX[10];
-  tmp = 0.1581138830084193 * scenario1_lqr_X.Integrator1_CSTATE_b -
-    (0.3234605910802571 * scenario1_lqr_B.dX[8] + 0.25180190526896767 *
-     scenario1_lqr_B.dX[11]);
 
   /* MATLAB Function 'Actuator_Fault': '<S1>:1' */
   /* '<S1>:1:2' T_f = T; */
@@ -367,9 +387,9 @@ void scenario1_lqrModelClass::step()
     /* Gain: '<Root>/                 ' incorporates:
      *  Sum: '<Root>/Sum2'
      */
-    y = scenario1_lqr_ConstP._Gain_m[i + 18] * tmp +
-      (scenario1_lqr_ConstP._Gain_m[i + 12] * u0 +
-       (scenario1_lqr_ConstP._Gain_m[i + 6] * psi + (z + 15.107400000000002) *
+    y = scenario1_lqr_ConstP._Gain_m[i + 18] * scenario1_lqr_B.ZeroOrderHold2 +
+      (scenario1_lqr_ConstP._Gain_m[i + 12] * psi +
+       (scenario1_lqr_ConstP._Gain_m[i + 6] * tmp + (z + 15.107400000000002) *
         scenario1_lqr_ConstP._Gain_m[i]));
 
     /* MATLAB Function: '<Root>/Actuator_Fault' */
@@ -401,9 +421,9 @@ void scenario1_lqrModelClass::step()
    *  Sum: '<Root>/Sum2'
    */
   scenario1_lqr_Y.virtual_control[0] = z + 15.107400000000002;
-  scenario1_lqr_Y.virtual_control[1] = psi;
-  scenario1_lqr_Y.virtual_control[2] = u0;
-  scenario1_lqr_Y.virtual_control[3] = tmp;
+  scenario1_lqr_Y.virtual_control[1] = tmp;
+  scenario1_lqr_Y.virtual_control[2] = psi;
+  scenario1_lqr_Y.virtual_control[3] = scenario1_lqr_B.ZeroOrderHold2;
   for (i = 0; i < 6; i++) {
     /* Sqrt: '<Root>/Sqrt1' incorporates:
      *  Gain: '<Root>/      '
@@ -417,18 +437,18 @@ void scenario1_lqrModelClass::step()
      *  Constant: '<Root>/Constant '
      *  Sum: '<Root>/Sum3'
      */
-    u0 = (z - 1250.0) * 0.022857142857142857;
+    psi = (z - 1250.0) * 0.022857142857142857;
 
     /* Saturate: '<Root>/Saturation' */
-    if (u0 > 200.0) {
+    if (psi > 200.0) {
       /* Outport: '<Root>/motor_command' */
       scenario1_lqr_Y.motor_command[i] = 200.0;
-    } else if (u0 < 0.0) {
+    } else if (psi < 0.0) {
       /* Outport: '<Root>/motor_command' */
       scenario1_lqr_Y.motor_command[i] = 0.0;
     } else {
       /* Outport: '<Root>/motor_command' */
-      scenario1_lqr_Y.motor_command[i] = u0;
+      scenario1_lqr_Y.motor_command[i] = psi;
     }
 
     /* End of Saturate: '<Root>/Saturation' */
@@ -523,6 +543,7 @@ void scenario1_lqrModelClass::step()
 
   /* RateTransition: '<Root>/Rate Transition' incorporates:
    *  RateTransition: '<Root>/Rate Transition1'
+   *  RateTransition: '<Root>/Rate Transition2'
    */
   if ((rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
        (&scenario1_lqr_M)->Timing.TaskCounters.TID[1] == 0) &&
@@ -530,36 +551,37 @@ void scenario1_lqrModelClass::step()
        (&scenario1_lqr_M)->Timing.TaskCounters.TID[2] == 0)) {
     scenario1_lqr_B.RateTransition = scenario1_lqr_B.d_ref[0];
     scenario1_lqr_B.RateTransition1 = scenario1_lqr_B.d_ref[1];
+    scenario1_lqr_B.RateTransition2 = scenario1_lqr_B.d_ref[3];
   }
 
   /* End of RateTransition: '<Root>/Rate Transition' */
-
-  /* Saturate: '<S4>/yaw' */
-  if (scenario1_lqr_B.d_ref[3] > 3.1415926535897931) {
-    rtb_Clock = 3.1415926535897931;
-  } else if (scenario1_lqr_B.d_ref[3] < -3.1415926535897931) {
-    rtb_Clock = -3.1415926535897931;
-  } else {
-    rtb_Clock = scenario1_lqr_B.d_ref[3];
-  }
-
-  /* End of Saturate: '<S4>/yaw' */
-
-  /* Sum: '<S4>/Sum3' */
-  u0 = rtb_Clock - scenario1_lqr_B.dX[8];
-
-  /* Saturate: '<S4>/psi_e' */
-  if (u0 > 0.78539816339744828) {
-    scenario1_lqr_B.psi_e = 0.78539816339744828;
-  } else if (u0 < -0.78539816339744828) {
-    scenario1_lqr_B.psi_e = -0.78539816339744828;
-  } else {
-    scenario1_lqr_B.psi_e = u0;
-  }
-
-  /* End of Saturate: '<S4>/psi_e' */
   if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
       (&scenario1_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
+    /* Saturate: '<S4>/yaw' */
+    if (scenario1_lqr_B.RateTransition2 > 3.1415926535897931) {
+      rtb_Clock = 3.1415926535897931;
+    } else if (scenario1_lqr_B.RateTransition2 < -3.1415926535897931) {
+      rtb_Clock = -3.1415926535897931;
+    } else {
+      rtb_Clock = scenario1_lqr_B.RateTransition2;
+    }
+
+    /* End of Saturate: '<S4>/yaw' */
+
+    /* Sum: '<S4>/Sum3' */
+    psi = rtb_Clock - scenario1_lqr_B.RateTransition3[8];
+
+    /* Saturate: '<S4>/psi_e' */
+    if (psi > 0.78539816339744828) {
+      scenario1_lqr_B.psi_e = 0.78539816339744828;
+    } else if (psi < -0.78539816339744828) {
+      scenario1_lqr_B.psi_e = -0.78539816339744828;
+    } else {
+      scenario1_lqr_B.psi_e = psi;
+    }
+
+    /* End of Saturate: '<S4>/psi_e' */
+
     /* Saturate: '<S6>/x' */
     if (scenario1_lqr_B.RateTransition > 1.0) {
       rtb_Clock = 1.0;
@@ -572,15 +594,15 @@ void scenario1_lqrModelClass::step()
     /* End of Saturate: '<S6>/x' */
 
     /* Sum: '<S6>/Sum3' */
-    u0 = rtb_Clock - scenario1_lqr_B.RateTransition5[0];
+    psi = rtb_Clock - scenario1_lqr_B.RateTransition5[0];
 
     /* Saturate: '<S6>/xe' */
-    if (u0 > 1.0) {
+    if (psi > 1.0) {
       scenario1_lqr_B.xe = 1.0;
-    } else if (u0 < -1.0) {
+    } else if (psi < -1.0) {
       scenario1_lqr_B.xe = -1.0;
     } else {
-      scenario1_lqr_B.xe = u0;
+      scenario1_lqr_B.xe = psi;
     }
 
     /* End of Saturate: '<S6>/xe' */
@@ -597,15 +619,15 @@ void scenario1_lqrModelClass::step()
     /* End of Saturate: '<S7>/y' */
 
     /* Sum: '<S7>/Sum3' */
-    u0 = rtb_Clock - scenario1_lqr_B.RateTransition5[1];
+    psi = rtb_Clock - scenario1_lqr_B.RateTransition5[1];
 
     /* Saturate: '<S7>/ye' */
-    if (u0 > 1.0) {
+    if (psi > 1.0) {
       scenario1_lqr_B.ye = 1.0;
-    } else if (u0 < -1.0) {
+    } else if (psi < -1.0) {
       scenario1_lqr_B.ye = -1.0;
     } else {
-      scenario1_lqr_B.ye = u0;
+      scenario1_lqr_B.ye = psi;
     }
 
     /* End of Saturate: '<S7>/ye' */
@@ -623,15 +645,15 @@ void scenario1_lqrModelClass::step()
   /* End of Saturate: '<S8>/z' */
 
   /* Sum: '<S8>/Sum3' */
-  u0 = rtb_Clock - scenario1_lqr_B.dX[2];
+  psi = rtb_Clock - scenario1_lqr_B.dX[2];
 
   /* Saturate: '<S8>/ze' */
-  if (u0 > 0.5) {
+  if (psi > 0.5) {
     scenario1_lqr_B.ze = 0.5;
-  } else if (u0 < -0.5) {
+  } else if (psi < -0.5) {
     scenario1_lqr_B.ze = -0.5;
   } else {
-    scenario1_lqr_B.ze = u0;
+    scenario1_lqr_B.ze = psi;
   }
 
   /* End of Saturate: '<S8>/ze' */
