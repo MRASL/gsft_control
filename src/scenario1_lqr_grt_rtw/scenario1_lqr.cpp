@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.678
+ * Model version              : 1.679
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Feb  5 21:06:37 2018
+ * C++ source code generated on : Mon Feb  5 21:23:44 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -37,11 +37,6 @@ static void rate_scheduler(RT_MODEL_scenario1_lqr_T *const scenario1_lqr_M)
   (scenario1_lqr_M->Timing.TaskCounters.TID[2])++;
   if ((scenario1_lqr_M->Timing.TaskCounters.TID[2]) > 1) {/* Sample time: [0.02s, 0.0s] */
     scenario1_lqr_M->Timing.TaskCounters.TID[2] = 0;
-  }
-
-  (scenario1_lqr_M->Timing.TaskCounters.TID[3])++;
-  if ((scenario1_lqr_M->Timing.TaskCounters.TID[3]) > 3) {/* Sample time: [0.04s, 0.0s] */
-    scenario1_lqr_M->Timing.TaskCounters.TID[3] = 0;
   }
 }
 
@@ -263,15 +258,15 @@ void scenario1_lqrModelClass::step()
     /* Gain: '<S6>/                    ' incorporates:
      *  SignalConversion: '<S6>/TmpSignal ConversionAt                    Inport1'
      */
-    scenario1_lqr_B.u = 0.26187086422208766 * scenario1_lqr_B.RateTransition5[0]
-      + 0.2333201984488949 * scenario1_lqr_B.RateTransition5[3];
+    scenario1_lqr_B.u = 0.24406724034409538 * scenario1_lqr_B.RateTransition5[0]
+      + 0.21931352821081743 * scenario1_lqr_B.RateTransition5[3];
   }
 
   /* Sum: '<S6>/Sum1' incorporates:
    *  Gain: '<S6>/ '
    *  Integrator: '<S6>/Integrator1'
    */
-  scenario1_lqr_B.Sum1 = 0.12909944487357647 *
+  scenario1_lqr_B.Sum1 = 0.11952286093343731 *
     scenario1_lqr_X.Integrator1_CSTATE_h - scenario1_lqr_B.u;
   if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
       (&scenario1_lqr_M)->Timing.TaskCounters.TID[1] == 0) {
@@ -284,8 +279,8 @@ void scenario1_lqrModelClass::step()
     /* Gain: '<S7>/                     ' incorporates:
      *  SignalConversion: '<S7>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr_B.u_m = -0.31312578517366574 *
-      scenario1_lqr_B.RateTransition5[1] + -0.25417198201077085 *
+    scenario1_lqr_B.u_m = -0.31312578517367151 *
+      scenario1_lqr_B.RateTransition5[1] + -0.25417198201077457 *
       scenario1_lqr_B.RateTransition5[4];
   }
 
@@ -293,7 +288,7 @@ void scenario1_lqrModelClass::step()
    *  Gain: '<S7>/  '
    *  Integrator: '<S7>/Integrator1'
    */
-  scenario1_lqr_B.Sum1_i = -0.17320508075688257 *
+  scenario1_lqr_B.Sum1_i = -0.17320508075688759 *
     scenario1_lqr_X.Integrator1_CSTATE_j - scenario1_lqr_B.u_m;
   if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
       (&scenario1_lqr_M)->Timing.TaskCounters.TID[1] == 0) {
@@ -308,8 +303,8 @@ void scenario1_lqrModelClass::step()
    *  SignalConversion: '<S8>/TmpSignal ConversionAt                     Inport1'
    *  Sum: '<S8>/Sum1'
    */
-  z = 10.000000000000018 * scenario1_lqr_X.Integrator1_CSTATE -
-    (12.219481695651947 * scenario1_lqr_B.dX[2] + 6.2157866455186452 *
+  z = 10.000000000000016 * scenario1_lqr_X.Integrator1_CSTATE -
+    (12.219481695651972 * scenario1_lqr_B.dX[2] + 6.2157866455186523 *
      scenario1_lqr_B.dX[5]);
 
   /* Sum: '<S3>/Sum1' incorporates:
@@ -332,7 +327,7 @@ void scenario1_lqrModelClass::step()
    *  SignalConversion: '<S3>/TmpSignal ConversionAt                    Inport1'
    *  Sum: '<S3>/Sum1'
    */
-  psi = u0 - (1.1365283480217738 * scenario1_lqr_B.dX[6] + 0.28178545108769942 *
+  psi = u0 - (1.1365283480217829 * scenario1_lqr_B.dX[6] + 0.28178545108770076 *
               scenario1_lqr_B.dX[9]);
 
   /* Sum: '<S5>/Sum1' incorporates:
@@ -360,10 +355,10 @@ void scenario1_lqrModelClass::step()
    *  Sum: '<S4>/Sum1'
    *  Sum: '<S5>/Sum1'
    */
-  u0 -= 1.148780122232588 * scenario1_lqr_B.dX[7] + 0.32523074251452444 *
+  u0 -= 1.0932700003969249 * scenario1_lqr_B.dX[7] + 0.31722606432660311 *
     scenario1_lqr_B.dX[10];
-  tmp = 0.086602540378443824 * scenario1_lqr_X.Integrator1_CSTATE_b -
-    (0.21302635355941221 * scenario1_lqr_B.dX[8] + 0.20426783761891909 *
+  tmp = 0.0866025403784437 * scenario1_lqr_X.Integrator1_CSTATE_b -
+    (0.21302635355941227 * scenario1_lqr_B.dX[8] + 0.2042678376189192 *
      scenario1_lqr_B.dX[11]);
 
   /* MATLAB Function 'Actuator_Fault': '<S1>:1' */
@@ -526,21 +521,15 @@ void scenario1_lqrModelClass::step()
    */
   scenario1_lqr_B.d_ref[3] = psi - scenario1_lqr_U.X0[3];
 
-  /* RateTransition: '<Root>/Rate Transition' */
-  if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
-      (&scenario1_lqr_M)->Timing.TaskCounters.TID[1] == 0) {
-    if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
-        (&scenario1_lqr_M)->Timing.TaskCounters.TID[3] == 0) {
-      scenario1_lqr_B.RateTransition = scenario1_lqr_B.d_ref[0];
-    }
-
-    /* RateTransition: '<Root>/Rate Transition1' */
-    if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
-        (&scenario1_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
-      scenario1_lqr_B.RateTransition1 = scenario1_lqr_B.d_ref[1];
-    }
-
-    /* End of RateTransition: '<Root>/Rate Transition1' */
+  /* RateTransition: '<Root>/Rate Transition' incorporates:
+   *  RateTransition: '<Root>/Rate Transition1'
+   */
+  if ((rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
+       (&scenario1_lqr_M)->Timing.TaskCounters.TID[1] == 0) &&
+      (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
+       (&scenario1_lqr_M)->Timing.TaskCounters.TID[2] == 0)) {
+    scenario1_lqr_B.RateTransition = scenario1_lqr_B.d_ref[0];
+    scenario1_lqr_B.RateTransition1 = scenario1_lqr_B.d_ref[1];
   }
 
   /* End of RateTransition: '<Root>/Rate Transition' */
@@ -570,23 +559,20 @@ void scenario1_lqrModelClass::step()
 
   /* End of Saturate: '<S4>/psi_e' */
   if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
-      (&scenario1_lqr_M)->Timing.TaskCounters.TID[3] == 0) {
+      (&scenario1_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
     /* Saturate: '<S6>/x' */
     if (scenario1_lqr_B.RateTransition > 1.0) {
-      scenario1_lqr_B.x = 1.0;
+      rtb_Clock = 1.0;
     } else if (scenario1_lqr_B.RateTransition < -1.0) {
-      scenario1_lqr_B.x = -1.0;
+      rtb_Clock = -1.0;
     } else {
-      scenario1_lqr_B.x = scenario1_lqr_B.RateTransition;
+      rtb_Clock = scenario1_lqr_B.RateTransition;
     }
 
     /* End of Saturate: '<S6>/x' */
-  }
 
-  if (rtmIsMajorTimeStep((&scenario1_lqr_M)) &&
-      (&scenario1_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
     /* Sum: '<S6>/Sum3' */
-    u0 = scenario1_lqr_B.x - scenario1_lqr_B.RateTransition5[0];
+    u0 = rtb_Clock - scenario1_lqr_B.RateTransition5[0];
 
     /* Saturate: '<S6>/xe' */
     if (u0 > 1.0) {
