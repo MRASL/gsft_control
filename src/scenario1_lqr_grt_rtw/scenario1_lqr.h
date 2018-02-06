@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.682
+ * Model version              : 1.683
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Feb  5 22:00:13 2018
+ * C++ source code generated on : Mon Feb  5 22:12:34 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -157,14 +157,9 @@ typedef struct {
   real_T u_m;                          /* '<S7>/                     ' */
   real_T Sum1_i;                       /* '<S7>/Sum1' */
   real_T ZeroOrderHold1;               /* '<Root>/Zero-Order Hold1' */
-  real_T RateTransition3[12];          /* '<Root>/Rate Transition3' */
-  real_T u_n;                          /* '<S4>/                     ' */
-  real_T Sum1_a;                       /* '<S4>/Sum1' */
-  real_T ZeroOrderHold2;               /* '<Root>/Zero-Order Hold2' */
   real_T d_ref[4];                     /* '<Root>/Sum1' */
   real_T RateTransition;               /* '<Root>/Rate Transition' */
   real_T RateTransition1;              /* '<Root>/Rate Transition1' */
-  real_T RateTransition2;              /* '<Root>/Rate Transition2' */
   real_T psi_e;                        /* '<S4>/psi_e' */
   real_T xe;                           /* '<S6>/xe' */
   real_T ye;                           /* '<S7>/ye' */
