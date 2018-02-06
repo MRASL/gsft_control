@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.684
+ * Model version              : 1.685
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Feb  5 22:25:04 2018
+ * C++ source code generated on : Mon Feb  5 22:29:03 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,6 +149,17 @@
 
 /* Block signals (auto storage) */
 typedef struct {
+  real_T dX[12];                       /* '<Root>/Sum' */
+  real_T RateTransition5[12];          /* '<Root>/Rate Transition5' */
+  real_T u;                            /* '<S6>/                    ' */
+  real_T Sum1;                         /* '<S6>/Sum1' */
+  real_T ZeroOrderHold;                /* '<Root>/Zero-Order Hold' */
+  real_T u_m;                          /* '<S7>/                     ' */
+  real_T Sum1_i;                       /* '<S7>/Sum1' */
+  real_T ZeroOrderHold1;               /* '<Root>/Zero-Order Hold1' */
+  real_T d_ref[4];                     /* '<Root>/Sum1' */
+  real_T RateTransition;               /* '<Root>/Rate Transition' */
+  real_T RateTransition1;              /* '<Root>/Rate Transition1' */
   real_T psi_e;                        /* '<S4>/psi_e' */
   real_T xe;                           /* '<S6>/xe' */
   real_T ye;                           /* '<S7>/ye' */
@@ -252,10 +263,14 @@ struct tag_RTM_scenario1_lqr_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
