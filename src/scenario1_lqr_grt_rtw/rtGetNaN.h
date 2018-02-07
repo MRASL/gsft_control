@@ -1,5 +1,5 @@
 /*
- * scenario1_lqr_types.h
+ * rtGetNaN.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
@@ -18,10 +18,22 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_scenario1_lqr_types_h_
-#define RTW_HEADER_scenario1_lqr_types_h_
+#ifndef RTW_HEADER_rtGetNaN_h_
+#define RTW_HEADER_rtGetNaN_h_
+#include <stddef.h>
+#include "rtwtypes.h"
+#include "rt_nonfinite.h"
+#ifdef __cplusplus
 
-/* Forward declaration for rtModel */
-typedef struct tag_RTM_scenario1_lqr_T RT_MODEL_scenario1_lqr_T;
+extern "C" {
 
-#endif                                 /* RTW_HEADER_scenario1_lqr_types_h_ */
+#endif
+
+  extern real_T rtGetNaN(void);
+  extern real32_T rtGetNaNF(void);
+
+#ifdef __cplusplus
+
+}                                      /* extern "C" */
+#endif
+#endif                                 /* RTW_HEADER_rtGetNaN_h_ */

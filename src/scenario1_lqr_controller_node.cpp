@@ -268,10 +268,10 @@ int main(int argc, char** argv) {
     uav_state_msg->moment.y      = gController.scenario1_lqr_Y.virtual_control[2];
     uav_state_msg->moment.z      = gController.scenario1_lqr_Y.virtual_control[3];
 
-  /*  uav_state_msg->LOE13.x  = gController.scenario1_lqr_Y.gamma[0];
+    uav_state_msg->LOE13.x  = gController.scenario1_lqr_Y.gamma[0];
     uav_state_msg->LOE13.y  = gController.scenario1_lqr_Y.gamma[1];
     uav_state_msg->LOE13.z  = gController.scenario1_lqr_Y.gamma[2];
-    uav_state_msg->LOE46.x  = gController.scenario1_lqr_Y.gamma[3];
+/*    uav_state_msg->LOE46.x  = gController.scenario1_lqr_Y.gamma[3];
     uav_state_msg->LOE46.y  = gController.scenario1_lqr_Y.gamma[4];
     uav_state_msg->LOE46.z  = gController.scenario1_lqr_Y.gamma[5]; */
 
