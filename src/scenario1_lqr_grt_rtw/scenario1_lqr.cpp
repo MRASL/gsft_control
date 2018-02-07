@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.669
+ * Model version              : 1.672
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb  6 19:10:39 2018
+ * C++ source code generated on : Tue Feb  6 19:15:32 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -380,21 +380,21 @@ void scenario1_lqrModelClass::step()
   }
 
   /* MATLAB Function: '<Root>/Actuator_Fault' */
-  /* '<S1>:1:3' if time >= 12 */
-  if (rtb_Clock >= 12.0) {
-    /* '<S1>:1:4' T1 = T(1)*0.6; */
-    /* '<S1>:1:5' T2 = T(2)*0.6; */
-    /* '<S1>:1:6' T3 = T(3)*0.6; */
-    /* '<S1>:1:7' T4 = T(4)*0.6; */
-    /* '<S1>:1:8' T5 = T(5)*0.6; */
-    /* '<S1>:1:9' T6 = T(6)*0.6; */
+  /* '<S1>:1:3' if time >= 25 */
+  if (rtb_Clock >= 25.0) {
+    /* '<S1>:1:4' T1 = T(1)*0.8; */
+    /* '<S1>:1:5' T2 = T(2)*0.8; */
+    /* '<S1>:1:6' T3 = T(3)*0.8; */
+    /* '<S1>:1:7' T4 = T(4)*0.8; */
+    /* '<S1>:1:8' T5 = T(5)*0.8; */
+    /* '<S1>:1:9' T6 = T(6)*0.8; */
     /* '<S1>:1:10' T_f = [T1;T2;T3;T4;T5;T6]; */
-    rtb_T_f[0] = rtb_u_i[0] * 0.6;
-    rtb_T_f[1] = rtb_u_i[1] * 0.6;
-    rtb_T_f[2] = rtb_u_i[2] * 0.6;
-    rtb_T_f[3] = rtb_u_i[3] * 0.6;
-    rtb_T_f[4] = rtb_u_i[4] * 0.6;
-    rtb_T_f[5] = rtb_u_i[5] * 0.6;
+    rtb_T_f[0] = rtb_u_i[0] * 0.8;
+    rtb_T_f[1] = rtb_u_i[1] * 0.8;
+    rtb_T_f[2] = rtb_u_i[2] * 0.8;
+    rtb_T_f[3] = rtb_u_i[3] * 0.8;
+    rtb_T_f[4] = rtb_u_i[4] * 0.8;
+    rtb_T_f[5] = rtb_u_i[5] * 0.8;
   }
 
   /* Outport: '<Root>/virtual_control' incorporates:
@@ -448,16 +448,16 @@ void scenario1_lqrModelClass::step()
   /* '<S2>:1:2' y = X0(2); */
   /* '<S2>:1:2' z = X0(3); */
   /* '<S2>:1:2' psi = X0(4); */
-  /* '<S2>:1:3' if t <= 25 */
-  if (rtb_Clock <= 25.0) {
+  /* '<S2>:1:3' if t <= 35 */
+  if (rtb_Clock <= 35.0) {
     /* '<S2>:1:4' x = X0(1); */
     rtb_Clock = scenario1_lqr_U.X0[0];
 
     /* '<S2>:1:5' y = X0(2); */
     y = scenario1_lqr_U.X0[1];
 
-    /* '<S2>:1:6' z = 1.0; */
-    z = 1.0;
+    /* '<S2>:1:6' z = 0.5; */
+    z = 0.5;
 
     /* '<S2>:1:7' psi = X0(4); */
     psi = scenario1_lqr_U.X0[3];
@@ -469,8 +469,8 @@ void scenario1_lqrModelClass::step()
     /* '<S2>:1:10' y = X0(2); */
     y = scenario1_lqr_U.X0[1];
 
-    /* '<S2>:1:11' z = 0.12; */
-    z = 0.12;
+    /* '<S2>:1:11' z = 0.0; */
+    z = 0.0;
 
     /* '<S2>:1:12' psi = X0(4); */
     psi = scenario1_lqr_U.X0[3];
