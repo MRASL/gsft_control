@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.717
+ * Model version              : 1.718
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Feb  9 15:11:31 2018
+ * C++ source code generated on : Fri Feb  9 15:21:45 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -239,8 +239,8 @@ void scenario1_lqrModelClass::step()
      *  Integrator: '<S7>/Integrator1'
      *  SignalConversion: '<S7>/TmpSignal ConversionAt                    Inport1'
      */
-    rtb_ixj = 0.0999999999999974 * scenario1_lqr_X.Integrator1_CSTATE_h -
-      (0.21072259546211941 * rtb_VectorConcatenate[0] + 0.19702006119146431 *
+    rtb_ixj = 0.22360679774997272 * scenario1_lqr_X.Integrator1_CSTATE_h -
+      (0.38722457377638353 * rtb_VectorConcatenate[0] + 0.30733160154188371 *
        rtb_VectorConcatenate[3]);
 
     /* Sum: '<S8>/Sum1' incorporates:
@@ -249,8 +249,8 @@ void scenario1_lqrModelClass::step()
      *  Integrator: '<S8>/Integrator1'
      *  SignalConversion: '<S8>/TmpSignal ConversionAt                     Inport1'
      */
-    rtb_kxi = -0.12909944487358307 * scenario1_lqr_X.Integrator1_CSTATE_j -
-      (-0.24159164033384403 * rtb_VectorConcatenate[1] + -0.20453598842100026 *
+    rtb_kxi = -0.22360679774997796 * scenario1_lqr_X.Integrator1_CSTATE_j -
+      (-0.37434712420102556 * rtb_VectorConcatenate[1] + -0.28540225673347408 *
        rtb_VectorConcatenate[4]);
 
     /* Fcn: '<Root>/Fcn1' incorporates:
@@ -274,8 +274,8 @@ void scenario1_lqrModelClass::step()
      *  Gain: '<S4>/                    '
      *  SignalConversion: '<S4>/TmpSignal ConversionAt                    Inport1'
      */
-    rtb_jxk -= 0.96547418276328789 * rtb_VectorConcatenate[6] +
-      0.25948958148444728 * rtb_VectorConcatenate[9];
+    rtb_jxk -= 1.2363504152791196 * rtb_VectorConcatenate[6] +
+      0.29401008805333773 * rtb_VectorConcatenate[9];
 
     /* Fcn: '<Root>/Fcn' incorporates:
      *  Inport: '<Root>/X'
@@ -290,8 +290,8 @@ void scenario1_lqrModelClass::step()
      *  SignalConversion: '<S9>/TmpSignal ConversionAt                     Inport1'
      *  Sum: '<S9>/Sum1'
      */
-    rtb_ref_idx_0 = 10.000000000000039 * scenario1_lqr_X.Integrator1_CSTATE -
-      (12.219481695651963 * rtb_VectorConcatenate[2] + 6.2157866455186586 *
+    rtb_ref_idx_0 = 9.9999999999999449 * scenario1_lqr_X.Integrator1_CSTATE -
+      (12.219481695651885 * rtb_VectorConcatenate[2] + 6.2157866455186292 *
        rtb_VectorConcatenate[5]);
 
     /* Sum: '<S6>/Sum1' incorporates:
@@ -315,10 +315,10 @@ void scenario1_lqrModelClass::step()
      *  Sum: '<S5>/Sum1'
      *  Sum: '<S6>/Sum1'
      */
-    rtb_ixj -= 1.0260541275492756 * rtb_VectorConcatenate[7] +
-      0.30720872210992406 * rtb_VectorConcatenate[10];
-    rtb_kxi = 0.15811388300841916 * scenario1_lqr_X.Integrator1_CSTATE_b -
-      (0.30355520549478665 * rtb_VectorConcatenate[8] + 0.24395632222527325 *
+    rtb_ixj -= 1.3973109045292817 * rtb_VectorConcatenate[7] +
+      0.35882209968303647 * rtb_VectorConcatenate[10];
+    rtb_kxi = 0.20000000000000032 * scenario1_lqr_X.Integrator1_CSTATE_b -
+      (0.37159225555822 * rtb_VectorConcatenate[8] + 0.2702020109771136 *
        rtb_VectorConcatenate[11]);
 
     /* MATLAB Function 'Actuator_Fault': '<S1>:1' */
