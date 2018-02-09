@@ -9,7 +9,7 @@
  *
  * Model version              : 1.714
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Feb  7 17:54:26 2018
+ * C++ source code generated on : Fri Feb  9 14:38:28 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -727,9 +727,9 @@ void scenario1_lqrModelClass::step()
       )->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.01s, 0.0s] */
+      /* Update absolute timer for sample time: [0.005s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.01, which is the step size
+       * been executed. The resolution of this integer timer is 0.005, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -811,7 +811,7 @@ void scenario1_lqrModelClass::initialize()
                     )->intgData);
   rtsiSetSolverName(&(&scenario1_lqr_M)->solverInfo,"ode5");
   rtmSetTPtr(getRTM(), &(&scenario1_lqr_M)->Timing.tArray[0]);
-  (&scenario1_lqr_M)->Timing.stepSize0 = 0.01;
+  (&scenario1_lqr_M)->Timing.stepSize0 = 0.005;
 
   /* block I/O */
   (void) memset(((void *) &scenario1_lqr_B), 0,
