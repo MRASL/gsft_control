@@ -9,7 +9,7 @@
  *
  * Model version              : 1.718
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Feb  9 15:21:45 2018
+ * C++ source code generated on : Fri Feb  9 15:22:42 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -367,7 +367,7 @@ void scenario1_lqrModelClass::step()
       /* Sqrt: '<Root>/Sqrt1' incorporates:
        *  Gain: '<Root>/      '
        */
-      rtb_ref_idx_0 = std::sqrt(149253.73134328358 * rtb_T_f[i]);
+      rtb_ref_idx_0 = std::sqrt(116978.4923343994 * rtb_T_f[i]);
 
       /* Gain: '<Root>/rads_to_RPM' */
       rtb_ixj = 9.5493 * rtb_ref_idx_0;
