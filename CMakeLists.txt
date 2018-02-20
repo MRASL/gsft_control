@@ -128,71 +128,31 @@ include_directories(
  include
  R2017a/extern/include
  R2017a/simulink/include
- ##src/lqr_hovering_grt_rtw
- ##src/bsl_hovering_grt_rtw
  src/scenario1_lqr_grt_rtw
  src/scenario1_gs_grt_rtw
- src/scenario2_lqr_grt_rtw
- src/scenario2_gs_grt_rtw
-  src/gazebo_gs_grt_rtw
- ##src/lqr_tracking_grt_rtw
- ##src/lqr_identification_grt_rtw
- ##src/lqr_inner_grt_rtw
-## src/lqr_outer_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
 
 add_library(matlab_lqr
-    ##src/lqr_hovering_grt_rtw/lqr_hovering_data.cpp
-    ##src/lqr_hovering_grt_rtw/lqr_hovering.cpp
-    ##src/lqr_tracking_grt_rtw/lqr_tracking_data.cpp
-    ##src/lqr_tracking_grt_rtw/lqr_tracking.cpp
-  ##  src/bsl_hovering_grt_rtw/bsl_hovering_data.cpp
-  ##  src/bsl_hovering_grt_rtw/bsl_hovering.cpp
 
     src/scenario1_lqr_grt_rtw/scenario1_lqr_data.cpp
     src/scenario1_lqr_grt_rtw/scenario1_lqr.cpp
-    src/scenario1_lqr_grt_rtw/rtGetInf.cpp
-    src/scenario1_lqr_grt_rtw/rtGetNaN.cpp
-    src/scenario1_lqr_grt_rtw/rt_nonfinite.cpp
+  #  src/scenario1_lqr_grt_rtw/rtGetInf.cpp
+  #  src/scenario1_lqr_grt_rtw/rtGetNaN.cpp
+  #  src/scenario1_lqr_grt_rtw/rt_nonfinite.cpp
 
     src/scenario1_gs_grt_rtw/scenario1_gs_data.cpp
     src/scenario1_gs_grt_rtw/scenario1_gs.cpp
-
-    src/scenario2_lqr_grt_rtw/scenario2_lqr_data.cpp
-    src/scenario2_lqr_grt_rtw/scenario2_lqr.cpp
-
-    src/scenario2_gs_grt_rtw/scenario2_gs_data.cpp
-    src/scenario2_gs_grt_rtw/scenario2_gs.cpp
-
-        src/gazebo_gs_grt_rtw/gazebo_gs_data.cpp
-        src/gazebo_gs_grt_rtw/gazebo_gs.cpp
-    ##src/lqr_identification_grt_rtw/lqr_identification_data.cpp
-    ##src/lqr_identification_grt_rtw/lqr_identification.cpp
-    ##src/lqr_inner_grt_rtw/lqr_inner_data.cpp
-    ##src/lqr_inner_grt_rtw/lqr_inner.cpp
-    ##src/lqr_outer_grt_rtw/lqr_outer_data.cpp
-    ##src/lqr_outer_grt_rtw/lqr_outer.cpp
+    src/scenario1_gs_grt_rtw/rtGetInf.cpp
+    src/scenario1_gs_grt_rtw/rtGetNaN.cpp
+    src/scenario1_gs_grt_rtw/rt_nonfinite.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-
-add_executable(gazebo_gs_controller_node
-    src/gazebo_gs_controller_node.cpp
-)
-add_dependencies(gazebo_gs_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    matlab_lqr
-)
-target_link_libraries(gazebo_gs_controller_node
-    matlab_lqr
-    ${catkin_LIBRARIES}
-)
 
 add_executable(scenario1_lqr_controller_node
     src/scenario1_lqr_controller_node.cpp
@@ -207,21 +167,6 @@ target_link_libraries(scenario1_lqr_controller_node
     ${catkin_LIBRARIES}
 )
 
-add_executable(scenario2_lqr_controller_node
-    src/scenario2_lqr_controller_node.cpp
-)
-add_dependencies(scenario2_lqr_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    matlab_lqr
-)
-target_link_libraries(scenario2_lqr_controller_node
-    matlab_lqr
-    ${catkin_LIBRARIES}
-)
-
-
-
 add_executable(scenario1_gs_controller_node
     src/scenario1_gs_controller_node.cpp
 )
@@ -232,106 +177,8 @@ add_dependencies(scenario1_gs_controller_node
 )
 target_link_libraries(scenario1_gs_controller_node
     matlab_lqr
-    ${catkin_LIBRARIES}
+  ${catkin_LIBRARIES}
 )
-
-add_executable(scenario2_gs_controller_node
-    src/scenario2_gs_controller_node.cpp
-)
-add_dependencies(scenario2_gs_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    matlab_lqr
-)
-target_link_libraries(scenario2_gs_controller_node
-    matlab_lqr
-    ${catkin_LIBRARIES}
-)
-
-##add_executable(lqr_hovering_controller_node
-##    src/lqr_hovering_controller_node.cpp
-##)
-##add_dependencies(lqr_hovering_controller_node
-##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-##    ${catkin_EXPORTED_TARGETS}
-##    matlab_lqr
-##)
-##target_link_libraries(lqr_hovering_controller_node
-##    matlab_lqr
-##    ${catkin_LIBRARIES}
-##)
-
-##add_executable(bsl_hovering_controller_node
-##    src/bsl_hovering_controller_node.cpp
-##)
-##add_dependencies(bsl_hovering_controller_node
-##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-##    ${catkin_EXPORTED_TARGETS}
-##    matlab_lqr
-##)
-##target_link_libraries(bsl_hovering_controller_node
-##    matlab_lqr
-##    ${catkin_LIBRARIES}
-##)
-
-
-
-##add_executable(lqr_tracking_controller_node
-##    src/lqr_tracking_controller_node.cpp
-##)
-##add_dependencies(lqr_tracking_controller_node
-##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-##    ${catkin_EXPORTED_TARGETS}
-##    ${PROJECT_NAME}_gencfg
-##    matlab_lqr
-##)
-##target_link_libraries(lqr_tracking_controller_node
-##    matlab_lqr
-##    ${catkin_LIBRARIES}
-##)
-
-##add_executable(lqr_identification_controller_node
-##    src/lqr_identification_controller_node.cpp
-##)
-##add_dependencies(lqr_identification_controller_node
-##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-##    ${catkin_EXPORTED_TARGETS}
-##    ${PROJECT_NAME}_gencfg
-##    matlab_lqr
-##)
-#target_link_libraries(lqr_identification_controller_node
-##    matlab_lqr
-##    ${catkin_LIBRARIES}
-##)
-
-##add_executable(lqr_inner_controller_node
-##    src/lqr_inner_controller_node.cpp
-##)
-##add_dependencies(lqr_inner_controller_node
-##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-##    ${catkin_EXPORTED_TARGETS}
-##    ${PROJECT_NAME}_gencfg
-##    matlab_lqr
-##)
-##target_link_libraries(lqr_inner_controller_node
-##    matlab_lqr
-##    ${catkin_LIBRARIES}
-##)
-
-
-##add_executable(lqr_outer_controller_node
-##    src/lqr_outer_controller_node.cpp
-##)
-##add_dependencies(lqr_outer_controller_node
-##    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-##    ${catkin_EXPORTED_TARGETS}
-##    ${PROJECT_NAME}_gencfg
-##    matlab_lqr
-##)
-##target_link_libraries(lqr_outer_controller_node
-##    matlab_lqr
-##    ${catkin_LIBRARIES}
-##)
 #############
 ## Install ##
 #############

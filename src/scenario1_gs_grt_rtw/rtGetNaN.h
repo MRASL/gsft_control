@@ -1,5 +1,5 @@
 /*
- * rtwtypes.h
+ * rtGetNaN.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
@@ -18,25 +18,22 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTWTYPES_H
-#define RTWTYPES_H
-#include "tmwtypes.h"
-#include "simstruc_types.h"
-#ifndef POINTER_T
-# define POINTER_T
+#ifndef RTW_HEADER_rtGetNaN_h_
+#define RTW_HEADER_rtGetNaN_h_
+#include <stddef.h>
+#include "rtwtypes.h"
+#include "rt_nonfinite.h"
+#ifdef __cplusplus
 
-typedef void * pointer_T;
+extern "C" {
 
 #endif
 
-/* Logical type definitions */
-#if (!defined(__cplusplus))
-#  ifndef false
-#   define false                       (0U)
-#  endif
+  extern real_T rtGetNaN(void);
+  extern real32_T rtGetNaNF(void);
 
-#  ifndef true
-#   define true                        (1U)
-#  endif
+#ifdef __cplusplus
+
+}                                      /* extern "C" */
 #endif
-#endif                                 /* RTWTYPES_H */
+#endif                                 /* RTW_HEADER_rtGetNaN_h_ */
