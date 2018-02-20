@@ -134,6 +134,7 @@ include_directories(
  src/scenario1_gs_grt_rtw
  src/scenario2_lqr_grt_rtw
  src/scenario2_gs_grt_rtw
+  src/gazebo_gs_grt_rtw
  ##src/lqr_tracking_grt_rtw
  ##src/lqr_identification_grt_rtw
  ##src/lqr_inner_grt_rtw
@@ -164,6 +165,9 @@ add_library(matlab_lqr
 
     src/scenario2_gs_grt_rtw/scenario2_gs_data.cpp
     src/scenario2_gs_grt_rtw/scenario2_gs.cpp
+
+        src/gazebo_gs_grt_rtw/gazebo_gs_data.cpp
+        src/gazebo_gs_grt_rtw/gazebo_gs.cpp
     ##src/lqr_identification_grt_rtw/lqr_identification_data.cpp
     ##src/lqr_identification_grt_rtw/lqr_identification.cpp
     ##src/lqr_inner_grt_rtw/lqr_inner_data.cpp
@@ -177,6 +181,18 @@ add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 
+add_executable(gazebo_gs_controller_node
+    src/gazebo_gs_controller_node.cpp
+)
+add_dependencies(gazebo_gs_controller_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_lqr
+)
+target_link_libraries(gazebo_gs_controller_node
+    matlab_lqr
+    ${catkin_LIBRARIES}
+)
 
 add_executable(scenario1_lqr_controller_node
     src/scenario1_lqr_controller_node.cpp
