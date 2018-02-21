@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_gs".
  *
- * Model version              : 1.758
+ * Model version              : 1.760
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb 20 19:28:35 2018
+ * C++ source code generated on : Tue Feb 20 19:32:58 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -180,7 +180,7 @@ void scenario1_gsModelClass::step()
 
   {
     real_T (*lastU)[3];
-    static const real_T b[6] = { 0.75, 1.0, 1.0, 1.0, 1.0, 1.0 };
+    static const real_T b[6] = { 0.6, 1.0, 1.0, 1.0, 1.0, 1.0 };
 
     static const real_T a[24] = { 0.043, -0.0287, -0.085, 0.1249, 0.0059,
       -0.0605, 0.9809, 0.2621, 0.3024, 0.5056, 0.1418, 0.2842, -0.1072, 0.0,
@@ -227,7 +227,7 @@ void scenario1_gsModelClass::step()
 
     /* '<S2>:1:3' if time >= 12 */
     if (rtb_Clock >= 12.0) {
-      /* '<S2>:1:4' gamma_n = [0.75 1 1 1 1 1]'; */
+      /* '<S2>:1:4' gamma_n = [0.6 1 1 1 1 1]'; */
       for (i = 0; i < 6; i++) {
         rtb_gamma_n[i] = b[i];
       }
@@ -406,14 +406,14 @@ void scenario1_gsModelClass::step()
     /* MATLAB Function: '<Root>/Actuator_Fault' */
     /* '<S1>:1:3' if time >= 12 */
     if (rtb_Clock >= 12.0) {
-      /* '<S1>:1:4' T1 = T(1)*0.75; */
+      /* '<S1>:1:4' T1 = T(1)*0.6; */
       /* '<S1>:1:5' T2 = T(2)*1; */
       /* '<S1>:1:6' T3 = T(3)*1; */
       /* '<S1>:1:7' T4 = T(4)*1; */
       /* '<S1>:1:8' T5 = T(5)*1; */
       /* '<S1>:1:9' T6 = T(6)*1; */
       /* '<S1>:1:10' T_f = [T1;T2;T3;T4;T5;T6]; */
-      rtb_gamma_n[0] = scenario1_gs_B.Sum2[0] * 0.75;
+      rtb_gamma_n[0] = scenario1_gs_B.Sum2[0] * 0.6;
       rtb_gamma_n[1] = scenario1_gs_B.Sum2[1];
       rtb_gamma_n[2] = scenario1_gs_B.Sum2[2];
       rtb_gamma_n[3] = scenario1_gs_B.Sum2[3];
