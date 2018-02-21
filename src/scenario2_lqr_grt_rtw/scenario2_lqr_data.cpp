@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario2_lqr".
  *
- * Model version              : 1.670
+ * Model version              : 1.744
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jan 31 12:20:32 2018
+ * C++ source code generated on : Wed Feb 21 08:41:38 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -33,5 +33,10 @@ const ConstP_scenario2_lqr_T scenario2_lqr_ConstP = {
     -1.3426750446270113, -2.5529533974250051E-14, 1.3426750446270619,
     1.3426750446270113, 2.5418511671787539E-14, -1.3426750446270626,
     -4.5662100456621, 4.5662100456621, -4.5662100456620989, 4.5662100456620971,
-    -4.5662100456621006, 4.5662100456620989 }
+    -4.5662100456621006, 4.5662100456620989 },
+
+  /* Expression: Ib
+   * Referenced by: '<S2>/Constant1'
+   */
+  { 0.0347563, 0.0, 0.0, 0.0, 0.0458929, 0.0, 0.0, 0.0, 0.0977 }
 };

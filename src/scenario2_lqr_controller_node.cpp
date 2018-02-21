@@ -35,7 +35,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   mav_msgs::EigenOdometry odometry;
   mav_msgs::eigenOdometryFromMsg(*odom, &odometry);
 
-  if ((odometry.position_W.x() > 2.0)||(odometry.position_W.x() < -2.5)||(odometry.position_W.y() > 2.5)||(odometry.position_W.y() < -2.5)||(odometry.position_W.z() > 1.5))
+  if ((odometry.position_W.x() > 2.5)||(odometry.position_W.x() < -2.5)||(odometry.position_W.y() > 2.5)||(odometry.position_W.y() < -2.5)||(odometry.position_W.z() > 1.5))
   {
     if (!gEmergency_status){
       gEmergency_status = true;
@@ -165,7 +165,7 @@ int main(int argc, char** argv) {
   ros::Publisher uav_state_pub_;
   uav_state_pub_ = nh.advertise<gsft_control::UAVState>(gsft_control::default_topics::UAV_STATE, 1);
 
-  ros::Rate r(100);
+  ros::Rate r(200);
 
   gCommand_active = false;
   gEmergency_status = false;
@@ -268,10 +268,10 @@ int main(int argc, char** argv) {
     uav_state_msg->moment.y      = gController.scenario2_lqr_Y.virtual_control[2];
     uav_state_msg->moment.z      = gController.scenario2_lqr_Y.virtual_control[3];
 
-  /*  uav_state_msg->LOE13.x  = gController.scenario2_lqr_Y.gamma[0];
+    uav_state_msg->LOE13.x  = gController.scenario2_lqr_Y.gamma[0];
     uav_state_msg->LOE13.y  = gController.scenario2_lqr_Y.gamma[1];
     uav_state_msg->LOE13.z  = gController.scenario2_lqr_Y.gamma[2];
-    uav_state_msg->LOE46.x  = gController.scenario2_lqr_Y.gamma[3];
+/*    uav_state_msg->LOE46.x  = gController.scenario2_lqr_Y.gamma[3];
     uav_state_msg->LOE46.y  = gController.scenario2_lqr_Y.gamma[4];
     uav_state_msg->LOE46.z  = gController.scenario2_lqr_Y.gamma[5]; */
 

@@ -128,25 +128,22 @@ include_directories(
  include
  R2017a/extern/include
  R2017a/simulink/include
- src/scenario1_lqr_grt_rtw
- src/scenario1_gs_grt_rtw
+ src/scenario2_lqr_grt_rtw
+ src/scenario2_gs_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
 
 add_library(matlab_lqr
 
-    src/scenario1_lqr_grt_rtw/scenario1_lqr_data.cpp
-    src/scenario1_lqr_grt_rtw/scenario1_lqr.cpp
-    src/scenario1_lqr_grt_rtw/rtGetInf.cpp
-    src/scenario1_lqr_grt_rtw/rtGetNaN.cpp
-    src/scenario1_lqr_grt_rtw/rt_nonfinite.cpp
+    src/scenario2_lqr_grt_rtw/scenario2_lqr_data.cpp
+    src/scenario2_lqr_grt_rtw/scenario2_lqr.cpp
+    src/scenario2_lqr_grt_rtw/rtGetInf.cpp
+    src/scenario2_lqr_grt_rtw/rtGetNaN.cpp
+    src/scenario2_lqr_grt_rtw/rt_nonfinite.cpp
 
-    src/scenario1_gs_grt_rtw/scenario1_gs_data.cpp
-    src/scenario1_gs_grt_rtw/scenario1_gs.cpp
-  #  src/scenario1_gs_grt_rtw/rtGetInf.cpp
-  #  src/scenario1_gs_grt_rtw/rtGetNaN.cpp
-  #  src/scenario1_gs_grt_rtw/rt_nonfinite.cpp
+    src/scenario2_gs_grt_rtw/scenario2_gs_data.cpp
+    src/scenario2_gs_grt_rtw/scenario2_gs.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -154,28 +151,28 @@ add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 
-add_executable(scenario1_lqr_controller_node
-    src/scenario1_lqr_controller_node.cpp
+add_executable(scenario2_lqr_controller_node
+    src/scenario2_lqr_controller_node.cpp
 )
-add_dependencies(scenario1_lqr_controller_node
+add_dependencies(scenario2_lqr_controller_node
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
     matlab_lqr
 )
-target_link_libraries(scenario1_lqr_controller_node
+target_link_libraries(scenario2_lqr_controller_node
     matlab_lqr
     ${catkin_LIBRARIES}
 )
 
-add_executable(scenario1_gs_controller_node
-    src/scenario1_gs_controller_node.cpp
+add_executable(scenario2_gs_controller_node
+    src/scenario2_gs_controller_node.cpp
 )
-add_dependencies(scenario1_gs_controller_node
+add_dependencies(scenario2_gs_controller_node
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
     matlab_lqr
 )
-target_link_libraries(scenario1_gs_controller_node
+target_link_libraries(scenario2_gs_controller_node
     matlab_lqr
   ${catkin_LIBRARIES}
 )
