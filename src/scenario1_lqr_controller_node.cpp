@@ -35,7 +35,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   mav_msgs::EigenOdometry odometry;
   mav_msgs::eigenOdometryFromMsg(*odom, &odometry);
 
-  if ((odometry.position_W.x() > 2.0)||(odometry.position_W.x() < -2.5)||(odometry.position_W.y() > 2.5)||(odometry.position_W.y() < -2.5)||(odometry.position_W.z() > 1.5))
+  if ((odometry.position_W.x() > 2.5)||(odometry.position_W.x() < -2.5)||(odometry.position_W.y() > 2.5)||(odometry.position_W.y() < -2.5)||(odometry.position_W.z() > 1.5))
   {
     if (!gEmergency_status){
       gEmergency_status = true;
