@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_gs".
  *
- * Model version              : 1.780
+ * Model version              : 1.781
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb 20 21:33:24 2018
+ * C++ source code generated on : Tue Feb 20 21:44:23 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -220,8 +220,8 @@ void scenario1_gsModelClass::step()
       rtb_gamma_n[i] = 0.0;
     }
 
-    /* '<S2>:1:3' if time >= 12 */
-    if (rtb_Clock >= 12.0) {
+    /* '<S2>:1:3' if time >= 13 */
+    if (rtb_Clock >= 13.0) {
       /* '<S2>:1:4' gamma_n = [0.4 0 0 0 0 0]'; */
       for (i = 0; i < 6; i++) {
         rtb_gamma_n[i] = b[i];
