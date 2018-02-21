@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_gs".
  *
- * Model version              : 1.788
+ * Model version              : 1.794
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb 20 22:45:46 2018
+ * C++ source code generated on : Tue Feb 20 22:49:56 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -180,7 +180,7 @@ void scenario1_gsModelClass::step()
 
   {
     real_T (*lastU)[3];
-    static const real_T b[6] = { 0.4, 0.0, 0.0, 0.0, 0.0, 0.0 };
+    static const real_T b[6] = { 0.5, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
     real_T KK[72];
     static const real_T b_0[72] = { 0.1667, 0.1667, 0.1667, 0.1667, 0.1667,
@@ -229,11 +229,11 @@ void scenario1_gsModelClass::step()
       }
     } else if (rtb_Clock <= 13.5) {
       /* '<S2>:1:5' elseif time <=13.5 */
-      /* '<S2>:1:6' gamma_n = [0.4*(time-12)/1.5 0 0 0 0 0]'; */
-      rtb_gamma_n[0] = (rtb_Clock - 12.0) * 0.4 / 1.5;
+      /* '<S2>:1:6' gamma_n = [0.5*(time-12)/1.5 0 0 0 0 0]'; */
+      rtb_gamma_n[0] = (rtb_Clock - 12.0) * 0.5 / 1.5;
     } else {
       /* '<S2>:1:7' else */
-      /* '<S2>:1:8' gamma_n = [0.4 0 0 0 0 0]'; */
+      /* '<S2>:1:8' gamma_n = [0.5 0 0 0 0 0]'; */
       for (i = 0; i < 6; i++) {
         rtb_gamma_n[i] = b[i];
       }
@@ -422,14 +422,14 @@ void scenario1_gsModelClass::step()
     /* MATLAB Function: '<Root>/Actuator_Fault' */
     /* '<S1>:1:3' if time >= 12 */
     if (rtb_Clock >= 12.0) {
-      /* '<S1>:1:4' T1 = T(1)*0.6; */
+      /* '<S1>:1:4' T1 = T(1)*0.5; */
       /* '<S1>:1:5' T2 = T(2)*1; */
       /* '<S1>:1:6' T3 = T(3)*1; */
       /* '<S1>:1:7' T4 = T(4)*1; */
       /* '<S1>:1:8' T5 = T(5)*1; */
       /* '<S1>:1:9' T6 = T(6)*1; */
       /* '<S1>:1:10' T_f = [T1;T2;T3;T4;T5;T6]; */
-      rtb_gamma_n[0] = scenario1_gs_B.Sum2[0] * 0.6;
+      rtb_gamma_n[0] = scenario1_gs_B.Sum2[0] * 0.5;
       rtb_gamma_n[1] = scenario1_gs_B.Sum2[1];
       rtb_gamma_n[2] = scenario1_gs_B.Sum2[2];
       rtb_gamma_n[3] = scenario1_gs_B.Sum2[3];
