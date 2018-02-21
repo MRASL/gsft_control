@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_gs".
  *
- * Model version              : 1.786
+ * Model version              : 1.788
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb 20 22:34:21 2018
+ * C++ source code generated on : Tue Feb 20 22:45:46 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -182,17 +182,22 @@ void scenario1_gsModelClass::step()
     real_T (*lastU)[3];
     static const real_T b[6] = { 0.4, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-    static const real_T a[24] = { 0.0811, 0.0262, 0.2773, 0.0611, 0.1936, 0.3465,
-      -0.983, 1.4029, 1.6795, 1.9362, 0.8781, 0.7078, -0.2608, 0.0, -1.2482,
-      2.0404, 0.0, -0.0171, -0.6563, -2.0455, -2.3435, 0.4574, -2.0859, -1.815 };
+    real_T KK[72];
+    static const real_T b_0[72] = { 0.1667, 0.1667, 0.1667, 0.1667, 0.1667,
+      0.1667, 0.7752, 1.5504, 0.7752, -0.7752, -1.5504, -0.7752, -1.3427, -0.0,
+      1.3427, 1.3427, 0.0, -1.3427, -4.5662, 4.5662, -4.5662, 4.5662, -4.5662,
+      4.5662, 0.0811, 0.0262, 0.2773, 0.0611, 0.1936, 0.3465, -0.983, 1.4029,
+      1.6795, 1.9362, 0.8781, 0.7078, -0.2608, 0.0, -1.2482, 2.0404, 0.0,
+      -0.0171, -0.6563, -2.0455, -2.3435, 0.4574, -2.0859, -1.815, -0.273,
+      0.9648, 0.989, -1.7617, 1.1961, 1.2669, -0.4278, -0.7244, -0.1744, -1.5007,
+      0.41, -0.1098, 1.7208, 0.0, -0.2874, 3.1113, 0.0, -0.6106, -0.3621, 0.6528,
+      -1.9565, 6.8035, -1.5931, 1.0063 };
 
-    static const real_T b_a[24] = { -0.273, 0.9648, 0.989, -1.7617, 1.1961,
-      1.2669, -0.4278, -0.7244, -0.1744, -1.5007, 0.41, -0.1098, 1.7208, 0.0,
-      -0.2874, 3.1113, 0.0, -0.6106, -0.3621, 0.6528, -1.9565, 6.8035, -1.5931,
-      1.0063 };
+    static const real_T d[12] = { 0.04055, 0.0131, 0.13865, 0.03055, 0.0968,
+      0.17325, -0.1365, 0.4824, 0.4945, -0.88085, 0.59805, 0.63345 };
 
     real_T y;
-    static const real_T a_0[9] = { 1.5503875968992249, 3.1007751937984493,
+    static const real_T a[9] = { 1.5503875968992249, 3.1007751937984493,
       1.5503875968992249, -2.6853500892540736, -0.0, 2.6853500892540736,
       -9.1324200913242013, 9.1324200913242013, -9.1324200913242013 };
 
@@ -205,7 +210,7 @@ void scenario1_gsModelClass::step()
     real_T rtb_Clock;
     real_T rtb_gamma_n[6];
     int32_T i;
-    real_T a_1[24];
+    real_T KK_0[24];
     int32_T i_0;
     real_T rtb_ref_idx_0;
     real_T rtb_Product_idx_2;
@@ -244,13 +249,22 @@ void scenario1_gsModelClass::step()
     /* '<S5>:1:5'       0.1667   -0.7752    1.3427    4.5662    0.0611    1.9362    2.0404    0.4574   -1.7617   -1.5007    3.1113    6.8035 */
     /* '<S5>:1:6'       0.1667   -1.5504    0.0000   -4.5662    0.1936    0.8781         0   -2.0859    1.1961    0.4100         0   -1.5931 */
     /* '<S5>:1:7'       0.1667   -0.7752   -1.3427    4.5662    0.3465    0.7078   -0.0171   -1.8150    1.2669   -0.1098   -0.6106    1.0063] */
-    /* '<S5>:1:8' K = KK(:,5:8)*gamma_n(1)+KK(:,9:12)*gamma_n(1)^2; */
+    memcpy(&KK[0], &b_0[0], 72U * sizeof(real_T));
+
+    /* '<S5>:1:8' KK(:,[5,9]) = KK(:,[5,9]).*0.5; */
+    for (i = 0; i < 2; i++) {
+      for (i_0 = 0; i_0 < 6; i_0++) {
+        KK[i_0 + 6 * (4 + (i << 2))] = d[6 * i + i_0];
+      }
+    }
+
+    /* '<S5>:1:9' K = KK(:,5:8)*gamma_n(1)+KK(:,9:12)*gamma_n(1)^2; */
     y = rtb_gamma_n[0] * rtb_gamma_n[0];
 
     /* SignalConversion: '<Root>/ConcatBufferAtVector ConcatenateIn1' incorporates:
      *  Inport: '<Root>/X0'
      */
-    /* '<S5>:1:9' K = K*0.85; */
+    /*  K = K*0.85; */
     rtb_VectorConcatenate[0] = scenario1_gs_U.X0[0];
     rtb_VectorConcatenate[1] = scenario1_gs_U.X0[1];
     rtb_VectorConcatenate[2] = scenario1_gs_U.X0[2];
@@ -374,8 +388,8 @@ void scenario1_gsModelClass::step()
      */
     for (i = 0; i < 4; i++) {
       for (i_0 = 0; i_0 < 6; i_0++) {
-        a_1[i_0 + 6 * i] = (a[6 * i + i_0] * rtb_gamma_n[0] + b_a[6 * i + i_0] *
-                            y) * 0.85;
+        KK_0[i_0 + 6 * i] = KK[(4 + i) * 6 + i_0] * rtb_gamma_n[0] + KK[(8 + i) *
+          6 + i_0] * y;
       }
     }
 
@@ -386,8 +400,8 @@ void scenario1_gsModelClass::step()
        *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
        *  Sum: '<Root>/Sum2'
        */
-      y = a_1[i + 18] * rtb_kxi + (a_1[i + 12] * rtb_ixj + (a_1[i + 6] * rtb_jxk
-        + a_1[i] * rtb_ref_idx_0));
+      y = KK_0[i + 18] * rtb_kxi + (KK_0[i + 12] * rtb_ixj + (KK_0[i + 6] *
+        rtb_jxk + KK_0[i] * rtb_ref_idx_0));
 
       /* Gain: '<Root>/                 ' incorporates:
        *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
@@ -618,8 +632,8 @@ void scenario1_gsModelClass::step()
     rtb_Sum1[1] = scenario1_gs_B.Memory[1] - scenario1_gs_B.Memory[4];
     rtb_Sum1[2] = scenario1_gs_B.Memory[2] - scenario1_gs_B.Memory[5];
     for (i = 0; i < 3; i++) {
-      rtb_Product[i] = rtb_Sum1[i] - (a_0[i + 6] * rtb_Product_idx_2 + (a_0[i +
-        3] * rtb_jxk + a_0[i] * rtb_Clock));
+      rtb_Product[i] = rtb_Sum1[i] - (a[i + 6] * rtb_Product_idx_2 + (a[i + 3] *
+        rtb_jxk + a[i] * rtb_Clock));
     }
 
     /* Outport: '<Root>/gamma' incorporates:
