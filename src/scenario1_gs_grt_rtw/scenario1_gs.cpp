@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_gs".
  *
- * Model version              : 1.784
+ * Model version              : 1.786
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb 20 21:59:23 2018
+ * C++ source code generated on : Tue Feb 20 22:34:21 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -222,10 +222,10 @@ void scenario1_gsModelClass::step()
       for (i = 0; i < 6; i++) {
         rtb_gamma_n[i] = 0.0;
       }
-    } else if (rtb_Clock <= 13.0) {
-      /* '<S2>:1:5' elseif time <=13 */
-      /* '<S2>:1:6' gamma_n = [0.4*(time-12) 0 0 0 0 0]'; */
-      rtb_gamma_n[0] = (rtb_Clock - 12.0) * 0.4;
+    } else if (rtb_Clock <= 13.5) {
+      /* '<S2>:1:5' elseif time <=13.5 */
+      /* '<S2>:1:6' gamma_n = [0.4*(time-12)/1.5 0 0 0 0 0]'; */
+      rtb_gamma_n[0] = (rtb_Clock - 12.0) * 0.4 / 1.5;
     } else {
       /* '<S2>:1:7' else */
       /* '<S2>:1:8' gamma_n = [0.4 0 0 0 0 0]'; */
@@ -250,6 +250,7 @@ void scenario1_gsModelClass::step()
     /* SignalConversion: '<Root>/ConcatBufferAtVector ConcatenateIn1' incorporates:
      *  Inport: '<Root>/X0'
      */
+    /* '<S5>:1:9' K = K*0.85; */
     rtb_VectorConcatenate[0] = scenario1_gs_U.X0[0];
     rtb_VectorConcatenate[1] = scenario1_gs_U.X0[1];
     rtb_VectorConcatenate[2] = scenario1_gs_U.X0[2];
@@ -373,8 +374,8 @@ void scenario1_gsModelClass::step()
      */
     for (i = 0; i < 4; i++) {
       for (i_0 = 0; i_0 < 6; i_0++) {
-        a_1[i_0 + 6 * i] = a[6 * i + i_0] * rtb_gamma_n[0] + b_a[6 * i + i_0] *
-          y;
+        a_1[i_0 + 6 * i] = (a[6 * i + i_0] * rtb_gamma_n[0] + b_a[6 * i + i_0] *
+                            y) * 0.85;
       }
     }
 
