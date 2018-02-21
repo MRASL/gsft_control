@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario2_gs".
  *
- * Model version              : 1.804
+ * Model version              : 1.808
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Feb 21 08:41:26 2018
+ * C++ source code generated on : Wed Feb 21 09:05:04 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -221,16 +221,16 @@ void scenario2_gsModelClass::step()
     /* MATLAB Function: '<Root>/FDD' */
     /* MATLAB Function 'FDD': '<S2>:1' */
     /* '<S2>:1:2' gamma_n = [0 0 0 0 0 0]'; */
-    /* '<S2>:1:3' if time <= 30 */
-    if (rtb_Clock <= 30.0) {
+    /* '<S2>:1:3' if time <= 40 */
+    if (rtb_Clock <= 40.0) {
       /* '<S2>:1:4' gamma_n = [0 0 0 0 0 0]'; */
       for (i = 0; i < 6; i++) {
         rtb_gamma_n[i] = 0.0;
       }
-    } else if (rtb_Clock <= 31.0) {
-      /* '<S2>:1:5' elseif time <=31 */
-      /* '<S2>:1:6' gamma_n = [0.3*(time-30)/1.5 0 0 0 0 0]'; */
-      rtb_gamma_n[0] = (rtb_Clock - 30.0) * 0.3 / 1.5;
+    } else if (rtb_Clock <= 41.0) {
+      /* '<S2>:1:5' elseif time <= 41 */
+      /* '<S2>:1:6' gamma_n = [0.3*(time-40) 0 0 0 0 0]'; */
+      rtb_gamma_n[0] = (rtb_Clock - 40.0) * 0.3;
     } else {
       /* '<S2>:1:7' else */
       /* '<S2>:1:8' gamma_n = [0.3 0 0 0 0 0]'; */
@@ -420,8 +420,8 @@ void scenario2_gsModelClass::step()
     }
 
     /* MATLAB Function: '<Root>/Actuator_Fault' */
-    /* '<S1>:1:3' if time >= 30 */
-    if (rtb_Clock >= 30.0) {
+    /* '<S1>:1:3' if time >= 40 */
+    if (rtb_Clock >= 40.0) {
       /* '<S1>:1:4' T1 = T(1)*0.7; */
       /* '<S1>:1:5' T2 = T(2)*1; */
       /* '<S1>:1:6' T3 = T(3)*1; */
