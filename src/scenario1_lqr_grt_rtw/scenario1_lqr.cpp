@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr".
  *
- * Model version              : 1.739
+ * Model version              : 1.741
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb 20 22:59:06 2018
+ * C++ source code generated on : Tue Feb 20 23:18:44 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -341,14 +341,14 @@ void scenario1_lqrModelClass::step()
     /* MATLAB Function: '<Root>/Actuator_Fault' */
     /* '<S1>:1:3' if time >= 12 */
     if (rtb_Clock >= 12.0) {
-      /* '<S1>:1:4' T1 = T(1)*0.5; */
+      /* '<S1>:1:4' T1 = T(1)*0.6; */
       /* '<S1>:1:5' T2 = T(2)*1; */
       /* '<S1>:1:6' T3 = T(3)*1; */
       /* '<S1>:1:7' T4 = T(4)*1; */
       /* '<S1>:1:8' T5 = T(5)*1; */
       /* '<S1>:1:9' T6 = T(6)*1; */
       /* '<S1>:1:10' T_f = [T1;T2;T3;T4;T5;T6]; */
-      rtb_T_f[0] = scenario1_lqr_B.u[0] * 0.5;
+      rtb_T_f[0] = scenario1_lqr_B.u[0] * 0.6;
       rtb_T_f[1] = scenario1_lqr_B.u[1];
       rtb_T_f[2] = scenario1_lqr_B.u[2];
       rtb_T_f[3] = scenario1_lqr_B.u[3];
@@ -407,8 +407,8 @@ void scenario1_lqrModelClass::step()
     /* '<S3>:1:2' y = X0(2); */
     /* '<S3>:1:2' z = X0(3); */
     /* '<S3>:1:2' psi = X0(4); */
-    /* '<S3>:1:3' if t <= 30 */
-    if (rtb_Clock <= 30.0) {
+    /* '<S3>:1:3' if t <= 25 */
+    if (rtb_Clock <= 25.0) {
       /* '<S3>:1:4' x = X0(1); */
       rtb_Clock = scenario1_lqr_U.X0[0];
 
