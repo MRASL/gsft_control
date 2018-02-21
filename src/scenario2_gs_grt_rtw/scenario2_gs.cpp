@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario2_gs".
  *
- * Model version              : 1.815
+ * Model version              : 1.821
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Feb 21 09:12:27 2018
+ * C++ source code generated on : Wed Feb 21 09:18:41 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -227,10 +227,10 @@ void scenario2_gsModelClass::step()
       for (i = 0; i < 6; i++) {
         rtb_gamma_n[i] = 0.0;
       }
-    } else if (rtb_Clock <= 30.0) {
-      /* '<S2>:1:5' elseif time <= 30 */
+    } else if (rtb_Clock <= 31.0) {
+      /* '<S2>:1:5' elseif time <= 31 */
       /* '<S2>:1:6' gamma_n = [0.35*(time-30) 0 0 0 0 0]'; */
-      rtb_gamma_n[0] = 0.0;
+      rtb_gamma_n[0] = (rtb_Clock - 30.0) * 0.35;
     } else {
       /* '<S2>:1:7' else */
       /* '<S2>:1:8' gamma_n = [0.35 0 0 0 0 0]'; */
@@ -511,11 +511,11 @@ void scenario2_gsModelClass::step()
       rtb_kxi = scenario2_gs_U.X0[3];
     } else if (rtb_Clock <= 60.0) {
       /* '<S4>:1:8' elseif t <=60 */
-      /* '<S4>:1:9' x = cos(0.5*(t)); */
-      x = std::cos(0.5 * rtb_Clock);
+      /* '<S4>:1:9' x = cos(0.4*(t)); */
+      x = std::cos(0.4 * rtb_Clock);
 
-      /* '<S4>:1:10' y = sin(0.5*(t)); */
-      rtb_Clock = std::sin(0.5 * rtb_Clock);
+      /* '<S4>:1:10' y = sin(0.4*(t)); */
+      rtb_Clock = std::sin(0.4 * rtb_Clock);
 
       /* '<S4>:1:11' z = 0.75; */
       rtb_ixj = 0.75;
