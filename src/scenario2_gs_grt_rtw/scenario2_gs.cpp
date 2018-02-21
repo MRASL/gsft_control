@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario2_gs".
  *
- * Model version              : 1.808
+ * Model version              : 1.815
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Feb 21 09:05:04 2018
+ * C++ source code generated on : Wed Feb 21 09:12:27 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -180,7 +180,7 @@ void scenario2_gsModelClass::step()
 
   {
     real_T (*lastU)[3];
-    static const real_T b[6] = { 0.3, 0.0, 0.0, 0.0, 0.0, 0.0 };
+    static const real_T b[6] = { 0.35, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
     real_T KK[72];
     static const real_T b_0[72] = { 0.1667, 0.1667, 0.1667, 0.1667, 0.1667,
@@ -221,19 +221,19 @@ void scenario2_gsModelClass::step()
     /* MATLAB Function: '<Root>/FDD' */
     /* MATLAB Function 'FDD': '<S2>:1' */
     /* '<S2>:1:2' gamma_n = [0 0 0 0 0 0]'; */
-    /* '<S2>:1:3' if time <= 40 */
-    if (rtb_Clock <= 40.0) {
+    /* '<S2>:1:3' if time <= 30 */
+    if (rtb_Clock <= 30.0) {
       /* '<S2>:1:4' gamma_n = [0 0 0 0 0 0]'; */
       for (i = 0; i < 6; i++) {
         rtb_gamma_n[i] = 0.0;
       }
-    } else if (rtb_Clock <= 41.0) {
-      /* '<S2>:1:5' elseif time <= 41 */
-      /* '<S2>:1:6' gamma_n = [0.3*(time-40) 0 0 0 0 0]'; */
-      rtb_gamma_n[0] = (rtb_Clock - 40.0) * 0.3;
+    } else if (rtb_Clock <= 30.0) {
+      /* '<S2>:1:5' elseif time <= 30 */
+      /* '<S2>:1:6' gamma_n = [0.35*(time-30) 0 0 0 0 0]'; */
+      rtb_gamma_n[0] = 0.0;
     } else {
       /* '<S2>:1:7' else */
-      /* '<S2>:1:8' gamma_n = [0.3 0 0 0 0 0]'; */
+      /* '<S2>:1:8' gamma_n = [0.35 0 0 0 0 0]'; */
       for (i = 0; i < 6; i++) {
         rtb_gamma_n[i] = b[i];
       }
@@ -420,16 +420,16 @@ void scenario2_gsModelClass::step()
     }
 
     /* MATLAB Function: '<Root>/Actuator_Fault' */
-    /* '<S1>:1:3' if time >= 40 */
-    if (rtb_Clock >= 40.0) {
-      /* '<S1>:1:4' T1 = T(1)*0.7; */
+    /* '<S1>:1:3' if time >= 30 */
+    if (rtb_Clock >= 30.0) {
+      /* '<S1>:1:4' T1 = T(1)*0.65; */
       /* '<S1>:1:5' T2 = T(2)*1; */
       /* '<S1>:1:6' T3 = T(3)*1; */
       /* '<S1>:1:7' T4 = T(4)*1; */
       /* '<S1>:1:8' T5 = T(5)*1; */
       /* '<S1>:1:9' T6 = T(6)*1; */
       /* '<S1>:1:10' T_f = [T1;T2;T3;T4;T5;T6]; */
-      rtb_gamma_n[0] = scenario2_gs_B.Sum2[0] * 0.7;
+      rtb_gamma_n[0] = scenario2_gs_B.Sum2[0] * 0.65;
       rtb_gamma_n[1] = scenario2_gs_B.Sum2[1];
       rtb_gamma_n[2] = scenario2_gs_B.Sum2[2];
       rtb_gamma_n[3] = scenario2_gs_B.Sum2[3];
@@ -511,11 +511,11 @@ void scenario2_gsModelClass::step()
       rtb_kxi = scenario2_gs_U.X0[3];
     } else if (rtb_Clock <= 60.0) {
       /* '<S4>:1:8' elseif t <=60 */
-      /* '<S4>:1:9' x = cos(0.4*(t)); */
-      x = std::cos(0.4 * rtb_Clock);
+      /* '<S4>:1:9' x = cos(0.5*(t)); */
+      x = std::cos(0.5 * rtb_Clock);
 
-      /* '<S4>:1:10' y = sin(0.4*(t)); */
-      rtb_Clock = std::sin(0.4 * rtb_Clock);
+      /* '<S4>:1:10' y = sin(0.5*(t)); */
+      rtb_Clock = std::sin(0.5 * rtb_Clock);
 
       /* '<S4>:1:11' z = 0.75; */
       rtb_ixj = 0.75;
