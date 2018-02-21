@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_gs".
  *
- * Model version              : 1.794
+ * Model version              : 1.795
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb 20 22:49:56 2018
+ * C++ source code generated on : Tue Feb 20 23:00:25 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -197,6 +197,7 @@ void scenario1_gsModelClass::step()
       0.17325, -0.1365, 0.4824, 0.4945, -0.88085, 0.59805, 0.63345 };
 
     real_T y;
+    int32_T z;
     static const real_T a[9] = { 1.5503875968992249, 3.1007751937984493,
       1.5503875968992249, -2.6853500892540736, -0.0, 2.6853500892540736,
       -9.1324200913242013, 9.1324200913242013, -9.1324200913242013 };
@@ -211,9 +212,8 @@ void scenario1_gsModelClass::step()
     real_T rtb_gamma_n[6];
     int32_T i;
     real_T KK_0[24];
-    int32_T i_0;
-    real_T rtb_ref_idx_0;
-    real_T rtb_Product_idx_2;
+    real_T rtb_ref_idx_2;
+    real_T tmp;
 
     /* Clock: '<Root>/Clock' */
     rtb_Clock = (&scenario1_gs_M)->Timing.t[0];
@@ -253,8 +253,8 @@ void scenario1_gsModelClass::step()
 
     /* '<S5>:1:8' KK(:,[5,9]) = KK(:,[5,9]).*0.5; */
     for (i = 0; i < 2; i++) {
-      for (i_0 = 0; i_0 < 6; i_0++) {
-        KK[i_0 + 6 * (4 + (i << 2))] = d[6 * i + i_0];
+      for (z = 0; z < 6; z++) {
+        KK[z + 6 * (4 + (i << 2))] = d[6 * i + z];
       }
     }
 
@@ -352,7 +352,7 @@ void scenario1_gsModelClass::step()
      *  SignalConversion: '<S11>/TmpSignal ConversionAt                     Inport1'
      *  Sum: '<S11>/Sum1'
      */
-    rtb_ref_idx_0 = 10.000000000000018 * scenario1_gs_X.Integrator1_CSTATE -
+    rtb_kxi = 10.000000000000018 * scenario1_gs_X.Integrator1_CSTATE -
       (12.219481695651957 * rtb_VectorConcatenate[2] + 6.215786645518647 *
        rtb_VectorConcatenate[5]);
 
@@ -377,9 +377,9 @@ void scenario1_gsModelClass::step()
      *  Sum: '<S7>/Sum1'
      *  Sum: '<S8>/Sum1'
      */
-    rtb_ixj -= 1.2859205994736729 * rtb_VectorConcatenate[7] +
-      0.34413551249350854 * rtb_VectorConcatenate[10];
-    rtb_kxi = 0.15811388300841925 * scenario1_gs_X.Integrator1_CSTATE_b -
+    rtb_ref_idx_2 = rtb_ixj - (1.2859205994736729 * rtb_VectorConcatenate[7] +
+      0.34413551249350854 * rtb_VectorConcatenate[10]);
+    rtb_ixj = 0.15811388300841925 * scenario1_gs_X.Integrator1_CSTATE_b -
       (0.3035552054947866 * rtb_VectorConcatenate[8] + 0.24395632222527311 *
        rtb_VectorConcatenate[11]);
 
@@ -387,9 +387,9 @@ void scenario1_gsModelClass::step()
      *  Product: '<Root>/Product3'
      */
     for (i = 0; i < 4; i++) {
-      for (i_0 = 0; i_0 < 6; i_0++) {
-        KK_0[i_0 + 6 * i] = KK[(4 + i) * 6 + i_0] * rtb_gamma_n[0] + KK[(8 + i) *
-          6 + i_0] * y;
+      for (z = 0; z < 6; z++) {
+        KK_0[z + 6 * i] = KK[(4 + i) * 6 + z] * rtb_gamma_n[0] + KK[(8 + i) * 6
+          + z] * y;
       }
     }
 
@@ -400,20 +400,20 @@ void scenario1_gsModelClass::step()
        *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
        *  Sum: '<Root>/Sum2'
        */
-      y = KK_0[i + 18] * rtb_kxi + (KK_0[i + 12] * rtb_ixj + (KK_0[i + 6] *
-        rtb_jxk + KK_0[i] * rtb_ref_idx_0));
+      y = KK_0[i + 18] * rtb_ixj + (KK_0[i + 12] * rtb_ref_idx_2 + (KK_0[i + 6] *
+        rtb_jxk + KK_0[i] * rtb_kxi));
 
       /* Gain: '<Root>/                 ' incorporates:
        *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
        *  Sum: '<Root>/Sum2'
        */
-      rtb_Product_idx_2 = scenario1_gs_ConstP._Gain_m[i + 18] * rtb_kxi +
-        (scenario1_gs_ConstP._Gain_m[i + 12] * rtb_ixj +
+      tmp = scenario1_gs_ConstP._Gain_m[i + 18] * rtb_ixj +
+        (scenario1_gs_ConstP._Gain_m[i + 12] * rtb_ref_idx_2 +
          (scenario1_gs_ConstP._Gain_m[i + 6] * rtb_jxk +
-          scenario1_gs_ConstP._Gain_m[i] * rtb_ref_idx_0));
+          scenario1_gs_ConstP._Gain_m[i] * rtb_kxi));
 
       /* Sum: '<Root>/Sum2' */
-      scenario1_gs_B.Sum2[i] = (y + rtb_Product_idx_2) + 2.5179000000000005;
+      scenario1_gs_B.Sum2[i] = (y + tmp) + 2.5179000000000005;
 
       /* MATLAB Function: '<Root>/Actuator_Fault' */
       rtb_gamma_n[i] = scenario1_gs_B.Sum2[i];
@@ -440,29 +440,29 @@ void scenario1_gsModelClass::step()
     /* Outport: '<Root>/virtual_control' incorporates:
      *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
      */
-    scenario1_gs_Y.virtual_control[0] = rtb_ref_idx_0;
+    scenario1_gs_Y.virtual_control[0] = rtb_kxi;
     scenario1_gs_Y.virtual_control[1] = rtb_jxk;
-    scenario1_gs_Y.virtual_control[2] = rtb_ixj;
-    scenario1_gs_Y.virtual_control[3] = rtb_kxi;
+    scenario1_gs_Y.virtual_control[2] = rtb_ref_idx_2;
+    scenario1_gs_Y.virtual_control[3] = rtb_ixj;
     for (i = 0; i < 6; i++) {
       /* Sqrt: '<Root>/Sqrt1' incorporates:
        *  Gain: '<Root>/      '
        *  Saturate: '<Root>/Saturation1'
        */
       if (rtb_gamma_n[i] > 8.54858) {
-        rtb_ref_idx_0 = 8.54858;
+        rtb_kxi = 8.54858;
       } else if (rtb_gamma_n[i] < 0.0) {
-        rtb_ref_idx_0 = 0.0;
+        rtb_kxi = 0.0;
       } else {
-        rtb_ref_idx_0 = rtb_gamma_n[i];
+        rtb_kxi = rtb_gamma_n[i];
       }
 
-      rtb_ref_idx_0 = std::sqrt(116978.4923343994 * rtb_ref_idx_0);
+      rtb_kxi = std::sqrt(116978.4923343994 * rtb_kxi);
 
       /* End of Sqrt: '<Root>/Sqrt1' */
 
       /* Gain: '<Root>/rads_to_RPM' */
-      y = 9.5493 * rtb_ref_idx_0;
+      y = 9.5493 * rtb_kxi;
 
       /* Gain: '<Root>/mapping_0_200' incorporates:
        *  Constant: '<Root>/Constant '
@@ -482,7 +482,7 @@ void scenario1_gsModelClass::step()
       /* End of Saturate: '<Root>/Saturation' */
 
       /* Outport: '<Root>/motor_speed' */
-      scenario1_gs_Y.motor_speed[i] = rtb_ref_idx_0;
+      scenario1_gs_Y.motor_speed[i] = rtb_kxi;
 
       /* Outport: '<Root>/motor_RPM' */
       scenario1_gs_Y.motor_RPM[i] = y;
@@ -504,11 +504,11 @@ void scenario1_gsModelClass::step()
       /* '<S4>:1:5' y = X0(2); */
       y = scenario1_gs_U.X0[1];
 
-      /* '<S4>:1:6' z = 0.5; */
-      rtb_ixj = 0.5;
+      /* '<S4>:1:6' z = 1; */
+      z = 1;
 
       /* '<S4>:1:7' psi = X0(4); */
-      rtb_kxi = scenario1_gs_U.X0[3];
+      rtb_ixj = scenario1_gs_U.X0[3];
     } else {
       /* '<S4>:1:8' else */
       /* '<S4>:1:9' x = X0(1); */
@@ -518,22 +518,22 @@ void scenario1_gsModelClass::step()
       y = scenario1_gs_U.X0[1];
 
       /* '<S4>:1:11' z = 0.0; */
-      rtb_ixj = 0.0;
+      z = 0;
 
       /* '<S4>:1:12' psi = X0(4); */
-      rtb_kxi = scenario1_gs_U.X0[3];
+      rtb_ixj = scenario1_gs_U.X0[3];
     }
 
     /* '<S4>:1:14' ref = [x;y;z;psi]; */
-    rtb_ref_idx_0 = rtb_Clock;
+    rtb_kxi = rtb_Clock;
 
     /* Outport: '<Root>/ref' incorporates:
      *  MATLAB Function: '<Root>/MATLAB Function'
      */
     scenario1_gs_Y.ref[0] = rtb_Clock;
     scenario1_gs_Y.ref[1] = y;
-    scenario1_gs_Y.ref[2] = rtb_ixj;
-    scenario1_gs_Y.ref[3] = rtb_kxi;
+    scenario1_gs_Y.ref[2] = z;
+    scenario1_gs_Y.ref[3] = rtb_ixj;
     if (rtmIsMajorTimeStep((&scenario1_gs_M))) {
       /* Memory: '<S3>/Memory' */
       for (i = 0; i < 6; i++) {
@@ -622,18 +622,18 @@ void scenario1_gsModelClass::step()
     /* '<S13>:1:11' Residu_1_4 = diff - inv(M)*y; */
     rtb_Clock = (scenario1_gs_U.X[10] * rtb_Sum1[2] - scenario1_gs_U.X[11] *
                  rtb_Sum1[1]) + rtb_Product[0];
-    rtb_jxk = (scenario1_gs_U.X[11] * rtb_Sum1[0] - scenario1_gs_U.X[9] *
-               rtb_Sum1[2]) + rtb_Product[1];
-    rtb_Product_idx_2 = (scenario1_gs_U.X[9] * rtb_Sum1[1] - scenario1_gs_U.X[10]
-                         * rtb_Sum1[0]) + rtb_Product[2];
+    rtb_ref_idx_2 = (scenario1_gs_U.X[11] * rtb_Sum1[0] - scenario1_gs_U.X[9] *
+                     rtb_Sum1[2]) + rtb_Product[1];
+    rtb_jxk = (scenario1_gs_U.X[9] * rtb_Sum1[1] - scenario1_gs_U.X[10] *
+               rtb_Sum1[0]) + rtb_Product[2];
 
     /* MATLAB Function: '<S3>/MATLAB Function1' */
     rtb_Sum1[0] = scenario1_gs_B.Memory[0] - scenario1_gs_B.Memory[3];
     rtb_Sum1[1] = scenario1_gs_B.Memory[1] - scenario1_gs_B.Memory[4];
     rtb_Sum1[2] = scenario1_gs_B.Memory[2] - scenario1_gs_B.Memory[5];
     for (i = 0; i < 3; i++) {
-      rtb_Product[i] = rtb_Sum1[i] - (a[i + 6] * rtb_Product_idx_2 + (a[i + 3] *
-        rtb_jxk + a[i] * rtb_Clock));
+      rtb_Product[i] = rtb_Sum1[i] - (a[i + 6] * rtb_jxk + (a[i + 3] *
+        rtb_ref_idx_2 + a[i] * rtb_Clock));
     }
 
     /* Outport: '<Root>/gamma' incorporates:
@@ -654,10 +654,10 @@ void scenario1_gsModelClass::step()
      *  Inport: '<Root>/X0'
      *  MATLAB Function: '<Root>/MATLAB Function'
      */
-    rtb_ref_idx_0 -= scenario1_gs_U.X0[0];
+    rtb_kxi -= scenario1_gs_U.X0[0];
     rtb_Clock = y - scenario1_gs_U.X0[1];
-    rtb_ixj -= scenario1_gs_U.X0[2];
-    y = rtb_kxi - scenario1_gs_U.X0[3];
+    rtb_ref_idx_2 = (real_T)z - scenario1_gs_U.X0[2];
+    y = rtb_ixj - scenario1_gs_U.X0[3];
 
     /* Saturate: '<S7>/yaw' */
     if (y > 3.1415926535897931) {
@@ -685,18 +685,18 @@ void scenario1_gsModelClass::step()
     /* End of Saturate: '<S7>/psi_e' */
 
     /* Saturate: '<S9>/x' */
-    if (rtb_ref_idx_0 > 1.0) {
-      rtb_ref_idx_0 = 1.0;
+    if (rtb_kxi > 1.0) {
+      rtb_kxi = 1.0;
     } else {
-      if (rtb_ref_idx_0 < -1.0) {
-        rtb_ref_idx_0 = -1.0;
+      if (rtb_kxi < -1.0) {
+        rtb_kxi = -1.0;
       }
     }
 
     /* End of Saturate: '<S9>/x' */
 
     /* Sum: '<S9>/Sum3' */
-    rtb_jxk = rtb_ref_idx_0 - rtb_VectorConcatenate[0];
+    rtb_jxk = rtb_kxi - rtb_VectorConcatenate[0];
 
     /* Saturate: '<S9>/xe' */
     if (rtb_jxk > 1.0) {
@@ -735,18 +735,18 @@ void scenario1_gsModelClass::step()
     /* End of Saturate: '<S10>/ye' */
 
     /* Saturate: '<S11>/z' */
-    if (rtb_ixj > 1.0) {
-      rtb_ixj = 1.0;
+    if (rtb_ref_idx_2 > 1.0) {
+      rtb_ref_idx_2 = 1.0;
     } else {
-      if (rtb_ixj < 0.0) {
-        rtb_ixj = 0.0;
+      if (rtb_ref_idx_2 < 0.0) {
+        rtb_ref_idx_2 = 0.0;
       }
     }
 
     /* End of Saturate: '<S11>/z' */
 
     /* Sum: '<S11>/Sum3' */
-    rtb_jxk = rtb_ixj - rtb_VectorConcatenate[2];
+    rtb_jxk = rtb_ref_idx_2 - rtb_VectorConcatenate[2];
 
     /* Saturate: '<S11>/ze' */
     if (rtb_jxk > 0.5) {
