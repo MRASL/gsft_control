@@ -138,15 +138,15 @@ add_library(matlab_lqr
 
     src/scenario1_lqr_grt_rtw/scenario1_lqr_data.cpp
     src/scenario1_lqr_grt_rtw/scenario1_lqr.cpp
-  #  src/scenario1_lqr_grt_rtw/rtGetInf.cpp
-  #  src/scenario1_lqr_grt_rtw/rtGetNaN.cpp
-  #  src/scenario1_lqr_grt_rtw/rt_nonfinite.cpp
+    src/scenario1_lqr_grt_rtw/rtGetInf.cpp
+    src/scenario1_lqr_grt_rtw/rtGetNaN.cpp
+    src/scenario1_lqr_grt_rtw/rt_nonfinite.cpp
 
     src/scenario1_gs_grt_rtw/scenario1_gs_data.cpp
     src/scenario1_gs_grt_rtw/scenario1_gs.cpp
-    src/scenario1_gs_grt_rtw/rtGetInf.cpp
-    src/scenario1_gs_grt_rtw/rtGetNaN.cpp
-    src/scenario1_gs_grt_rtw/rt_nonfinite.cpp
+  #  src/scenario1_gs_grt_rtw/rtGetInf.cpp
+  #  src/scenario1_gs_grt_rtw/rtGetNaN.cpp
+  #  src/scenario1_gs_grt_rtw/rt_nonfinite.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
