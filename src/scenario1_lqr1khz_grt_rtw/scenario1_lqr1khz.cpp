@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.747
+ * Model version              : 1.748
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb 27 15:27:32 2018
+ * C++ source code generated on : Tue Feb 27 16:03:01 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -476,16 +476,16 @@ void scenario1_lqr1khzModelClass::step()
     /* '<S3>:1:2' y = X0(2); */
     /* '<S3>:1:2' z = X0(3); */
     /* '<S3>:1:2' psi = X0(4); */
-    /* '<S3>:1:3' if t <= 10 */
-    if (rtb_Clock <= 10.0) {
+    /* '<S3>:1:3' if t <= 25 */
+    if (rtb_Clock <= 25.0) {
       /* '<S3>:1:4' x = X0(1); */
       rtb_Clock = scenario1_lqr1khz_U.X0[0];
 
       /* '<S3>:1:5' y = X0(2); */
       y = scenario1_lqr1khz_U.X0[1];
 
-      /* '<S3>:1:6' z = 0.5; */
-      z = 0.5;
+      /* '<S3>:1:6' z = 0.75; */
+      z = 0.75;
 
       /* '<S3>:1:7' psi = X0(4); */
       psi = scenario1_lqr1khz_U.X0[3];
