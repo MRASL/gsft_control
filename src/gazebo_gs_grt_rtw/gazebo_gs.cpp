@@ -7,9 +7,9 @@
  *
  * Code generation for model "gazebo_gs".
  *
- * Model version              : 1.737
+ * Model version              : 1.912
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Feb 20 11:27:16 2018
+ * C++ source code generated on : Fri Feb 23 00:58:11 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -159,32 +159,6 @@ void gazebo_gsModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 /* Model step function */
 void gazebo_gsModelClass::step()
 {
-  static const real_T b[6] = { 0.5, 0.0, 0.0, 0.0, 0.0, 0.0 };
-
-  static const real_T a[24] = { 0.9753, -0.5034, -0.3197, 0.0422, -0.1754,
-    -0.3591, -6.265, 2.1242, -2.9661, 0.2031, -5.4769, -0.3866, 6.754, 0.0,
-    1.8785, 0.1553, 0.0, -0.1478, 5.963, 0.8175, -0.6746, 0.2232, -2.6684,
-    -1.3679 };
-
-  static const real_T b_a[24] = { -9.0539, 1.6726, 5.3507, -6.3659, 7.9829,
-    4.3048, 2.3302, 14.9166, 18.6346, -6.9839, 15.1432, 11.2101, -4.6203, 0.0,
-    -20.6684, 27.7592, 0.0, -19.5671, 4.5728, -6.5708, -4.6102, 16.6993, -3.856,
-    -7.0 };
-
-  real_T x;
-  int32_T z;
-  real_T rtb_VectorConcatenate[12];
-  real_T rtb_Sum1_g;
-  real_T rtb_Sum1_c;
-  real_T rtb_Sum3_f;
-  real_T rtb_T_f[6];
-  real_T rtb_gamma_n[6];
-  real_T rtb_Clock;
-  real_T rtb_Sum2[6];
-  int32_T i;
-  real_T a_0[24];
-  real_T rtb_ref_idx_2;
-  real_T tmp;
   if (rtmIsMajorTimeStep((&gazebo_gs_M))) {
     /* set solver stop time */
     if (!((&gazebo_gs_M)->Timing.clockTick0+1)) {
@@ -204,433 +178,583 @@ void gazebo_gsModelClass::step()
     (&gazebo_gs_M)->Timing.t[0] = rtsiGetT(&(&gazebo_gs_M)->solverInfo);
   }
 
-  /* Clock: '<Root>/Clock' */
-  rtb_Clock = (&gazebo_gs_M)->Timing.t[0];
+  {
+    real_T (*lastU)[3];
+    static const real_T b[6] = { 0.4, 0.3, 0.0, 0.0, 0.0, 0.0 };
 
-  /* MATLAB Function: '<Root>/FDD' */
-  /* MATLAB Function 'FDD': '<S2>:1' */
-  /* '<S2>:1:2' gamma_n = [0 0 0 0 0 0]; */
-  for (i = 0; i < 6; i++) {
-    rtb_gamma_n[i] = 0.0;
-  }
+    static const real_T a[24] = { -0.04, -0.1022, -0.0671, 0.0802, -0.1026,
+      0.0678, 7.4219, 2.3029, -1.3929, 0.594, 5.8128, -9.2485, -3.7475, 0.0,
+      1.513, -1.4171, 0.0, 3.2609, 5.6206, 9.2496, 1.5891, -4.9893, 3.8142,
+      -5.1257 };
 
-  /* '<S2>:1:3' if time >= 20 */
-  if (rtb_Clock >= 20.0) {
-    /* '<S2>:1:4' gamma_n = [0.5 0 0 0 0 0]; */
+    static const real_T b_a[24] = { -0.1403, 0.0897, -0.2596, -0.0259, 0.0791,
+      0.0068, 6.9843, 5.8899, 1.8251, -1.9083, 9.5731, -7.4496, -0.7774, 0.0,
+      0.3326, 0.8339, 0.0, 1.8489, 3.897, 8.8995, -0.0334, -5.8534, 4.8865,
+      -5.1788 };
+
+    static const real_T c_a[24] = { -0.0755, -0.0486, -0.2776, -0.0171, -0.0476,
+      0.1212, 7.2507, 0.798, 7.3404, -1.8501, 4.3847, 1.2453, 9.9725, 0.0,
+      13.9626, 0.8749, 0.0, 3.3763, 1.9194, 5.8012, 3.2585, -4.4759, 2.2992,
+      -4.5579 };
+
+    static const real_T a_0[9] = { 1.5503875968992249, 3.1007751937984493,
+      1.5503875968992249, -2.6853500892540736, -0.0, 2.6853500892540736,
+      -9.1324200913242013, 9.1324200913242013, -9.1324200913242013 };
+
+    real_T rtb_ixj;
+    real_T rtb_kxi;
+    real_T rtb_jxk;
+    real_T rtb_Product[3];
+    real_T rtb_Sum1[3];
+    real_T rtb_Clock;
+    real_T rtb_gamma_n[6];
+    int32_T i;
+    real_T a_1[24];
+    int32_T i_0;
+    real_T rtb_FMxMyMz_idx_0;
+    real_T rtb_Product_idx_2;
+    real_T tmp;
+
+    /* Clock: '<Root>/Clock' */
+    rtb_Clock = (&gazebo_gs_M)->Timing.t[0];
+
+    /* MATLAB Function: '<Root>/FDD' */
+    /* MATLAB Function 'FDD': '<S2>:1' */
+    /* '<S2>:1:2' gamma_n = [0 0 0 0 0 0]'; */
+    /* '<S2>:1:3' if time <= 10 */
+    if (rtb_Clock <= 10.0) {
+      /* '<S2>:1:4' gamma_n = [0 0 0 0 0 0]'; */
+      for (i = 0; i < 6; i++) {
+        rtb_gamma_n[i] = 0.0;
+      }
+    } else if (rtb_Clock <= 30.0) {
+      /* '<S2>:1:5' elseif time <= 30 */
+      /* '<S2>:1:6' gamma_n = [0.4 0.3 0 0 0 0]'; */
+      for (i = 0; i < 6; i++) {
+        rtb_gamma_n[i] = b[i];
+      }
+    } else {
+      /* '<S2>:1:7' else */
+      /* '<S2>:1:8' gamma_n = [0.4 0.3 0.0 0 0 0]'; */
+      for (i = 0; i < 6; i++) {
+        rtb_gamma_n[i] = b[i];
+      }
+    }
+
+    /* End of MATLAB Function: '<Root>/FDD' */
+
+    /* Sum: '<S10>/Sum1' incorporates:
+     *  Gain: '<S10>/ '
+     *  Gain: '<S10>/                    '
+     *  Inport: '<Root>/X'
+     *  Integrator: '<S10>/Integrator1'
+     *  SignalConversion: '<S10>/TmpSignal ConversionAt                    Inport1'
+     */
+    /* MATLAB Function 'MATLAB Function2': '<S6>:1' */
+    /* '<S6>:1:3' KK =  [   0.1667    0.7752   -1.3427   -4.5662   -0.0400    7.4219   -3.7475    5.6206   -0.1403    6.9843   -0.7774    3.8970   -0.0755    7.2507    9.9725    1.9194 */
+    /* '<S6>:1:4'     0.1667    1.5504   -0.0000    4.5662   -0.1022    2.3029         0    9.2496    0.0897    5.8899         0    8.8995   -0.0486    0.7980         0    5.8012 */
+    /* '<S6>:1:5'     0.1667    0.7752    1.3427   -4.5662   -0.0671   -1.3929    1.5130    1.5891   -0.2596    1.8251    0.3326   -0.0334   -0.2776    7.3404   13.9626    3.2585 */
+    /* '<S6>:1:6'     0.1667   -0.7752    1.3427    4.5662    0.0802    0.5940   -1.4171   -4.9893   -0.0259   -1.9083    0.8339   -5.8534   -0.0171   -1.8501    0.8749   -4.4759 */
+    /* '<S6>:1:7'     0.1667   -1.5504    0.0000   -4.5662   -0.1026    5.8128         0    3.8142    0.0791    9.5731         0    4.8865   -0.0476    4.3847         0    2.2992 */
+    /* '<S6>:1:8'     0.1667   -0.7752   -1.3427    4.5662    0.0678   -9.2485    3.2609   -5.1257    0.0068   -7.4496    1.8489   -5.1788    0.1212    1.2453    3.3763   -4.5579]; */
+    /* '<S6>:1:9' K = KK(:,5:8)*gamma_n(1)+KK(:,9:12)*gamma_n(2) +KK(:,13:end)*gamma_n(3) ; */
+    /* MATLAB Function 'MATLAB Function1': '<S5>:1' */
+    /* '<S5>:1:2' g = 9.81; */
+    /*  ff = [sin(t)/g;cos(t)/g]; % ff(1) => teta_ref */
+    /* '<S5>:1:5' axref_N = -cos(t); */
+    /* '<S5>:1:6' ayref_N = -sin(t); */
+    /* '<S5>:1:8' axref_b = cos(X(8))*cos(X(9))*axref_N + cos(X(8))*sin(X(9))*ayref_N; */
+    /* '<S5>:1:9' ayref_b = (sin(X(7))*sin(X(8))*cos(X(9)) - cos(X(7))*sin(X(9)))*axref_N + (sin(X(7))*sin(X(8))*sin(X(9)) + cos(X(7))*cos(X(9)))*ayref_N; */
+    /*   */
+    /* '<S5>:1:11' phi_ff = -ayref_b/g; */
+    /* '<S5>:1:12' teta_ff = axref_b/g; */
+    /*   */
+    /*  ff(1) => phi_ref after Fcn1 */
+    /* '<S5>:1:14' ff = [phi_ff;teta_ff] % ff(1) => phi_ref after Fcn1 */
+    rtb_ixj = 0.17320508075688992 * gazebo_gs_X.Integrator1_CSTATE_h -
+      (0.32349951352987977 * gazebo_gs_U.X[0] + 0.2732366014912751 *
+       gazebo_gs_U.X[3]);
+
+    /* Sum: '<S11>/Sum1' incorporates:
+     *  Gain: '<S11>/  '
+     *  Gain: '<S11>/                     '
+     *  Inport: '<Root>/X'
+     *  Integrator: '<S11>/Integrator1'
+     *  SignalConversion: '<S11>/TmpSignal ConversionAt                     Inport1'
+     */
+    rtb_kxi = -0.173205080756885 * gazebo_gs_X.Integrator1_CSTATE_j -
+      (-0.31312578517366968 * gazebo_gs_U.X[1] + -0.25417198201077484 *
+       gazebo_gs_U.X[4]);
+
+    /* Sum: '<Root>/Sum1' incorporates:
+     *  Fcn: '<Root>/Fcn1'
+     *  Inport: '<Root>/X'
+     *  MATLAB Function: '<Root>/MATLAB Function1'
+     */
+    rtb_FMxMyMz_idx_0 = -((std::sin(gazebo_gs_U.X[6]) * std::sin(gazebo_gs_U.X[7])
+      * std::cos(gazebo_gs_U.X[8]) - std::cos(gazebo_gs_U.X[6]) * std::sin
+      (gazebo_gs_U.X[8])) * -std::cos(rtb_Clock) + (std::sin(gazebo_gs_U.X[6]) *
+      std::sin(gazebo_gs_U.X[7]) * std::sin(gazebo_gs_U.X[8]) + std::cos
+      (gazebo_gs_U.X[6]) * std::cos(gazebo_gs_U.X[8])) * -std::sin(rtb_Clock)) /
+      9.81 + (rtb_kxi * std::cos(gazebo_gs_U.X[8]) + rtb_ixj * std::sin
+              (gazebo_gs_U.X[8]));
+
+    /* Saturate: '<S7>/roll' */
+    if (rtb_FMxMyMz_idx_0 > 0.52359877559829882) {
+      rtb_FMxMyMz_idx_0 = 0.52359877559829882;
+    } else {
+      if (rtb_FMxMyMz_idx_0 < -0.52359877559829882) {
+        rtb_FMxMyMz_idx_0 = -0.52359877559829882;
+      }
+    }
+
+    /* End of Saturate: '<S7>/roll' */
+
+    /* Sum: '<S7>/Sum1' incorporates:
+     *  Gain: '<S7>/                    '
+     *  Inport: '<Root>/X'
+     *  SignalConversion: '<S7>/TmpSignal ConversionAt                    Inport1'
+     */
+    rtb_jxk = rtb_FMxMyMz_idx_0 - (1.1365283480217869 * gazebo_gs_U.X[6] +
+      0.28178545108770103 * gazebo_gs_U.X[9]);
+
+    /* Fcn: '<Root>/Fcn' incorporates:
+     *  Inport: '<Root>/X'
+     */
+    rtb_ixj = -rtb_kxi * std::sin(gazebo_gs_U.X[8]) + rtb_ixj * std::cos
+      (gazebo_gs_U.X[8]);
+
+    /* Sum: '<Root>/Sum4' incorporates:
+     *  Inport: '<Root>/X'
+     *  MATLAB Function: '<Root>/MATLAB Function1'
+     */
+    rtb_ixj += (std::cos(gazebo_gs_U.X[7]) * std::cos(gazebo_gs_U.X[8]) * -std::
+                cos(rtb_Clock) + std::cos(gazebo_gs_U.X[7]) * std::sin
+                (gazebo_gs_U.X[8]) * -std::sin(rtb_Clock)) / 9.81;
+
+    /* SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1' incorporates:
+     *  Gain: '<S12>/  '
+     *  Gain: '<S12>/                     '
+     *  Inport: '<Root>/X'
+     *  Integrator: '<S12>/Integrator1'
+     *  SignalConversion: '<S12>/TmpSignal ConversionAt                     Inport1'
+     *  Sum: '<S12>/Sum1'
+     */
+    rtb_FMxMyMz_idx_0 = 10.000000000000018 * gazebo_gs_X.Integrator1_CSTATE -
+      (12.219481695651957 * gazebo_gs_U.X[2] + 6.215786645518647 *
+       gazebo_gs_U.X[5]);
+
+    /* Sum: '<S9>/Sum1' incorporates:
+     *  Saturate: '<S9>/pitch'
+     */
+    if (rtb_ixj > 0.52359877559829882) {
+      rtb_ixj = 0.52359877559829882;
+    } else {
+      if (rtb_ixj < -0.52359877559829882) {
+        rtb_ixj = -0.52359877559829882;
+      }
+    }
+
+    /* SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1' incorporates:
+     *  Gain: '<S8>/  '
+     *  Gain: '<S8>/                     '
+     *  Gain: '<S9>/                    '
+     *  Inport: '<Root>/X'
+     *  Integrator: '<S8>/Integrator1'
+     *  SignalConversion: '<S8>/TmpSignal ConversionAt                     Inport1'
+     *  SignalConversion: '<S9>/TmpSignal ConversionAt                    Inport1'
+     *  Sum: '<S8>/Sum1'
+     *  Sum: '<S9>/Sum1'
+     */
+    rtb_ixj -= 1.2859205994736729 * gazebo_gs_U.X[7] + 0.34413551249350854 *
+      gazebo_gs_U.X[10];
+    rtb_kxi = 0.15811388300841925 * gazebo_gs_X.Integrator1_CSTATE_b -
+      (0.3035552054947866 * gazebo_gs_U.X[8] + 0.24395632222527311 *
+       gazebo_gs_U.X[11]);
+
+    /* MATLAB Function: '<Root>/MATLAB Function2' incorporates:
+     *  Product: '<Root>/Product3'
+     */
+    for (i = 0; i < 4; i++) {
+      for (i_0 = 0; i_0 < 6; i_0++) {
+        a_1[i_0 + 6 * i] = (a[6 * i + i_0] * rtb_gamma_n[0] + b_a[6 * i + i_0] *
+                            rtb_gamma_n[1]) + c_a[6 * i + i_0] * rtb_gamma_n[2];
+      }
+    }
+
+    /* End of MATLAB Function: '<Root>/MATLAB Function2' */
     for (i = 0; i < 6; i++) {
-      rtb_gamma_n[i] = b[i];
+      /* Product: '<Root>/Product3' incorporates:
+       *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
+       *  Sum: '<Root>/Sum2'
+       */
+      rtb_Product_idx_2 = a_1[i + 18] * rtb_kxi + (a_1[i + 12] * rtb_ixj +
+        (a_1[i + 6] * rtb_jxk + a_1[i] * rtb_FMxMyMz_idx_0));
+
+      /* Gain: '<Root>/                 ' incorporates:
+       *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
+       *  Sum: '<Root>/Sum2'
+       */
+      tmp = gazebo_gs_ConstP._Gain_m[i + 18] * rtb_kxi +
+        (gazebo_gs_ConstP._Gain_m[i + 12] * rtb_ixj +
+         (gazebo_gs_ConstP._Gain_m[i + 6] * rtb_jxk + gazebo_gs_ConstP._Gain_m[i]
+          * rtb_FMxMyMz_idx_0));
+
+      /* Sum: '<Root>/Sum2' */
+      gazebo_gs_B.Sum2[i] = (rtb_Product_idx_2 + tmp) + 2.5179000000000005;
     }
-  }
-
-  /* End of MATLAB Function: '<Root>/FDD' */
-
-  /* MATLAB Function: '<Root>/MATLAB Function2' */
-  /* MATLAB Function 'MATLAB Function2': '<S4>:1' */
-  /*  KK =[0.1667    0.7752   -1.3427   -4.5662    0.0199    0.3126   -0.0071    0.2467   -0.1870    0.1134   -0.0073    0.2432   -0.0664    0.2997   -0.0150    0.2219 */
-  /*       0.1667    1.5504   -0.0000    4.5662   -0.0457    0.2752         0    0.0777    0.2479    0.1062         0   -0.0638    0.0011    0.2622         0    0.0210 */
-  /*       0.1667    0.7752    1.3427   -4.5662   -0.0568    0.3071    0.0316    0.2265   -0.1470    0.0923    0.0321    0.2293    0.0148    0.2857    0.0184    0.1950 */
-  /*       0.1667   -0.7752    1.3427    4.5662    0.1297    0.0924    0.0304   -0.2015   -0.2268   -0.1848    0.0375    0.1765    0.0223    0.0401    0.0253   -0.1498 */
-  /*       0.1667   -1.5504    0.0000   -4.5662   -0.0429    0.4751         0    0.2950    0.3457    0.2891         0    0.7243   -0.0316    0.4446         0    0.3619 */
-  /*       0.1667   -0.7752   -1.3427    4.5662    0.0878    0.1134   -0.0044   -0.1450   -0.2016   -0.1328    0.0015    0.2248    0.0633    0.0849   -0.0042   -0.0895]; */
-  /*  K = KK(:,1:4) + KK(:,5:8)*gamma_n(1) + KK(:,9:12)*gamma_n(2) + KK(:,13:end)*gamma_n(3);   */
-  /* '<S4>:1:10' KK = [ 0.1667    0.7752   -1.3427   -4.5662    0.9753   -6.2650    6.7540    5.9630   -9.0539    2.3302   -4.6203    4.5728 */
-  /* '<S4>:1:11'        0.1667    1.5504   -0.0000    4.5662   -0.5034    2.1242         0    0.8175    1.6726   14.9166         0   -6.5708 */
-  /* '<S4>:1:12'        0.1667    0.7752    1.3427   -4.5662   -0.3197   -2.9661    1.8785   -0.6746    5.3507   18.6346  -20.6684   -4.6102 */
-  /* '<S4>:1:13'        0.1667   -0.7752    1.3427    4.5662    0.0422    0.2031    0.1553    0.2232   -6.3659   -6.9839   27.7592   16.6993 */
-  /* '<S4>:1:14'        0.1667   -1.5504    0.0000   -4.5662   -0.1754   -5.4769         0   -2.6684    7.9829   15.1432         0   -3.8560 */
-  /* '<S4>:1:15'        0.1667   -0.7752   -1.3427    4.5662   -0.3591   -0.3866   -0.1478   -1.3679    4.3048   11.2101  -19.5671   -7]; */
-  /* '<S4>:1:16' K = KK(:,5:8)*gamma_n(1) + KK(:,9:12)*gamma_n(1)^2; */
-  x = rtb_gamma_n[0] * rtb_gamma_n[0];
-
-  /* SignalConversion: '<Root>/ConcatBufferAtVector ConcatenateIn1' incorporates:
-   *  Inport: '<Root>/X0'
-   */
-  /*     */
-  rtb_VectorConcatenate[0] = gazebo_gs_U.X0[0];
-  rtb_VectorConcatenate[1] = gazebo_gs_U.X0[1];
-  rtb_VectorConcatenate[2] = gazebo_gs_U.X0[2];
-
-  /* SignalConversion: '<Root>/ConcatBufferAtVector ConcatenateIn2' */
-  for (i = 0; i < 5; i++) {
-    rtb_VectorConcatenate[i + 3] = 0.0;
-  }
-
-  /* End of SignalConversion: '<Root>/ConcatBufferAtVector ConcatenateIn2' */
-
-  /* SignalConversion: '<Root>/ConcatBufferAtVector ConcatenateIn3' incorporates:
-   *  Inport: '<Root>/X0'
-   */
-  rtb_VectorConcatenate[8] = gazebo_gs_U.X0[3];
-
-  /* SignalConversion: '<Root>/ConcatBufferAtVector ConcatenateIn4' */
-  rtb_VectorConcatenate[9] = 0.0;
-  rtb_VectorConcatenate[10] = 0.0;
-  rtb_VectorConcatenate[11] = 0.0;
-
-  /* Sum: '<Root>/Sum' incorporates:
-   *  Inport: '<Root>/X'
-   */
-  for (i = 0; i < 12; i++) {
-    rtb_VectorConcatenate[i] = gazebo_gs_U.X[i] - rtb_VectorConcatenate[i];
-  }
-
-  /* End of Sum: '<Root>/Sum' */
-
-  /* Sum: '<S8>/Sum1' incorporates:
-   *  Gain: '<S8>/ '
-   *  Gain: '<S8>/                    '
-   *  Integrator: '<S8>/Integrator1'
-   *  SignalConversion: '<S8>/TmpSignal ConversionAt                    Inport1'
-   */
-  rtb_Sum1_g = 0.17320508075688992 * gazebo_gs_X.Integrator1_CSTATE_h -
-    (0.32349951352987977 * rtb_VectorConcatenate[0] + 0.2732366014912751 *
-     rtb_VectorConcatenate[3]);
-
-  /* Sum: '<S9>/Sum1' incorporates:
-   *  Gain: '<S9>/  '
-   *  Gain: '<S9>/                     '
-   *  Integrator: '<S9>/Integrator1'
-   *  SignalConversion: '<S9>/TmpSignal ConversionAt                     Inport1'
-   */
-  rtb_Sum1_c = -0.173205080756885 * gazebo_gs_X.Integrator1_CSTATE_j -
-    (-0.31312578517366968 * rtb_VectorConcatenate[1] + -0.25417198201077484 *
-     rtb_VectorConcatenate[4]);
-
-  /* Fcn: '<Root>/Fcn1' incorporates:
-   *  Inport: '<Root>/X'
-   */
-  rtb_Sum3_f = rtb_Sum1_c * std::cos(gazebo_gs_U.X[8]) + rtb_Sum1_g * std::sin
-    (gazebo_gs_U.X[8]);
-
-  /* Saturate: '<S5>/roll' */
-  if (rtb_Sum3_f > 0.52359877559829882) {
-    rtb_Sum3_f = 0.52359877559829882;
-  } else {
-    if (rtb_Sum3_f < -0.52359877559829882) {
-      rtb_Sum3_f = -0.52359877559829882;
-    }
-  }
-
-  /* End of Saturate: '<S5>/roll' */
-
-  /* Sum: '<S5>/Sum1' incorporates:
-   *  Gain: '<S5>/                    '
-   *  SignalConversion: '<S5>/TmpSignal ConversionAt                    Inport1'
-   */
-  rtb_Sum3_f -= 1.1365283480217869 * rtb_VectorConcatenate[6] +
-    0.28178545108770103 * rtb_VectorConcatenate[9];
-
-  /* Fcn: '<Root>/Fcn' incorporates:
-   *  Inport: '<Root>/X'
-   */
-  rtb_Sum1_g = -rtb_Sum1_c * std::sin(gazebo_gs_U.X[8]) + rtb_Sum1_g * std::cos
-    (gazebo_gs_U.X[8]);
-
-  /* SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1' incorporates:
-   *  Gain: '<S10>/  '
-   *  Gain: '<S10>/                     '
-   *  Integrator: '<S10>/Integrator1'
-   *  SignalConversion: '<S10>/TmpSignal ConversionAt                     Inport1'
-   *  Sum: '<S10>/Sum1'
-   */
-  rtb_Sum1_c = 10.000000000000018 * gazebo_gs_X.Integrator1_CSTATE -
-    (12.219481695651957 * rtb_VectorConcatenate[2] + 6.215786645518647 *
-     rtb_VectorConcatenate[5]);
-
-  /* Sum: '<S7>/Sum1' incorporates:
-   *  Saturate: '<S7>/pitch'
-   */
-  if (rtb_Sum1_g > 0.52359877559829882) {
-    rtb_Sum1_g = 0.52359877559829882;
-  } else {
-    if (rtb_Sum1_g < -0.52359877559829882) {
-      rtb_Sum1_g = -0.52359877559829882;
-    }
-  }
-
-  /* SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1' incorporates:
-   *  Gain: '<S6>/  '
-   *  Gain: '<S6>/                     '
-   *  Gain: '<S7>/                    '
-   *  Integrator: '<S6>/Integrator1'
-   *  SignalConversion: '<S6>/TmpSignal ConversionAt                     Inport1'
-   *  SignalConversion: '<S7>/TmpSignal ConversionAt                    Inport1'
-   *  Sum: '<S6>/Sum1'
-   *  Sum: '<S7>/Sum1'
-   */
-  rtb_ref_idx_2 = rtb_Sum1_g - (1.2859205994736729 * rtb_VectorConcatenate[7] +
-    0.34413551249350854 * rtb_VectorConcatenate[10]);
-  rtb_Sum1_g = 0.15811388300841925 * gazebo_gs_X.Integrator1_CSTATE_b -
-    (0.3035552054947866 * rtb_VectorConcatenate[8] + 0.24395632222527311 *
-     rtb_VectorConcatenate[11]);
-
-  /* MATLAB Function: '<Root>/MATLAB Function2' incorporates:
-   *  Product: '<Root>/Product3'
-   */
-  for (i = 0; i < 4; i++) {
-    for (z = 0; z < 6; z++) {
-      a_0[z + 6 * i] = a[6 * i + z] * rtb_gamma_n[0] + b_a[6 * i + z] * x;
-    }
-  }
-
-  /* MATLAB Function 'Actuator_Fault': '<S1>:1' */
-  /* '<S1>:1:2' T_f = T; */
-  for (i = 0; i < 6; i++) {
-    /* Product: '<Root>/Product3' incorporates:
-     *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
-     *  Sum: '<Root>/Sum2'
-     */
-    x = a_0[i + 18] * rtb_Sum1_g + (a_0[i + 12] * rtb_ref_idx_2 + (a_0[i + 6] *
-      rtb_Sum3_f + a_0[i] * rtb_Sum1_c));
-
-    /* Gain: '<Root>/                 ' incorporates:
-     *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
-     *  Sum: '<Root>/Sum2'
-     */
-    tmp = gazebo_gs_ConstP._Gain_m[i + 18] * rtb_Sum1_g +
-      (gazebo_gs_ConstP._Gain_m[i + 12] * rtb_ref_idx_2 +
-       (gazebo_gs_ConstP._Gain_m[i + 6] * rtb_Sum3_f +
-        gazebo_gs_ConstP._Gain_m[i] * rtb_Sum1_c));
-
-    /* Sum: '<Root>/Sum2' */
-    x = (x + tmp) + 2.5179000000000005;
 
     /* MATLAB Function: '<Root>/Actuator_Fault' */
-    rtb_T_f[i] = x;
-
-    /* Sum: '<Root>/Sum2' */
-    rtb_Sum2[i] = x;
-  }
-
-  /* MATLAB Function: '<Root>/Actuator_Fault' */
-  /* '<S1>:1:3' if time >= 20 */
-  if (rtb_Clock >= 20.0) {
-    /* '<S1>:1:4' T1 = T(1)*0.5; */
-    /* '<S1>:1:5' T2 = T(2)*1; */
-    /* '<S1>:1:6' T3 = T(3)*1; */
-    /* '<S1>:1:7' T4 = T(4)*1; */
-    /* '<S1>:1:8' T5 = T(5)*1; */
-    /* '<S1>:1:9' T6 = T(6)*1; */
-    /* '<S1>:1:10' T_f = [T1;T2;T3;T4;T5;T6]; */
-    rtb_T_f[0] = rtb_Sum2[0] * 0.5;
-    rtb_T_f[1] = rtb_Sum2[1];
-    rtb_T_f[2] = rtb_Sum2[2];
-    rtb_T_f[3] = rtb_Sum2[3];
-    rtb_T_f[4] = rtb_Sum2[4];
-    rtb_T_f[5] = rtb_Sum2[5];
-  }
-
-  /* Outport: '<Root>/virtual_control' incorporates:
-   *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
-   */
-  gazebo_gs_Y.virtual_control[0] = rtb_Sum1_c;
-  gazebo_gs_Y.virtual_control[1] = rtb_Sum3_f;
-  gazebo_gs_Y.virtual_control[2] = rtb_ref_idx_2;
-  gazebo_gs_Y.virtual_control[3] = rtb_Sum1_g;
-  for (i = 0; i < 6; i++) {
-    /* Saturate: '<Root>/Saturation1' */
-    if (rtb_T_f[i] > 8.54858) {
-      rtb_Sum1_c = 8.54858;
-    } else if (rtb_T_f[i] < 0.0) {
-      rtb_Sum1_c = 0.0;
+    /* MATLAB Function 'Actuator_Fault': '<S1>:1' */
+    /* '<S1>:1:2' T_f = T; */
+    /* '<S1>:1:3' if time <= 10 */
+    if (rtb_Clock <= 10.0) {
+      /* '<S1>:1:4' T_f = T; */
+      for (i = 0; i < 6; i++) {
+        rtb_gamma_n[i] = gazebo_gs_B.Sum2[i];
+      }
+    } else if (rtb_Clock <= 25.0) {
+      /* '<S1>:1:5' elseif time <=25 */
+      /* '<S1>:1:6' T1 = T(1)*0.6; */
+      /* '<S1>:1:7' T2 = T(2)*0.7; */
+      /* '<S1>:1:8' T3 = T(3)*1; */
+      /* '<S1>:1:9' T4 = T(4)*1; */
+      /* '<S1>:1:10' T5 = T(5)*1; */
+      /* '<S1>:1:11' T6 = T(6)*1; */
+      /* '<S1>:1:12' T_f = [T1;T2;T3;T4;T5;T6]; */
+      rtb_gamma_n[0] = gazebo_gs_B.Sum2[0] * 0.6;
+      rtb_gamma_n[1] = gazebo_gs_B.Sum2[1] * 0.7;
+      rtb_gamma_n[2] = gazebo_gs_B.Sum2[2];
+      rtb_gamma_n[3] = gazebo_gs_B.Sum2[3];
+      rtb_gamma_n[4] = gazebo_gs_B.Sum2[4];
+      rtb_gamma_n[5] = gazebo_gs_B.Sum2[5];
     } else {
-      rtb_Sum1_c = rtb_T_f[i];
+      /* '<S1>:1:13' else */
+      /* '<S1>:1:14' T1 = T(1)*0.6; */
+      /* '<S1>:1:15' T2 = T(2)*0.7; */
+      /* '<S1>:1:16' T3 = T(3)*1; */
+      /* '<S1>:1:17' T4 = T(4)*1; */
+      /* '<S1>:1:18' T5 = T(5)*1; */
+      /* '<S1>:1:19' T6 = T(6)*1; */
+      /* '<S1>:1:20' T_f = [T1;T2;T3;T4;T5;T6]; */
+      rtb_gamma_n[0] = gazebo_gs_B.Sum2[0] * 0.6;
+      rtb_gamma_n[1] = gazebo_gs_B.Sum2[1] * 0.7;
+      rtb_gamma_n[2] = gazebo_gs_B.Sum2[2];
+      rtb_gamma_n[3] = gazebo_gs_B.Sum2[3];
+      rtb_gamma_n[4] = gazebo_gs_B.Sum2[4];
+      rtb_gamma_n[5] = gazebo_gs_B.Sum2[5];
     }
 
-    /* End of Saturate: '<Root>/Saturation1' */
+    /* End of MATLAB Function: '<Root>/Actuator_Fault' */
 
-    /* Sqrt: '<Root>/Sqrt1' incorporates:
-     *  Gain: '<Root>/      '
+    /* Outport: '<Root>/virtual_control' incorporates:
+     *  SignalConversion: '<Root>/TmpSignal ConversionAt                 Inport1'
      */
-    x = std::sqrt(116978.4923343994 * rtb_Sum1_c);
+    gazebo_gs_Y.virtual_control[0] = rtb_FMxMyMz_idx_0;
+    gazebo_gs_Y.virtual_control[1] = rtb_jxk;
+    gazebo_gs_Y.virtual_control[2] = rtb_ixj;
+    gazebo_gs_Y.virtual_control[3] = rtb_kxi;
+    for (i = 0; i < 6; i++) {
+      /* Sqrt: '<Root>/Sqrt1' incorporates:
+       *  Gain: '<Root>/      '
+       *  Saturate: '<Root>/Saturation1'
+       */
+      if (rtb_gamma_n[i] > 8.54858) {
+        rtb_ixj = 8.54858;
+      } else if (rtb_gamma_n[i] < 0.0) {
+        rtb_ixj = 0.0;
+      } else {
+        rtb_ixj = rtb_gamma_n[i];
+      }
 
-    /* Gain: '<Root>/rads_to_RPM' */
-    rtb_Sum1_c = 9.5493 * x;
+      rtb_ixj = std::sqrt(116978.4923343994 * rtb_ixj);
 
-    /* Gain: '<Root>/mapping_0_200' incorporates:
-     *  Constant: '<Root>/Constant '
-     *  Sum: '<Root>/Sum3'
-     */
-    rtb_Sum3_f = (rtb_Sum1_c - 1250.0) * 0.022857142857142857;
+      /* End of Sqrt: '<Root>/Sqrt1' */
 
-    /* Saturate: '<Root>/Saturation' */
-    if (rtb_Sum3_f < 0.0) {
-      /* Outport: '<Root>/motor_command' */
-      gazebo_gs_Y.motor_command[i] = 0.0;
+      /* Gain: '<Root>/rads_to_RPM' */
+      rtb_jxk = 9.5493 * rtb_ixj;
+
+      /* Gain: '<Root>/mapping_0_200' incorporates:
+       *  Constant: '<Root>/Constant '
+       *  Sum: '<Root>/Sum3'
+       */
+      rtb_FMxMyMz_idx_0 = (rtb_jxk - 1250.0) * 0.022857142857142857;
+
+      /* Saturate: '<Root>/Saturation' */
+      if (rtb_FMxMyMz_idx_0 < 0.0) {
+        /* Outport: '<Root>/motor_command' */
+        gazebo_gs_Y.motor_command[i] = 0.0;
+      } else {
+        /* Outport: '<Root>/motor_command' */
+        gazebo_gs_Y.motor_command[i] = rtb_FMxMyMz_idx_0;
+      }
+
+      /* End of Saturate: '<Root>/Saturation' */
+
+      /* Outport: '<Root>/motor_speed' */
+      gazebo_gs_Y.motor_speed[i] = rtb_ixj;
+
+      /* Outport: '<Root>/motor_RPM' */
+      gazebo_gs_Y.motor_RPM[i] = rtb_jxk;
+    }
+
+    /* MATLAB Function: '<Root>/MATLAB Function' */
+    /* MATLAB Function 'MATLAB Function': '<S4>:1' */
+    /* '<S4>:1:2' x = cos(t); */
+    /* '<S4>:1:3' y = sin(t); */
+    /* '<S4>:1:4' z = min(t,15); */
+    /* '<S4>:1:5' ref = [x;y;z;0]; */
+    rtb_FMxMyMz_idx_0 = std::cos(rtb_Clock);
+    rtb_jxk = std::sin(rtb_Clock);
+    if (rtb_Clock < 15.0) {
+      rtb_ixj = rtb_Clock;
     } else {
-      /* Outport: '<Root>/motor_command' */
-      gazebo_gs_Y.motor_command[i] = rtb_Sum3_f;
+      rtb_ixj = 15.0;
     }
 
-    /* End of Saturate: '<Root>/Saturation' */
+    /* End of MATLAB Function: '<Root>/MATLAB Function' */
 
-    /* Outport: '<Root>/motor_speed' */
-    gazebo_gs_Y.motor_speed[i] = x;
+    /* Outport: '<Root>/ref' */
+    gazebo_gs_Y.ref[0] = rtb_FMxMyMz_idx_0;
+    gazebo_gs_Y.ref[1] = rtb_jxk;
+    gazebo_gs_Y.ref[2] = rtb_ixj;
+    gazebo_gs_Y.ref[3] = 0.0;
+    if (rtmIsMajorTimeStep((&gazebo_gs_M))) {
+      /* Memory: '<S3>/Memory' */
+      for (i = 0; i < 6; i++) {
+        gazebo_gs_B.Memory[i] = gazebo_gs_DW.Memory_PreviousInput[i];
+      }
 
-    /* Outport: '<Root>/motor_RPM' */
-    gazebo_gs_Y.motor_RPM[i] = rtb_Sum1_c;
-  }
-
-  /* MATLAB Function: '<Root>/MATLAB Function' incorporates:
-   *  Inport: '<Root>/X0'
-   */
-  /* MATLAB Function 'MATLAB Function': '<S3>:1' */
-  /* '<S3>:1:2' x = X0(1); */
-  /* '<S3>:1:2' y = X0(2); */
-  /* '<S3>:1:2' z = X0(3); */
-  /* '<S3>:1:2' psi = X0(4); */
-  /* '<S3>:1:3' if t <= 40 */
-  if (rtb_Clock <= 40.0) {
-    /* '<S3>:1:4' x = cos(0.4*(t)); */
-    x = std::cos(0.4 * rtb_Clock);
-
-    /* '<S3>:1:5' y = sin(0.4*(t)); */
-    rtb_Clock = std::sin(0.4 * rtb_Clock);
-
-    /* '<S3>:1:6' z = 1; */
-    z = 1;
-
-    /* '<S3>:1:7' psi = X0(4); */
-    rtb_Sum1_g = gazebo_gs_U.X0[3];
-  } else {
-    /* '<S3>:1:8' else */
-    /* '<S3>:1:9' x = X0(1); */
-    x = gazebo_gs_U.X0[0];
-
-    /* '<S3>:1:10' y = X0(2); */
-    rtb_Clock = gazebo_gs_U.X0[1];
-
-    /* '<S3>:1:11' z = 0.0; */
-    z = 0;
-
-    /* '<S3>:1:12' psi = X0(4); */
-    rtb_Sum1_g = gazebo_gs_U.X0[3];
-  }
-
-  /* Outport: '<Root>/ref' incorporates:
-   *  MATLAB Function: '<Root>/MATLAB Function'
-   */
-  /* '<S3>:1:14' ref = [x;y;z;psi]; */
-  gazebo_gs_Y.ref[0] = x;
-  gazebo_gs_Y.ref[1] = rtb_Clock;
-  gazebo_gs_Y.ref[2] = z;
-  gazebo_gs_Y.ref[3] = rtb_Sum1_g;
-
-  /* Outport: '<Root>/gamma' */
-  for (i = 0; i < 6; i++) {
-    gazebo_gs_Y.gamma[i] = rtb_gamma_n[i];
-  }
-
-  /* End of Outport: '<Root>/gamma' */
-
-  /* Sum: '<Root>/Sum1' incorporates:
-   *  Inport: '<Root>/X0'
-   *  MATLAB Function: '<Root>/MATLAB Function'
-   */
-  rtb_Sum1_c = x - gazebo_gs_U.X0[0];
-  rtb_Clock -= gazebo_gs_U.X0[1];
-  rtb_ref_idx_2 = (real_T)z - gazebo_gs_U.X0[2];
-  rtb_Sum3_f = rtb_Sum1_g - gazebo_gs_U.X0[3];
-
-  /* Saturate: '<S6>/yaw' */
-  if (rtb_Sum3_f > 3.1415926535897931) {
-    rtb_Sum3_f = 3.1415926535897931;
-  } else {
-    if (rtb_Sum3_f < -3.1415926535897931) {
-      rtb_Sum3_f = -3.1415926535897931;
+      /* End of Memory: '<S3>/Memory' */
     }
-  }
 
-  /* End of Saturate: '<S6>/yaw' */
+    /* Derivative: '<S3>/Derivative' incorporates:
+     *  Inport: '<Root>/X'
+     */
+    if ((gazebo_gs_DW.TimeStampA >= (&gazebo_gs_M)->Timing.t[0]) &&
+        (gazebo_gs_DW.TimeStampB >= (&gazebo_gs_M)->Timing.t[0])) {
+      rtb_Sum1[0] = 0.0;
+      rtb_Sum1[1] = 0.0;
+      rtb_Sum1[2] = 0.0;
+    } else {
+      rtb_Clock = gazebo_gs_DW.TimeStampA;
+      lastU = (real_T (*)[3])gazebo_gs_DW.LastUAtTimeA;
+      if (gazebo_gs_DW.TimeStampA < gazebo_gs_DW.TimeStampB) {
+        if (gazebo_gs_DW.TimeStampB < (&gazebo_gs_M)->Timing.t[0]) {
+          rtb_Clock = gazebo_gs_DW.TimeStampB;
+          lastU = (real_T (*)[3])gazebo_gs_DW.LastUAtTimeB;
+        }
+      } else {
+        if (gazebo_gs_DW.TimeStampA >= (&gazebo_gs_M)->Timing.t[0]) {
+          rtb_Clock = gazebo_gs_DW.TimeStampB;
+          lastU = (real_T (*)[3])gazebo_gs_DW.LastUAtTimeB;
+        }
+      }
 
-  /* Sum: '<S6>/Sum3' */
-  rtb_Sum3_f -= rtb_VectorConcatenate[8];
-
-  /* Saturate: '<S6>/psi_e' */
-  if (rtb_Sum3_f > 0.78539816339744828) {
-    gazebo_gs_B.psi_e = 0.78539816339744828;
-  } else if (rtb_Sum3_f < -0.78539816339744828) {
-    gazebo_gs_B.psi_e = -0.78539816339744828;
-  } else {
-    gazebo_gs_B.psi_e = rtb_Sum3_f;
-  }
-
-  /* End of Saturate: '<S6>/psi_e' */
-
-  /* Saturate: '<S8>/x' */
-  if (rtb_Sum1_c > 1.0) {
-    rtb_Sum1_c = 1.0;
-  } else {
-    if (rtb_Sum1_c < -1.0) {
-      rtb_Sum1_c = -1.0;
+      rtb_Clock = (&gazebo_gs_M)->Timing.t[0] - rtb_Clock;
+      rtb_Sum1[0] = (gazebo_gs_U.X[9] - (*lastU)[0]) / rtb_Clock;
+      rtb_Sum1[1] = (gazebo_gs_U.X[10] - (*lastU)[1]) / rtb_Clock;
+      rtb_Sum1[2] = (gazebo_gs_U.X[11] - (*lastU)[2]) / rtb_Clock;
     }
-  }
 
-  /* End of Saturate: '<S8>/x' */
+    /* End of Derivative: '<S3>/Derivative' */
 
-  /* Sum: '<S8>/Sum3' */
-  rtb_Sum3_f = rtb_Sum1_c - rtb_VectorConcatenate[0];
-
-  /* Saturate: '<S8>/xe' */
-  if (rtb_Sum3_f > 1.0) {
-    gazebo_gs_B.xe = 1.0;
-  } else if (rtb_Sum3_f < -1.0) {
-    gazebo_gs_B.xe = -1.0;
-  } else {
-    gazebo_gs_B.xe = rtb_Sum3_f;
-  }
-
-  /* End of Saturate: '<S8>/xe' */
-
-  /* Saturate: '<S9>/y' */
-  if (rtb_Clock > 1.0) {
-    rtb_Clock = 1.0;
-  } else {
-    if (rtb_Clock < -1.0) {
-      rtb_Clock = -1.0;
+    /* Product: '<S3>/Product' incorporates:
+     *  Constant: '<S3>/Constant1'
+     */
+    for (i = 0; i < 3; i++) {
+      rtb_Product[i] = gazebo_gs_ConstP.Constant1_Value[i + 6] * rtb_Sum1[2] +
+        (gazebo_gs_ConstP.Constant1_Value[i + 3] * rtb_Sum1[1] +
+         gazebo_gs_ConstP.Constant1_Value[i] * rtb_Sum1[0]);
     }
-  }
 
-  /* End of Saturate: '<S9>/y' */
+    /* End of Product: '<S3>/Product' */
 
-  /* Sum: '<S9>/Sum3' */
-  rtb_Sum3_f = rtb_Clock - rtb_VectorConcatenate[1];
-
-  /* Saturate: '<S9>/ye' */
-  if (rtb_Sum3_f > 1.0) {
-    gazebo_gs_B.ye = 1.0;
-  } else if (rtb_Sum3_f < -1.0) {
-    gazebo_gs_B.ye = -1.0;
-  } else {
-    gazebo_gs_B.ye = rtb_Sum3_f;
-  }
-
-  /* End of Saturate: '<S9>/ye' */
-
-  /* Saturate: '<S10>/z' */
-  if (rtb_ref_idx_2 > 1.75) {
-    rtb_ref_idx_2 = 1.75;
-  } else {
-    if (rtb_ref_idx_2 < 0.0) {
-      rtb_ref_idx_2 = 0.0;
+    /* Product: '<S3>/Product1' incorporates:
+     *  Constant: '<S3>/Constant1'
+     *  Inport: '<Root>/X'
+     */
+    for (i = 0; i < 3; i++) {
+      rtb_Sum1[i] = gazebo_gs_ConstP.Constant1_Value[i + 6] * gazebo_gs_U.X[11]
+        + (gazebo_gs_ConstP.Constant1_Value[i + 3] * gazebo_gs_U.X[10] +
+           gazebo_gs_ConstP.Constant1_Value[i] * gazebo_gs_U.X[9]);
     }
+
+    /* End of Product: '<S3>/Product1' */
+
+    /* Sum: '<S3>/Sum3' incorporates:
+     *  Inport: '<Root>/X'
+     *  MATLAB Function: '<S3>/MATLAB Function1'
+     *  Product: '<S15>/i x k'
+     *  Product: '<S15>/j x i'
+     *  Product: '<S15>/k x j'
+     *  Product: '<S16>/i x j'
+     *  Product: '<S16>/j x k'
+     *  Product: '<S16>/k x i'
+     *  Sum: '<S13>/Sum1'
+     */
+    /* MATLAB Function 'FDD  /MATLAB Function1': '<S14>:1' */
+    /* '<S14>:1:2' arm = 0.215; */
+    /* '<S14>:1:2' gra = 9.81; */
+    /* '<S14>:1:2' factor = 0.0365; */
+    /* '<S14>:1:4' M = [arm/2 arm arm/2; */
+    /* '<S14>:1:5'       -sqrt(3)*arm/2 0 sqrt(3)*arm/2; */
+    /* '<S14>:1:6'       -factor factor -factor]; */
+    /* '<S14>:1:8' diff = [u(1) - u(4) ; */
+    /* '<S14>:1:9'         u(2) - u(5) ; */
+    /* '<S14>:1:10'         u(3) - u(6) ]; */
+    /* '<S14>:1:11' Residu_1_4 = diff - inv(M)*y; */
+    rtb_Clock = (gazebo_gs_U.X[10] * rtb_Sum1[2] - gazebo_gs_U.X[11] * rtb_Sum1
+                 [1]) + rtb_Product[0];
+    rtb_kxi = (gazebo_gs_U.X[11] * rtb_Sum1[0] - gazebo_gs_U.X[9] * rtb_Sum1[2])
+      + rtb_Product[1];
+    rtb_Product_idx_2 = (gazebo_gs_U.X[9] * rtb_Sum1[1] - gazebo_gs_U.X[10] *
+                         rtb_Sum1[0]) + rtb_Product[2];
+
+    /* MATLAB Function: '<S3>/MATLAB Function1' */
+    rtb_Sum1[0] = gazebo_gs_B.Memory[0] - gazebo_gs_B.Memory[3];
+    rtb_Sum1[1] = gazebo_gs_B.Memory[1] - gazebo_gs_B.Memory[4];
+    rtb_Sum1[2] = gazebo_gs_B.Memory[2] - gazebo_gs_B.Memory[5];
+    for (i = 0; i < 3; i++) {
+      rtb_Product[i] = rtb_Sum1[i] - (a_0[i + 6] * rtb_Product_idx_2 + (a_0[i +
+        3] * rtb_kxi + a_0[i] * rtb_Clock));
+    }
+
+    /* Outport: '<Root>/gamma' incorporates:
+     *  MATLAB Function: '<S3>/MATLAB Function1'
+     */
+    /*  Residu_1_4 */
+    /* '<S14>:1:14' gamma    = [1-(-Residu_1_4(1) + u(1))/u(1) */
+    /* '<S14>:1:15'             1-(-Residu_1_4(2) + u(2))/u(2) */
+    /* '<S14>:1:16'             1-(-Residu_1_4(3) + u(3))/u(3)]; */
+    gazebo_gs_Y.gamma[0] = 1.0 - (-rtb_Product[0] + gazebo_gs_B.Memory[0]) /
+      gazebo_gs_B.Memory[0];
+    gazebo_gs_Y.gamma[1] = 1.0 - (-rtb_Product[1] + gazebo_gs_B.Memory[1]) /
+      gazebo_gs_B.Memory[1];
+    gazebo_gs_Y.gamma[2] = 1.0 - (-rtb_Product[2] + gazebo_gs_B.Memory[2]) /
+      gazebo_gs_B.Memory[2];
+
+    /* Saturate: '<S8>/Saturation' incorporates:
+     *  Inport: '<Root>/X'
+     *  Sum: '<S8>/Sum3'
+     */
+    if (0.0 - gazebo_gs_U.X[8] > 0.52359877559829882) {
+      gazebo_gs_B.Saturation = 0.52359877559829882;
+    } else if (0.0 - gazebo_gs_U.X[8] < -0.52359877559829882) {
+      gazebo_gs_B.Saturation = -0.52359877559829882;
+    } else {
+      gazebo_gs_B.Saturation = 0.0 - gazebo_gs_U.X[8];
+    }
+
+    /* End of Saturate: '<S8>/Saturation' */
+
+    /* Saturate: '<S10>/x' */
+    if (rtb_FMxMyMz_idx_0 > 1.0) {
+      rtb_FMxMyMz_idx_0 = 1.0;
+    } else {
+      if (rtb_FMxMyMz_idx_0 < -1.0) {
+        rtb_FMxMyMz_idx_0 = -1.0;
+      }
+    }
+
+    /* End of Saturate: '<S10>/x' */
+
+    /* Sum: '<S10>/Sum3' incorporates:
+     *  Inport: '<Root>/X'
+     */
+    rtb_FMxMyMz_idx_0 -= gazebo_gs_U.X[0];
+
+    /* Saturate: '<S10>/x1' */
+    if (rtb_FMxMyMz_idx_0 > 2.0) {
+      gazebo_gs_B.x1 = 2.0;
+    } else if (rtb_FMxMyMz_idx_0 < -2.0) {
+      gazebo_gs_B.x1 = -2.0;
+    } else {
+      gazebo_gs_B.x1 = rtb_FMxMyMz_idx_0;
+    }
+
+    /* End of Saturate: '<S10>/x1' */
+
+    /* Saturate: '<S11>/y' */
+    if (rtb_jxk > 1.0) {
+      rtb_jxk = 1.0;
+    } else {
+      if (rtb_jxk < -1.0) {
+        rtb_jxk = -1.0;
+      }
+    }
+
+    /* End of Saturate: '<S11>/y' */
+
+    /* Sum: '<S11>/Sum3' incorporates:
+     *  Inport: '<Root>/X'
+     */
+    rtb_FMxMyMz_idx_0 = rtb_jxk - gazebo_gs_U.X[1];
+
+    /* Saturate: '<S11>/y1' */
+    if (rtb_FMxMyMz_idx_0 > 2.0) {
+      gazebo_gs_B.y1 = 2.0;
+    } else if (rtb_FMxMyMz_idx_0 < -2.0) {
+      gazebo_gs_B.y1 = -2.0;
+    } else {
+      gazebo_gs_B.y1 = rtb_FMxMyMz_idx_0;
+    }
+
+    /* End of Saturate: '<S11>/y1' */
+
+    /* Sum: '<S12>/Sum3' incorporates:
+     *  Inport: '<Root>/X'
+     */
+    rtb_FMxMyMz_idx_0 = rtb_ixj - gazebo_gs_U.X[2];
+
+    /* Saturate: '<S12>/Saturation' */
+    if (rtb_FMxMyMz_idx_0 > 1.0) {
+      gazebo_gs_B.Saturation_a = 1.0;
+    } else if (rtb_FMxMyMz_idx_0 < -1.0) {
+      gazebo_gs_B.Saturation_a = -1.0;
+    } else {
+      gazebo_gs_B.Saturation_a = rtb_FMxMyMz_idx_0;
+    }
+
+    /* End of Saturate: '<S12>/Saturation' */
   }
 
-  /* End of Saturate: '<S10>/z' */
+  if (rtmIsMajorTimeStep((&gazebo_gs_M))) {
+    real_T (*lastU)[3];
+    int32_T i;
+    if (rtmIsMajorTimeStep((&gazebo_gs_M))) {
+      /* Update for Memory: '<S3>/Memory' */
+      for (i = 0; i < 6; i++) {
+        gazebo_gs_DW.Memory_PreviousInput[i] = gazebo_gs_B.Sum2[i];
+      }
 
-  /* Sum: '<S10>/Sum3' */
-  rtb_Sum3_f = rtb_ref_idx_2 - rtb_VectorConcatenate[2];
+      /* End of Update for Memory: '<S3>/Memory' */
+    }
 
-  /* Saturate: '<S10>/ze' */
-  if (rtb_Sum3_f > 0.5) {
-    gazebo_gs_B.ze = 0.5;
-  } else if (rtb_Sum3_f < -0.5) {
-    gazebo_gs_B.ze = -0.5;
-  } else {
-    gazebo_gs_B.ze = rtb_Sum3_f;
-  }
+    /* Update for Derivative: '<S3>/Derivative' incorporates:
+     *  Update for Inport: '<Root>/X'
+     */
+    if (gazebo_gs_DW.TimeStampA == (rtInf)) {
+      gazebo_gs_DW.TimeStampA = (&gazebo_gs_M)->Timing.t[0];
+      lastU = (real_T (*)[3])gazebo_gs_DW.LastUAtTimeA;
+    } else if (gazebo_gs_DW.TimeStampB == (rtInf)) {
+      gazebo_gs_DW.TimeStampB = (&gazebo_gs_M)->Timing.t[0];
+      lastU = (real_T (*)[3])gazebo_gs_DW.LastUAtTimeB;
+    } else if (gazebo_gs_DW.TimeStampA < gazebo_gs_DW.TimeStampB) {
+      gazebo_gs_DW.TimeStampA = (&gazebo_gs_M)->Timing.t[0];
+      lastU = (real_T (*)[3])gazebo_gs_DW.LastUAtTimeA;
+    } else {
+      gazebo_gs_DW.TimeStampB = (&gazebo_gs_M)->Timing.t[0];
+      lastU = (real_T (*)[3])gazebo_gs_DW.LastUAtTimeB;
+    }
 
-  /* End of Saturate: '<S10>/ze' */
+    (*lastU)[0] = gazebo_gs_U.X[9];
+    (*lastU)[1] = gazebo_gs_U.X[10];
+    (*lastU)[2] = gazebo_gs_U.X[11];
+
+    /* End of Update for Derivative: '<S3>/Derivative' */
+  }                                    /* end MajorTimeStep */
+
   if (rtmIsMajorTimeStep((&gazebo_gs_M))) {
     rt_ertODEUpdateContinuousStates(&(&gazebo_gs_M)->solverInfo);
 
@@ -674,23 +798,26 @@ void gazebo_gsModelClass::gazebo_gs_derivatives()
   XDot_gazebo_gs_T *_rtXdot;
   _rtXdot = ((XDot_gazebo_gs_T *) (&gazebo_gs_M)->derivs);
 
+  /* Derivatives for Integrator: '<S12>/Integrator1' */
+  _rtXdot->Integrator1_CSTATE = gazebo_gs_B.Saturation_a;
+
   /* Derivatives for Integrator: '<S10>/Integrator1' */
-  _rtXdot->Integrator1_CSTATE = gazebo_gs_B.ze;
+  _rtXdot->Integrator1_CSTATE_h = gazebo_gs_B.x1;
+
+  /* Derivatives for Integrator: '<S11>/Integrator1' */
+  _rtXdot->Integrator1_CSTATE_j = gazebo_gs_B.y1;
 
   /* Derivatives for Integrator: '<S8>/Integrator1' */
-  _rtXdot->Integrator1_CSTATE_h = gazebo_gs_B.xe;
-
-  /* Derivatives for Integrator: '<S9>/Integrator1' */
-  _rtXdot->Integrator1_CSTATE_j = gazebo_gs_B.ye;
-
-  /* Derivatives for Integrator: '<S6>/Integrator1' */
-  _rtXdot->Integrator1_CSTATE_b = gazebo_gs_B.psi_e;
+  _rtXdot->Integrator1_CSTATE_b = gazebo_gs_B.Saturation;
 }
 
 /* Model initialize function */
 void gazebo_gsModelClass::initialize()
 {
   /* Registration code */
+
+  /* initialize non-finites */
+  rt_InitInfAndNaN(sizeof(real_T));
 
   /* initialize real-time model */
   (void) memset((void *)(&gazebo_gs_M), 0,
@@ -744,6 +871,10 @@ void gazebo_gsModelClass::initialize()
                   sizeof(X_gazebo_gs_T));
   }
 
+  /* states (dwork) */
+  (void) memset((void *)&gazebo_gs_DW, 0,
+                sizeof(DW_gazebo_gs_T));
+
   /* external inputs */
   (void)memset((void *)&gazebo_gs_U, 0, sizeof(ExtU_gazebo_gs_T));
 
@@ -751,17 +882,32 @@ void gazebo_gsModelClass::initialize()
   (void) memset((void *)&gazebo_gs_Y, 0,
                 sizeof(ExtY_gazebo_gs_T));
 
-  /* InitializeConditions for Integrator: '<S10>/Integrator1' */
-  gazebo_gs_X.Integrator1_CSTATE = 0.0;
+  {
+    int32_T i;
 
-  /* InitializeConditions for Integrator: '<S8>/Integrator1' */
-  gazebo_gs_X.Integrator1_CSTATE_h = 0.0;
+    /* InitializeConditions for Integrator: '<S12>/Integrator1' */
+    gazebo_gs_X.Integrator1_CSTATE = 0.0;
 
-  /* InitializeConditions for Integrator: '<S9>/Integrator1' */
-  gazebo_gs_X.Integrator1_CSTATE_j = 0.0;
+    /* InitializeConditions for Integrator: '<S10>/Integrator1' */
+    gazebo_gs_X.Integrator1_CSTATE_h = 0.0;
 
-  /* InitializeConditions for Integrator: '<S6>/Integrator1' */
-  gazebo_gs_X.Integrator1_CSTATE_b = 0.0;
+    /* InitializeConditions for Integrator: '<S11>/Integrator1' */
+    gazebo_gs_X.Integrator1_CSTATE_j = 0.0;
+
+    /* InitializeConditions for Integrator: '<S8>/Integrator1' */
+    gazebo_gs_X.Integrator1_CSTATE_b = 0.0;
+
+    /* InitializeConditions for Memory: '<S3>/Memory' */
+    for (i = 0; i < 6; i++) {
+      gazebo_gs_DW.Memory_PreviousInput[i] = 2.5179000000000005;
+    }
+
+    /* End of InitializeConditions for Memory: '<S3>/Memory' */
+
+    /* InitializeConditions for Derivative: '<S3>/Derivative' */
+    gazebo_gs_DW.TimeStampA = (rtInf);
+    gazebo_gs_DW.TimeStampB = (rtInf);
+  }
 }
 
 /* Model terminate function */

@@ -15,12 +15,12 @@
 
 #include <gsft_control/LOE.h>
 #include <gsft_control/UAVState.h>
-#include <gazebo_gs.h>
+#include <gazebo_lqr.h>
 
 #include <dynamic_reconfigure/server.h>
 #include <gsft_control/controllerDynConfig.h>
 
-gazebo_gsModelClass gController;
+gazebo_lqrModelClass gController;
 
 bool gCommand_active;
 bool gLOE_active;
@@ -42,29 +42,29 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
     }
   }
 
-  gController.gazebo_gs_U.X[0 ]  = odometry.position_W.x();
-  gController.gazebo_gs_U.X[1 ]  = odometry.position_W.y();
-  gController.gazebo_gs_U.X[2 ]  = odometry.position_W.z();
+  gController.gazebo_lqr_U.X[0 ]  = odometry.position_W.x();
+  gController.gazebo_lqr_U.X[1 ]  = odometry.position_W.y();
+  gController.gazebo_lqr_U.X[2 ]  = odometry.position_W.z();
 
   Eigen::Matrix3d R_W_B = odometry.orientation_W_B.toRotationMatrix();
   Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
 
-  gController.gazebo_gs_U.X[3 ]  = velocity_W.x();
-  gController.gazebo_gs_U.X[4 ]  = velocity_W.y();
-  gController.gazebo_gs_U.X[5 ]  = velocity_W.z();
+  gController.gazebo_lqr_U.X[3 ]  = velocity_W.x();
+  gController.gazebo_lqr_U.X[4 ]  = velocity_W.y();
+  gController.gazebo_lqr_U.X[5 ]  = velocity_W.z();
 
-/*  gController.gazebo_gs_U.X[3 ]  = odometry.velocity_B.x();
-  gController.gazebo_gs_U.X[4 ]  = odometry.velocity_B.y();
-  gController.gazebo_gs_U.X[5 ]  = odometry.velocity_B.z(); */
+/*  gController.gazebo_lqr_U.X[3 ]  = odometry.velocity_B.x();
+  gController.gazebo_lqr_U.X[4 ]  = odometry.velocity_B.y();
+  gController.gazebo_lqr_U.X[5 ]  = odometry.velocity_B.z(); */
 
   double psi, phi, teta;
   psi = atan2(R_W_B(1,0),R_W_B(0,0));
   phi = atan2(R_W_B(2,1),R_W_B(2,2));
   teta = asin(-R_W_B(2,0));
 
-  gController.gazebo_gs_U.X[6 ]  = phi;
-  gController.gazebo_gs_U.X[7 ]  = teta;
-  gController.gazebo_gs_U.X[8 ]  = psi;
+  gController.gazebo_lqr_U.X[6 ]  = phi;
+  gController.gazebo_lqr_U.X[7 ]  = teta;
+  gController.gazebo_lqr_U.X[8 ]  = psi;
 
 /*  Eigen::Matrix3d H;
   H << 1.0, sin(phi)*tan(teta), cos(phi)*tan(teta),
@@ -72,13 +72,13 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
        0.0, sin(phi)/cos(teta), cos(phi)/cos(teta);
   Eigen::Vector3d euler_rate = H*odometry.angular_velocity_B;
 
-  gController.gazebo_gs_U.X[9 ]  = euler_rate.x();
-  gController.gazebo_gs_U.X[10]  = euler_rate.y();
-  gController.gazebo_gs_U.X[11]  = euler_rate.z();
+  gController.gazebo_lqr_U.X[9 ]  = euler_rate.x();
+  gController.gazebo_lqr_U.X[10]  = euler_rate.y();
+  gController.gazebo_lqr_U.X[11]  = euler_rate.z();
 */
-  gController.gazebo_gs_U.X[9 ]  = odometry.angular_velocity_B.x();
-  gController.gazebo_gs_U.X[10]  = odometry.angular_velocity_B.y();
-  gController.gazebo_gs_U.X[11]  = odometry.angular_velocity_B.z();
+  gController.gazebo_lqr_U.X[9 ]  = odometry.angular_velocity_B.x();
+  gController.gazebo_lqr_U.X[10]  = odometry.angular_velocity_B.y();
+  gController.gazebo_lqr_U.X[11]  = odometry.angular_velocity_B.z();
 
   if (gInit_flag){
     gInit_flag = false;
@@ -94,7 +94,7 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
     mav_msgs::EigenTrajectoryPoint eigen_reference;
     mav_msgs::eigenTrajectoryPointFromMsg(msg->points.front(), &eigen_reference);
 
-    gController.gazebo_gs_U.z_ref    = eigen_reference.position_W.z();
+    gController.gazebo_lqr_U.z_ref    = eigen_reference.position_W.z();
 
     if (!gCommand_active){
       gCommand_active      = true;
@@ -105,10 +105,10 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
 /*void CommandPoseCallback(const geometry_msgs::PoseStampedConstPtr& pose_msg) {
   mav_msgs::EigenTrajectoryPoint eigen_reference;
   mav_msgs::eigenTrajectoryPointFromPoseMsg(*pose_msg, &eigen_reference);
-  gController.gazebo_gs_U.x_ref    = eigen_reference.position_W.x();
-  gController.gazebo_gs_U.y_ref    = eigen_reference.position_W.y();
-  gController.gazebo_gs_U.z_ref    = eigen_reference.position_W.z();
-  gController.gazebo_gs_U.psi_ref  = 0.0;
+  gController.gazebo_lqr_U.x_ref    = eigen_reference.position_W.x();
+  gController.gazebo_lqr_U.y_ref    = eigen_reference.position_W.y();
+  gController.gazebo_lqr_U.z_ref    = eigen_reference.position_W.z();
+  gController.gazebo_lqr_U.psi_ref  = 0.0;
   if (!gCommand_active){
     gCommand_active      = true;
   }
@@ -137,10 +137,10 @@ void LostControlCallback(const gsft_control::LOEConstPtr& loe_msg) {
 
 
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "gazebo_gs_controller_node");
+  ros::init(argc, argv, "gazebo_lqr_controller_node");
   ros::NodeHandle nh;
   ros::NodeHandle pnh("~");
-  ROS_INFO("gazebo_gs_controller_node main started");
+  ROS_INFO("gazebo_lqr_controller_node main started");
 
   ros::Subscriber odometry_sub_;
   odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1, OdometryCallback);
@@ -183,10 +183,10 @@ int main(int argc, char** argv) {
 
   while(ros::ok()) {
     if (gCommand_active) {
-    /*    gController.gazebo_gs_U.X0[0] = gInit_value[0];
-        gController.gazebo_gs_U.X0[1] = gInit_value[1];
-        gController.gazebo_gs_U.X0[2] = gInit_value[2];
-        gController.gazebo_gs_U.X0[3] = gInit_value[3]; */
+    /*    gController.gazebo_lqr_U.X0[0] = gInit_value[0];
+        gController.gazebo_lqr_U.X0[1] = gInit_value[1];
+        gController.gazebo_lqr_U.X0[2] = gInit_value[2];
+        gController.gazebo_lqr_U.X0[3] = gInit_value[3]; */
 
         gController.step();
 
@@ -203,9 +203,9 @@ int main(int argc, char** argv) {
             }
             else
             {
-              motor_RPM[i]     = gController.gazebo_gs_Y.motor_RPM[i]*(1.0 - gLOE[i]);
-              motor_command[i] = gController.gazebo_gs_Y.motor_command[i]*(1.0 - gLOE[i]);
-              motor_speed[i]   = gController.gazebo_gs_Y.motor_speed[i]*(1.0 - gLOE[i]);
+              motor_RPM[i]     = gController.gazebo_lqr_Y.motor_RPM[i]*(1.0 - gLOE[i]);
+              motor_command[i] = gController.gazebo_lqr_Y.motor_command[i]*(1.0 - gLOE[i]);
+              motor_speed[i]   = gController.gazebo_lqr_Y.motor_speed[i]*(1.0 - gLOE[i]);
             }
         }
 
@@ -246,34 +246,34 @@ int main(int argc, char** argv) {
 
     // Publish: UAV state in World frame
     gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-    uav_state_msg->position_ref.x  = gController.gazebo_gs_Y.ref[0];
-    uav_state_msg->position_ref.y  = gController.gazebo_gs_Y.ref[1];
-    uav_state_msg->position_ref.z  = gController.gazebo_gs_Y.ref[2];
-    uav_state_msg->heading_ref     = gController.gazebo_gs_Y.ref[3];
+    uav_state_msg->position_ref.x  = gController.gazebo_lqr_Y.ref[0];
+    uav_state_msg->position_ref.y  = gController.gazebo_lqr_Y.ref[1];
+    uav_state_msg->position_ref.z  = gController.gazebo_lqr_Y.ref[2];
+    uav_state_msg->heading_ref     = gController.gazebo_lqr_Y.ref[3];
 
-    uav_state_msg->position_W.x  = gController.gazebo_gs_U.X[0];
-    uav_state_msg->position_W.y  = gController.gazebo_gs_U.X[1];
-    uav_state_msg->position_W.z  = gController.gazebo_gs_U.X[2];
-    uav_state_msg->velocity_B.x  = gController.gazebo_gs_U.X[3];
-    uav_state_msg->velocity_B.y  = gController.gazebo_gs_U.X[4];
-    uav_state_msg->velocity_B.z  = gController.gazebo_gs_U.X[5];
-    uav_state_msg->euler_angle.x = gController.gazebo_gs_U.X[6];
-    uav_state_msg->euler_angle.y = gController.gazebo_gs_U.X[7];
-    uav_state_msg->euler_angle.z = gController.gazebo_gs_U.X[8];
-    uav_state_msg->rotation_speed_B.x  = gController.gazebo_gs_U.X[9];
-    uav_state_msg->rotation_speed_B.y  = gController.gazebo_gs_U.X[10];
-    uav_state_msg->rotation_speed_B.z  = gController.gazebo_gs_U.X[11];
-    uav_state_msg->total_thrust  = gController.gazebo_gs_Y.virtual_control[0];
-    uav_state_msg->moment.x      = gController.gazebo_gs_Y.virtual_control[1];
-    uav_state_msg->moment.y      = gController.gazebo_gs_Y.virtual_control[2];
-    uav_state_msg->moment.z      = gController.gazebo_gs_Y.virtual_control[3];
+    uav_state_msg->position_W.x  = gController.gazebo_lqr_U.X[0];
+    uav_state_msg->position_W.y  = gController.gazebo_lqr_U.X[1];
+    uav_state_msg->position_W.z  = gController.gazebo_lqr_U.X[2];
+    uav_state_msg->velocity_B.x  = gController.gazebo_lqr_U.X[3];
+    uav_state_msg->velocity_B.y  = gController.gazebo_lqr_U.X[4];
+    uav_state_msg->velocity_B.z  = gController.gazebo_lqr_U.X[5];
+    uav_state_msg->euler_angle.x = gController.gazebo_lqr_U.X[6];
+    uav_state_msg->euler_angle.y = gController.gazebo_lqr_U.X[7];
+    uav_state_msg->euler_angle.z = gController.gazebo_lqr_U.X[8];
+    uav_state_msg->rotation_speed_B.x  = gController.gazebo_lqr_U.X[9];
+    uav_state_msg->rotation_speed_B.y  = gController.gazebo_lqr_U.X[10];
+    uav_state_msg->rotation_speed_B.z  = gController.gazebo_lqr_U.X[11];
+    uav_state_msg->total_thrust  = gController.gazebo_lqr_Y.virtual_control[0];
+    uav_state_msg->moment.x      = gController.gazebo_lqr_Y.virtual_control[1];
+    uav_state_msg->moment.y      = gController.gazebo_lqr_Y.virtual_control[2];
+    uav_state_msg->moment.z      = gController.gazebo_lqr_Y.virtual_control[3];
 
-    uav_state_msg->LOE13.x  = gController.gazebo_gs_Y.gamma[0];
-    uav_state_msg->LOE13.y  = gController.gazebo_gs_Y.gamma[1];
-    uav_state_msg->LOE13.z  = gController.gazebo_gs_Y.gamma[2];
-/*    uav_state_msg->LOE46.x  = gController.gazebo_gs_Y.gamma[3];
-    uav_state_msg->LOE46.y  = gController.gazebo_gs_Y.gamma[4];
-    uav_state_msg->LOE46.z  = gController.gazebo_gs_Y.gamma[5]; */
+    uav_state_msg->LOE13.x  = gController.gazebo_lqr_Y.gamma[0];
+    uav_state_msg->LOE13.y  = gController.gazebo_lqr_Y.gamma[1];
+    uav_state_msg->LOE13.z  = gController.gazebo_lqr_Y.gamma[2];
+/*    uav_state_msg->LOE46.x  = gController.gazebo_lqr_Y.gamma[3];
+    uav_state_msg->LOE46.y  = gController.gazebo_lqr_Y.gamma[4];
+    uav_state_msg->LOE46.z  = gController.gazebo_lqr_Y.gamma[5]; */
 
     uav_state_msg->header.stamp  =  ros::Time::now();
     uav_state_pub_.publish(uav_state_msg);
@@ -284,7 +284,7 @@ int main(int argc, char** argv) {
     if (gEmergency_status)
     {
       ROS_INFO("x = %f, y = %f, z = %f",uav_state_msg->position_W.x,uav_state_msg->position_W.y,uav_state_msg->position_W.z);
-      ROS_ERROR("gazebo_gs_controller_node Emergency status");
+      ROS_ERROR("gazebo_lqr_controller_node Emergency status");
       ros::Duration(0.5).sleep();
       gController.terminate();
     }

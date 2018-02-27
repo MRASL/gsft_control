@@ -1,15 +1,15 @@
 /*
- * gazebo_gs_types.h
+ * rtGetNaN.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "gazebo_gs".
+ * Code generation for model "gazebo_lqr".
  *
- * Model version              : 1.912
+ * Model version              : 1.918
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Feb 23 00:58:11 2018
+ * C++ source code generated on : Fri Feb 23 00:58:23 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,10 +18,22 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_gazebo_gs_types_h_
-#define RTW_HEADER_gazebo_gs_types_h_
+#ifndef RTW_HEADER_rtGetNaN_h_
+#define RTW_HEADER_rtGetNaN_h_
+#include <stddef.h>
+#include "rtwtypes.h"
+#include "rt_nonfinite.h"
+#ifdef __cplusplus
 
-/* Forward declaration for rtModel */
-typedef struct tag_RTM_gazebo_gs_T RT_MODEL_gazebo_gs_T;
+extern "C" {
 
-#endif                                 /* RTW_HEADER_gazebo_gs_types_h_ */
+#endif
+
+  extern real_T rtGetNaN(void);
+  extern real32_T rtGetNaNF(void);
+
+#ifdef __cplusplus
+
+}                                      /* extern "C" */
+#endif
+#endif                                 /* RTW_HEADER_rtGetNaN_h_ */

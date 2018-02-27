@@ -1,15 +1,15 @@
 /*
- * gazebo_gs.h
+ * gazebo_lqr.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "gazebo_gs".
+ * Code generation for model "gazebo_lqr".
  *
- * Model version              : 1.912
+ * Model version              : 1.918
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Feb 23 00:58:11 2018
+ * C++ source code generated on : Fri Feb 23 00:58:23 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,18 +18,18 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_gazebo_gs_h_
-#define RTW_HEADER_gazebo_gs_h_
+#ifndef RTW_HEADER_gazebo_lqr_h_
+#define RTW_HEADER_gazebo_lqr_h_
 #include <cmath>
 #include <string.h>
-#ifndef gazebo_gs_COMMON_INCLUDES_
-# define gazebo_gs_COMMON_INCLUDES_
+#ifndef gazebo_lqr_COMMON_INCLUDES_
+# define gazebo_lqr_COMMON_INCLUDES_
 #include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#endif                                 /* gazebo_gs_COMMON_INCLUDES_ */
+#endif                                 /* gazebo_lqr_COMMON_INCLUDES_ */
 
-#include "gazebo_gs_types.h"
+#include "gazebo_lqr_types.h"
 
 /* Shared type includes */
 #include "multiword_types.h"
@@ -152,45 +152,45 @@
 /* Block signals (auto storage) */
 typedef struct {
   real_T Sum2[6];                      /* '<Root>/Sum2' */
-  real_T Memory[6];                    /* '<S3>/Memory' */
-  real_T Saturation;                   /* '<S8>/Saturation' */
-  real_T x1;                           /* '<S10>/x1' */
-  real_T y1;                           /* '<S11>/y1' */
-  real_T Saturation_a;                 /* '<S12>/Saturation' */
-} B_gazebo_gs_T;
+  real_T Memory[6];                    /* '<S2>/Memory' */
+  real_T Saturation;                   /* '<S6>/Saturation' */
+  real_T x1;                           /* '<S8>/x1' */
+  real_T y1;                           /* '<S9>/y1' */
+  real_T Saturation_a;                 /* '<S10>/Saturation' */
+} B_gazebo_lqr_T;
 
 /* Block states (auto storage) for system '<Root>' */
 typedef struct {
-  real_T Memory_PreviousInput[6];      /* '<S3>/Memory' */
-  real_T TimeStampA;                   /* '<S3>/Derivative' */
-  real_T LastUAtTimeA[3];              /* '<S3>/Derivative' */
-  real_T TimeStampB;                   /* '<S3>/Derivative' */
-  real_T LastUAtTimeB[3];              /* '<S3>/Derivative' */
-} DW_gazebo_gs_T;
+  real_T Memory_PreviousInput[6];      /* '<S2>/Memory' */
+  real_T TimeStampA;                   /* '<S2>/Derivative' */
+  real_T LastUAtTimeA[3];              /* '<S2>/Derivative' */
+  real_T TimeStampB;                   /* '<S2>/Derivative' */
+  real_T LastUAtTimeB[3];              /* '<S2>/Derivative' */
+} DW_gazebo_lqr_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S12>/Integrator1' */
-  real_T Integrator1_CSTATE_h;         /* '<S10>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S11>/Integrator1' */
-  real_T Integrator1_CSTATE_b;         /* '<S8>/Integrator1' */
-} X_gazebo_gs_T;
+  real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
+  real_T Integrator1_CSTATE_h;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
+  real_T Integrator1_CSTATE_b;         /* '<S6>/Integrator1' */
+} X_gazebo_lqr_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S12>/Integrator1' */
-  real_T Integrator1_CSTATE_h;         /* '<S10>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S11>/Integrator1' */
-  real_T Integrator1_CSTATE_b;         /* '<S8>/Integrator1' */
-} XDot_gazebo_gs_T;
+  real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
+  real_T Integrator1_CSTATE_h;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
+  real_T Integrator1_CSTATE_b;         /* '<S6>/Integrator1' */
+} XDot_gazebo_lqr_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S12>/Integrator1' */
-  boolean_T Integrator1_CSTATE_h;      /* '<S10>/Integrator1' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S11>/Integrator1' */
-  boolean_T Integrator1_CSTATE_b;      /* '<S8>/Integrator1' */
-} XDis_gazebo_gs_T;
+  boolean_T Integrator1_CSTATE;        /* '<S10>/Integrator1' */
+  boolean_T Integrator1_CSTATE_h;      /* '<S8>/Integrator1' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S9>/Integrator1' */
+  boolean_T Integrator1_CSTATE_b;      /* '<S6>/Integrator1' */
+} XDis_gazebo_lqr_T;
 
 #ifndef ODE5_INTG
 #define ODE5_INTG
@@ -211,15 +211,15 @@ typedef struct {
   real_T _Gain_m[24];
 
   /* Expression: Ib
-   * Referenced by: '<S3>/Constant1'
+   * Referenced by: '<S2>/Constant1'
    */
   real_T Constant1_Value[9];
-} ConstP_gazebo_gs_T;
+} ConstP_gazebo_lqr_T;
 
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
   real_T X[12];                        /* '<Root>/X' */
-} ExtU_gazebo_gs_T;
+} ExtU_gazebo_lqr_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
 typedef struct {
@@ -229,13 +229,13 @@ typedef struct {
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
   real_T ref[4];                       /* '<Root>/ref' */
   real_T gamma[3];                     /* '<Root>/gamma' */
-} ExtY_gazebo_gs_T;
+} ExtY_gazebo_lqr_T;
 
 /* Real-time Model Data Structure */
-struct tag_RTM_gazebo_gs_T {
+struct tag_RTM_gazebo_lqr_T {
   const char_T *errorStatus;
   RTWSolverInfo solverInfo;
-  X_gazebo_gs_T *contStates;
+  X_gazebo_lqr_T *contStates;
   int_T *periodicContStateIndices;
   real_T *periodicContStateRanges;
   real_T *derivs;
@@ -289,17 +289,17 @@ extern "C" {
 #endif
 
 /* Constant parameters (auto storage) */
-extern const ConstP_gazebo_gs_T gazebo_gs_ConstP;
+extern const ConstP_gazebo_lqr_T gazebo_lqr_ConstP;
 
-/* Class declaration for model gazebo_gs */
-class gazebo_gsModelClass {
+/* Class declaration for model gazebo_lqr */
+class gazebo_lqrModelClass {
   /* public data and function members */
  public:
   /* External inputs */
-  ExtU_gazebo_gs_T gazebo_gs_U;
+  ExtU_gazebo_lqr_T gazebo_lqr_U;
 
   /* External outputs */
-  ExtY_gazebo_gs_T gazebo_gs_Y;
+  ExtY_gazebo_lqr_T gazebo_lqr_Y;
 
   /* model initialize function */
   void initialize();
@@ -311,31 +311,31 @@ class gazebo_gsModelClass {
   void terminate();
 
   /* Constructor */
-  gazebo_gsModelClass();
+  gazebo_lqrModelClass();
 
   /* Destructor */
-  ~gazebo_gsModelClass();
+  ~gazebo_lqrModelClass();
 
   /* Real-Time Model get method */
-  RT_MODEL_gazebo_gs_T * getRTM();
+  RT_MODEL_gazebo_lqr_T * getRTM();
 
   /* private data and function members */
  private:
   /* Block signals */
-  B_gazebo_gs_T gazebo_gs_B;
+  B_gazebo_lqr_T gazebo_lqr_B;
 
   /* Block states */
-  DW_gazebo_gs_T gazebo_gs_DW;
-  X_gazebo_gs_T gazebo_gs_X;           /* Block continuous states */
+  DW_gazebo_lqr_T gazebo_lqr_DW;
+  X_gazebo_lqr_T gazebo_lqr_X;         /* Block continuous states */
 
   /* Real-Time Model */
-  RT_MODEL_gazebo_gs_T gazebo_gs_M;
+  RT_MODEL_gazebo_lqr_T gazebo_lqr_M;
 
   /* Continuous states update member function*/
   void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si );
 
   /* Derivatives member function */
-  void gazebo_gs_derivatives();
+  void gazebo_lqr_derivatives();
 };
 
 /*-
@@ -352,22 +352,20 @@ class gazebo_gsModelClass {
  *
  * Here is the system hierarchy for this model
  *
- * '<Root>' : 'gazebo_gs'
- * '<S1>'   : 'gazebo_gs/Actuator_Fault'
- * '<S2>'   : 'gazebo_gs/FDD'
- * '<S3>'   : 'gazebo_gs/FDD  '
- * '<S4>'   : 'gazebo_gs/MATLAB Function'
- * '<S5>'   : 'gazebo_gs/MATLAB Function1'
- * '<S6>'   : 'gazebo_gs/MATLAB Function2'
- * '<S7>'   : 'gazebo_gs/phi_controller1'
- * '<S8>'   : 'gazebo_gs/psi_controller '
- * '<S9>'   : 'gazebo_gs/teta_controller1'
- * '<S10>'  : 'gazebo_gs/x_controller '
- * '<S11>'  : 'gazebo_gs/y_controller '
- * '<S12>'  : 'gazebo_gs/z_controller '
- * '<S13>'  : 'gazebo_gs/FDD  /Cross Product'
- * '<S14>'  : 'gazebo_gs/FDD  /MATLAB Function1'
- * '<S15>'  : 'gazebo_gs/FDD  /Cross Product/Subsystem'
- * '<S16>'  : 'gazebo_gs/FDD  /Cross Product/Subsystem2'
+ * '<Root>' : 'gazebo_lqr'
+ * '<S1>'   : 'gazebo_lqr/Actuator_Fault'
+ * '<S2>'   : 'gazebo_lqr/FDD  '
+ * '<S3>'   : 'gazebo_lqr/MATLAB Function'
+ * '<S4>'   : 'gazebo_lqr/MATLAB Function1'
+ * '<S5>'   : 'gazebo_lqr/phi_controller1'
+ * '<S6>'   : 'gazebo_lqr/psi_controller '
+ * '<S7>'   : 'gazebo_lqr/teta_controller1'
+ * '<S8>'   : 'gazebo_lqr/x_controller '
+ * '<S9>'   : 'gazebo_lqr/y_controller '
+ * '<S10>'  : 'gazebo_lqr/z_controller '
+ * '<S11>'  : 'gazebo_lqr/FDD  /Cross Product'
+ * '<S12>'  : 'gazebo_lqr/FDD  /MATLAB Function1'
+ * '<S13>'  : 'gazebo_lqr/FDD  /Cross Product/Subsystem'
+ * '<S14>'  : 'gazebo_lqr/FDD  /Cross Product/Subsystem2'
  */
-#endif                                 /* RTW_HEADER_gazebo_gs_h_ */
+#endif                                 /* RTW_HEADER_gazebo_lqr_h_ */
