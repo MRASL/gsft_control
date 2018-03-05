@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.750
+ * Model version              : 1.757
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Mar  5 16:02:29 2018
+ * C++ source code generated on : Mon Mar  5 17:07:03 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -33,8 +33,6 @@
 
 /* Shared type includes */
 #include "multiword_types.h"
-#include "rtGetInf.h"
-#include "rt_nonfinite.h"
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetBlkStateChangeFlag
@@ -151,45 +149,52 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T u[6];                         /* '<Root>/                 ' */
-  real_T Memory[6];                    /* '<S2>/Memory' */
-  real_T psi_e;                        /* '<S5>/psi_e' */
-  real_T xe;                           /* '<S7>/xe' */
-  real_T ye;                           /* '<S8>/ye' */
-  real_T ze;                           /* '<S9>/ze' */
+  real_T dX[12];                       /* '<Root>/Sum' */
+  real_T RateTransition3[12];          /* '<Root>/Rate Transition3' */
+  real_T u;                            /* '<S7>/                     ' */
+  real_T Sum1;                         /* '<S7>/Sum1' */
+  real_T ZeroOrderHold2;               /* '<Root>/Zero-Order Hold2' */
+  real_T u_j;                          /* '<S5>/                    ' */
+  real_T u_m;                          /* '<S6>/                     ' */
+  real_T RateTransition4[12];          /* '<Root>/Rate Transition4' */
+  real_T Fcn1;                         /* '<Root>/Fcn1' */
+  real_T ZeroOrderHold;                /* '<Root>/Zero-Order Hold' */
+  real_T roll;                         /* '<S2>/roll' */
+  real_T Fcn;                          /* '<Root>/Fcn' */
+  real_T ZeroOrderHold1;               /* '<Root>/Zero-Order Hold1' */
+  real_T pitch;                        /* '<S4>/pitch' */
+  real_T d_ref[4];                     /* '<Root>/Sum1' */
+  real_T RateTransition;               /* '<Root>/Rate Transition' */
+  real_T RateTransition1;              /* '<Root>/Rate Transition1' */
+  real_T RateTransition2;              /* '<Root>/Rate Transition2' */
+  real_T psi_e;                        /* '<S3>/psi_e' */
+  real_T xe;                           /* '<S5>/xe' */
+  real_T ye;                           /* '<S6>/ye' */
+  real_T ze;                           /* '<S7>/ze' */
 } B_scenario1_lqr1khz_T;
-
-/* Block states (auto storage) for system '<Root>' */
-typedef struct {
-  real_T Memory_PreviousInput[6];      /* '<S2>/Memory' */
-  real_T TimeStampA;                   /* '<S2>/Derivative' */
-  real_T LastUAtTimeA[3];              /* '<S2>/Derivative' */
-  real_T TimeStampB;                   /* '<S2>/Derivative' */
-  real_T LastUAtTimeB[3];              /* '<S2>/Derivative' */
-} DW_scenario1_lqr1khz_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
-  real_T Integrator1_CSTATE_h;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
-  real_T Integrator1_CSTATE_b;         /* '<S5>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_h;         /* '<S5>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S6>/Integrator1' */
+  real_T Integrator1_CSTATE_b;         /* '<S3>/Integrator1' */
 } X_scenario1_lqr1khz_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
-  real_T Integrator1_CSTATE_h;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
-  real_T Integrator1_CSTATE_b;         /* '<S5>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_h;         /* '<S5>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S6>/Integrator1' */
+  real_T Integrator1_CSTATE_b;         /* '<S3>/Integrator1' */
 } XDot_scenario1_lqr1khz_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S9>/Integrator1' */
-  boolean_T Integrator1_CSTATE_h;      /* '<S7>/Integrator1' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S8>/Integrator1' */
-  boolean_T Integrator1_CSTATE_b;      /* '<S5>/Integrator1' */
+  boolean_T Integrator1_CSTATE;        /* '<S7>/Integrator1' */
+  boolean_T Integrator1_CSTATE_h;      /* '<S5>/Integrator1' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S6>/Integrator1' */
+  boolean_T Integrator1_CSTATE_b;      /* '<S3>/Integrator1' */
 } XDis_scenario1_lqr1khz_T;
 
 #ifndef ODE5_INTG
@@ -209,11 +214,6 @@ typedef struct {
    * Referenced by: '<Root>/                 '
    */
   real_T _Gain_m[24];
-
-  /* Expression: Ib
-   * Referenced by: '<S2>/Constant1'
-   */
-  real_T Constant1_Value[9];
 } ConstP_scenario1_lqr1khz_T;
 
 /* External inputs (root inport signals with auto storage) */
@@ -229,7 +229,6 @@ typedef struct {
   real_T motor_speed[6];               /* '<Root>/motor_speed' */
   real_T motor_RPM[6];                 /* '<Root>/motor_RPM' */
   real_T ref[4];                       /* '<Root>/ref' */
-  real_T gamma[3];                     /* '<Root>/gamma' */
 } ExtY_scenario1_lqr1khz_T;
 
 /* Real-time Model Data Structure */
@@ -271,10 +270,14 @@ struct tag_RTM_scenario1_lqr1khz_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
@@ -324,9 +327,6 @@ class scenario1_lqr1khzModelClass {
  private:
   /* Block signals */
   B_scenario1_lqr1khz_T scenario1_lqr1khz_B;
-
-  /* Block states */
-  DW_scenario1_lqr1khz_T scenario1_lqr1khz_DW;
   X_scenario1_lqr1khz_T scenario1_lqr1khz_X;/* Block continuous states */
 
   /* Real-Time Model */
@@ -354,18 +354,12 @@ class scenario1_lqr1khzModelClass {
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'scenario1_lqr1khz'
- * '<S1>'   : 'scenario1_lqr1khz/Actuator_Fault'
- * '<S2>'   : 'scenario1_lqr1khz/FDD  '
- * '<S3>'   : 'scenario1_lqr1khz/MATLAB Function'
- * '<S4>'   : 'scenario1_lqr1khz/phi_controller1'
- * '<S5>'   : 'scenario1_lqr1khz/psi_controller '
- * '<S6>'   : 'scenario1_lqr1khz/teta_controller1'
- * '<S7>'   : 'scenario1_lqr1khz/x_controller '
- * '<S8>'   : 'scenario1_lqr1khz/y_controller '
- * '<S9>'   : 'scenario1_lqr1khz/z_controller '
- * '<S10>'  : 'scenario1_lqr1khz/FDD  /Cross Product'
- * '<S11>'  : 'scenario1_lqr1khz/FDD  /MATLAB Function1'
- * '<S12>'  : 'scenario1_lqr1khz/FDD  /Cross Product/Subsystem'
- * '<S13>'  : 'scenario1_lqr1khz/FDD  /Cross Product/Subsystem2'
+ * '<S1>'   : 'scenario1_lqr1khz/MATLAB Function'
+ * '<S2>'   : 'scenario1_lqr1khz/phi_controller1'
+ * '<S3>'   : 'scenario1_lqr1khz/psi_controller '
+ * '<S4>'   : 'scenario1_lqr1khz/teta_controller1'
+ * '<S5>'   : 'scenario1_lqr1khz/x_controller '
+ * '<S6>'   : 'scenario1_lqr1khz/y_controller '
+ * '<S7>'   : 'scenario1_lqr1khz/z_controller '
  */
 #endif                                 /* RTW_HEADER_scenario1_lqr1khz_h_ */

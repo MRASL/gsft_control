@@ -140,18 +140,18 @@ add_library(matlab_lqr
 
     src/scenario1_lqr1khz_grt_rtw/scenario1_lqr1khz_data.cpp
     src/scenario1_lqr1khz_grt_rtw/scenario1_lqr1khz.cpp
-    src/scenario1_lqr1khz_grt_rtw/rtGetInf.cpp
-    src/scenario1_lqr1khz_grt_rtw/rtGetNaN.cpp
-    src/scenario1_lqr1khz_grt_rtw/rt_nonfinite.cpp
+  ##  src/scenario1_lqr1khz_grt_rtw/rtGetInf.cpp
+  ##  src/scenario1_lqr1khz_grt_rtw/rtGetNaN.cpp
+  ##  src/scenario1_lqr1khz_grt_rtw/rt_nonfinite.cpp
 
-    src/scenario2_gs_grt_rtw/scenario2_gs_data.cpp
-    src/scenario2_gs_grt_rtw/scenario2_gs.cpp
+  #  src/scenario2_gs_grt_rtw/scenario2_gs_data.cpp
+  #  src/scenario2_gs_grt_rtw/scenario2_gs.cpp
 
-    src/gazebo_gs_grt_rtw/gazebo_gs_data.cpp
-    src/gazebo_gs_grt_rtw/gazebo_gs.cpp
+  #  src/gazebo_gs_grt_rtw/gazebo_gs_data.cpp
+  #  src/gazebo_gs_grt_rtw/gazebo_gs.cpp
 
-    src/gazebo_lqr_grt_rtw/gazebo_lqr_data.cpp
-    src/gazebo_lqr_grt_rtw/gazebo_lqr.cpp
+  #  src/gazebo_lqr_grt_rtw/gazebo_lqr_data.cpp
+  #  src/gazebo_lqr_grt_rtw/gazebo_lqr.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -172,44 +172,44 @@ target_link_libraries(scenario1_lqr1khz_controller_node
     ${catkin_LIBRARIES}
 )
 
-add_executable(scenario2_gs_controller_node
-    src/scenario2_gs_controller_node.cpp
-)
-add_dependencies(scenario2_gs_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    matlab_lqr
-)
-target_link_libraries(scenario2_gs_controller_node
-    matlab_lqr
-  ${catkin_LIBRARIES}
-)
+#add_executable(scenario2_gs_controller_node
+#    src/scenario2_gs_controller_node.cpp
+#)
+#add_dependencies(scenario2_gs_controller_node
+#    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+#    ${catkin_EXPORTED_TARGETS}
+#    matlab_lqr
+#)
+#target_link_libraries(scenario2_gs_controller_node
+#    matlab_lqr
+#  ${catkin_LIBRARIES}
+#)
 
-add_executable(gazebo_gs_controller_node
-    src/gazebo_gs_controller_node.cpp
-)
-add_dependencies(gazebo_gs_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    matlab_lqr
-)
-target_link_libraries(gazebo_gs_controller_node
-    matlab_lqr
-  ${catkin_LIBRARIES}
-)
+#add_executable(gazebo_gs_controller_node
+#    src/gazebo_gs_controller_node.cpp
+#)
+#add_dependencies(gazebo_gs_controller_node
+#    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+#    ${catkin_EXPORTED_TARGETS}
+#    matlab_lqr
+#)
+#target_link_libraries(gazebo_gs_controller_node
+#    matlab_lqr
+#  ${catkin_LIBRARIES}
+#)
 
-add_executable(gazebo_lqr_controller_node
-    src/gazebo_lqr_controller_node.cpp
-)
-add_dependencies(gazebo_lqr_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    matlab_lqr
-)
-target_link_libraries(gazebo_lqr_controller_node
-    matlab_lqr
-  ${catkin_LIBRARIES}
-)
+#add_executable(gazebo_lqr_controller_node
+#    src/gazebo_lqr_controller_node.cpp
+#)
+#add_dependencies(gazebo_lqr_controller_node
+#    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+#    ${catkin_EXPORTED_TARGETS}
+#    matlab_lqr
+#)
+#target_link_libraries(gazebo_lqr_controller_node
+#    matlab_lqr
+#  ${catkin_LIBRARIES}
+#)
 #############
 ## Install ##
 #############
