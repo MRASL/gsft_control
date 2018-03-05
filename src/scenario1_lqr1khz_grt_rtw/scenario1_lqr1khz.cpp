@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.758
+ * Model version              : 1.760
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Mar  5 17:29:16 2018
+ * C++ source code generated on : Mon Mar  5 18:14:45 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -414,8 +414,8 @@ void scenario1_lqr1khzModelClass::step()
 
     /* '<S1>:1:17' psi = X0(4); */
     psi = scenario1_lqr1khz_U.X0[3];
-  } else if (rtb_Sum1_g <= 65.0) {
-    /* '<S1>:1:18' elseif t<=65 */
+  } else if (rtb_Sum1_g <= 80.0) {
+    /* '<S1>:1:18' elseif t<=80 */
     /* '<S1>:1:19' x = X0(1)-1; */
     rtb_Sum1_g = scenario1_lqr1khz_U.X0[0] - 1.0;
 
@@ -425,8 +425,8 @@ void scenario1_lqr1khzModelClass::step()
     /* '<S1>:1:21' z = 0.5; */
     rtb_Sum3_f = 0.5;
 
-    /* '<S1>:1:22' psi = X0(4)+pi/4; */
-    psi = scenario1_lqr1khz_U.X0[3] + 0.78539816339744828;
+    /* '<S1>:1:22' psi = X0(4)+pi/2; */
+    psi = scenario1_lqr1khz_U.X0[3] + 1.5707963267948966;
   } else {
     /* '<S1>:1:23' else */
     /* '<S1>:1:24' x = X0(1)-1; */
@@ -438,8 +438,8 @@ void scenario1_lqr1khzModelClass::step()
     /* '<S1>:1:26' z = 0.0; */
     rtb_Sum3_f = 0.0;
 
-    /* '<S1>:1:27' psi = X0(4)+pi/4; */
-    psi = scenario1_lqr1khz_U.X0[3] + 0.78539816339744828;
+    /* '<S1>:1:27' psi = X0(4)+pi/2; */
+    psi = scenario1_lqr1khz_U.X0[3] + 1.5707963267948966;
   }
 
   /* Outport: '<Root>/ref' incorporates:
