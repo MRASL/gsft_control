@@ -24,6 +24,7 @@ scenario1_lqr1khzModelClass gController;
 
 bool gCommand_active;
 bool gLOE_active;
+bool gPublish;
 Eigen::VectorXd gLOE(6);
 
 bool gInit_flag;
@@ -135,6 +136,13 @@ void LostControlCallback(const gsft_control::LOEConstPtr& loe_msg) {
     "]: ---------- TND LOE0 = " << gLOE[0] << std::endl;
 }
 
+void timmerCallback(const ros::TimerEvent&)
+{
+  if (!gPublish){
+    gPublish = true;
+  }
+}
+
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "scenario1_lqr1khz_controller_node");
@@ -165,11 +173,14 @@ int main(int argc, char** argv) {
   ros::Publisher uav_state_pub_;
   uav_state_pub_ = nh.advertise<gsft_control::UAVState>(gsft_control::default_topics::UAV_STATE, 1);
 
+  ros::Timer timer = nh.createTimer(ros::Duration(0.01),timmerCallback);
+
   ros::Rate r(1000);
 
   gCommand_active = false;
   gEmergency_status = false;
   gInit_flag = false;
+  gPublish = false;
 
   for (unsigned int i=0; i< 6; i++) {
     gLOE[i] = 0.0;
@@ -245,45 +256,48 @@ int main(int argc, char** argv) {
     }
 
     // Publish: UAV state in World frame
-    gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-/*    uav_state_msg->position_ref.x  = gController.scenario1_lqr1khz_Y.ref[0];
-    uav_state_msg->position_ref.y  = gController.scenario1_lqr1khz_Y.ref[1];
-    uav_state_msg->position_ref.z  = gController.scenario1_lqr1khz_Y.ref[2];
-    uav_state_msg->heading_ref     = gController.scenario1_lqr1khz_Y.ref[3]; */
+    if (gPublish){
+      gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
+      uav_state_msg->position_ref.x  = gController.scenario1_lqr1khz_Y.ref[0];
+      uav_state_msg->position_ref.y  = gController.scenario1_lqr1khz_Y.ref[1];
+      uav_state_msg->position_ref.z  = gController.scenario1_lqr1khz_Y.ref[2];
+      uav_state_msg->heading_ref     = gController.scenario1_lqr1khz_Y.ref[3];
 
-    uav_state_msg->position_W.x  = gController.scenario1_lqr1khz_U.X[0];
-    uav_state_msg->position_W.y  = gController.scenario1_lqr1khz_U.X[1];
-    uav_state_msg->position_W.z  = gController.scenario1_lqr1khz_U.X[2];
-/*    uav_state_msg->velocity_B.x  = gController.scenario1_lqr1khz_U.X[3];
-    uav_state_msg->velocity_B.y  = gController.scenario1_lqr1khz_U.X[4];
-    uav_state_msg->velocity_B.z  = gController.scenario1_lqr1khz_U.X[5]; */
-    uav_state_msg->euler_angle.x = gController.scenario1_lqr1khz_U.X[6];
-    uav_state_msg->euler_angle.y = gController.scenario1_lqr1khz_U.X[7];
-    uav_state_msg->euler_angle.z = gController.scenario1_lqr1khz_U.X[8];
-/*    uav_state_msg->rotation_speed_B.x  = gController.scenario1_lqr1khz_U.X[9];
-    uav_state_msg->rotation_speed_B.y  = gController.scenario1_lqr1khz_U.X[10];
-    uav_state_msg->rotation_speed_B.z  = gController.scenario1_lqr1khz_U.X[11];
-    uav_state_msg->total_thrust  = gController.scenario1_lqr1khz_Y.virtual_control[0];
-    uav_state_msg->moment.x      = gController.scenario1_lqr1khz_Y.virtual_control[1];
-    uav_state_msg->moment.y      = gController.scenario1_lqr1khz_Y.virtual_control[2];
-    uav_state_msg->moment.z      = gController.scenario1_lqr1khz_Y.virtual_control[3]; */
+      uav_state_msg->position_W.x  = gController.scenario1_lqr1khz_U.X[0];
+      uav_state_msg->position_W.y  = gController.scenario1_lqr1khz_U.X[1];
+      uav_state_msg->position_W.z  = gController.scenario1_lqr1khz_U.X[2];
+      uav_state_msg->velocity_B.x  = gController.scenario1_lqr1khz_U.X[3];
+      uav_state_msg->velocity_B.y  = gController.scenario1_lqr1khz_U.X[4];
+      uav_state_msg->velocity_B.z  = gController.scenario1_lqr1khz_U.X[5];
+      uav_state_msg->euler_angle.x = gController.scenario1_lqr1khz_U.X[6];
+      uav_state_msg->euler_angle.y = gController.scenario1_lqr1khz_U.X[7];
+      uav_state_msg->euler_angle.z = gController.scenario1_lqr1khz_U.X[8];
+      uav_state_msg->rotation_speed_B.x  = gController.scenario1_lqr1khz_U.X[9];
+      uav_state_msg->rotation_speed_B.y  = gController.scenario1_lqr1khz_U.X[10];
+      uav_state_msg->rotation_speed_B.z  = gController.scenario1_lqr1khz_U.X[11];
+      uav_state_msg->total_thrust  = gController.scenario1_lqr1khz_Y.virtual_control[0];
+      uav_state_msg->moment.x      = gController.scenario1_lqr1khz_Y.virtual_control[1];
+      uav_state_msg->moment.y      = gController.scenario1_lqr1khz_Y.virtual_control[2];
+      uav_state_msg->moment.z      = gController.scenario1_lqr1khz_Y.virtual_control[3];
 
-/*    uav_state_msg->LOE13.x  = gController.scenario1_lqr1khz_Y.gamma[0];
-    uav_state_msg->LOE13.y  = gController.scenario1_lqr1khz_Y.gamma[1];
-    uav_state_msg->LOE13.z  = gController.scenario1_lqr1khz_Y.gamma[2]; */
-/*    uav_state_msg->LOE46.x  = gController.scenario1_lqr1khz_Y.gamma[3];
-    uav_state_msg->LOE46.y  = gController.scenario1_lqr1khz_Y.gamma[4];
-    uav_state_msg->LOE46.z  = gController.scenario1_lqr1khz_Y.gamma[5]; */
+  /*    uav_state_msg->LOE13.x  = gController.scenario1_lqr1khz_Y.gamma[0];
+      uav_state_msg->LOE13.y  = gController.scenario1_lqr1khz_Y.gamma[1];
+      uav_state_msg->LOE13.z  = gController.scenario1_lqr1khz_Y.gamma[2]; */
+  /*    uav_state_msg->LOE46.x  = gController.scenario1_lqr1khz_Y.gamma[3];
+      uav_state_msg->LOE46.y  = gController.scenario1_lqr1khz_Y.gamma[4];
+      uav_state_msg->LOE46.z  = gController.scenario1_lqr1khz_Y.gamma[5]; */
 
-    uav_state_msg->header.stamp  =  ros::Time::now();
-    uav_state_pub_.publish(uav_state_msg);
+      uav_state_msg->header.stamp  =  ros::Time::now();
+      uav_state_pub_.publish(uav_state_msg);
+      gPublish = false;
+    }
 
     ros::spinOnce();
     r.sleep();
 
     if (gEmergency_status)
     {
-      ROS_INFO("x = %f, y = %f, z = %f",uav_state_msg->position_W.x,uav_state_msg->position_W.y,uav_state_msg->position_W.z);
+      ROS_INFO("x = %f, y = %f, z = %f",gController.scenario1_lqr1khz_U.X[0],gController.scenario1_lqr1khz_U.X[1],gController.scenario1_lqr1khz_U.X[2]);
       ROS_ERROR("scenario1_lqr1khz_controller_node Emergency status");
       ros::Duration(0.5).sleep();
       gController.terminate();
