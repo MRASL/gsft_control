@@ -246,31 +246,31 @@ int main(int argc, char** argv) {
 
     // Publish: UAV state in World frame
     gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-    uav_state_msg->position_ref.x  = gController.scenario1_lqr1khz_Y.ref[0];
+/*    uav_state_msg->position_ref.x  = gController.scenario1_lqr1khz_Y.ref[0];
     uav_state_msg->position_ref.y  = gController.scenario1_lqr1khz_Y.ref[1];
     uav_state_msg->position_ref.z  = gController.scenario1_lqr1khz_Y.ref[2];
-    uav_state_msg->heading_ref     = gController.scenario1_lqr1khz_Y.ref[3];
+    uav_state_msg->heading_ref     = gController.scenario1_lqr1khz_Y.ref[3]; */
 
     uav_state_msg->position_W.x  = gController.scenario1_lqr1khz_U.X[0];
     uav_state_msg->position_W.y  = gController.scenario1_lqr1khz_U.X[1];
     uav_state_msg->position_W.z  = gController.scenario1_lqr1khz_U.X[2];
-    uav_state_msg->velocity_B.x  = gController.scenario1_lqr1khz_U.X[3];
+/*    uav_state_msg->velocity_B.x  = gController.scenario1_lqr1khz_U.X[3];
     uav_state_msg->velocity_B.y  = gController.scenario1_lqr1khz_U.X[4];
-    uav_state_msg->velocity_B.z  = gController.scenario1_lqr1khz_U.X[5];
+    uav_state_msg->velocity_B.z  = gController.scenario1_lqr1khz_U.X[5]; */
     uav_state_msg->euler_angle.x = gController.scenario1_lqr1khz_U.X[6];
     uav_state_msg->euler_angle.y = gController.scenario1_lqr1khz_U.X[7];
     uav_state_msg->euler_angle.z = gController.scenario1_lqr1khz_U.X[8];
-    uav_state_msg->rotation_speed_B.x  = gController.scenario1_lqr1khz_U.X[9];
+/*    uav_state_msg->rotation_speed_B.x  = gController.scenario1_lqr1khz_U.X[9];
     uav_state_msg->rotation_speed_B.y  = gController.scenario1_lqr1khz_U.X[10];
     uav_state_msg->rotation_speed_B.z  = gController.scenario1_lqr1khz_U.X[11];
     uav_state_msg->total_thrust  = gController.scenario1_lqr1khz_Y.virtual_control[0];
     uav_state_msg->moment.x      = gController.scenario1_lqr1khz_Y.virtual_control[1];
     uav_state_msg->moment.y      = gController.scenario1_lqr1khz_Y.virtual_control[2];
-    uav_state_msg->moment.z      = gController.scenario1_lqr1khz_Y.virtual_control[3];
+    uav_state_msg->moment.z      = gController.scenario1_lqr1khz_Y.virtual_control[3]; */
 
-    uav_state_msg->LOE13.x  = gController.scenario1_lqr1khz_Y.gamma[0];
+/*    uav_state_msg->LOE13.x  = gController.scenario1_lqr1khz_Y.gamma[0];
     uav_state_msg->LOE13.y  = gController.scenario1_lqr1khz_Y.gamma[1];
-    uav_state_msg->LOE13.z  = gController.scenario1_lqr1khz_Y.gamma[2];
+    uav_state_msg->LOE13.z  = gController.scenario1_lqr1khz_Y.gamma[2]; */
 /*    uav_state_msg->LOE46.x  = gController.scenario1_lqr1khz_Y.gamma[3];
     uav_state_msg->LOE46.y  = gController.scenario1_lqr1khz_Y.gamma[4];
     uav_state_msg->LOE46.z  = gController.scenario1_lqr1khz_Y.gamma[5]; */
