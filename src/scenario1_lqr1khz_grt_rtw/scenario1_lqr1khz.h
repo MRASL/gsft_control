@@ -7,15 +7,15 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.771
+ * Model version              : 1.775
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Mar  6 11:38:03 2018
+ * C++ source code generated on : Tue Mar  6 13:22:49 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
  * Embedded hardware selection: 32-bit Generic
  * Code generation objective: Execution efficiency
- * Validation result: Passed (1), Warnings (3), Error (0)
+ * Validation result: Not run
  */
 
 #ifndef RTW_HEADER_scenario1_lqr1khz_h_
@@ -163,15 +163,10 @@ typedef struct {
   real_T Fcn;                          /* '<Root>/Fcn' */
   real_T ZeroOrderHold1;               /* '<Root>/Zero-Order Hold1' */
   real_T pitch;                        /* '<S4>/pitch' */
-  real_T RateTransition6[12];          /* '<Root>/Rate Transition6' */
-  real_T u_n;                          /* '<S3>/                     ' */
-  real_T Sum1_a;                       /* '<S3>/Sum1' */
-  real_T ZeroOrderHold3;               /* '<Root>/Zero-Order Hold3' */
   real_T d_ref[4];                     /* '<Root>/Sum1' */
   real_T RateTransition;               /* '<Root>/Rate Transition' */
   real_T RateTransition1;              /* '<Root>/Rate Transition1' */
   real_T RateTransition2;              /* '<Root>/Rate Transition2' */
-  real_T RateTransition5;              /* '<Root>/Rate Transition5' */
   real_T psi_e;                        /* '<S3>/psi_e' */
   real_T xe;                           /* '<S5>/xe' */
   real_T ye;                           /* '<S6>/ye' */
