@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.766
+ * Model version              : 1.768
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Mar  5 19:33:24 2018
+ * C++ source code generated on : Mon Mar  5 19:38:56 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,6 +149,24 @@
 
 /* Block signals (auto storage) */
 typedef struct {
+  real_T dX[12];                       /* '<Root>/Sum' */
+  real_T RateTransition3[12];          /* '<Root>/Rate Transition3' */
+  real_T u;                            /* '<S7>/                     ' */
+  real_T Sum1;                         /* '<S7>/Sum1' */
+  real_T ZeroOrderHold2;               /* '<Root>/Zero-Order Hold2' */
+  real_T u_j;                          /* '<S5>/                    ' */
+  real_T u_m;                          /* '<S6>/                     ' */
+  real_T RateTransition4[12];          /* '<Root>/Rate Transition4' */
+  real_T Fcn1;                         /* '<Root>/Fcn1' */
+  real_T ZeroOrderHold;                /* '<Root>/Zero-Order Hold' */
+  real_T roll;                         /* '<S2>/roll' */
+  real_T Fcn;                          /* '<Root>/Fcn' */
+  real_T ZeroOrderHold1;               /* '<Root>/Zero-Order Hold1' */
+  real_T pitch;                        /* '<S4>/pitch' */
+  real_T d_ref[4];                     /* '<Root>/Sum1' */
+  real_T RateTransition;               /* '<Root>/Rate Transition' */
+  real_T RateTransition1;              /* '<Root>/Rate Transition1' */
+  real_T RateTransition2;              /* '<Root>/Rate Transition2' */
   real_T psi_e;                        /* '<S3>/psi_e' */
   real_T xe;                           /* '<S5>/xe' */
   real_T ye;                           /* '<S6>/ye' */
@@ -252,10 +270,14 @@ struct tag_RTM_scenario1_lqr1khz_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
