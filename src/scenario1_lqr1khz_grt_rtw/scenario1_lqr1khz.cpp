@@ -9,7 +9,7 @@
  *
  * Model version              : 1.778
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Mar  6 13:52:17 2018
+ * C++ source code generated on : Tue Mar  6 13:59:58 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -259,8 +259,8 @@ void scenario1_lqr1khzModelClass::step()
     /* Gain: '<S7>/                     ' incorporates:
      *  SignalConversion: '<S7>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr1khz_B.u = 12.219481695651943 *
-      scenario1_lqr1khz_B.RateTransition3[2] + 6.215786645518647 *
+    scenario1_lqr1khz_B.u = 12.21948169565192 *
+      scenario1_lqr1khz_B.RateTransition3[2] + 6.2157866455186435 *
       scenario1_lqr1khz_B.RateTransition3[5];
   }
 
@@ -268,7 +268,7 @@ void scenario1_lqr1khzModelClass::step()
    *  Gain: '<S7>/  '
    *  Integrator: '<S7>/Integrator1'
    */
-  scenario1_lqr1khz_B.Sum1 = 9.99999999999998 *
+  scenario1_lqr1khz_B.Sum1 = 9.9999999999999787 *
     scenario1_lqr1khz_X.Integrator1_CSTATE - scenario1_lqr1khz_B.u;
   if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
       (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0) {
@@ -278,15 +278,15 @@ void scenario1_lqr1khzModelClass::step()
     /* Gain: '<S5>/                    ' incorporates:
      *  SignalConversion: '<S5>/TmpSignal ConversionAt                    Inport1'
      */
-    scenario1_lqr1khz_B.u_j = 0.325226719003935 *
-      scenario1_lqr1khz_B.RateTransition3[0] + 0.276471158743002 *
+    scenario1_lqr1khz_B.u_j = 0.32522671900393174 *
+      scenario1_lqr1khz_B.RateTransition3[0] + 0.27647115874299921 *
       scenario1_lqr1khz_B.RateTransition3[3];
 
     /* Gain: '<S6>/                     ' incorporates:
      *  SignalConversion: '<S6>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr1khz_B.u_m = -0.39175838468687335 *
-      scenario1_lqr1khz_B.RateTransition3[1] + -0.29286636613845662 *
+    scenario1_lqr1khz_B.u_m = -0.61661170730191683 *
+      scenario1_lqr1khz_B.RateTransition3[1] + -0.40961679381467436 *
       scenario1_lqr1khz_B.RateTransition3[4];
   }
 
@@ -294,14 +294,14 @@ void scenario1_lqr1khzModelClass::step()
    *  Gain: '<S5>/ '
    *  Integrator: '<S5>/Integrator1'
    */
-  rtb_Sum1_g = 0.17320508075688837 * scenario1_lqr1khz_X.Integrator1_CSTATE_h -
+  rtb_Sum1_g = 0.17320508075688765 * scenario1_lqr1khz_X.Integrator1_CSTATE_h -
     scenario1_lqr1khz_B.u_j;
 
   /* Sum: '<S6>/Sum1' incorporates:
    *  Gain: '<S6>/  '
    *  Integrator: '<S6>/Integrator1'
    */
-  rtb_Sum1 = -0.24494897427832107 * scenario1_lqr1khz_X.Integrator1_CSTATE_j -
+  rtb_Sum1 = -0.4183300132670365 * scenario1_lqr1khz_X.Integrator1_CSTATE_j -
     scenario1_lqr1khz_B.u_m;
 
   /* RateTransition: '<Root>/Rate Transition4' incorporates:
@@ -373,12 +373,12 @@ void scenario1_lqr1khzModelClass::step()
    *  Sum: '<S3>/Sum1'
    *  Sum: '<S4>/Sum1'
    */
-  rtb_Sum1_g = scenario1_lqr1khz_B.roll - (1.2322719312173505 *
-    scenario1_lqr1khz_B.dX[6] + 0.29335716429966235 * scenario1_lqr1khz_B.dX[9]);
-  rtb_Sum1 = scenario1_lqr1khz_B.pitch - (1.3074289503355252 *
-    scenario1_lqr1khz_B.dX[7] + 0.34699194824910151 * scenario1_lqr1khz_B.dX[10]);
-  z = 0.15811388300841892 * scenario1_lqr1khz_X.Integrator1_CSTATE_b -
-    (0.30355520549478621 * scenario1_lqr1khz_B.dX[8] + 0.24395632222527286 *
+  rtb_Sum1_g = scenario1_lqr1khz_B.roll - (1.5370914717068118 *
+    scenario1_lqr1khz_B.dX[6] + 0.32763886313465096 * scenario1_lqr1khz_B.dX[9]);
+  rtb_Sum1 = scenario1_lqr1khz_B.pitch - (1.3074289503355112 *
+    scenario1_lqr1khz_B.dX[7] + 0.34699194824909779 * scenario1_lqr1khz_B.dX[10]);
+  z = 0.15811388300841908 * scenario1_lqr1khz_X.Integrator1_CSTATE_b -
+    (0.30355520549478687 * scenario1_lqr1khz_B.dX[8] + 0.24395632222527344 *
      scenario1_lqr1khz_B.dX[11]);
 
   /* Outport: '<Root>/virtual_control' incorporates:
