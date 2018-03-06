@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.775
+ * Model version              : 1.776
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Mar  6 13:22:49 2018
+ * C++ source code generated on : Tue Mar  6 13:31:08 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -625,19 +625,8 @@ void scenario1_lqr1khzModelClass::step()
     /* End of Saturate: '<S5>/xe' */
 
     /* Sum: '<S6>/Sum3' */
-    psi = scenario1_lqr1khz_B.RateTransition1 -
+    scenario1_lqr1khz_B.Sum3 = scenario1_lqr1khz_B.RateTransition1 -
       scenario1_lqr1khz_B.RateTransition3[1];
-
-    /* Saturate: '<S6>/ye' */
-    if (psi > 2.0) {
-      scenario1_lqr1khz_B.ye = 2.0;
-    } else if (psi < -2.0) {
-      scenario1_lqr1khz_B.ye = -2.0;
-    } else {
-      scenario1_lqr1khz_B.ye = psi;
-    }
-
-    /* End of Saturate: '<S6>/ye' */
 
     /* Saturate: '<S7>/z' */
     if (scenario1_lqr1khz_B.RateTransition2 > 1.0) {
@@ -717,7 +706,7 @@ void scenario1_lqr1khzModelClass::scenario1_lqr1khz_derivatives()
   _rtXdot->Integrator1_CSTATE_h = scenario1_lqr1khz_B.xe;
 
   /* Derivatives for Integrator: '<S6>/Integrator1' */
-  _rtXdot->Integrator1_CSTATE_j = scenario1_lqr1khz_B.ye;
+  _rtXdot->Integrator1_CSTATE_j = scenario1_lqr1khz_B.Sum3;
 
   /* Derivatives for Integrator: '<S3>/Integrator1' */
   _rtXdot->Integrator1_CSTATE_b = scenario1_lqr1khz_B.psi_e;
