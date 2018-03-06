@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.778
+ * Model version              : 1.779
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Mar  6 13:59:58 2018
+ * C++ source code generated on : Tue Mar  6 14:33:22 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -259,8 +259,8 @@ void scenario1_lqr1khzModelClass::step()
     /* Gain: '<S7>/                     ' incorporates:
      *  SignalConversion: '<S7>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr1khz_B.u = 12.21948169565192 *
-      scenario1_lqr1khz_B.RateTransition3[2] + 6.2157866455186435 *
+    scenario1_lqr1khz_B.u = 12.219481695651957 *
+      scenario1_lqr1khz_B.RateTransition3[2] + 6.2157866455186577 *
       scenario1_lqr1khz_B.RateTransition3[5];
   }
 
@@ -268,7 +268,7 @@ void scenario1_lqr1khzModelClass::step()
    *  Gain: '<S7>/  '
    *  Integrator: '<S7>/Integrator1'
    */
-  scenario1_lqr1khz_B.Sum1 = 9.9999999999999787 *
+  scenario1_lqr1khz_B.Sum1 = 9.9999999999999858 *
     scenario1_lqr1khz_X.Integrator1_CSTATE - scenario1_lqr1khz_B.u;
   if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
       (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0) {
@@ -278,15 +278,15 @@ void scenario1_lqr1khzModelClass::step()
     /* Gain: '<S5>/                    ' incorporates:
      *  SignalConversion: '<S5>/TmpSignal ConversionAt                    Inport1'
      */
-    scenario1_lqr1khz_B.u_j = 0.32522671900393174 *
-      scenario1_lqr1khz_B.RateTransition3[0] + 0.27647115874299921 *
+    scenario1_lqr1khz_B.u_j = 0.32349951352987349 *
+      scenario1_lqr1khz_B.RateTransition3[0] + 0.27323660149127221 *
       scenario1_lqr1khz_B.RateTransition3[3];
 
     /* Gain: '<S6>/                     ' incorporates:
      *  SignalConversion: '<S6>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr1khz_B.u_m = -0.61661170730191683 *
-      scenario1_lqr1khz_B.RateTransition3[1] + -0.40961679381467436 *
+    scenario1_lqr1khz_B.u_m = -0.90905474696910726 *
+      scenario1_lqr1khz_B.RateTransition3[1] + -0.5489839396563907 *
       scenario1_lqr1khz_B.RateTransition3[4];
   }
 
@@ -294,14 +294,14 @@ void scenario1_lqr1khzModelClass::step()
    *  Gain: '<S5>/ '
    *  Integrator: '<S5>/Integrator1'
    */
-  rtb_Sum1_g = 0.17320508075688765 * scenario1_lqr1khz_X.Integrator1_CSTATE_h -
+  rtb_Sum1_g = 0.17320508075688543 * scenario1_lqr1khz_X.Integrator1_CSTATE_h -
     scenario1_lqr1khz_B.u_j;
 
   /* Sum: '<S6>/Sum1' incorporates:
    *  Gain: '<S6>/  '
    *  Integrator: '<S6>/Integrator1'
    */
-  rtb_Sum1 = -0.4183300132670365 * scenario1_lqr1khz_X.Integrator1_CSTATE_j -
+  rtb_Sum1 = -0.70710678118653969 * scenario1_lqr1khz_X.Integrator1_CSTATE_j -
     scenario1_lqr1khz_B.u_m;
 
   /* RateTransition: '<Root>/Rate Transition4' incorporates:
@@ -373,12 +373,12 @@ void scenario1_lqr1khzModelClass::step()
    *  Sum: '<S3>/Sum1'
    *  Sum: '<S4>/Sum1'
    */
-  rtb_Sum1_g = scenario1_lqr1khz_B.roll - (1.5370914717068118 *
-    scenario1_lqr1khz_B.dX[6] + 0.32763886313465096 * scenario1_lqr1khz_B.dX[9]);
-  rtb_Sum1 = scenario1_lqr1khz_B.pitch - (1.3074289503355112 *
-    scenario1_lqr1khz_B.dX[7] + 0.34699194824909779 * scenario1_lqr1khz_B.dX[10]);
-  z = 0.15811388300841908 * scenario1_lqr1khz_X.Integrator1_CSTATE_b -
-    (0.30355520549478687 * scenario1_lqr1khz_B.dX[8] + 0.24395632222527344 *
+  rtb_Sum1_g = scenario1_lqr1khz_B.roll - (1.8815857285424022 *
+    scenario1_lqr1khz_B.dX[6] + 0.36303431809386311 * scenario1_lqr1khz_B.dX[9]);
+  rtb_Sum1 = scenario1_lqr1khz_B.pitch - (1.2859205994736667 *
+    scenario1_lqr1khz_B.dX[7] + 0.34413551249350749 * scenario1_lqr1khz_B.dX[10]);
+  z = 0.15811388300841897 * scenario1_lqr1khz_X.Integrator1_CSTATE_b -
+    (0.30355520549478615 * scenario1_lqr1khz_B.dX[8] + 0.24395632222527303 *
      scenario1_lqr1khz_B.dX[11]);
 
   /* Outport: '<Root>/virtual_control' incorporates:
@@ -472,8 +472,8 @@ void scenario1_lqr1khzModelClass::step()
   /*      z = 0.0; */
   /*      psi = X0(4)+pi/2; */
   /*  end */
-  /* '<S1>:1:29' if t <= 20 */
-  if (rtb_Sum1_g <= 20.0) {
+  /* '<S1>:1:29' if t <= 15 */
+  if (rtb_Sum1_g <= 15.0) {
     /* '<S1>:1:30' x = X0(1); */
     rtb_Sum1_g = scenario1_lqr1khz_U.X0[0];
 
@@ -485,8 +485,8 @@ void scenario1_lqr1khzModelClass::step()
 
     /* '<S1>:1:33' psi = X0(4); */
     psi = scenario1_lqr1khz_U.X0[3];
-  } else if (rtb_Sum1_g <= 50.0) {
-    /* '<S1>:1:34' elseif t<=50 */
+  } else if (rtb_Sum1_g <= 25.0) {
+    /* '<S1>:1:34' elseif t<=25 */
     /* '<S1>:1:35' x = X0(1); */
     rtb_Sum1_g = scenario1_lqr1khz_U.X0[0];
 
