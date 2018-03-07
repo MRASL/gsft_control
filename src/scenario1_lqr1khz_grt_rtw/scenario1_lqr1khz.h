@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.850
+ * Model version              : 1.851
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Mar  7 17:09:17 2018
+ * C++ source code generated on : Wed Mar  7 17:21:48 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -167,10 +167,10 @@ typedef struct {
   real_T RateTransition;               /* '<Root>/Rate Transition' */
   real_T RateTransition1;              /* '<Root>/Rate Transition1' */
   real_T RateTransition2;              /* '<Root>/Rate Transition2' */
-  real_T psi_e;                        /* '<S3>/psi_e' */
-  real_T x_e;                          /* '<S5>/x_e' */
-  real_T y_e;                          /* '<S6>/y_e' */
-  real_T z_e;                          /* '<S7>/z_e' */
+  real_T Sum3;                         /* '<S3>/Sum3' */
+  real_T Sum3_i;                       /* '<S5>/Sum3' */
+  real_T Sum3_c;                       /* '<S6>/Sum3' */
+  real_T Sum3_j;                       /* '<S7>/Sum3' */
 } B_scenario1_lqr1khz_T;
 
 /* Continuous states (auto storage) */
