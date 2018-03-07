@@ -89,37 +89,13 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   }
 }
 
-/*void MultiDofJointTrajectoryCallback(
-    const trajectory_msgs::MultiDOFJointTrajectoryConstPtr& msg) {
-    mav_msgs::EigenTrajectoryPoint eigen_reference;
-    mav_msgs::eigenTrajectoryPointFromMsg(msg->points.front(), &eigen_reference);
-
-    gController.scenario1_lqr_U.z_ref    = eigen_reference.position_W.z();
-
-    if (!gCommand_active){
-      gCommand_active      = true;
-      // gCommand_time        = ros::Time::now();
-    }
-}*/
-
-/*void CommandPoseCallback(const geometry_msgs::PoseStampedConstPtr& pose_msg) {
-  mav_msgs::EigenTrajectoryPoint eigen_reference;
-  mav_msgs::eigenTrajectoryPointFromPoseMsg(*pose_msg, &eigen_reference);
-  gController.scenario1_lqr_U.x_ref    = eigen_reference.position_W.x();
-  gController.scenario1_lqr_U.y_ref    = eigen_reference.position_W.y();
-  gController.scenario1_lqr_U.z_ref    = eigen_reference.position_W.z();
-  gController.scenario1_lqr_U.psi_ref  = 0.0;
-  if (!gCommand_active){
-    gCommand_active      = true;
-  }
-}
-*/
 
 void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t level) {
   ROS_INFO("Controller Active Request: %s",config.active_controller?"True":"False");
   if (config.active_controller == true){
       if (!gCommand_active){
         gCommand_active      = true;
+        gController.initialize();
         gInit_flag           = true;
         // gCommand_time        = ros::Time::now();
       }
@@ -174,7 +150,6 @@ int main(int argc, char** argv) {
   for (unsigned int i=0; i< 6; i++) {
     gLOE[i] = 0.0;
   }
-  gController.initialize();
 
   dynamic_reconfigure::Server<gsft_control::controllerDynConfig> server;
   dynamic_reconfigure::Server<gsft_control::controllerDynConfig>::CallbackType f;

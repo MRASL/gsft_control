@@ -140,9 +140,10 @@ add_library(matlab_lqr
 
     src/scenario1_lqr1khz_grt_rtw/scenario1_lqr1khz_data.cpp
     src/scenario1_lqr1khz_grt_rtw/scenario1_lqr1khz.cpp
-  ##  src/scenario1_lqr1khz_grt_rtw/rtGetInf.cpp
-  ##  src/scenario1_lqr1khz_grt_rtw/rtGetNaN.cpp
-  ##  src/scenario1_lqr1khz_grt_rtw/rt_nonfinite.cpp
+  #  src/scenario1_lqr1khz_grt_rtw/rt_zcfcn.cpp
+  #  src/scenario1_lqr_grt_rtw/rtGetInf.cpp
+  #  src/scenario1_lqr_grt_rtw/rtGetNaN.cpp
+  #  src/scenario1_lqr_grt_rtw/rt_nonfinite.cpp
 
   #  src/scenario2_gs_grt_rtw/scenario2_gs_data.cpp
   #  src/scenario2_gs_grt_rtw/scenario2_gs.cpp

@@ -28,7 +28,6 @@ bool gPublish;
 Eigen::VectorXd gLOE(6);
 
 bool gInit_flag;
-Eigen::VectorXd gInit_value(4);
 
 bool gEmergency_status;
 
@@ -83,46 +82,20 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
 
   if (gInit_flag){
     gInit_flag = false;
-    gInit_value[0] =  odometry.position_W.x();
-    gInit_value[1] =  odometry.position_W.y();
-    gInit_value[2] =  odometry.position_W.z();
-    gInit_value[3] =  psi;
+    gController.scenario1_lqr1khz_U.X0[0] =  odometry.position_W.x();
+    gController.scenario1_lqr1khz_U.X0[1] =  odometry.position_W.y();
+    gController.scenario1_lqr1khz_U.X0[2] =  odometry.position_W.z();
+    gController.scenario1_lqr1khz_U.X0[3] =  psi;
+    gController.initialize();
+    gCommand_active = true;
   }
 }
-
-/*void MultiDofJointTrajectoryCallback(
-    const trajectory_msgs::MultiDOFJointTrajectoryConstPtr& msg) {
-    mav_msgs::EigenTrajectoryPoint eigen_reference;
-    mav_msgs::eigenTrajectoryPointFromMsg(msg->points.front(), &eigen_reference);
-
-    gController.scenario1_lqr1khz_U.z_ref    = eigen_reference.position_W.z();
-
-    if (!gCommand_active){
-      gCommand_active      = true;
-      // gCommand_time        = ros::Time::now();
-    }
-}*/
-
-/*void CommandPoseCallback(const geometry_msgs::PoseStampedConstPtr& pose_msg) {
-  mav_msgs::EigenTrajectoryPoint eigen_reference;
-  mav_msgs::eigenTrajectoryPointFromPoseMsg(*pose_msg, &eigen_reference);
-  gController.scenario1_lqr1khz_U.x_ref    = eigen_reference.position_W.x();
-  gController.scenario1_lqr1khz_U.y_ref    = eigen_reference.position_W.y();
-  gController.scenario1_lqr1khz_U.z_ref    = eigen_reference.position_W.z();
-  gController.scenario1_lqr1khz_U.psi_ref  = 0.0;
-  if (!gCommand_active){
-    gCommand_active      = true;
-  }
-}
-*/
 
 void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t level) {
   ROS_INFO("Controller Active Request: %s",config.active_controller?"True":"False");
   if (config.active_controller == true){
-      if (!gCommand_active){
-        gCommand_active      = true;
-        gInit_flag           = true;
-        // gCommand_time        = ros::Time::now();
+      if (!gInit_flag && !gCommand_active) {
+        gInit_flag      = true;
       }
       config.active_controller = false;
   }
@@ -185,7 +158,6 @@ int main(int argc, char** argv) {
   for (unsigned int i=0; i< 6; i++) {
     gLOE[i] = 0.0;
   }
-  gController.initialize();
 
   dynamic_reconfigure::Server<gsft_control::controllerDynConfig> server;
   dynamic_reconfigure::Server<gsft_control::controllerDynConfig>::CallbackType f;
@@ -194,13 +166,7 @@ int main(int argc, char** argv) {
 
   while(ros::ok()) {
     if (gCommand_active) {
-        gController.scenario1_lqr1khz_U.X0[0] = gInit_value[0];
-        gController.scenario1_lqr1khz_U.X0[1] = gInit_value[1];
-        gController.scenario1_lqr1khz_U.X0[2] = gInit_value[2];
-        gController.scenario1_lqr1khz_U.X0[3] = gInit_value[3];
-
         gController.step();
-
         Eigen::VectorXd motor_RPM(6);           // range 0 .. 10000 RPM
         Eigen::VectorXd motor_command(6);       // range 0 .. 200
         Eigen::VectorXd motor_speed(6);         // range 0 .. 1047 rad/s
