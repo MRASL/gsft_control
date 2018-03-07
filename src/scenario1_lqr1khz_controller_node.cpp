@@ -28,66 +28,18 @@ bool gPublish;
 Eigen::VectorXd gLOE(6);
 
 bool gInit_flag;
-
 bool gEmergency_status;
 
-void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
-  mav_msgs::EigenOdometry odometry;
-  mav_msgs::eigenOdometryFromMsg(*odom, &odometry);
+mav_msgs::EigenOdometry gOdometry;
+//bool gOdom_active;
 
-  if ((odometry.position_W.x() > 2.5)||(odometry.position_W.x() < -2.5)||(odometry.position_W.y() > 2.5)||(odometry.position_W.y() < -2.5)||(odometry.position_W.z() > 1.5))
+void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
+  mav_msgs::eigenOdometryFromMsg(*odom, &gOdometry);
+  if ((gOdometry.position_W.x() > 2.5)||(gOdometry.position_W.x() < -2.5)||(gOdometry.position_W.y() > 2.5)||(gOdometry.position_W.y() < -2.5)||(gOdometry.position_W.z() > 1.5))
   {
     if (!gEmergency_status){
       gEmergency_status = true;
     }
-  }
-
-  gController.scenario1_lqr1khz_U.X[0 ]  = odometry.position_W.x();
-  gController.scenario1_lqr1khz_U.X[1 ]  = odometry.position_W.y();
-  gController.scenario1_lqr1khz_U.X[2 ]  = odometry.position_W.z();
-
-  Eigen::Matrix3d R_W_B = odometry.orientation_W_B.toRotationMatrix();
-  Eigen::Vector3d velocity_W =  R_W_B * odometry.velocity_B;
-
-  gController.scenario1_lqr1khz_U.X[3 ]  = velocity_W.x();
-  gController.scenario1_lqr1khz_U.X[4 ]  = velocity_W.y();
-  gController.scenario1_lqr1khz_U.X[5 ]  = velocity_W.z();
-
-/*  gController.scenario1_lqr1khz_U.X[3 ]  = odometry.velocity_B.x();
-  gController.scenario1_lqr1khz_U.X[4 ]  = odometry.velocity_B.y();
-  gController.scenario1_lqr1khz_U.X[5 ]  = odometry.velocity_B.z(); */
-
-  double psi, phi, teta;
-  psi = atan2(R_W_B(1,0),R_W_B(0,0));
-  phi = atan2(R_W_B(2,1),R_W_B(2,2));
-  teta = asin(-R_W_B(2,0));
-
-  gController.scenario1_lqr1khz_U.X[6 ]  = phi;
-  gController.scenario1_lqr1khz_U.X[7 ]  = teta;
-  gController.scenario1_lqr1khz_U.X[8 ]  = psi;
-
-/*  Eigen::Matrix3d H;
-  H << 1.0, sin(phi)*tan(teta), cos(phi)*tan(teta),
-       0.0, cos(phi),           -sin(phi),
-       0.0, sin(phi)/cos(teta), cos(phi)/cos(teta);
-  Eigen::Vector3d euler_rate = H*odometry.angular_velocity_B;
-
-  gController.scenario1_lqr1khz_U.X[9 ]  = euler_rate.x();
-  gController.scenario1_lqr1khz_U.X[10]  = euler_rate.y();
-  gController.scenario1_lqr1khz_U.X[11]  = euler_rate.z();
-*/
-  gController.scenario1_lqr1khz_U.X[9 ]  = odometry.angular_velocity_B.x();
-  gController.scenario1_lqr1khz_U.X[10]  = odometry.angular_velocity_B.y();
-  gController.scenario1_lqr1khz_U.X[11]  = odometry.angular_velocity_B.z();
-
-  if (gInit_flag){
-    gInit_flag = false;
-    gController.scenario1_lqr1khz_U.X0[0] =  odometry.position_W.x();
-    gController.scenario1_lqr1khz_U.X0[1] =  odometry.position_W.y();
-    gController.scenario1_lqr1khz_U.X0[2] =  odometry.position_W.z();
-    gController.scenario1_lqr1khz_U.X0[3] =  psi;
-    gController.initialize();
-    gCommand_active = true;
   }
 }
 
@@ -164,8 +116,45 @@ int main(int argc, char** argv) {
   f = boost::bind(&controller_dyn_callback, _1, _2);
   server.setCallback(f);
 
+  double psi, phi, teta;
+  Eigen::Matrix3d R_W_B;
+  Eigen::Vector3d velocity_W ;
+
   while(ros::ok()) {
-    if (gCommand_active) {
+    R_W_B = gOdometry.orientation_W_B.toRotationMatrix();
+    velocity_W =  R_W_B * gOdometry.velocity_B;
+
+    psi = atan2(R_W_B(1,0),R_W_B(0,0));
+    phi = atan2(R_W_B(2,1),R_W_B(2,2));
+    teta = asin(-R_W_B(2,0));
+
+    if (gInit_flag) {
+      gController.scenario1_lqr1khz_U.X0[0] =  gOdometry.position_W.x();
+      gController.scenario1_lqr1khz_U.X0[1] =  gOdometry.position_W.y();
+      gController.scenario1_lqr1khz_U.X0[2] =  gOdometry.position_W.z();
+      gController.scenario1_lqr1khz_U.X0[3] =  psi;
+      gController.initialize();
+      gInit_flag = false;
+      gCommand_active = true;
+    }
+
+    if (gCommand_active) { // controller active after initialization
+        gController.scenario1_lqr1khz_U.X[0 ]  = gOdometry.position_W.x();
+        gController.scenario1_lqr1khz_U.X[1 ]  = gOdometry.position_W.y();
+        gController.scenario1_lqr1khz_U.X[2 ]  = gOdometry.position_W.z();
+
+        gController.scenario1_lqr1khz_U.X[3 ]  = velocity_W.x();
+        gController.scenario1_lqr1khz_U.X[4 ]  = velocity_W.y();
+        gController.scenario1_lqr1khz_U.X[5 ]  = velocity_W.z();
+
+        gController.scenario1_lqr1khz_U.X[6 ]  = phi;
+        gController.scenario1_lqr1khz_U.X[7 ]  = teta;
+        gController.scenario1_lqr1khz_U.X[8 ]  = psi;
+
+        gController.scenario1_lqr1khz_U.X[9 ]  = gOdometry.angular_velocity_B.x();
+        gController.scenario1_lqr1khz_U.X[10]  = gOdometry.angular_velocity_B.y();
+        gController.scenario1_lqr1khz_U.X[11]  = gOdometry.angular_velocity_B.z();
+
         gController.step();
         Eigen::VectorXd motor_RPM(6);           // range 0 .. 10000 RPM
         Eigen::VectorXd motor_command(6);       // range 0 .. 200
@@ -208,7 +197,7 @@ int main(int argc, char** argv) {
         motor_velocity_reference_pub_.publish(actuator_msg);
 
     } else {
-      // Controller inactive
+      // controller inactive before initialization
       mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
       actuator_msg->angular_velocities.clear();
 
@@ -221,7 +210,7 @@ int main(int argc, char** argv) {
       motor_velocity_reference_pub_.publish(actuator_msg);
     }
 
-    // Publish: UAV state in World frame
+    // Publish data: UAV state in World frame
     if (gPublish){
       gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
       uav_state_msg->position_ref.x  = gController.scenario1_lqr1khz_Y.ref[0];
