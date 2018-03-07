@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
   f = boost::bind(&controller_dyn_callback, _1, _2);
   server.setCallback(f);
 
-  double psi, phi, teta;
+  double psi, phi, theta;
   Eigen::Matrix3d R_W_B;
   Eigen::Vector3d velocity_W ;
 
@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
 
     psi = atan2(R_W_B(1,0),R_W_B(0,0));
     phi = atan2(R_W_B(2,1),R_W_B(2,2));
-    teta = asin(-R_W_B(2,0));
+    theta = asin(-R_W_B(2,0));
 
     if (gInit_flag) {
       gController.scenario1_lqr1khz_U.X0[0] =  gOdometry.position_W.x();
@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
         gController.scenario1_lqr1khz_U.X[5 ]  = velocity_W.z();
 
         gController.scenario1_lqr1khz_U.X[6 ]  = phi;
-        gController.scenario1_lqr1khz_U.X[7 ]  = teta;
+        gController.scenario1_lqr1khz_U.X[7 ]  = theta;
         gController.scenario1_lqr1khz_U.X[8 ]  = psi;
 
         gController.scenario1_lqr1khz_U.X[9 ]  = gOdometry.angular_velocity_B.x();
@@ -218,18 +218,18 @@ int main(int argc, char** argv) {
       uav_state_msg->position_ref.z  = gController.scenario1_lqr1khz_Y.ref[2];
       uav_state_msg->heading_ref     = gController.scenario1_lqr1khz_Y.ref[3];
 
-      uav_state_msg->position_W.x  = gController.scenario1_lqr1khz_U.X[0];
-      uav_state_msg->position_W.y  = gController.scenario1_lqr1khz_U.X[1];
-      uav_state_msg->position_W.z  = gController.scenario1_lqr1khz_U.X[2];
-      uav_state_msg->velocity_B.x  = gController.scenario1_lqr1khz_U.X[3];
-      uav_state_msg->velocity_B.y  = gController.scenario1_lqr1khz_U.X[4];
-      uav_state_msg->velocity_B.z  = gController.scenario1_lqr1khz_U.X[5];
-      uav_state_msg->euler_angle.x = gController.scenario1_lqr1khz_U.X[6];
-      uav_state_msg->euler_angle.y = gController.scenario1_lqr1khz_U.X[7];
-      uav_state_msg->euler_angle.z = gController.scenario1_lqr1khz_U.X[8];
-      uav_state_msg->rotation_speed_B.x  = gController.scenario1_lqr1khz_U.X[9];
-      uav_state_msg->rotation_speed_B.y  = gController.scenario1_lqr1khz_U.X[10];
-      uav_state_msg->rotation_speed_B.z  = gController.scenario1_lqr1khz_U.X[11];
+      uav_state_msg->position_W.x  = gOdometry.position_W.x();;
+      uav_state_msg->position_W.y  = gOdometry.position_W.y();;
+      uav_state_msg->position_W.z  = gOdometry.position_W.z();;
+      uav_state_msg->velocity_B.x  = velocity_W.x();
+      uav_state_msg->velocity_B.y  = velocity_W.y();
+      uav_state_msg->velocity_B.z  = velocity_W.z();
+      uav_state_msg->euler_angle.x = phi;
+      uav_state_msg->euler_angle.y = theta;
+      uav_state_msg->euler_angle.z = psi;
+      uav_state_msg->rotation_speed_B.x  = gOdometry.angular_velocity_B.x();
+      uav_state_msg->rotation_speed_B.y  = gOdometry.angular_velocity_B.y();
+      uav_state_msg->rotation_speed_B.z  = gOdometry.angular_velocity_B.z();
       uav_state_msg->total_thrust  = gController.scenario1_lqr1khz_Y.virtual_control[0];
       uav_state_msg->moment.x      = gController.scenario1_lqr1khz_Y.virtual_control[1];
       uav_state_msg->moment.y      = gController.scenario1_lqr1khz_Y.virtual_control[2];
