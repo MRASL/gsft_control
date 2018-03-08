@@ -9,7 +9,7 @@
  *
  * Model version              : 1.856
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Mar  8 12:24:09 2018
+ * C++ source code generated on : Thu Mar  8 12:37:41 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -37,7 +37,7 @@ static void rate_scheduler(RT_MODEL_scenario1_lqr1khz_T *const
    * counter is reset when it reaches its limit (zero means run).
    */
   (scenario1_lqr1khz_M->Timing.TaskCounters.TID[2])++;
-  if ((scenario1_lqr1khz_M->Timing.TaskCounters.TID[2]) > 39) {/* Sample time: [0.04s, 0.0s] */
+  if ((scenario1_lqr1khz_M->Timing.TaskCounters.TID[2]) > 7) {/* Sample time: [0.04s, 0.0s] */
     scenario1_lqr1khz_M->Timing.TaskCounters.TID[2] = 0;
   }
 }
@@ -729,9 +729,9 @@ void scenario1_lqr1khzModelClass::step()
       (&(&scenario1_lqr1khz_M)->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.001s, 0.0s] */
+      /* Update absolute timer for sample time: [0.005s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.001, which is the step size
+       * been executed. The resolution of this integer timer is 0.005, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -814,7 +814,7 @@ void scenario1_lqr1khzModelClass::initialize()
                     &(&scenario1_lqr1khz_M)->intgData);
   rtsiSetSolverName(&(&scenario1_lqr1khz_M)->solverInfo,"ode5");
   rtmSetTPtr(getRTM(), &(&scenario1_lqr1khz_M)->Timing.tArray[0]);
-  (&scenario1_lqr1khz_M)->Timing.stepSize0 = 0.001;
+  (&scenario1_lqr1khz_M)->Timing.stepSize0 = 0.005;
 
   /* block I/O */
   (void) memset(((void *) &scenario1_lqr1khz_B), 0,
