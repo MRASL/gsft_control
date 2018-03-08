@@ -9,7 +9,7 @@
  *
  * Model version              : 1.858
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Mar  8 15:49:45 2018
+ * C++ source code generated on : Thu Mar  8 16:01:30 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -37,7 +37,7 @@ static void rate_scheduler(RT_MODEL_scenario1_lqr1khz_T *const
    * counter is reset when it reaches its limit (zero means run).
    */
   (scenario1_lqr1khz_M->Timing.TaskCounters.TID[2])++;
-  if ((scenario1_lqr1khz_M->Timing.TaskCounters.TID[2]) > 4) {/* Sample time: [0.005s, 0.0s] */
+  if ((scenario1_lqr1khz_M->Timing.TaskCounters.TID[2]) > 39) {/* Sample time: [0.04s, 0.0s] */
     scenario1_lqr1khz_M->Timing.TaskCounters.TID[2] = 0;
   }
 }
