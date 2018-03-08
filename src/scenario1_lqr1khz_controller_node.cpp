@@ -78,12 +78,6 @@ int main(int argc, char** argv) {
   ros::Subscriber odometry_sub_;
   odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1, OdometryCallback);
 
-  /*ros::Subscriber cmd_pose_sub_;                    // references (position and yaw)
-  cmd_pose_sub_ = nh.subscribe(mav_msgs::default_topics::COMMAND_POSE, 1, CommandPoseCallback);*/
-
-  /*ros::Subscriber cmd_multi_dof_joint_trajectory_sub;
-  cmd_multi_dof_joint_trajectory_sub = nh.subscribe(mav_msgs::default_topics::COMMAND_TRAJECTORY, 1, MultiDofJointTrajectoryCallback);*/
-
   ros::Subscriber lost_control_sub_;
   lost_control_sub_ = nh.subscribe(gsft_control::default_topics::LOE, 1, LostControlCallback);
 
