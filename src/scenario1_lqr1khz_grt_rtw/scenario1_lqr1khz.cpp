@@ -9,7 +9,7 @@
  *
  * Model version              : 1.866
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Mar 12 11:39:44 2018
+ * C++ source code generated on : Mon Mar 12 11:43:30 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -195,8 +195,8 @@ void scenario1_lqr1khzModelClass::step()
     /* Gain: '<S7>/                     ' incorporates:
      *  SignalConversion: '<S7>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr1khz_B.u = 12.219481695651949 *
-      scenario1_lqr1khz_B.RateTransition3[2] + 6.215786645518655 *
+    scenario1_lqr1khz_B.u = 12.21948169565192 *
+      scenario1_lqr1khz_B.RateTransition3[2] + 6.2157866455186417 *
       scenario1_lqr1khz_B.RateTransition3[5];
   }
 
@@ -204,7 +204,7 @@ void scenario1_lqr1khzModelClass::step()
    *  Gain: '<S7>/  '
    *  Integrator: '<S7>/Integrator1'
    */
-  scenario1_lqr1khz_B.Sum1 = 10.000000000000018 *
+  scenario1_lqr1khz_B.Sum1 = 9.9999999999999787 *
     scenario1_lqr1khz_X.Integrator1_CSTATE - scenario1_lqr1khz_B.u;
   if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
       (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0) {
@@ -214,15 +214,15 @@ void scenario1_lqr1khzModelClass::step()
     /* Gain: '<S5>/                    ' incorporates:
      *  SignalConversion: '<S5>/TmpSignal ConversionAt                    Inport1'
      */
-    scenario1_lqr1khz_B.u_j = 0.94841492012309336 *
-      scenario1_lqr1khz_B.RateTransition3[0] + 0.63205302208465131 *
+    scenario1_lqr1khz_B.u_j = 0.79185459611043729 *
+      scenario1_lqr1khz_B.RateTransition3[0] + 0.54257304830329356 *
       scenario1_lqr1khz_B.RateTransition3[3];
 
     /* Gain: '<S6>/                     ' incorporates:
      *  SignalConversion: '<S6>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr1khz_B.u_m = -0.92190925756373943 *
-      scenario1_lqr1khz_B.RateTransition3[1] + -0.592861190391008 *
+    scenario1_lqr1khz_B.u_m = -0.76826207385943168 *
+      scenario1_lqr1khz_B.RateTransition3[1] + -0.50693473931744948 *
       scenario1_lqr1khz_B.RateTransition3[4];
   }
 
@@ -230,14 +230,14 @@ void scenario1_lqr1khzModelClass::step()
    *  Gain: '<S5>/ '
    *  Integrator: '<S5>/Integrator1'
    */
-  rtb_Sum1_g = 0.63245553203367977 * scenario1_lqr1khz_X.Integrator1_CSTATE_h -
+  rtb_Sum1_g = 0.51639777949431187 * scenario1_lqr1khz_X.Integrator1_CSTATE_h -
     scenario1_lqr1khz_B.u_j;
 
   /* Sum: '<S6>/Sum1' incorporates:
    *  Gain: '<S6>/  '
    *  Integrator: '<S6>/Integrator1'
    */
-  rtb_Sum1 = -0.63245553203367177 * scenario1_lqr1khz_X.Integrator1_CSTATE_j -
+  rtb_Sum1 = -0.5163977794943222 * scenario1_lqr1khz_X.Integrator1_CSTATE_j -
     scenario1_lqr1khz_B.u_m;
 
   /* RateTransition: '<Root>/Rate Transition4' incorporates:
@@ -309,13 +309,13 @@ void scenario1_lqr1khzModelClass::step()
    *  Sum: '<S3>/Sum1'
    *  Sum: '<S4>/Sum1'
    */
-  rtb_Sum1 = scenario1_lqr1khz_B.roll - (2.0794855534368035 *
-    scenario1_lqr1khz_B.dX[6] + 0.38281907930748604 * scenario1_lqr1khz_B.dX[9]);
-  rtb_Saturation1_idx_2 = scenario1_lqr1khz_B.pitch - (2.32378127038409 *
-    scenario1_lqr1khz_B.dX[7] + 0.46399366690421606 * scenario1_lqr1khz_B.dX[10]);
-  rtb_Saturation1_idx_3 = 0.20000000000000046 *
-    scenario1_lqr1khz_X.Integrator1_CSTATE_b - (0.3449722046519354 *
-    scenario1_lqr1khz_B.dX[8] + 0.26001455495604142 * scenario1_lqr1khz_B.dX[11]);
+  rtb_Sum1 = scenario1_lqr1khz_B.roll - (1.8397784956625516 *
+    scenario1_lqr1khz_B.dX[6] + 0.3594733926049693 * scenario1_lqr1khz_B.dX[9]);
+  rtb_Saturation1_idx_2 = scenario1_lqr1khz_B.pitch - (2.0672899519140677 *
+    scenario1_lqr1khz_B.dX[7] + 0.43712835117586041 * scenario1_lqr1khz_B.dX[10]);
+  rtb_Saturation1_idx_3 = 0.15811388300841908 *
+    scenario1_lqr1khz_X.Integrator1_CSTATE_b - (0.30355520549478637 *
+    scenario1_lqr1khz_B.dX[8] + 0.24395632222527336 * scenario1_lqr1khz_B.dX[11]);
 
   /* Saturate: '<Root>/Saturation1' incorporates:
    *  Sum: '<Root>/Sum2'
