@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.861
+ * Model version              : 1.862
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Mar 12 09:30:36 2018
+ * C++ source code generated on : Mon Mar 12 10:05:38 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -338,14 +338,6 @@ class scenario1_lqr1khzModelClass {
   /* Derivatives member function */
   void scenario1_lqr1khz_derivatives();
 };
-
-/*-
- * These blocks were eliminated from the model due to optimizations:
- *
- * Block '<S3>/  ' : Unused code path elimination
- * Block '<S3>/                     ' : Unused code path elimination
- * Block '<S3>/Sum1' : Unused code path elimination
- */
 
 /*-
  * The generated code includes comments that allow you to trace directly
