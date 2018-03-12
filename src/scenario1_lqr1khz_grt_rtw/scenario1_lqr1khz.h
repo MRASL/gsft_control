@@ -7,9 +7,9 @@
  *
  * Code generation for model "scenario1_lqr1khz".
  *
- * Model version              : 1.864
+ * Model version              : 1.866
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Mar 12 11:04:29 2018
+ * C++ source code generated on : Mon Mar 12 11:39:44 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -197,14 +197,14 @@ typedef struct {
   boolean_T Integrator1_CSTATE_b;      /* '<S3>/Integrator1' */
 } XDis_scenario1_lqr1khz_T;
 
-#ifndef ODE5_INTG
-#define ODE5_INTG
+#ifndef ODE4_INTG
+#define ODE4_INTG
 
-/* ODE5 Integration Data */
+/* ODE4 Integration Data */
 typedef struct {
   real_T *y;                           /* output */
-  real_T *f[6];                        /* derivatives */
-} ODE5_IntgData;
+  real_T *f[4];                        /* derivatives */
+} ODE4_IntgData;
 
 #endif
 
@@ -244,8 +244,8 @@ struct tag_RTM_scenario1_lqr1khz_T {
   boolean_T derivCacheNeedsReset;
   boolean_T blkStateChange;
   real_T odeY[4];
-  real_T odeF[6][4];
-  ODE5_IntgData intgData;
+  real_T odeF[4][4];
+  ODE4_IntgData intgData;
 
   /*
    * Sizes:
