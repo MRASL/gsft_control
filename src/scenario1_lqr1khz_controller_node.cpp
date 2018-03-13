@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
 
   ros::Timer timer = nh.createTimer(ros::Duration(0.01),timmerCallback);
 
-  ros::Rate r(1000);
+  ros::Rate r(200);
 
   gCommand_active = false;
   gEmergency_status = false;
