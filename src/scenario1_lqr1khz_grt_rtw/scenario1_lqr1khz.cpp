@@ -9,7 +9,7 @@
  *
  * Model version              : 1.868
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Mar 13 13:25:04 2018
+ * C++ source code generated on : Tue Mar 13 13:44:14 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -20,6 +20,27 @@
 
 #include "scenario1_lqr1khz.h"
 #include "scenario1_lqr1khz_private.h"
+
+static void rate_scheduler(RT_MODEL_scenario1_lqr1khz_T *const
+  scenario1_lqr1khz_M);
+
+/*
+ *   This function updates active task flag for each subrate.
+ * The function is called at model base rate, hence the
+ * generated code self-manages all its subrates.
+ */
+static void rate_scheduler(RT_MODEL_scenario1_lqr1khz_T *const
+  scenario1_lqr1khz_M)
+{
+  /* Compute which subrates run during the next base time step.  Subrates
+   * are an integer multiple of the base rate counter.  Therefore, the subtask
+   * counter is reset when it reaches its limit (zero means run).
+   */
+  (scenario1_lqr1khz_M->Timing.TaskCounters.TID[2])++;
+  if ((scenario1_lqr1khz_M->Timing.TaskCounters.TID[2]) > 4) {/* Sample time: [0.005s, 0.0s] */
+    scenario1_lqr1khz_M->Timing.TaskCounters.TID[2] = 0;
+  }
+}
 
 /*
  * This function updates continuous states using the ODE4 fixed-step
@@ -158,55 +179,74 @@ void scenario1_lqr1khzModelClass::step()
   }
 
   /* End of Sum: '<Root>/Sum' */
-  if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M))) {
+
+  /* RateTransition: '<Root>/Rate Transition3' */
+  if ((rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+       (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[1] == 0) &&
+      (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+       (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0)) {
+    memcpy(&scenario1_lqr1khz_B.RateTransition3[0], &scenario1_lqr1khz_B.dX[0],
+           12U * sizeof(real_T));
+  }
+
+  /* End of RateTransition: '<Root>/Rate Transition3' */
+  if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+      (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0) {
     /* Gain: '<S7>/                     ' incorporates:
      *  SignalConversion: '<S7>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr1khz_B.u = 12.219481695651957 * scenario1_lqr1khz_B.dX[2] +
-      6.215786645518647 * scenario1_lqr1khz_B.dX[5];
+    scenario1_lqr1khz_B.u = 14.72261896532339 *
+      scenario1_lqr1khz_B.RateTransition3[2] + 6.8077651555555345 *
+      scenario1_lqr1khz_B.RateTransition3[5];
   }
 
   /* Sum: '<S7>/Sum1' incorporates:
    *  Gain: '<S7>/  '
    *  Integrator: '<S7>/Integrator1'
    */
-  scenario1_lqr1khz_B.Sum1 = 10.000000000000018 *
+  scenario1_lqr1khz_B.Sum1 = 12.247448713915894 *
     scenario1_lqr1khz_X.Integrator1_CSTATE - scenario1_lqr1khz_B.u;
-  if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M))) {
+  if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+      (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0) {
     /* ZeroOrderHold: '<Root>/Zero-Order Hold2' */
     scenario1_lqr1khz_B.ZeroOrderHold2 = scenario1_lqr1khz_B.Sum1;
 
     /* Gain: '<S5>/                    ' incorporates:
      *  SignalConversion: '<S5>/TmpSignal ConversionAt                    Inport1'
      */
-    scenario1_lqr1khz_B.u_j = 0.32349951352987977 * scenario1_lqr1khz_B.dX[0] +
-      0.2732366014912751 * scenario1_lqr1khz_B.dX[3];
+    scenario1_lqr1khz_B.u_j = 0.54142125730234125 *
+      scenario1_lqr1khz_B.RateTransition3[0] + 0.41078563055667139 *
+      scenario1_lqr1khz_B.RateTransition3[3];
 
     /* Gain: '<S6>/                     ' incorporates:
      *  SignalConversion: '<S6>/TmpSignal ConversionAt                     Inport1'
      */
-    scenario1_lqr1khz_B.u_m = -0.31312578517366968 * scenario1_lqr1khz_B.dX[1] +
-      -0.25417198201077484 * scenario1_lqr1khz_B.dX[4];
+    scenario1_lqr1khz_B.u_m = -0.526199308624559 *
+      scenario1_lqr1khz_B.RateTransition3[1] + -0.38509012369690648 *
+      scenario1_lqr1khz_B.RateTransition3[4];
   }
 
   /* Sum: '<S5>/Sum1' incorporates:
    *  Gain: '<S5>/ '
    *  Integrator: '<S5>/Integrator1'
    */
-  rtb_Sum1_g = 0.17320508075688992 * scenario1_lqr1khz_X.Integrator1_CSTATE_h -
+  rtb_Sum1_g = 0.31622776601684549 * scenario1_lqr1khz_X.Integrator1_CSTATE_h -
     scenario1_lqr1khz_B.u_j;
 
   /* Sum: '<S6>/Sum1' incorporates:
    *  Gain: '<S6>/  '
    *  Integrator: '<S6>/Integrator1'
    */
-  rtb_Sum1 = -0.173205080756885 * scenario1_lqr1khz_X.Integrator1_CSTATE_j -
+  rtb_Sum1 = -0.31622776601682778 * scenario1_lqr1khz_X.Integrator1_CSTATE_j -
     scenario1_lqr1khz_B.u_m;
 
   /* RateTransition: '<Root>/Rate Transition4' incorporates:
    *  Inport: '<Root>/X'
    */
-  if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M))) {
+  if ((rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+       (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[1] == 0) &&
+      (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+       (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0)) {
     memcpy(&scenario1_lqr1khz_B.RateTransition4[0], &scenario1_lqr1khz_U.X[0],
            12U * sizeof(real_T));
   }
@@ -222,29 +262,39 @@ void scenario1_lqr1khzModelClass::step()
   scenario1_lqr1khz_B.Fcn = -rtb_Sum1 * std::sin
     (scenario1_lqr1khz_B.RateTransition4[8]) + rtb_Sum1_g * std::cos
     (scenario1_lqr1khz_B.RateTransition4[8]);
-  if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M))) {
+
+  /* ZeroOrderHold: '<Root>/Zero-Order Hold' incorporates:
+   *  ZeroOrderHold: '<Root>/Zero-Order Hold1'
+   */
+  if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+      (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0) {
+    scenario1_lqr1khz_B.ZeroOrderHold = scenario1_lqr1khz_B.Fcn1;
+
     /* Saturate: '<S2>/roll' */
-    if (scenario1_lqr1khz_B.Fcn1 > 0.52359877559829882) {
+    if (scenario1_lqr1khz_B.ZeroOrderHold > 0.52359877559829882) {
       scenario1_lqr1khz_B.roll = 0.52359877559829882;
-    } else if (scenario1_lqr1khz_B.Fcn1 < -0.52359877559829882) {
+    } else if (scenario1_lqr1khz_B.ZeroOrderHold < -0.52359877559829882) {
       scenario1_lqr1khz_B.roll = -0.52359877559829882;
     } else {
-      scenario1_lqr1khz_B.roll = scenario1_lqr1khz_B.Fcn1;
+      scenario1_lqr1khz_B.roll = scenario1_lqr1khz_B.ZeroOrderHold;
     }
 
     /* End of Saturate: '<S2>/roll' */
+    scenario1_lqr1khz_B.ZeroOrderHold1 = scenario1_lqr1khz_B.Fcn;
 
     /* Saturate: '<S4>/pitch' */
-    if (scenario1_lqr1khz_B.Fcn > 0.52359877559829882) {
+    if (scenario1_lqr1khz_B.ZeroOrderHold1 > 0.52359877559829882) {
       scenario1_lqr1khz_B.pitch = 0.52359877559829882;
-    } else if (scenario1_lqr1khz_B.Fcn < -0.52359877559829882) {
+    } else if (scenario1_lqr1khz_B.ZeroOrderHold1 < -0.52359877559829882) {
       scenario1_lqr1khz_B.pitch = -0.52359877559829882;
     } else {
-      scenario1_lqr1khz_B.pitch = scenario1_lqr1khz_B.Fcn;
+      scenario1_lqr1khz_B.pitch = scenario1_lqr1khz_B.ZeroOrderHold1;
     }
 
     /* End of Saturate: '<S4>/pitch' */
   }
+
+  /* End of ZeroOrderHold: '<Root>/Zero-Order Hold' */
 
   /* Sum: '<Root>/Sum2' incorporates:
    *  Gain: '<S2>/                    '
@@ -259,13 +309,13 @@ void scenario1_lqr1khzModelClass::step()
    *  Sum: '<S3>/Sum1'
    *  Sum: '<S4>/Sum1'
    */
-  rtb_Sum1 = scenario1_lqr1khz_B.roll - (1.1365283480217869 *
-    scenario1_lqr1khz_B.dX[6] + 0.28178545108770103 * scenario1_lqr1khz_B.dX[9]);
-  rtb_Saturation1_idx_2 = scenario1_lqr1khz_B.pitch - (1.2859205994736729 *
-    scenario1_lqr1khz_B.dX[7] + 0.34413551249350854 * scenario1_lqr1khz_B.dX[10]);
-  rtb_Saturation1_idx_3 = 0.15811388300841925 *
-    scenario1_lqr1khz_X.Integrator1_CSTATE_b - (0.3035552054947866 *
-    scenario1_lqr1khz_B.dX[8] + 0.24395632222527311 * scenario1_lqr1khz_B.dX[11]);
+  rtb_Sum1 = scenario1_lqr1khz_B.roll - (1.5756125436124659 *
+    scenario1_lqr1khz_B.dX[6] + 0.33195118792644962 * scenario1_lqr1khz_B.dX[9]);
+  rtb_Saturation1_idx_2 = scenario1_lqr1khz_B.pitch - (1.7577908768433266 *
+    scenario1_lqr1khz_B.dX[7] + 0.40250081804939714 * scenario1_lqr1khz_B.dX[10]);
+  rtb_Saturation1_idx_3 = 0.31622776601683716 *
+    scenario1_lqr1khz_X.Integrator1_CSTATE_b - (0.49795181059510951 *
+    scenario1_lqr1khz_B.dX[8] + 0.31299592722102759 * scenario1_lqr1khz_B.dX[11]);
 
   /* Saturate: '<Root>/Saturation1' incorporates:
    *  Sum: '<Root>/Sum2'
@@ -477,6 +527,21 @@ void scenario1_lqr1khzModelClass::step()
   scenario1_lqr1khz_B.d_ref[3] = rtb_Saturation1_idx_3 - scenario1_lqr1khz_U.X0
     [3];
 
+  /* RateTransition: '<Root>/Rate Transition' incorporates:
+   *  RateTransition: '<Root>/Rate Transition1'
+   *  RateTransition: '<Root>/Rate Transition2'
+   */
+  if ((rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+       (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[1] == 0) &&
+      (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+       (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0)) {
+    scenario1_lqr1khz_B.RateTransition = scenario1_lqr1khz_B.d_ref[0];
+    scenario1_lqr1khz_B.RateTransition1 = scenario1_lqr1khz_B.d_ref[1];
+    scenario1_lqr1khz_B.RateTransition2 = scenario1_lqr1khz_B.d_ref[2];
+  }
+
+  /* End of RateTransition: '<Root>/Rate Transition' */
+
   /* Saturate: '<S3>/yaw' */
   if (scenario1_lqr1khz_B.d_ref[3] > 3.1415926535897931) {
     u0 = 3.1415926535897931;
@@ -501,20 +566,21 @@ void scenario1_lqr1khzModelClass::step()
   }
 
   /* End of Saturate: '<S3>/psi_e' */
-  if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M))) {
+  if (rtmIsMajorTimeStep((&scenario1_lqr1khz_M)) &&
+      (&scenario1_lqr1khz_M)->Timing.TaskCounters.TID[2] == 0) {
     /* Saturate: '<S5>/x' */
-    if (scenario1_lqr1khz_B.d_ref[0] > 1.0) {
+    if (scenario1_lqr1khz_B.RateTransition > 1.0) {
       u0 = 1.0;
-    } else if (scenario1_lqr1khz_B.d_ref[0] < -1.0) {
+    } else if (scenario1_lqr1khz_B.RateTransition < -1.0) {
       u0 = -1.0;
     } else {
-      u0 = scenario1_lqr1khz_B.d_ref[0];
+      u0 = scenario1_lqr1khz_B.RateTransition;
     }
 
     /* End of Saturate: '<S5>/x' */
 
     /* Sum: '<S5>/Sum3' */
-    u0 -= scenario1_lqr1khz_B.dX[0];
+    u0 -= scenario1_lqr1khz_B.RateTransition3[0];
 
     /* Saturate: '<S5>/x_e' */
     if (u0 > 1.0) {
@@ -528,18 +594,18 @@ void scenario1_lqr1khzModelClass::step()
     /* End of Saturate: '<S5>/x_e' */
 
     /* Saturate: '<S6>/y' */
-    if (scenario1_lqr1khz_B.d_ref[1] > 1.0) {
+    if (scenario1_lqr1khz_B.RateTransition1 > 1.0) {
       u0 = 1.0;
-    } else if (scenario1_lqr1khz_B.d_ref[1] < -1.0) {
+    } else if (scenario1_lqr1khz_B.RateTransition1 < -1.0) {
       u0 = -1.0;
     } else {
-      u0 = scenario1_lqr1khz_B.d_ref[1];
+      u0 = scenario1_lqr1khz_B.RateTransition1;
     }
 
     /* End of Saturate: '<S6>/y' */
 
     /* Sum: '<S6>/Sum3' */
-    u0 -= scenario1_lqr1khz_B.dX[1];
+    u0 -= scenario1_lqr1khz_B.RateTransition3[1];
 
     /* Saturate: '<S6>/y_e' */
     if (u0 > 1.0) {
@@ -553,18 +619,18 @@ void scenario1_lqr1khzModelClass::step()
     /* End of Saturate: '<S6>/y_e' */
 
     /* Saturate: '<S7>/z' */
-    if (scenario1_lqr1khz_B.d_ref[2] > 1.0) {
+    if (scenario1_lqr1khz_B.RateTransition2 > 1.0) {
       u0 = 1.0;
-    } else if (scenario1_lqr1khz_B.d_ref[2] < 0.0) {
+    } else if (scenario1_lqr1khz_B.RateTransition2 < 0.0) {
       u0 = 0.0;
     } else {
-      u0 = scenario1_lqr1khz_B.d_ref[2];
+      u0 = scenario1_lqr1khz_B.RateTransition2;
     }
 
     /* End of Saturate: '<S7>/z' */
 
     /* Sum: '<S7>/Sum3' */
-    u0 -= scenario1_lqr1khz_B.dX[2];
+    u0 -= scenario1_lqr1khz_B.RateTransition3[2];
 
     /* Saturate: '<S7>/z_e' */
     if (u0 > 0.5) {
@@ -598,9 +664,9 @@ void scenario1_lqr1khzModelClass::step()
       (&(&scenario1_lqr1khz_M)->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.005s, 0.0s] */
+      /* Update absolute timer for sample time: [0.001s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.005, which is the step size
+       * been executed. The resolution of this integer timer is 0.001, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -612,6 +678,8 @@ void scenario1_lqr1khzModelClass::step()
         (&scenario1_lqr1khz_M)->Timing.clockTickH1++;
       }
     }
+
+    rate_scheduler((&scenario1_lqr1khz_M));
   }                                    /* end MajorTimeStep */
 }
 
@@ -679,7 +747,7 @@ void scenario1_lqr1khzModelClass::initialize()
                     &(&scenario1_lqr1khz_M)->intgData);
   rtsiSetSolverName(&(&scenario1_lqr1khz_M)->solverInfo,"ode4");
   rtmSetTPtr(getRTM(), &(&scenario1_lqr1khz_M)->Timing.tArray[0]);
-  (&scenario1_lqr1khz_M)->Timing.stepSize0 = 0.005;
+  (&scenario1_lqr1khz_M)->Timing.stepSize0 = 0.001;
 
   /* block I/O */
   (void) memset(((void *) &scenario1_lqr1khz_B), 0,
