@@ -236,7 +236,7 @@ int main(int argc, char** argv) {
 
         // Received data from Matlab
         for(unsigned int i=0; i< 6; i++) {
-            if (gEmergency_status || (gLanding_flag && (gOdometry.position_W.z() <= 0.15)))
+            if (gEmergency_status || (gLanding_flag && (gOdometry.position_W.z() <= 0.175)))
             {
               motor_command[i] = 1.0;
               motor_RPM[i]     = 1250;
@@ -293,7 +293,7 @@ int main(int argc, char** argv) {
       break;
     }
 
-    if (gLanding_flag && (gOdometry.position_W.z() <= 0.15))
+    if (gLanding_flag && (gOdometry.position_W.z() <= 0.175))
     {
       ROS_INFO("Controller desactivated");
       ROS_INFO("x = %f, y = %f, z = %f",gOdometry.position_W.x(),gOdometry.position_W.y(),gOdometry.position_W.z());
