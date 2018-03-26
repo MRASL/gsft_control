@@ -31,8 +31,12 @@
 
 #include "parameters.h"
 
-namespace gsft_control {
+// Controller status changed by dynamic reconfigure
+#define CONTROLLER_ENABLE            0x01
+#define CONTROLLER_REFERENCE         0x02
+#define CONTROLLER_GAIN              0x04
 
+namespace gsft_control {
 // Default values.
 static const std::string kDefaultNamespace = "";
 static const std::string kDefaultCommandMotorSpeedTopic =

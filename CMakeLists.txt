@@ -128,23 +128,23 @@ include_directories(
  include
  R2017a/extern/include
  R2017a/simulink/include
- src/scenario1_lqr1khz_grt_rtw
- src/scenario2_gs_grt_rtw
- src/gazebo_gs_grt_rtw
- src/gazebo_lqr_grt_rtw
+ src/tunning_lqr_grt_rtw/
+ #src/scenario2_gs_grt_rtw
+ #src/gazebo_gs_grt_rtw
+ #src/gazebo_lqr_grt_rtw
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
 
 add_library(matlab_lqr
 
-    src/scenario1_lqr1khz_grt_rtw/scenario1_lqr1khz_data.cpp
-    src/scenario1_lqr1khz_grt_rtw/scenario1_lqr1khz.cpp
-  #  src/scenario1_lqr1khz_grt_rtw/rt_zcfcn.cpp
+  src/tunning_lqr_grt_rtw/tunning_lqr_data.cpp
+  src/tunning_lqr_grt_rtw/tunning_lqr.cpp
+  #  src/tunning_lqr_grt_rtw/rt_zcfcn.cpp
 
-    src/scenario1_lqr_grt_rtw/rtGetInf.cpp
-    src/scenario1_lqr_grt_rtw/rtGetNaN.cpp
-    src/scenario1_lqr_grt_rtw/rt_nonfinite.cpp
+  #  src/scenario1_lqr_grt_rtw/rtGetInf.cpp
+  #  src/scenario1_lqr_grt_rtw/rtGetNaN.cpp
+  #  src/scenario1_lqr_grt_rtw/rt_nonfinite.cpp
 
   #  src/scenario2_gs_grt_rtw/scenario2_gs_data.cpp
   #  src/scenario2_gs_grt_rtw/scenario2_gs.cpp
@@ -152,8 +152,8 @@ add_library(matlab_lqr
   #  src/gazebo_gs_grt_rtw/gazebo_gs_data.cpp
   #  src/gazebo_gs_grt_rtw/gazebo_gs.cpp
 
-    src/gazebo_lqr_grt_rtw/gazebo_lqr_data.cpp
-    src/gazebo_lqr_grt_rtw/gazebo_lqr.cpp
+  #  src/gazebo_lqr_grt_rtw/gazebo_lqr_data.cpp
+  #  src/gazebo_lqr_grt_rtw/gazebo_lqr.cpp
 )
 add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -161,15 +161,15 @@ add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 
-add_executable(scenario1_lqr1khz_controller_node
-    src/scenario1_lqr1khz_controller_node.cpp
+add_executable(tunning_lqr_node
+    src/tunning_lqr_node.cpp
 )
-add_dependencies(scenario1_lqr1khz_controller_node
+add_dependencies(tunning_lqr_node
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
     matlab_lqr
 )
-target_link_libraries(scenario1_lqr1khz_controller_node
+target_link_libraries(tunning_lqr_node
     matlab_lqr
     ${catkin_LIBRARIES}
 )
@@ -200,18 +200,18 @@ target_link_libraries(scenario1_lqr1khz_controller_node
 #  ${catkin_LIBRARIES}
 #)
 
-add_executable(gazebo_lqr_controller_node
-    src/gazebo_lqr_controller_node.cpp
-)
-add_dependencies(gazebo_lqr_controller_node
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS}
-    matlab_lqr
-)
-target_link_libraries(gazebo_lqr_controller_node
-    matlab_lqr
-  ${catkin_LIBRARIES}
-)
+#add_executable(gazebo_lqr_controller_node
+#    src/gazebo_lqr_controller_node.cpp
+#)
+#add_dependencies(gazebo_lqr_controller_node
+#    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+#    ${catkin_EXPORTED_TARGETS}
+#    matlab_lqr
+#)
+#target_link_libraries(gazebo_lqr_controller_node
+#    matlab_lqr
+#  ${catkin_LIBRARIES}
+#)
 #############
 ## Install ##
 #############
