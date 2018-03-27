@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_lqr".
  *
- * Model version              : 1.1069
+ * Model version              : 1.1073
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Mar 27 12:15:31 2018
+ * C++ source code generated on : Tue Mar 27 12:26:46 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -560,15 +560,15 @@ void tunning_lqrModelClass::step()
       rtb_Sum1_lh = tunning_lqr_U.Y0[1];
       rtb_TLMN_idx_2 = 0.5;
       rtb_TLMN_idx_3 = tunning_lqr_U.Y0[2];
-    } else if (rtb_Sum1_lh <= 60.0) {
-      /* '<S3>:1:19' elseif t <= 60 */
-      /* '<S3>:1:20' ref = [cos(0.75*t); sin(0.75*t); 0.5; Y0(3)]; */
-      rtb_TLMN_idx_0 = std::cos(0.75 * rtb_Sum1_lh);
-      rtb_Sum1_lh = std::sin(0.75 * rtb_Sum1_lh);
+    } else if (rtb_Sum1_lh <= 50.0) {
+      /* '<S3>:1:19' elseif t <= 50 */
+      /* '<S3>:1:20' ref = [cos(t); sin(t); 0.5; Y0(3)]; */
+      rtb_TLMN_idx_0 = std::cos(rtb_Sum1_lh);
+      rtb_Sum1_lh = std::sin(rtb_Sum1_lh);
       rtb_TLMN_idx_2 = 0.5;
       rtb_TLMN_idx_3 = tunning_lqr_U.Y0[2];
-    } else if (rtb_Sum1_lh <= 70.0) {
-      /* '<S3>:1:21' elseif t <= 70 */
+    } else if (rtb_Sum1_lh <= 60.0) {
+      /* '<S3>:1:21' elseif t <= 60 */
       /* '<S3>:1:22' ref = [Y0(1); Y0(2); 0.5; Y0(3)]; */
       rtb_TLMN_idx_0 = tunning_lqr_U.Y0[0];
       rtb_Sum1_lh = tunning_lqr_U.Y0[1];
