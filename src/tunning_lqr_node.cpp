@@ -41,7 +41,7 @@ mav_msgs::EigenOdometry gOdometry;
 
 void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   mav_msgs::eigenOdometryFromMsg(*odom, &gOdometry);
-  if ((gOdometry.position_W.x() > 2.5)||(gOdometry.position_W.x() < -2.5)||(gOdometry.position_W.y() > 2.5)||(gOdometry.position_W.y() < -2.5)||(gOdometry.position_W.z() > 1.5))
+  if ((gOdometry.position_W.x() > 2.5)||(gOdometry.position_W.x() < -2.5)||(gOdometry.position_W.y() > 2.5)||(gOdometry.position_W.y() < -2.5)||(gOdometry.position_W.z() > 1.75))
   {
     if (!gEmergency_status){
       gEmergency_status = true;
@@ -229,10 +229,10 @@ int main(int argc, char** argv) {
         control_actived = true;
 
         for (unsigned int i=0; i< 6; i++) {
-          gController.tunning_lqr_U.LOE[i]  = gLOE[i];
+          gController.tunning_lqr_U.LOE_a[i]  = gLOE[i];     // fault amplitude
         }
         for (unsigned int i=0; i< 6; i++) {
-          gController.tunning_lqr_U.LOE_t[i]  = gLOE_t[i];
+          gController.tunning_lqr_U.LOE_t[i]  = gLOE_t[i];   // fault time
         }
     }
 
@@ -248,19 +248,18 @@ int main(int argc, char** argv) {
         for (unsigned int i=0; i< 16; i++) {
           gController.tunning_lqr_U.gain[i] = gGain[i];
         }
-        gController.tunning_lqr_U.dX[0]  = gOdometry.position_W.x()-gY0[0];
-        gController.tunning_lqr_U.dX[1]  = gOdometry.position_W.y()-gY0[1];
-        gController.tunning_lqr_U.dX[2]  = gOdometry.position_W.z()-gY0[2];
-        gController.tunning_lqr_U.dX[3 ]  = velocity_W.x();
-        gController.tunning_lqr_U.dX[4 ]  = velocity_W.y();
-        gController.tunning_lqr_U.dX[5 ]  = velocity_W.z();
-        gController.tunning_lqr_U.dX[6 ]  = phi;
-        gController.tunning_lqr_U.dX[7 ]  = theta;
-        gController.tunning_lqr_U.dX[8 ]  = gPsi - gY0[3];
-        gController.tunning_lqr_U.dX[9 ]  = gOdometry.angular_velocity_B.x();
-        gController.tunning_lqr_U.dX[10]  = gOdometry.angular_velocity_B.y();
-        gController.tunning_lqr_U.dX[11]  = gOdometry.angular_velocity_B.z();
-        gController.tunning_lqr_U.yaw     = gPsi;
+        gController.tunning_lqr_U.X[0]  = gOdometry.position_W.x();
+        gController.tunning_lqr_U.X[1]  = gOdometry.position_W.y();
+        gController.tunning_lqr_U.X[2]  = gOdometry.position_W.z();
+        gController.tunning_lqr_U.X[3 ]  = velocity_W.x();
+        gController.tunning_lqr_U.X[4 ]  = velocity_W.y();
+        gController.tunning_lqr_U.X[5 ]  = velocity_W.z();
+        gController.tunning_lqr_U.X[6 ]  = phi;
+        gController.tunning_lqr_U.X[7 ]  = theta;
+        gController.tunning_lqr_U.X[8 ]  = gPsi;
+        gController.tunning_lqr_U.X[9 ]  = gOdometry.angular_velocity_B.x();
+        gController.tunning_lqr_U.X[10]  = gOdometry.angular_velocity_B.y();
+        gController.tunning_lqr_U.X[11]  = gOdometry.angular_velocity_B.z();
 
         // Run Matlab controller
         gController.step();
@@ -358,9 +357,9 @@ int main(int argc, char** argv) {
       uav_state_msg->moment.y      = gController.tunning_lqr_Y.virtual_control[2];
       uav_state_msg->moment.z      = gController.tunning_lqr_Y.virtual_control[3];
 
-      uav_state_msg->LOE13.x  = gController.tunning_lqr_Y.LOE_out[0];
-      uav_state_msg->LOE13.y  = gController.tunning_lqr_Y.LOE_out[1];
-      uav_state_msg->LOE13.z  = gController.tunning_lqr_Y.LOE_out[2];
+      uav_state_msg->LOE13.x  = gController.tunning_lqr_Y.LOE[0];
+      uav_state_msg->LOE13.y  = gController.tunning_lqr_Y.LOE[1];
+      uav_state_msg->LOE13.z  = gController.tunning_lqr_Y.LOE[2];
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);

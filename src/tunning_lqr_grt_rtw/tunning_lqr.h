@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_lqr".
  *
- * Model version              : 1.1044
+ * Model version              : 1.1068
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Mar 26 22:18:58 2018
+ * C++ source code generated on : Tue Mar 27 11:53:12 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,19 +149,26 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T dz;                           /* '<Root>/Rate Transition   ' */
+  real_T dz;                           /* '<Root>/Sum5' */
+  real_T dz_h;                         /* '<Root>/Rate Transition   ' */
   real_T dzd;                          /* '<Root>/Rate Transition   ' */
   real_T Sum1;                         /* '<S9>/Sum1' */
   real_T T;                            /* '<Root>/               ' */
-  real_T dx;                           /* '<Root>/Rate Transition   ' */
+  real_T dx;                           /* '<Root>/Sum1' */
+  real_T dx_o;                         /* '<Root>/Rate Transition   ' */
   real_T dxd;                          /* '<Root>/Rate Transition   ' */
-  real_T dy;                           /* '<Root>/Rate Transition   ' */
+  real_T dy;                           /* '<Root>/Sum4' */
+  real_T dy_m;                         /* '<Root>/Rate Transition   ' */
   real_T dyd;                          /* '<Root>/Rate Transition   ' */
+  real_T RateTransition;               /* '<Root>/Rate Transition  ' */
   real_T Fcn1;                         /* '<Root>/Fcn1' */
+  real_T u;                            /* '<Root>/                        ' */
   real_T roll;                         /* '<S5>/roll' */
   real_T Fcn;                          /* '<Root>/Fcn' */
+  real_T u_c;                          /* '<Root>/         ' */
   real_T pitch;                        /* '<S4>/pitch' */
   real_T Sum[4];                       /* '<Root>/Sum' */
+  real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
   real_T x_e;                          /* '<S6>/x_e' */
   real_T y_e;                          /* '<S7>/y_e' */
   real_T yaw_e;                        /* '<S8>/yaw_e' */
@@ -214,9 +221,8 @@ typedef struct {
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
   real_T gain[16];                     /* '<Root>/gain' */
-  real_T LOE[6];                       /* '<Root>/LOE' */
-  real_T dX[12];                       /* '<Root>/dX' */
-  real_T yaw;                          /* '<Root>/yaw' */
+  real_T LOE_a[6];                     /* '<Root>/LOE_a' */
+  real_T X[12];                        /* '<Root>/X' */
   real_T mode;                         /* '<Root>/mode' */
   real_T ref[4];                       /* '<Root>/ref' */
   real_T Y0[4];                        /* '<Root>/Y0' */
@@ -228,7 +234,7 @@ typedef struct {
   real_T motor_command[6];             /* '<Root>/motor_command' */
   real_T virtual_control[4];           /* '<Root>/virtual_control' */
   real_T ref_out[4];                   /* '<Root>/ref_out' */
-  real_T LOE_out[6];                   /* '<Root>/LOE_out' */
+  real_T LOE[6];                       /* '<Root>/LOE' */
 } ExtY_tunning_lqr_T;
 
 /* Real-time Model Data Structure */
@@ -270,10 +276,14 @@ struct tag_RTM_tunning_lqr_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
@@ -338,8 +348,6 @@ class tunning_lqrModelClass {
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<Root>/Rate Transition ' : Eliminated since input and output rates are identical
- * Block '<Root>/Rate Transition  ' : Eliminated since input and output rates are identical
  * Block '<S4>/Reshape' : Reshape block reduction
  * Block '<S5>/Reshape' : Reshape block reduction
  * Block '<S6>/Reshape' : Reshape block reduction
