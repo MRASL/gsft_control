@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_lqr".
  *
- * Model version              : 1.942
+ * Model version              : 1.1018
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Mar 23 14:14:01 2018
+ * C++ source code generated on : Mon Mar 26 20:22:04 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -151,12 +151,15 @@
 typedef struct {
   real_T dz;                           /* '<Root>/Rate Transition   ' */
   real_T dzd;                          /* '<Root>/Rate Transition   ' */
+  real_T Product1;                     /* '<S7>/Product1' */
   real_T Sum1;                         /* '<S7>/Sum1' */
   real_T T;                            /* '<Root>/               ' */
   real_T dx;                           /* '<Root>/Rate Transition   ' */
   real_T dxd;                          /* '<Root>/Rate Transition   ' */
+  real_T Product1_o;                   /* '<S4>/Product1' */
   real_T dy;                           /* '<Root>/Rate Transition   ' */
   real_T dyd;                          /* '<Root>/Rate Transition   ' */
+  real_T Product1_f;                   /* '<S5>/Product1' */
   real_T RateTransition;               /* '<Root>/Rate Transition  ' */
   real_T Fcn1;                         /* '<Root>/Fcn1' */
   real_T u;                            /* '<Root>/                        ' */
@@ -216,11 +219,11 @@ typedef struct {
 
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
-  real_T dX[12];                       /* '<Root>/dX' */
   real_T gain[16];                     /* '<Root>/gain' */
-  real_T dref[4];                      /* '<Root>/dref' */
-  real_T yaw;                          /* '<Root>/yaw' */
   real_T LOE[6];                       /* '<Root>/LOE' */
+  real_T dX[12];                       /* '<Root>/dX' */
+  real_T yaw;                          /* '<Root>/yaw' */
+  real_T dref[4];                      /* '<Root>/dref' */
 } ExtU_tunning_lqr_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
