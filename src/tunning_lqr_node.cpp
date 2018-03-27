@@ -27,12 +27,13 @@ bool gInit_flag;
 bool gLanding_flag;
 bool gEmergency_status;
 
-//Eigen::VectorXd gLOE(6);
+int  gTest_mode;
 
 Eigen::VectorXd gY0(4);        // initial position (equilibrium)
 Eigen::VectorXd gRef(4);       // references (x, y, z, yaw)
 Eigen::VectorXd gGain(16);
 Eigen::VectorXd gLOE(6);
+Eigen::VectorXd gLOE_t(6);
 
 double gPsi;                   // heading (rad)
 
@@ -55,15 +56,18 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
     config.RESET = false;
   }
   else if (level & gsft_control::controllerDyn_ENABLE_CTRL){
+      gTest_mode = config.test_mode;
       if (config.enable_take_off && !gInit_flag){     // only once
         gY0[0]    = gOdometry.position_W.x();
         gY0[1]    = gOdometry.position_W.y();
         gY0[2]    = gOdometry.position_W.z();
         gY0[3]    = gPsi;
+      //  if (config.test_mode == gsft_control::controllerDyn_TEST_MANUAL){
         gRef[0]   = gY0[0];
         gRef[1]   = gY0[1];
         gRef[2]   = config.ref_z;
         gRef[3]   = gY0[3];
+      //  }
         gGain[0]  = config.kx;
         gGain[1]  = config.kxd;
         gGain[2]  = config.kix;
@@ -80,48 +84,65 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gGain[13] = config.kpsi;
         gGain[14] = config.kr;
         gGain[15] = config.kipsi;
-        gLOE      = Eigen::VectorXd::Zero(6);
+
+        gLOE[0]   = config.LOE_1;
+        gLOE[1]   = config.LOE_2;
+        gLOE[2]   = config.LOE_3;
+        gLOE[3]   = config.LOE_4;
+        gLOE[4]   = config.LOE_5;
+        gLOE[5]   = config.LOE_6;
+        gLOE_t[0]   = config.LOE_t1;
+        gLOE_t[1]   = config.LOE_t2;
+        gLOE_t[2]   = config.LOE_t3;
+        gLOE_t[3]   = config.LOE_t4;
+        gLOE_t[4]   = config.LOE_t5;
+        gLOE_t[5]   = config.LOE_t6;
 
         gInit_flag = true;
+        ROS_INFO("Take-off Request: %s with Test_mode = %d",config.enable_take_off?"True":"False",gTest_mode);
+
         config.enable_take_off = false;
-        ROS_INFO("Take-off Request: %s",config.enable_take_off?"True":"False");
+
       }
       else if (config.enable_landing && !gLanding_flag){   // only once
         gRef[0]  = gOdometry.position_W.x();
         gRef[1]  = gOdometry.position_W.y();
         gRef[2]  = 0.0;
         gRef[3]  = gPsi;
+        gTest_mode = gsft_control::controllerDyn_TEST_MANUAL;
         gLanding_flag = true;
-        ROS_INFO("Landing Request: %s",config.enable_landing?"True":"False");
+        ROS_INFO("Landing Request: %s at x_ref = %f, y_ref = %f,psi_ref = %f(deg)",config.enable_landing?"True":"False",gRef[0],gRef[1],gRef[3]*180.0/3.14159);
         config.enable_landing  = false;
       }
-      else if (config.send_waypoint){
-        gRef[0]   = config.ref_x;
-        gRef[1]   = config.ref_y;
-        gRef[2]   = config.ref_z;
-        gRef[3]   = config.ref_yaw_deg*3.14159/180.0;
-        ROS_INFO("Waypoint Request: x_ref = %f, y_ref = %f, z_ref = %f, psi_ref = %f",gRef[0],gRef[1],gRef[2],gRef[3]);
-        config.send_waypoint   = false;
-      }
-      else if (config.new_controller_gains){
-        gGain[0]  = config.kx;
-        gGain[1]  = config.kxd;
-        gGain[2]  = config.kix;
-        gGain[3]  = config.ky;
-        gGain[4]  = config.kyd;
-        gGain[5]  = config.kiy;
-        gGain[6]  = config.kz;
-        gGain[7]  = config.kzd;
-        gGain[8]  = config.kiz;
-        gGain[9]  = config.kphi;
-        gGain[10] = config.kp;
-        gGain[11] = config.ktheta;
-        gGain[12] = config.kq;
-        gGain[13] = config.kpsi;
-        gGain[14] = config.kr;
-        gGain[15] = config.kipsi;
-        ROS_INFO("New controller gains");
-        config.new_controller_gains   = false;
+      else if (gTest_mode == gsft_control::controllerDyn_TEST_MANUAL){
+        if (config.send_waypoint){
+          gRef[0]   = config.ref_x;
+          gRef[1]   = config.ref_y;
+          gRef[2]   = config.ref_z;
+          gRef[3]   = config.ref_yaw_deg*3.14159/180.0;
+          ROS_INFO("Waypoint Request: x_ref = %f, y_ref = %f, z_ref = %f, psi_ref = %f(deg)",gRef[0],gRef[1],gRef[2],gRef[3]);
+          config.send_waypoint   = false;
+        }
+        else if (config.new_controller_gains){
+          gGain[0]  = config.kx;
+          gGain[1]  = config.kxd;
+          gGain[2]  = config.kix;
+          gGain[3]  = config.ky;
+          gGain[4]  = config.kyd;
+          gGain[5]  = config.kiy;
+          gGain[6]  = config.kz;
+          gGain[7]  = config.kzd;
+          gGain[8]  = config.kiz;
+          gGain[9]  = config.kphi;
+          gGain[10] = config.kp;
+          gGain[11] = config.ktheta;
+          gGain[12] = config.kq;
+          gGain[13] = config.kpsi;
+          gGain[14] = config.kr;
+          gGain[15] = config.kipsi;
+          ROS_INFO("New controller gains");
+          config.new_controller_gains   = false;
+        }
       }
   }
 }
@@ -176,6 +197,7 @@ int main(int argc, char** argv) {
   gRef  << 0.0, 0.0, 0.0, 0.0;
   gGain = Eigen::VectorXd::Zero(16);
   gLOE  = Eigen::VectorXd::Zero(6);
+  gLOE_t  = Eigen::VectorXd::Zero(6);
   gY0   << 0.0, 0.0, 0.0, 0.0;
 
   dynamic_reconfigure::Server<gsft_control::controllerDynConfig> server;
@@ -205,17 +227,26 @@ int main(int argc, char** argv) {
     if (gInit_flag && !control_actived) {                     // only once when controller is not actived
         gController.initialize();
         control_actived = true;
+
+        for (unsigned int i=0; i< 6; i++) {
+          gController.tunning_lqr_U.LOE[i]  = gLOE[i];
+        }
+        for (unsigned int i=0; i< 6; i++) {
+          gController.tunning_lqr_U.LOE_t[i]  = gLOE_t[i];
+        }
     }
 
     if (control_actived) {                                    // controller active after take-off request
+        gController.tunning_lqr_U.mode = gTest_mode;
+
         for (unsigned int i=0; i< 4; i++) {
-          gController.tunning_lqr_U.dref[i] = gRef[i] - gY0[i];
+          gController.tunning_lqr_U.ref[i]  = gRef[i];
+        }
+        for (unsigned int i=0; i< 4; i++) {
+          gController.tunning_lqr_U.Y0[i]   = gY0[i];
         }
         for (unsigned int i=0; i< 16; i++) {
           gController.tunning_lqr_U.gain[i] = gGain[i];
-        }
-        for (unsigned int i=0; i< 6; i++) {
-          gController.tunning_lqr_U.LOE[i] = gLOE[i];
         }
         gController.tunning_lqr_U.dX[0]  = gOdometry.position_W.x()-gY0[0];
         gController.tunning_lqr_U.dX[1]  = gOdometry.position_W.y()-gY0[1];
@@ -305,10 +336,10 @@ int main(int argc, char** argv) {
     // Publish data: UAV state in World frame
     if (gPublish){
       gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-      uav_state_msg->position_ref.x  = gRef[0];
-      uav_state_msg->position_ref.y  = gRef[1];
-      uav_state_msg->position_ref.z  = gRef[2];
-      uav_state_msg->heading_ref     = gRef[3];
+      uav_state_msg->position_ref.x  = gController.tunning_lqr_Y.ref_out[0];
+      uav_state_msg->position_ref.y  = gController.tunning_lqr_Y.ref_out[1];
+      uav_state_msg->position_ref.z  = gController.tunning_lqr_Y.ref_out[2];
+      uav_state_msg->heading_ref     = gController.tunning_lqr_Y.ref_out[3];
 
       uav_state_msg->position_W.x  = gOdometry.position_W.x();
       uav_state_msg->position_W.y  = gOdometry.position_W.y();
@@ -327,9 +358,9 @@ int main(int argc, char** argv) {
       uav_state_msg->moment.y      = gController.tunning_lqr_Y.virtual_control[2];
       uav_state_msg->moment.z      = gController.tunning_lqr_Y.virtual_control[3];
 
-      uav_state_msg->LOE13.x  = gController.tunning_lqr_U.LOE[0];
-      uav_state_msg->LOE13.y  = gController.tunning_lqr_U.LOE[1];
-      uav_state_msg->LOE13.z  = gController.tunning_lqr_U.LOE[2];
+      uav_state_msg->LOE13.x  = gController.tunning_lqr_Y.LOE_out[0];
+      uav_state_msg->LOE13.y  = gController.tunning_lqr_Y.LOE_out[1];
+      uav_state_msg->LOE13.z  = gController.tunning_lqr_Y.LOE_out[2];
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);
