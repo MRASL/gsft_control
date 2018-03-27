@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_lqr".
  *
- * Model version              : 1.1075
+ * Model version              : 1.1090
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Mar 27 12:32:37 2018
+ * C++ source code generated on : Tue Mar 27 13:09:48 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

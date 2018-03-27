@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_lqr".
  *
- * Model version              : 1.1075
+ * Model version              : 1.1090
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Mar 27 12:32:37 2018
+ * C++ source code generated on : Tue Mar 27 13:09:48 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -152,7 +152,7 @@ typedef struct {
   real_T dz;                           /* '<Root>/Sum5' */
   real_T dz_h;                         /* '<Root>/Rate Transition   ' */
   real_T dzd;                          /* '<Root>/Rate Transition   ' */
-  real_T Sum1;                         /* '<S9>/Sum1' */
+  real_T Sum1;                         /* '<S10>/Sum1' */
   real_T T;                            /* '<Root>/               ' */
   real_T dx;                           /* '<Root>/Sum1' */
   real_T dx_o;                         /* '<Root>/Rate Transition   ' */
@@ -161,42 +161,42 @@ typedef struct {
   real_T dy_m;                         /* '<Root>/Rate Transition   ' */
   real_T dyd;                          /* '<Root>/Rate Transition   ' */
   real_T RateTransition;               /* '<Root>/Rate Transition  ' */
-  real_T Fcn1;                         /* '<Root>/Fcn1' */
+  real_T Sum7;                         /* '<Root>/Sum7' */
   real_T u;                            /* '<Root>/                        ' */
-  real_T roll;                         /* '<S5>/roll' */
-  real_T Fcn;                          /* '<Root>/Fcn' */
+  real_T roll;                         /* '<S6>/roll' */
+  real_T Sum8;                         /* '<Root>/Sum8' */
   real_T u_c;                          /* '<Root>/         ' */
-  real_T pitch;                        /* '<S4>/pitch' */
+  real_T pitch;                        /* '<S5>/pitch' */
   real_T Sum[4];                       /* '<Root>/Sum' */
   real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
-  real_T x_e;                          /* '<S6>/x_e' */
-  real_T y_e;                          /* '<S7>/y_e' */
-  real_T yaw_e;                        /* '<S8>/yaw_e' */
-  real_T z_e;                          /* '<S9>/z_e' */
+  real_T x_e;                          /* '<S7>/x_e' */
+  real_T y_e;                          /* '<S8>/y_e' */
+  real_T yaw_e;                        /* '<S9>/yaw_e' */
+  real_T z_e;                          /* '<S10>/z_e' */
 } B_tunning_lqr_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
-  real_T Integrator1_CSTATE_h;         /* '<S6>/Integrator1' */
-  real_T Integrator1_CSTATE_g;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
+  real_T Integrator1_CSTATE_h;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_g;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
 } X_tunning_lqr_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
-  real_T Integrator1_CSTATE_h;         /* '<S6>/Integrator1' */
-  real_T Integrator1_CSTATE_g;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
+  real_T Integrator1_CSTATE_h;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_g;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
 } XDot_tunning_lqr_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S9>/Integrator1' */
-  boolean_T Integrator1_CSTATE_h;      /* '<S6>/Integrator1' */
-  boolean_T Integrator1_CSTATE_g;      /* '<S7>/Integrator1' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S8>/Integrator1' */
+  boolean_T Integrator1_CSTATE;        /* '<S10>/Integrator1' */
+  boolean_T Integrator1_CSTATE_h;      /* '<S7>/Integrator1' */
+  boolean_T Integrator1_CSTATE_g;      /* '<S8>/Integrator1' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S9>/Integrator1' */
 } XDis_tunning_lqr_T;
 
 #ifndef ODE4_INTG
@@ -348,12 +348,12 @@ class tunning_lqrModelClass {
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<S4>/Reshape' : Reshape block reduction
  * Block '<S5>/Reshape' : Reshape block reduction
  * Block '<S6>/Reshape' : Reshape block reduction
  * Block '<S7>/Reshape' : Reshape block reduction
  * Block '<S8>/Reshape' : Reshape block reduction
  * Block '<S9>/Reshape' : Reshape block reduction
+ * Block '<S10>/Reshape' : Reshape block reduction
  */
 
 /*-
@@ -372,13 +372,14 @@ class tunning_lqrModelClass {
  *
  * '<Root>' : 'tunning_lqr'
  * '<S1>'   : 'tunning_lqr/Actuator_Fault'
- * '<S2>'   : 'tunning_lqr/LOE_'
- * '<S3>'   : 'tunning_lqr/MATLAB Function'
- * '<S4>'   : 'tunning_lqr/pitch_controller'
- * '<S5>'   : 'tunning_lqr/roll_controller'
- * '<S6>'   : 'tunning_lqr/x_controller '
- * '<S7>'   : 'tunning_lqr/y_controller'
- * '<S8>'   : 'tunning_lqr/yaw_controller'
- * '<S9>'   : 'tunning_lqr/z_controller'
+ * '<S2>'   : 'tunning_lqr/FFW'
+ * '<S3>'   : 'tunning_lqr/LOE_'
+ * '<S4>'   : 'tunning_lqr/MATLAB Function'
+ * '<S5>'   : 'tunning_lqr/pitch_controller'
+ * '<S6>'   : 'tunning_lqr/roll_controller'
+ * '<S7>'   : 'tunning_lqr/x_controller '
+ * '<S8>'   : 'tunning_lqr/y_controller'
+ * '<S9>'   : 'tunning_lqr/yaw_controller'
+ * '<S10>'  : 'tunning_lqr/z_controller'
  */
 #endif                                 /* RTW_HEADER_tunning_lqr_h_ */
