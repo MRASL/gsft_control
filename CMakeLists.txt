@@ -129,33 +129,20 @@ include_directories(
  R2017a/extern/include
  R2017a/simulink/include
  src/tunning_lqr_grt_rtw/
- #src/scenario2_gs_grt_rtw
- #src/gazebo_gs_grt_rtw
- #src/gazebo_lqr_grt_rtw
+ src/tunning_nominal_grt_rtw/
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
 
-add_library(matlab_lqr
+add_library(matlab_simulink
 
   src/tunning_lqr_grt_rtw/tunning_lqr_data.cpp
   src/tunning_lqr_grt_rtw/tunning_lqr.cpp
-  #  src/tunning_lqr_grt_rtw/rt_zcfcn.cpp
 
-  #  src/scenario1_lqr_grt_rtw/rtGetInf.cpp
-  #  src/scenario1_lqr_grt_rtw/rtGetNaN.cpp
-  #  src/scenario1_lqr_grt_rtw/rt_nonfinite.cpp
-
-  #  src/scenario2_gs_grt_rtw/scenario2_gs_data.cpp
-  #  src/scenario2_gs_grt_rtw/scenario2_gs.cpp
-
-  #  src/gazebo_gs_grt_rtw/gazebo_gs_data.cpp
-  #  src/gazebo_gs_grt_rtw/gazebo_gs.cpp
-
-  #  src/gazebo_lqr_grt_rtw/gazebo_lqr_data.cpp
-  #  src/gazebo_lqr_grt_rtw/gazebo_lqr.cpp
+  src/tunning_nominal_grt_rtw/tunning_nominal_data.cpp
+  src/tunning_nominal_grt_rtw/tunning_nominal.cpp
 )
-add_dependencies(matlab_lqr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(matlab_simulink ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -167,51 +154,30 @@ add_executable(tunning_lqr_node
 add_dependencies(tunning_lqr_node
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
-    matlab_lqr
+    matlab_simulink
 )
 target_link_libraries(tunning_lqr_node
-    matlab_lqr
+    matlab_simulink
     ${catkin_LIBRARIES}
 )
 
-#add_executable(scenario2_gs_controller_node
-#    src/scenario2_gs_controller_node.cpp
-#)
-#add_dependencies(scenario2_gs_controller_node
-#    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-#    ${catkin_EXPORTED_TARGETS}
-#    matlab_lqr
-#)
-#target_link_libraries(scenario2_gs_controller_node
-#    matlab_lqr
-#  ${catkin_LIBRARIES}
-#)
 
-#add_executable(gazebo_gs_controller_node
-#    src/gazebo_gs_controller_node.cpp
-#)
-#add_dependencies(gazebo_gs_controller_node
-#    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-#    ${catkin_EXPORTED_TARGETS}
-#    matlab_lqr
-#)
-#target_link_libraries(gazebo_gs_controller_node
-#    matlab_lqr
-#  ${catkin_LIBRARIES}
-#)
 
-#add_executable(gazebo_lqr_controller_node
-#    src/gazebo_lqr_controller_node.cpp
-#)
-#add_dependencies(gazebo_lqr_controller_node
-#    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-#    ${catkin_EXPORTED_TARGETS}
-#    matlab_lqr
-#)
-#target_link_libraries(gazebo_lqr_controller_node
-#    matlab_lqr
-#  ${catkin_LIBRARIES}
-#)
+
+add_executable(tunning_nominal_node
+    src/tunning_nominal_node.cpp
+)
+add_dependencies(tunning_nominal_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_simulink
+)
+target_link_libraries(tunning_nominal_node
+    matlab_simulink
+    ${catkin_LIBRARIES}
+)
+
+
 #############
 ## Install ##
 #############

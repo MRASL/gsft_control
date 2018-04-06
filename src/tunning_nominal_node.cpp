@@ -15,12 +15,12 @@
 
 #include <gsft_control/LOE.h>
 #include <gsft_control/UAVState.h>
-#include <tunning_lqr.h>
+#include <tunning_nominal.h>
 
 #include <dynamic_reconfigure/server.h>
 #include <gsft_control/controllerDynConfig.h>
 
-tunning_lqrModelClass gController;
+tunning_nominalModelClass gController;
 
 bool gPublish;
 bool gInit_flag;
@@ -69,37 +69,50 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gRef[3]   = gY0[3];
       //  }
 
-        gGain[0]  = config.kx;      // x
+      /*  gGain[0]  = config.kx;      // x
         gGain[1]  = config.kvx;     // vx
-        gGain[2]  = config.kix;     // integral x
-
+        gGain[2]  = 0.0;            // integral x
         gGain[3]  = config.ky;      // y
         gGain[4]  = config.kvy;
-        gGain[5]  = config.kiy;
-
+        gGain[5]  = 0.0;
         gGain[6]  = config.kz;      // z
         gGain[7]  = config.kvz;
         gGain[8]  = config.kiz;
-
         gGain[9]  = config.kphi;    // roll
         gGain[10] = config.kp;
-        gGain[11] = 0.0;
-
+        gGain[11] = config.kiphi;
         gGain[12] = config.ktheta;  // pitch
         gGain[13] = config.kq;
-        gGain[14] = 0.0;
-
+        gGain[14] = config.kitheta;
         gGain[15] = config.kpsi;    // yaw
         gGain[16] = config.kr;
-        gGain[17] = config.kipsi;
+        gGain[17] = config.kipsi;  */
+        config.kx      = gGain[0];
+        config.kvx     = gGain[1];
+        config.kix     = gGain[2];
+        config.ky      = gGain[3] ;
+        config.kvy     = gGain[4];
+        config.kiy     = gGain[5];
+        config.kz      = gGain[6];
+        config.kvz     = gGain[7];
+        config.kiz     = gGain[8];
+        config.kphi    = gGain[9];     
+        config.kp      = gGain[10];
+        config.kiphi   = gGain[11];
+        config.ktheta  = gGain[12];
+        config.kq      = gGain[13];
+        config.kitheta =  gGain[14];
+        config.kpsi    = gGain[15];
+        config.kr      = gGain[16];
+        config.kipsi   = gGain[17];
 
-        gLOE[0]   = config.LOE_1;   // lost of actuator effectiveness
+        gLOE[0]   = config.LOE_1;
         gLOE[1]   = config.LOE_2;
         gLOE[2]   = config.LOE_3;
         gLOE[3]   = config.LOE_4;
         gLOE[4]   = config.LOE_5;
         gLOE[5]   = config.LOE_6;
-        gLOE_t[0]   = config.LOE_t1;  // fault occurs
+        gLOE_t[0]   = config.LOE_t1;
         gLOE_t[1]   = config.LOE_t2;
         gLOE_t[2]   = config.LOE_t3;
         gLOE_t[3]   = config.LOE_t4;
@@ -132,27 +145,29 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
           config.send_waypoint   = false;
         }
         else if (config.new_controller_gains){
-          gGain[0]  = config.kx;      // x
-          gGain[1]  = config.kvx;     // vx
-          gGain[2]  = config.kix;     // integral x
+          gGain[0]  = config.kx;
+          gGain[1]  = config.kvx;
+          gGain[2]  = 0.0;
+          //gGain[2]  = config.kix;
 
-          gGain[3]  = config.ky;      // y
+          gGain[3]  = config.ky;
           gGain[4]  = config.kvy;
-          gGain[5]  = config.kiy;
+          gGain[5]  = 0.0;
+          //gGain[5]  = config.kiy;
 
-          gGain[6]  = config.kz;      // z
+          gGain[6]  = config.kz;
           gGain[7]  = config.kvz;
           gGain[8]  = config.kiz;
 
-          gGain[9]  = config.kphi;    // roll
+          gGain[9]  = config.kphi;
           gGain[10] = config.kp;
-          gGain[11] = 0.0;
+          gGain[11] = config.kiphi;
 
-          gGain[12] = config.ktheta;  // pitch
+          gGain[12] = config.ktheta;
           gGain[13] = config.kq;
-          gGain[14] = 0.0;
+          gGain[14] = config.kitheta;
 
-          gGain[15] = config.kpsi;    // yaw
+          gGain[15] = config.kpsi;
           gGain[16] = config.kr;
           gGain[17] = config.kipsi;
           ROS_INFO("New controller gains");
@@ -178,10 +193,10 @@ void timmerCallback(const ros::TimerEvent&)
 }
 
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "tunning_lqr_node");
+  ros::init(argc, argv, "tunning_nominal_node");
   ros::NodeHandle nh;
   ros::NodeHandle pnh("~");
-  ROS_INFO("tunning_lqr_node main started");
+  ROS_INFO("tunning_nominal_node main started");
 
   ros::Subscriber odometry_sub_;
   odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1, OdometryCallback);
@@ -231,6 +246,25 @@ int main(int argc, char** argv) {
   bool control_actived = false;
   bool end_mission  = false;
 
+  gGain[0]  = 0.05;      // x
+  gGain[1]  = 0.1;     // vx
+  gGain[2]  = 0.0;            // integral x
+  gGain[3]  = -0.05;      // y
+  gGain[4]  = -0.1;
+  gGain[5]  = 0.0;
+  gGain[6]  = 13.86;      // z
+  gGain[7]  = 6.93;
+  gGain[8]  = 10.395;
+  gGain[9]  = 3.4756;    // roll
+  gGain[10] = 0.5213;
+  gGain[11] = 8.6981;
+  gGain[12] = 4.5893;  // pitch
+  gGain[13] = 0.6884;
+  gGain[14] = 11.4732;
+  gGain[15] = 0.2198;    // yaw
+  gGain[16] = 0.2198;
+  gGain[17] = 0.0824;
+
   while(ros::ok()) {
     R_W_B = gOdometry.orientation_W_B.toRotationMatrix();
     velocity_W =  R_W_B * gOdometry.velocity_B;
@@ -244,40 +278,40 @@ int main(int argc, char** argv) {
         control_actived = true;
 
         for (unsigned int i=0; i< 6; i++) {
-          gController.tunning_lqr_U.LOE_a[i]  = gLOE[i];     // fault amplitude
+          gController.tunning_nominal_U.LOE_a[i]  = gLOE[i];     // fault amplitude
         }
         for (unsigned int i=0; i< 6; i++) {
-          gController.tunning_lqr_U.LOE_t[i]  = gLOE_t[i];   // fault time
+          gController.tunning_nominal_U.LOE_t[i]  = gLOE_t[i];   // fault time
         }
         for (unsigned int i=0; i< 18; i++) {
-            ROS_INFO("Controller gain k[%d] = %f",i,gGain[i]);
+          ROS_INFO("Controller gain k[%d] = %f",i,gGain[i]);
         }
     }
 
     if (control_actived) {                                    // controller active after take-off request
-        gController.tunning_lqr_U.mode = gTest_mode;
+        gController.tunning_nominal_U.mode = gTest_mode;
 
         for (unsigned int i=0; i< 4; i++) {
-          gController.tunning_lqr_U.ref[i]  = gRef[i];
+          gController.tunning_nominal_U.ref[i]  = gRef[i];
         }
         for (unsigned int i=0; i< 4; i++) {
-          gController.tunning_lqr_U.Y0[i]   = gY0[i];
+          gController.tunning_nominal_U.Y0[i]   = gY0[i];
         }
         for (unsigned int i=0; i< 18; i++) {
-          gController.tunning_lqr_U.gain[i] = gGain[i];
+          gController.tunning_nominal_U.gain[i] = gGain[i];
         }
-        gController.tunning_lqr_U.X[0]  = gOdometry.position_W.x();
-        gController.tunning_lqr_U.X[1]  = gOdometry.position_W.y();
-        gController.tunning_lqr_U.X[2]  = gOdometry.position_W.z();
-        gController.tunning_lqr_U.X[3 ]  = velocity_W.x();
-        gController.tunning_lqr_U.X[4 ]  = velocity_W.y();
-        gController.tunning_lqr_U.X[5 ]  = velocity_W.z();
-        gController.tunning_lqr_U.X[6 ]  = phi;
-        gController.tunning_lqr_U.X[7 ]  = theta;
-        gController.tunning_lqr_U.X[8 ]  = gPsi;
-        gController.tunning_lqr_U.X[9 ]  = gOdometry.angular_velocity_B.x();
-        gController.tunning_lqr_U.X[10]  = gOdometry.angular_velocity_B.y();
-        gController.tunning_lqr_U.X[11]  = gOdometry.angular_velocity_B.z();
+        gController.tunning_nominal_U.X[0]  = gOdometry.position_W.x();
+        gController.tunning_nominal_U.X[1]  = gOdometry.position_W.y();
+        gController.tunning_nominal_U.X[2]  = gOdometry.position_W.z();
+        gController.tunning_nominal_U.X[3 ]  = velocity_W.x();
+        gController.tunning_nominal_U.X[4 ]  = velocity_W.y();
+        gController.tunning_nominal_U.X[5 ]  = velocity_W.z();
+        gController.tunning_nominal_U.X[6 ]  = phi;
+        gController.tunning_nominal_U.X[7 ]  = theta;
+        gController.tunning_nominal_U.X[8 ]  = gPsi;
+        gController.tunning_nominal_U.X[9 ]  = gOdometry.angular_velocity_B.x();
+        gController.tunning_nominal_U.X[10]  = gOdometry.angular_velocity_B.y();
+        gController.tunning_nominal_U.X[11]  = gOdometry.angular_velocity_B.z();
 
         // Run Matlab controller
         gController.step();
@@ -292,7 +326,7 @@ int main(int argc, char** argv) {
             }
             else
             {
-              motor_command[i] = gController.tunning_lqr_Y.motor_command[i];        // normalized [1 .. 200] => Asctec Firefly
+              motor_command[i] = gController.tunning_nominal_Y.motor_command[i];        // normalized [1 .. 200] => Asctec Firefly
               motor_RPM[i]     = 1250.0 + motor_command[i]*43.75;                   // real RPM
               motor_speed[i]   = motor_RPM[i]/9.5493;                               // rad/s => Gazebo
             }
@@ -334,7 +368,7 @@ int main(int argc, char** argv) {
 
     if (gEmergency_status)
     {
-      ROS_ERROR("tunning_lqr_node emergency status");
+      ROS_ERROR("tunning_nominal_node emergency status");
       ROS_INFO("x = %f, y = %f, z = %f",gOdometry.position_W.x(),gOdometry.position_W.y(),gOdometry.position_W.z());
       ros::Duration(0.5).sleep();
       gController.terminate();
@@ -353,10 +387,10 @@ int main(int argc, char** argv) {
     // Publish data: UAV state in World frame
     if (gPublish){
       gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-      uav_state_msg->position_ref.x  = gController.tunning_lqr_Y.ref_out[0];    // gRef only for manual test
-      uav_state_msg->position_ref.y  = gController.tunning_lqr_Y.ref_out[1];
-      uav_state_msg->position_ref.z  = gController.tunning_lqr_Y.ref_out[2];
-      uav_state_msg->heading_ref     = gController.tunning_lqr_Y.ref_out[3];
+      uav_state_msg->position_ref.x  = gController.tunning_nominal_Y.ref_out[0];    // gRef only for manual test
+      uav_state_msg->position_ref.y  = gController.tunning_nominal_Y.ref_out[1];
+      uav_state_msg->position_ref.z  = gController.tunning_nominal_Y.ref_out[2];
+      uav_state_msg->heading_ref     = gController.tunning_nominal_Y.ref_out[3];
 
       uav_state_msg->position_W.x  = gOdometry.position_W.x();
       uav_state_msg->position_W.y  = gOdometry.position_W.y();
@@ -370,14 +404,14 @@ int main(int argc, char** argv) {
       uav_state_msg->rotation_speed_B.x  = gOdometry.angular_velocity_B.x();
       uav_state_msg->rotation_speed_B.y  = gOdometry.angular_velocity_B.y();
       uav_state_msg->rotation_speed_B.z  = gOdometry.angular_velocity_B.z();
-      uav_state_msg->total_thrust  = gController.tunning_lqr_Y.virtual_control[0];
-      uav_state_msg->moment.x      = gController.tunning_lqr_Y.virtual_control[1];
-      uav_state_msg->moment.y      = gController.tunning_lqr_Y.virtual_control[2];
-      uav_state_msg->moment.z      = gController.tunning_lqr_Y.virtual_control[3];
+      uav_state_msg->total_thrust  = gController.tunning_nominal_Y.virtual_control[0];
+      uav_state_msg->moment.x      = gController.tunning_nominal_Y.virtual_control[1];
+      uav_state_msg->moment.y      = gController.tunning_nominal_Y.virtual_control[2];
+      uav_state_msg->moment.z      = gController.tunning_nominal_Y.virtual_control[3];
 
-      uav_state_msg->LOE13.x  = gController.tunning_lqr_Y.LOE[0];
-      uav_state_msg->LOE13.y  = gController.tunning_lqr_Y.LOE[1];
-      uav_state_msg->LOE13.z  = gController.tunning_lqr_Y.LOE[2];
+      uav_state_msg->LOE13.x  = gController.tunning_nominal_Y.LOE[0];
+      uav_state_msg->LOE13.y  = gController.tunning_nominal_Y.LOE[1];
+      uav_state_msg->LOE13.z  = gController.tunning_nominal_Y.LOE[2];
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);

@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_lqr".
  *
- * Model version              : 1.1090
+ * Model version              : 1.1140
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Mar 27 13:09:48 2018
+ * C++ source code generated on : Fri Apr  6 10:47:37 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -115,7 +115,7 @@ void tunning_lqrModelClass::step()
 {
   real_T rtb_Sum3_b;
   real_T rtb_Sum1_g;
-  real_T rtb_Saturation2[6];
+  real_T rtb_u[6];
   real_T rtb_LOE_out[6];
   real_T rtb_Clock;
   int32_T i;
@@ -141,11 +141,11 @@ void tunning_lqrModelClass::step()
     (&tunning_lqr_M)->Timing.t[0] = rtsiGetT(&(&tunning_lqr_M)->solverInfo);
   }
 
-  /* Sum: '<Root>/Sum5' incorporates:
+  /* Sum: '<S2>/Sum5' incorporates:
    *  Inport: '<Root>/X'
    *  Inport: '<Root>/Y0'
    */
-  tunning_lqr_B.dz = tunning_lqr_U.X[2] - tunning_lqr_U.Y0[2];
+  tunning_lqr_B.d_z = tunning_lqr_U.X[2] - tunning_lqr_U.Y0[2];
 
   /* RateTransition: '<Root>/Rate Transition   ' incorporates:
    *  Inport: '<Root>/X'
@@ -154,31 +154,31 @@ void tunning_lqrModelClass::step()
        (&tunning_lqr_M)->Timing.TaskCounters.TID[1] == 0) && (rtmIsMajorTimeStep
        ((&tunning_lqr_M)) &&
        (&tunning_lqr_M)->Timing.TaskCounters.TID[2] == 0)) {
-    tunning_lqr_B.dz_h = tunning_lqr_B.dz;
-    tunning_lqr_B.dzd = tunning_lqr_U.X[5];
+    tunning_lqr_B.d_z_k = tunning_lqr_B.d_z;
+    tunning_lqr_B.vz = tunning_lqr_U.X[5];
   }
 
-  /* Sum: '<S10>/Sum1' incorporates:
+  /* Sum: '<S9>/Sum1' incorporates:
    *  Inport: '<Root>/gain'
-   *  Integrator: '<S10>/Integrator1'
-   *  Product: '<S10>/Product'
-   *  Product: '<S10>/Product1'
-   *  SignalConversion: '<S10>/TmpSignal ConversionAtProduct1Inport2'
+   *  Integrator: '<S9>/Integrator1'
+   *  Product: '<S9>/Product'
+   *  Product: '<S9>/Product1'
+   *  SignalConversion: '<S9>/TmpSignal ConversionAtProduct1Inport2'
    */
   tunning_lqr_B.Sum1 = tunning_lqr_U.gain[8] * tunning_lqr_X.Integrator1_CSTATE
-    - (tunning_lqr_U.gain[6] * tunning_lqr_B.dz_h + tunning_lqr_U.gain[7] *
-       tunning_lqr_B.dzd);
+    - (tunning_lqr_U.gain[6] * tunning_lqr_B.d_z_k + tunning_lqr_U.gain[7] *
+       tunning_lqr_B.vz);
   if (rtmIsMajorTimeStep((&tunning_lqr_M)) &&
       (&tunning_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
     /* ZeroOrderHold: '<Root>/               ' */
-    tunning_lqr_B.T = tunning_lqr_B.Sum1;
+    tunning_lqr_B.dT = tunning_lqr_B.Sum1;
   }
 
-  /* Sum: '<Root>/Sum1' incorporates:
+  /* Sum: '<S2>/Sum1' incorporates:
    *  Inport: '<Root>/X'
    *  Inport: '<Root>/Y0'
    */
-  tunning_lqr_B.dx = tunning_lqr_U.X[0] - tunning_lqr_U.Y0[0];
+  tunning_lqr_B.d_x = tunning_lqr_U.X[0] - tunning_lqr_U.Y0[0];
 
   /* RateTransition: '<Root>/Rate Transition   ' incorporates:
    *  Inport: '<Root>/X'
@@ -187,26 +187,26 @@ void tunning_lqrModelClass::step()
        (&tunning_lqr_M)->Timing.TaskCounters.TID[1] == 0) && (rtmIsMajorTimeStep
        ((&tunning_lqr_M)) &&
        (&tunning_lqr_M)->Timing.TaskCounters.TID[2] == 0)) {
-    tunning_lqr_B.dx_o = tunning_lqr_B.dx;
-    tunning_lqr_B.dxd = tunning_lqr_U.X[3];
+    tunning_lqr_B.d_x_b = tunning_lqr_B.d_x;
+    tunning_lqr_B.vx = tunning_lqr_U.X[3];
   }
 
-  /* Sum: '<S7>/Sum1' incorporates:
+  /* Sum: '<S6>/Sum1' incorporates:
    *  Inport: '<Root>/gain'
-   *  Integrator: '<S7>/Integrator1'
-   *  Product: '<S7>/Product'
-   *  Product: '<S7>/Product1'
-   *  SignalConversion: '<S7>/TmpSignal ConversionAtProduct1Inport2'
+   *  Integrator: '<S6>/Integrator1'
+   *  Product: '<S6>/Product'
+   *  Product: '<S6>/Product1'
+   *  SignalConversion: '<S6>/TmpSignal ConversionAtProduct1Inport2'
    */
   rtb_Sum3_b = tunning_lqr_U.gain[2] * tunning_lqr_X.Integrator1_CSTATE_h -
-    (tunning_lqr_U.gain[0] * tunning_lqr_B.dx_o + tunning_lqr_U.gain[1] *
-     tunning_lqr_B.dxd);
+    (tunning_lqr_U.gain[0] * tunning_lqr_B.d_x_b + tunning_lqr_U.gain[1] *
+     tunning_lqr_B.vx);
 
-  /* Sum: '<Root>/Sum4' incorporates:
+  /* Sum: '<S2>/Sum4' incorporates:
    *  Inport: '<Root>/X'
    *  Inport: '<Root>/Y0'
    */
-  tunning_lqr_B.dy = tunning_lqr_U.X[1] - tunning_lqr_U.Y0[1];
+  tunning_lqr_B.d_y = tunning_lqr_U.X[1] - tunning_lqr_U.Y0[1];
 
   /* RateTransition: '<Root>/Rate Transition   ' incorporates:
    *  Inport: '<Root>/X'
@@ -216,8 +216,8 @@ void tunning_lqrModelClass::step()
       (&tunning_lqr_M)->Timing.TaskCounters.TID[1] == 0) {
     if (rtmIsMajorTimeStep((&tunning_lqr_M)) &&
         (&tunning_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
-      tunning_lqr_B.dy_m = tunning_lqr_B.dy;
-      tunning_lqr_B.dyd = tunning_lqr_U.X[4];
+      tunning_lqr_B.d_y_l = tunning_lqr_B.d_y;
+      tunning_lqr_B.vy = tunning_lqr_U.X[4];
     }
 
     if (rtmIsMajorTimeStep((&tunning_lqr_M)) &&
@@ -226,44 +226,41 @@ void tunning_lqrModelClass::step()
     }
   }
 
-  /* Sum: '<S8>/Sum1' incorporates:
+  /* Sum: '<S7>/Sum1' incorporates:
    *  Inport: '<Root>/gain'
-   *  Integrator: '<S8>/Integrator1'
-   *  Product: '<S8>/Product'
-   *  Product: '<S8>/Product1'
-   *  SignalConversion: '<S8>/TmpSignal ConversionAtProduct1Inport2'
+   *  Integrator: '<S7>/Integrator1'
+   *  Product: '<S7>/Product'
+   *  Product: '<S7>/Product1'
+   *  SignalConversion: '<S7>/TmpSignal ConversionAtProduct1Inport2'
    */
   rtb_Sum1_g = tunning_lqr_U.gain[5] * tunning_lqr_X.Integrator1_CSTATE_g -
-    (tunning_lqr_U.gain[3] * tunning_lqr_B.dy_m + tunning_lqr_U.gain[4] *
-     tunning_lqr_B.dyd);
+    (tunning_lqr_U.gain[3] * tunning_lqr_B.d_y_l + tunning_lqr_U.gain[4] *
+     tunning_lqr_B.vy);
 
   /* Clock: '<Root>/Clock' */
   rtb_Clock = (&tunning_lqr_M)->Timing.t[0];
 
-  /* MATLAB Function: '<Root>/FFW' incorporates:
+  /* MATLAB Function: '<S2>/FFW' incorporates:
    *  Inport: '<Root>/X'
    *  Inport: '<Root>/mode'
    */
-  /* MATLAB Function 'FFW': '<S2>:1' */
-  /* '<S2>:1:2' ff = [0;0]; */
+  /* MATLAB Function 'Test_config_and_data/FFW': '<S10>:1' */
+  /* '<S10>:1:2' ff = [0;0]; */
   rtb_ff_idx_0 = 0.0;
   rtb_ff_idx_1 = 0.0;
 
-  /* '<S2>:1:3' g = 9.81; */
-  /*  ff = [sin(t)/g;cos(t)/g]; % ff(1) => teta_ref */
-  /* '<S2>:1:5' if (test_mode == 2) */
+  /* '<S10>:1:3' g = 9.81; */
+  /*  [x;y] = [cos(t); sin(t)] */
+  /* '<S10>:1:5' if (test_mode == 2) */
   if ((tunning_lqr_U.mode == 2.0) && ((rtb_Clock >= 10.0) && (rtb_Clock <= 50.0)))
   {
-    /* '<S2>:1:6' if (t >=10) && (t<= 50) */
-    /* '<S2>:1:7' axref_N = -cos(t); */
-    /* '<S2>:1:8' ayref_N = -sin(t); */
-    /* '<S2>:1:10' axref_b = cos(X(8))*cos(X(9))*axref_N + cos(X(8))*sin(X(9))*ayref_N; */
-    /* '<S2>:1:11' ayref_b = (sin(X(7))*sin(X(8))*cos(X(9)) - cos(X(7))*sin(X(9)))*axref_N + (sin(X(7))*sin(X(8))*sin(X(9)) + cos(X(7))*cos(X(9)))*ayref_N; */
+    /* '<S10>:1:6' if (t >=10) && (t<= 50) */
+    /* '<S10>:1:7' axref_N = -cos(t); */
+    /* '<S10>:1:8' ayref_N = -sin(t); */
+    /* '<S10>:1:10' axref_b = cos(X(8))*cos(X(9))*axref_N + cos(X(8))*sin(X(9))*ayref_N; */
+    /* '<S10>:1:11' ayref_b = (sin(X(7))*sin(X(8))*cos(X(9)) - cos(X(7))*sin(X(9)))*axref_N + (sin(X(7))*sin(X(8))*sin(X(9)) + cos(X(7))*cos(X(9)))*ayref_N; */
     /*   */
-    /* '<S2>:1:13' phi_ff = -ayref_b/g; */
-    /* '<S2>:1:14' teta_ff = axref_b/g; */
-    /*   */
-    /* '<S2>:1:16' ff = [phi_ff;teta_ff]; */
+    /* '<S10>:1:13' ff = [-ayref_b/g; axref_b/g]; */
     rtb_ff_idx_0 = -((std::sin(tunning_lqr_U.X[6]) * std::sin(tunning_lqr_U.X[7])
                       * std::cos(tunning_lqr_U.X[8]) - std::cos(tunning_lqr_U.X
       [6]) * std::sin(tunning_lqr_U.X[8])) * -std::cos(rtb_Clock) + (std::sin
@@ -273,14 +270,12 @@ void tunning_lqrModelClass::step()
     rtb_ff_idx_1 = (std::cos(tunning_lqr_U.X[7]) * std::cos(tunning_lqr_U.X[8]) *
                     -std::cos(rtb_Clock) + std::cos(tunning_lqr_U.X[7]) * std::
                     sin(tunning_lqr_U.X[8]) * -std::sin(rtb_Clock)) / 9.81;
-
-    /*  ff(1) => phi_ref after Fcn1 */
   } else {
-    /* '<S2>:1:17' else */
-    /* '<S2>:1:18' ff = [0;0]; */
+    /* '<S10>:1:14' else */
+    /* '<S10>:1:15' ff = [0;0]; */
   }
 
-  /* End of MATLAB Function: '<Root>/FFW' */
+  /* End of MATLAB Function: '<S2>/FFW' */
 
   /* Sum: '<Root>/Sum7' incorporates:
    *  Fcn: '<Root>/Fcn1'
@@ -303,7 +298,7 @@ void tunning_lqrModelClass::step()
       (&tunning_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
     tunning_lqr_B.u = tunning_lqr_B.Sum7;
 
-    /* Saturate: '<S6>/roll' */
+    /* Saturate: '<S5>/roll' */
     if (tunning_lqr_B.u > 0.52359877559829882) {
       tunning_lqr_B.roll = 0.52359877559829882;
     } else if (tunning_lqr_B.u < -0.52359877559829882) {
@@ -312,10 +307,10 @@ void tunning_lqrModelClass::step()
       tunning_lqr_B.roll = tunning_lqr_B.u;
     }
 
-    /* End of Saturate: '<S6>/roll' */
+    /* End of Saturate: '<S5>/roll' */
     tunning_lqr_B.u_c = tunning_lqr_B.Sum8;
 
-    /* Saturate: '<S5>/pitch' */
+    /* Saturate: '<S4>/pitch' */
     if (tunning_lqr_B.u_c > 0.52359877559829882) {
       tunning_lqr_B.pitch = 0.52359877559829882;
     } else if (tunning_lqr_B.u_c < -0.52359877559829882) {
@@ -324,12 +319,12 @@ void tunning_lqrModelClass::step()
       tunning_lqr_B.pitch = tunning_lqr_B.u_c;
     }
 
-    /* End of Saturate: '<S5>/pitch' */
+    /* End of Saturate: '<S4>/pitch' */
   }
 
   /* End of ZeroOrderHold: '<Root>/                        ' */
 
-  /* Sum: '<Root>/Sum6' incorporates:
+  /* Sum: '<S2>/Sum6' incorporates:
    *  Inport: '<Root>/X'
    *  Inport: '<Root>/Y0'
    */
@@ -338,71 +333,72 @@ void tunning_lqrModelClass::step()
   /* Sum: '<Root>/Sum2' incorporates:
    *  Inport: '<Root>/X'
    *  Inport: '<Root>/gain'
-   *  Integrator: '<S9>/Integrator1'
+   *  Integrator: '<S8>/Integrator1'
+   *  Product: '<S4>/Product'
    *  Product: '<S5>/Product'
-   *  Product: '<S6>/Product'
-   *  Product: '<S9>/Product'
-   *  Product: '<S9>/Product1'
+   *  Product: '<S8>/Product'
+   *  Product: '<S8>/Product1'
+   *  SignalConversion: '<S4>/TmpSignal ConversionAtProductInport2'
    *  SignalConversion: '<S5>/TmpSignal ConversionAtProductInport2'
-   *  SignalConversion: '<S6>/TmpSignal ConversionAtProductInport2'
-   *  SignalConversion: '<S9>/TmpSignal ConversionAtProduct1Inport2'
+   *  SignalConversion: '<S8>/TmpSignal ConversionAtProduct1Inport2'
+   *  Sum: '<S4>/Sum1'
    *  Sum: '<S5>/Sum1'
-   *  Sum: '<S6>/Sum1'
-   *  Sum: '<S9>/Sum1'
+   *  Sum: '<S8>/Sum1'
    */
   rtb_Sum1_g = tunning_lqr_B.roll - (tunning_lqr_U.gain[9] * tunning_lqr_U.X[6]
     + tunning_lqr_U.gain[10] * tunning_lqr_U.X[9]);
-  rtb_ff_idx_0 = tunning_lqr_B.pitch - (tunning_lqr_U.gain[11] *
-    tunning_lqr_U.X[7] + tunning_lqr_U.gain[12] * tunning_lqr_U.X[10]);
-  rtb_ff_idx_1 = tunning_lqr_U.gain[15] * tunning_lqr_X.Integrator1_CSTATE_j -
-    (tunning_lqr_U.gain[13] * rtb_Sum3_b + tunning_lqr_U.gain[14] *
+  rtb_ff_idx_0 = tunning_lqr_B.pitch - (tunning_lqr_U.gain[12] *
+    tunning_lqr_U.X[7] + tunning_lqr_U.gain[13] * tunning_lqr_U.X[10]);
+  rtb_ff_idx_1 = tunning_lqr_U.gain[17] * tunning_lqr_X.Integrator1_CSTATE_j -
+    (tunning_lqr_U.gain[15] * rtb_Sum3_b + tunning_lqr_U.gain[16] *
      tunning_lqr_U.X[11]);
 
-  /* MATLAB Function 'LOE_': '<S3>:1' */
-  /* '<S3>:1:2' LOE_out = [0;0;0;0;0;0]; */
-  /* '<S3>:1:3' for i = 1:6 */
+  /* MATLAB Function 'Test_config_and_data/LOE_': '<S11>:1' */
+  /* '<S11>:1:2' LOE_out = [0;0;0;0;0;0]; */
+  /* '<S11>:1:3' for i = 1:6 */
   for (i = 0; i < 6; i++) {
-    /* Gain: '<Root>/                 ' incorporates:
-     *  Saturate: '<Root>/Saturation2'
+    /* Gain: '<Root>/Control Allocation' incorporates:
+     *  Saturate: '<Root>/                  '
      *  Sum: '<Root>/Sum2'
      */
-    u0 = tunning_lqr_ConstP._Gain[i + 18] * rtb_ff_idx_1 +
-      (tunning_lqr_ConstP._Gain[i + 12] * rtb_ff_idx_0 +
-       (tunning_lqr_ConstP._Gain[i + 6] * rtb_Sum1_g + (tunning_lqr_B.T +
-         15.107400000000002) * tunning_lqr_ConstP._Gain[i]));
+    u0 = tunning_lqr_ConstP.ControlAllocation_Gain[i + 18] * rtb_ff_idx_1 +
+      (tunning_lqr_ConstP.ControlAllocation_Gain[i + 12] * rtb_ff_idx_0 +
+       (tunning_lqr_ConstP.ControlAllocation_Gain[i + 6] * rtb_Sum1_g +
+        (tunning_lqr_B.dT + 15.107400000000002) *
+        tunning_lqr_ConstP.ControlAllocation_Gain[i]));
 
-    /* Saturate: '<Root>/Saturation2' incorporates:
-     *  Gain: '<Root>/                 '
+    /* Saturate: '<Root>/                  ' incorporates:
+     *  Gain: '<Root>/Control Allocation'
      */
     if (u0 > 8.54858) {
-      rtb_Saturation2[i] = 8.54858;
+      rtb_u[i] = 8.54858;
     } else if (u0 < 0.0) {
-      rtb_Saturation2[i] = 0.0;
+      rtb_u[i] = 0.0;
     } else {
-      rtb_Saturation2[i] = u0;
+      rtb_u[i] = u0;
     }
 
-    /* MATLAB Function: '<Root>/LOE_' incorporates:
+    /* MATLAB Function: '<S2>/LOE_' incorporates:
      *  Inport: '<Root>/LOE_a'
      *  Inport: '<Root>/LOE_t'
      */
     rtb_LOE_out[i] = 0.0;
 
-    /* '<S3>:1:4' if t>= LOE_t(i) */
+    /* '<S11>:1:4' if t>= LOE_t(i) */
     if (rtb_Clock >= tunning_lqr_U.LOE_t[i]) {
-      /* '<S3>:1:5' LOE_out(i) = LOE(i); */
+      /* '<S11>:1:5' LOE_out(i) = LOE(i); */
       rtb_LOE_out[i] = tunning_lqr_U.LOE_a[i];
     }
 
-    /* End of MATLAB Function: '<Root>/LOE_' */
+    /* End of MATLAB Function: '<S2>/LOE_' */
   }
 
-  /* Gain: '<Root>/mapping_0_200' incorporates:
-   *  Gain: '<Root>/      '
-   *  Gain: '<Root>/rads_to_RPM'
+  /* Gain: '<S3>/mapping_0_200' incorporates:
+   *  Gain: '<S3>/      '
+   *  Gain: '<S3>/rads_to_RPM'
    *  MATLAB Function: '<Root>/Actuator_Fault'
-   *  Sqrt: '<Root>/Sqrt1'
-   *  Sum: '<Root>/Sum3'
+   *  Sqrt: '<S3>/Sqrt1'
+   *  Sum: '<S3>/Sum3'
    */
   /* MATLAB Function 'Actuator_Fault': '<S1>:1' */
   /* '<S1>:1:2' T1 = T(1)*(1-LOE(1)); */
@@ -412,10 +408,10 @@ void tunning_lqrModelClass::step()
   /* '<S1>:1:6' T5 = T(5)*(1-LOE(5)); */
   /* '<S1>:1:7' T6 = T(6)*(1-LOE(6)); */
   /* '<S1>:1:8' T_f = [T1;T2;T3;T4;T5;T6]; */
-  u0 = (std::sqrt((1.0 - rtb_LOE_out[0]) * rtb_Saturation2[0] *
-                  116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
+  u0 = (std::sqrt((1.0 - rtb_LOE_out[0]) * rtb_u[0] * 116978.4923343994) *
+        9.5493 - 1250.0) * 0.022857142857142857;
 
-  /* Saturate: '<Root>/Saturation' */
+  /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
     /* Outport: '<Root>/motor_command' */
     tunning_lqr_Y.motor_command[0] = 200.0;
@@ -427,17 +423,17 @@ void tunning_lqrModelClass::step()
     tunning_lqr_Y.motor_command[0] = u0;
   }
 
-  /* Gain: '<Root>/mapping_0_200' incorporates:
-   *  Gain: '<Root>/      '
-   *  Gain: '<Root>/rads_to_RPM'
+  /* Gain: '<S3>/mapping_0_200' incorporates:
+   *  Gain: '<S3>/      '
+   *  Gain: '<S3>/rads_to_RPM'
    *  MATLAB Function: '<Root>/Actuator_Fault'
-   *  Sqrt: '<Root>/Sqrt1'
-   *  Sum: '<Root>/Sum3'
+   *  Sqrt: '<S3>/Sqrt1'
+   *  Sum: '<S3>/Sum3'
    */
-  u0 = (std::sqrt((1.0 - rtb_LOE_out[1]) * rtb_Saturation2[1] *
-                  116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
+  u0 = (std::sqrt((1.0 - rtb_LOE_out[1]) * rtb_u[1] * 116978.4923343994) *
+        9.5493 - 1250.0) * 0.022857142857142857;
 
-  /* Saturate: '<Root>/Saturation' */
+  /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
     /* Outport: '<Root>/motor_command' */
     tunning_lqr_Y.motor_command[1] = 200.0;
@@ -449,17 +445,17 @@ void tunning_lqrModelClass::step()
     tunning_lqr_Y.motor_command[1] = u0;
   }
 
-  /* Gain: '<Root>/mapping_0_200' incorporates:
-   *  Gain: '<Root>/      '
-   *  Gain: '<Root>/rads_to_RPM'
+  /* Gain: '<S3>/mapping_0_200' incorporates:
+   *  Gain: '<S3>/      '
+   *  Gain: '<S3>/rads_to_RPM'
    *  MATLAB Function: '<Root>/Actuator_Fault'
-   *  Sqrt: '<Root>/Sqrt1'
-   *  Sum: '<Root>/Sum3'
+   *  Sqrt: '<S3>/Sqrt1'
+   *  Sum: '<S3>/Sum3'
    */
-  u0 = (std::sqrt((1.0 - rtb_LOE_out[2]) * rtb_Saturation2[2] *
-                  116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
+  u0 = (std::sqrt((1.0 - rtb_LOE_out[2]) * rtb_u[2] * 116978.4923343994) *
+        9.5493 - 1250.0) * 0.022857142857142857;
 
-  /* Saturate: '<Root>/Saturation' */
+  /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
     /* Outport: '<Root>/motor_command' */
     tunning_lqr_Y.motor_command[2] = 200.0;
@@ -471,17 +467,17 @@ void tunning_lqrModelClass::step()
     tunning_lqr_Y.motor_command[2] = u0;
   }
 
-  /* Gain: '<Root>/mapping_0_200' incorporates:
-   *  Gain: '<Root>/      '
-   *  Gain: '<Root>/rads_to_RPM'
+  /* Gain: '<S3>/mapping_0_200' incorporates:
+   *  Gain: '<S3>/      '
+   *  Gain: '<S3>/rads_to_RPM'
    *  MATLAB Function: '<Root>/Actuator_Fault'
-   *  Sqrt: '<Root>/Sqrt1'
-   *  Sum: '<Root>/Sum3'
+   *  Sqrt: '<S3>/Sqrt1'
+   *  Sum: '<S3>/Sum3'
    */
-  u0 = (std::sqrt((1.0 - rtb_LOE_out[3]) * rtb_Saturation2[3] *
-                  116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
+  u0 = (std::sqrt((1.0 - rtb_LOE_out[3]) * rtb_u[3] * 116978.4923343994) *
+        9.5493 - 1250.0) * 0.022857142857142857;
 
-  /* Saturate: '<Root>/Saturation' */
+  /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
     /* Outport: '<Root>/motor_command' */
     tunning_lqr_Y.motor_command[3] = 200.0;
@@ -493,17 +489,17 @@ void tunning_lqrModelClass::step()
     tunning_lqr_Y.motor_command[3] = u0;
   }
 
-  /* Gain: '<Root>/mapping_0_200' incorporates:
-   *  Gain: '<Root>/      '
-   *  Gain: '<Root>/rads_to_RPM'
+  /* Gain: '<S3>/mapping_0_200' incorporates:
+   *  Gain: '<S3>/      '
+   *  Gain: '<S3>/rads_to_RPM'
    *  MATLAB Function: '<Root>/Actuator_Fault'
-   *  Sqrt: '<Root>/Sqrt1'
-   *  Sum: '<Root>/Sum3'
+   *  Sqrt: '<S3>/Sqrt1'
+   *  Sum: '<S3>/Sum3'
    */
-  u0 = (std::sqrt((1.0 - rtb_LOE_out[4]) * rtb_Saturation2[4] *
-                  116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
+  u0 = (std::sqrt((1.0 - rtb_LOE_out[4]) * rtb_u[4] * 116978.4923343994) *
+        9.5493 - 1250.0) * 0.022857142857142857;
 
-  /* Saturate: '<Root>/Saturation' */
+  /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
     /* Outport: '<Root>/motor_command' */
     tunning_lqr_Y.motor_command[4] = 200.0;
@@ -515,17 +511,17 @@ void tunning_lqrModelClass::step()
     tunning_lqr_Y.motor_command[4] = u0;
   }
 
-  /* Gain: '<Root>/mapping_0_200' incorporates:
-   *  Gain: '<Root>/      '
-   *  Gain: '<Root>/rads_to_RPM'
+  /* Gain: '<S3>/mapping_0_200' incorporates:
+   *  Gain: '<S3>/      '
+   *  Gain: '<S3>/rads_to_RPM'
    *  MATLAB Function: '<Root>/Actuator_Fault'
-   *  Sqrt: '<Root>/Sqrt1'
-   *  Sum: '<Root>/Sum3'
+   *  Sqrt: '<S3>/Sqrt1'
+   *  Sum: '<S3>/Sum3'
    */
-  u0 = (std::sqrt((1.0 - rtb_LOE_out[5]) * rtb_Saturation2[5] *
-                  116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
+  u0 = (std::sqrt((1.0 - rtb_LOE_out[5]) * rtb_u[5] * 116978.4923343994) *
+        9.5493 - 1250.0) * 0.022857142857142857;
 
-  /* Saturate: '<Root>/Saturation' */
+  /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
     /* Outport: '<Root>/motor_command' */
     tunning_lqr_Y.motor_command[5] = 200.0;
@@ -540,24 +536,24 @@ void tunning_lqrModelClass::step()
   /* Outport: '<Root>/virtual_control' incorporates:
    *  Sum: '<Root>/Sum2'
    */
-  tunning_lqr_Y.virtual_control[0] = tunning_lqr_B.T + 15.107400000000002;
+  tunning_lqr_Y.virtual_control[0] = tunning_lqr_B.dT + 15.107400000000002;
   tunning_lqr_Y.virtual_control[1] = rtb_Sum1_g;
   tunning_lqr_Y.virtual_control[2] = rtb_ff_idx_0;
   tunning_lqr_Y.virtual_control[3] = rtb_ff_idx_1;
 
-  /* MATLAB Function: '<Root>/MATLAB Function' incorporates:
+  /* MATLAB Function: '<S2>/MATLAB Function' incorporates:
    *  Inport: '<Root>/Y0'
    *  Inport: '<Root>/mode'
    *  Inport: '<Root>/ref'
    */
-  /* MATLAB Function 'MATLAB Function': '<S4>:1' */
-  /* '<S4>:1:2' ref = Y0; */
-  /* '<S4>:1:3' switch test_mode */
+  /* MATLAB Function 'Test_config_and_data/MATLAB Function': '<S12>:1' */
+  /* '<S12>:1:2' ref = Y0; */
+  /* '<S12>:1:3' switch test_mode */
   switch ((int32_T)tunning_lqr_U.mode) {
    case 0:
-    /* '<S4>:1:4' case 0      % manual test */
+    /* '<S12>:1:4' case 0      % manual test */
     /*  manual test */
-    /* '<S4>:1:5' ref = ref_manual; */
+    /* '<S12>:1:5' ref = ref_manual; */
     rtb_Sum1_g = tunning_lqr_U.ref[0];
     rtb_Clock = tunning_lqr_U.ref[1];
     rtb_ff_idx_0 = tunning_lqr_U.ref[2];
@@ -565,32 +561,39 @@ void tunning_lqrModelClass::step()
     break;
 
    case 1:
-    /* '<S4>:1:6' case 1      % waypoint */
+    /* '<S12>:1:6' case 1      % waypoint */
     /*  waypoint */
-    /* '<S4>:1:7' if t<=10 */
+    /* '<S12>:1:7' if t<=10 */
     if (rtb_Clock <= 10.0) {
-      /* '<S4>:1:8' ref = [Y0(1); Y0(2); 0.5; Y0(3)]; */
+      /* '<S12>:1:8' ref = [Y0(1); Y0(2); 0.5; Y0(4)]; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = 0.5;
-      rtb_ff_idx_1 = tunning_lqr_U.Y0[2];
+      rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     } else if (rtb_Clock <= 20.0) {
-      /* '<S4>:1:9' elseif t <= 20 */
-      /* '<S4>:1:10' ref = [Y0(1)-1.5; Y0(2)+1.5; 0.5; Y0(3)]; */
+      /* '<S12>:1:9' elseif t <= 20 */
+      /* '<S12>:1:10' ref = [Y0(1)-1.5; Y0(2)+1.5; 0.5; Y0(4)]; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0] - 1.5;
       rtb_Clock = tunning_lqr_U.Y0[1] + 1.5;
       rtb_ff_idx_0 = 0.5;
-      rtb_ff_idx_1 = tunning_lqr_U.Y0[2];
+      rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     } else if (rtb_Clock <= 30.0) {
-      /* '<S4>:1:11' elseif t <=30 */
-      /* '<S4>:1:12' ref = [Y0(1); Y0(2); 0.5; Y0(3)]; */
+      /* '<S12>:1:11' elseif t <=30 */
+      /* '<S12>:1:12' ref = [Y0(1); Y0(2); 0.5; Y0(4)]; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = 0.5;
-      rtb_ff_idx_1 = tunning_lqr_U.Y0[2];
+      rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
+    } else if (rtb_Clock <= 40.0) {
+      /* '<S12>:1:13' elseif t <=40 */
+      /* '<S12>:1:14' ref = [Y0(1); Y0(2); 0.5; Y0(4)+pi/2]; */
+      rtb_Sum1_g = tunning_lqr_U.Y0[0];
+      rtb_Clock = tunning_lqr_U.Y0[1];
+      rtb_ff_idx_0 = 0.5;
+      rtb_ff_idx_1 = tunning_lqr_U.Y0[3] + 1.5707963267948966;
     } else {
-      /* '<S4>:1:13' else */
-      /* '<S4>:1:14' ref = Y0; */
+      /* '<S12>:1:15' else */
+      /* '<S12>:1:16' ref = Y0; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = tunning_lqr_U.Y0[2];
@@ -599,44 +602,44 @@ void tunning_lqrModelClass::step()
     break;
 
    case 2:
-    /* '<S4>:1:16' case 2      % circular tracking */
+    /* '<S12>:1:18' case 2      % circular tracking */
     /*  circular tracking */
-    /* '<S4>:1:17' if t<=10 */
+    /* '<S12>:1:19' if t<=10 */
     if (rtb_Clock <= 10.0) {
-      /* '<S4>:1:18' ref = [Y0(1); Y0(2); 0.75; Y0(3)]; */
+      /* '<S12>:1:20' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = 0.75;
-      rtb_ff_idx_1 = tunning_lqr_U.Y0[2];
+      rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     } else if (rtb_Clock <= 50.0) {
-      /* '<S4>:1:19' elseif t <= 50 */
-      /* '<S4>:1:20' ref = [cos(t); sin(t); 0.75; Y0(3)]; */
+      /* '<S12>:1:21' elseif t <= 50 */
+      /* '<S12>:1:22' ref = [cos(t); sin(t); 0.75; Y0(4)]; */
       rtb_Sum1_g = std::cos(rtb_Clock);
       rtb_Clock = std::sin(rtb_Clock);
       rtb_ff_idx_0 = 0.75;
-      rtb_ff_idx_1 = tunning_lqr_U.Y0[2];
+      rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     } else if (rtb_Clock <= 60.0) {
-      /* '<S4>:1:21' elseif t <= 60 */
-      /* '<S4>:1:22' ref = [Y0(1); Y0(2); 0.75; Y0(3)]; */
+      /* '<S12>:1:23' elseif t <= 60 */
+      /* '<S12>:1:24' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = 0.75;
-      rtb_ff_idx_1 = tunning_lqr_U.Y0[2];
+      rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     } else {
-      /* '<S4>:1:23' else */
-      /* '<S4>:1:24' ref = Y0; */
+      /* '<S12>:1:25' else */
+      /* '<S12>:1:26' ref = Y0; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = tunning_lqr_U.Y0[2];
       rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     }
 
-    /*          ref = [cos(t); sin(t);min(t,15);Y0(3)]; */
+    /*          ref = [cos(t); sin(t);min(t,15);Y0(4)]; */
     break;
 
    default:
-    /* '<S4>:1:27' otherwise */
-    /* '<S4>:1:28' ref = Y0; */
+    /* '<S12>:1:29' otherwise */
+    /* '<S12>:1:30' ref = Y0; */
     rtb_Sum1_g = tunning_lqr_U.Y0[0];
     rtb_Clock = tunning_lqr_U.Y0[1];
     rtb_ff_idx_0 = tunning_lqr_U.Y0[2];
@@ -644,7 +647,7 @@ void tunning_lqrModelClass::step()
     break;
   }
 
-  /* End of MATLAB Function: '<Root>/MATLAB Function' */
+  /* End of MATLAB Function: '<S2>/MATLAB Function' */
 
   /* Outport: '<Root>/ref_out' */
   tunning_lqr_Y.ref_out[0] = rtb_Sum1_g;
@@ -659,7 +662,7 @@ void tunning_lqrModelClass::step()
 
   /* End of Outport: '<Root>/LOE' */
 
-  /* Sum: '<Root>/Sum' incorporates:
+  /* Sum: '<S2>/Sum' incorporates:
    *  Inport: '<Root>/Y0'
    */
   tunning_lqr_B.Sum[0] = rtb_Sum1_g - tunning_lqr_U.Y0[0];
@@ -681,7 +684,7 @@ void tunning_lqrModelClass::step()
   /* End of RateTransition: '<Root>/Rate Transition ' */
   if (rtmIsMajorTimeStep((&tunning_lqr_M)) &&
       (&tunning_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
-    /* Saturate: '<S7>/x' */
+    /* Saturate: '<S6>/x' */
     if (tunning_lqr_B.RateTransition_g[0] > 2.0) {
       u0 = 2.0;
     } else if (tunning_lqr_B.RateTransition_g[0] < -2.0) {
@@ -690,23 +693,23 @@ void tunning_lqrModelClass::step()
       u0 = tunning_lqr_B.RateTransition_g[0];
     }
 
-    /* End of Saturate: '<S7>/x' */
+    /* End of Saturate: '<S6>/x' */
 
-    /* Sum: '<S7>/Sum3' */
-    u0 -= tunning_lqr_B.dx_o;
+    /* Sum: '<S6>/Sum3' */
+    u0 -= tunning_lqr_B.d_x_b;
 
-    /* Saturate: '<S7>/x_e' */
-    if (u0 > 1.0) {
-      tunning_lqr_B.x_e = 1.0;
-    } else if (u0 < -1.0) {
-      tunning_lqr_B.x_e = -1.0;
+    /* Saturate: '<S6>/x_e' */
+    if (u0 > 2.0) {
+      tunning_lqr_B.x_e = 2.0;
+    } else if (u0 < -2.0) {
+      tunning_lqr_B.x_e = -2.0;
     } else {
       tunning_lqr_B.x_e = u0;
     }
 
-    /* End of Saturate: '<S7>/x_e' */
+    /* End of Saturate: '<S6>/x_e' */
 
-    /* Saturate: '<S8>/y' */
+    /* Saturate: '<S7>/y' */
     if (tunning_lqr_B.RateTransition_g[1] > 2.0) {
       u0 = 2.0;
     } else if (tunning_lqr_B.RateTransition_g[1] < -2.0) {
@@ -715,24 +718,24 @@ void tunning_lqrModelClass::step()
       u0 = tunning_lqr_B.RateTransition_g[1];
     }
 
-    /* End of Saturate: '<S8>/y' */
+    /* End of Saturate: '<S7>/y' */
 
-    /* Sum: '<S8>/Sum3' */
-    u0 -= tunning_lqr_B.dy_m;
+    /* Sum: '<S7>/Sum3' */
+    u0 -= tunning_lqr_B.d_y_l;
 
-    /* Saturate: '<S8>/y_e' */
-    if (u0 > 1.0) {
-      tunning_lqr_B.y_e = 1.0;
-    } else if (u0 < -1.0) {
-      tunning_lqr_B.y_e = -1.0;
+    /* Saturate: '<S7>/y_e' */
+    if (u0 > 2.0) {
+      tunning_lqr_B.y_e = 2.0;
+    } else if (u0 < -2.0) {
+      tunning_lqr_B.y_e = -2.0;
     } else {
       tunning_lqr_B.y_e = u0;
     }
 
-    /* End of Saturate: '<S8>/y_e' */
+    /* End of Saturate: '<S7>/y_e' */
   }
 
-  /* Saturate: '<S9>/yaw' */
+  /* Saturate: '<S8>/yaw' */
   if (tunning_lqr_B.Sum[3] > 3.1415926535897931) {
     u0 = 3.1415926535897931;
   } else if (tunning_lqr_B.Sum[3] < -3.1415926535897931) {
@@ -741,24 +744,24 @@ void tunning_lqrModelClass::step()
     u0 = tunning_lqr_B.Sum[3];
   }
 
-  /* End of Saturate: '<S9>/yaw' */
+  /* End of Saturate: '<S8>/yaw' */
 
-  /* Sum: '<S9>/Sum3' */
+  /* Sum: '<S8>/Sum3' */
   rtb_Sum3_b = u0 - rtb_Sum3_b;
 
-  /* Saturate: '<S9>/yaw_e' */
-  if (rtb_Sum3_b > 0.78539816339744828) {
-    tunning_lqr_B.yaw_e = 0.78539816339744828;
-  } else if (rtb_Sum3_b < -0.78539816339744828) {
-    tunning_lqr_B.yaw_e = -0.78539816339744828;
+  /* Saturate: '<S8>/yaw_e' */
+  if (rtb_Sum3_b > 1.5707963267948966) {
+    tunning_lqr_B.yaw_e = 1.5707963267948966;
+  } else if (rtb_Sum3_b < -1.5707963267948966) {
+    tunning_lqr_B.yaw_e = -1.5707963267948966;
   } else {
     tunning_lqr_B.yaw_e = rtb_Sum3_b;
   }
 
-  /* End of Saturate: '<S9>/yaw_e' */
+  /* End of Saturate: '<S8>/yaw_e' */
   if (rtmIsMajorTimeStep((&tunning_lqr_M)) &&
       (&tunning_lqr_M)->Timing.TaskCounters.TID[2] == 0) {
-    /* Saturate: '<S10>/z' */
+    /* Saturate: '<S9>/z' */
     if (tunning_lqr_B.RateTransition_g[2] > 1.75) {
       u0 = 1.75;
     } else if (tunning_lqr_B.RateTransition_g[2] < 0.0) {
@@ -767,12 +770,12 @@ void tunning_lqrModelClass::step()
       u0 = tunning_lqr_B.RateTransition_g[2];
     }
 
-    /* End of Saturate: '<S10>/z' */
+    /* End of Saturate: '<S9>/z' */
 
-    /* Sum: '<S10>/Sum3' */
-    u0 -= tunning_lqr_B.dz_h;
+    /* Sum: '<S9>/Sum3' */
+    u0 -= tunning_lqr_B.d_z_k;
 
-    /* Saturate: '<S10>/z_e' */
+    /* Saturate: '<S9>/z_e' */
     if (u0 > 1.0) {
       tunning_lqr_B.z_e = 1.0;
     } else if (u0 < -1.0) {
@@ -781,7 +784,7 @@ void tunning_lqrModelClass::step()
       tunning_lqr_B.z_e = u0;
     }
 
-    /* End of Saturate: '<S10>/z_e' */
+    /* End of Saturate: '<S9>/z_e' */
   }
 
   if (rtmIsMajorTimeStep((&tunning_lqr_M))) {
@@ -829,16 +832,16 @@ void tunning_lqrModelClass::tunning_lqr_derivatives()
   XDot_tunning_lqr_T *_rtXdot;
   _rtXdot = ((XDot_tunning_lqr_T *) (&tunning_lqr_M)->derivs);
 
-  /* Derivatives for Integrator: '<S10>/Integrator1' */
+  /* Derivatives for Integrator: '<S9>/Integrator1' */
   _rtXdot->Integrator1_CSTATE = tunning_lqr_B.z_e;
 
-  /* Derivatives for Integrator: '<S7>/Integrator1' */
+  /* Derivatives for Integrator: '<S6>/Integrator1' */
   _rtXdot->Integrator1_CSTATE_h = tunning_lqr_B.x_e;
 
-  /* Derivatives for Integrator: '<S8>/Integrator1' */
+  /* Derivatives for Integrator: '<S7>/Integrator1' */
   _rtXdot->Integrator1_CSTATE_g = tunning_lqr_B.y_e;
 
-  /* Derivatives for Integrator: '<S9>/Integrator1' */
+  /* Derivatives for Integrator: '<S8>/Integrator1' */
   _rtXdot->Integrator1_CSTATE_j = tunning_lqr_B.yaw_e;
 }
 
@@ -904,16 +907,16 @@ void tunning_lqrModelClass::initialize()
   (void) memset((void *)&tunning_lqr_Y, 0,
                 sizeof(ExtY_tunning_lqr_T));
 
-  /* InitializeConditions for Integrator: '<S10>/Integrator1' */
+  /* InitializeConditions for Integrator: '<S9>/Integrator1' */
   tunning_lqr_X.Integrator1_CSTATE = 0.0;
 
-  /* InitializeConditions for Integrator: '<S7>/Integrator1' */
+  /* InitializeConditions for Integrator: '<S6>/Integrator1' */
   tunning_lqr_X.Integrator1_CSTATE_h = 0.0;
 
-  /* InitializeConditions for Integrator: '<S8>/Integrator1' */
+  /* InitializeConditions for Integrator: '<S7>/Integrator1' */
   tunning_lqr_X.Integrator1_CSTATE_g = 0.0;
 
-  /* InitializeConditions for Integrator: '<S9>/Integrator1' */
+  /* InitializeConditions for Integrator: '<S8>/Integrator1' */
   tunning_lqr_X.Integrator1_CSTATE_j = 0.0;
 }
 
