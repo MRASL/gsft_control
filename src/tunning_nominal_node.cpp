@@ -96,7 +96,7 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         config.kz      = gGain[6];
         config.kvz     = gGain[7];
         config.kiz     = gGain[8];
-        config.kphi    = gGain[9];     
+        config.kphi    = gGain[9];
         config.kp      = gGain[10];
         config.kiphi   = gGain[11];
         config.ktheta  = gGain[12];
@@ -246,22 +246,28 @@ int main(int argc, char** argv) {
   bool control_actived = false;
   bool end_mission  = false;
 
-  gGain[0]  = 0.05;      // x
-  gGain[1]  = 0.1;     // vx
-  gGain[2]  = 0.0;            // integral x
+  gGain[0]  = 0.05;       // x
+  gGain[1]  = 0.1;        // vx
+  gGain[2]  = 0.0;        // integral x
   gGain[3]  = -0.05;      // y
   gGain[4]  = -0.1;
   gGain[5]  = 0.0;
   gGain[6]  = 13.86;      // z
   gGain[7]  = 6.93;
   gGain[8]  = 10.395;
-  gGain[9]  = 3.4756;    // roll
+  /*gGain[9]  = 3.4756;     // roll
   gGain[10] = 0.5213;
   gGain[11] = 8.6981;
-  gGain[12] = 4.5893;  // pitch
+  gGain[12] = 4.5893;     // pitch
   gGain[13] = 0.6884;
-  gGain[14] = 11.4732;
-  gGain[15] = 0.2198;    // yaw
+  gGain[14] = 11.4732; */
+  gGain[9]  = 1.2512;     // roll
+  gGain[10] = 0.3128;
+  gGain[11] = 1.8768;
+  gGain[12] = 1.6521;     // pitch
+  gGain[13] = 0.4130;
+  gGain[14] = 2.4782;
+  gGain[15] = 0.2198;     // yaw
   gGain[16] = 0.2198;
   gGain[17] = 0.0824;
 
