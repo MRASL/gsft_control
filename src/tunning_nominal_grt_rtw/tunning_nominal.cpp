@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1163
+ * Model version              : 1.1168
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Apr  6 11:31:47 2018
+ * C++ source code generated on : Fri Apr  6 16:28:58 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -59,7 +59,7 @@ void tunning_nominalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo
   real_T *f3 = id->f[3];
   real_T temp;
   int_T i;
-  int_T nXc = 4;
+  int_T nXc = 6;
   rtsiSetSimTimeStep(si,MINOR_TIME_STEP);
 
   /* Save the state values at time t in y, we'll use x as ynew. */
@@ -624,10 +624,13 @@ void tunning_nominalModelClass::step()
 
   /* Sum: '<S4>/Sum2' incorporates:
    *  Inport: '<Root>/gain'
+   *  Integrator: '<S4>/Integrator1'
    *  Product: '<S4>/Product2'
    *  Product: '<S4>/Product3'
+   *  Product: '<S4>/Product5'
    */
-  rtb_x = tunning_nominal_U.gain[0] * tunning_nominal_B.x_e +
+  rtb_x = (tunning_nominal_U.gain[2] * tunning_nominal_X.Integrator1_CSTATE_c +
+           tunning_nominal_U.gain[0] * tunning_nominal_B.x_e) +
     tunning_nominal_U.gain[1] * tunning_nominal_B.Gain1;
 
   /* Sum: '<S2>/Sum4' incorporates:
@@ -674,10 +677,13 @@ void tunning_nominalModelClass::step()
 
   /* Sum: '<S4>/Sum3' incorporates:
    *  Inport: '<Root>/gain'
+   *  Integrator: '<S4>/Integrator'
    *  Product: '<S4>/Product'
    *  Product: '<S4>/Product1'
+   *  Product: '<S4>/Product4'
    */
-  rtb_y = tunning_nominal_B.y_e * tunning_nominal_U.gain[3] +
+  rtb_y = (tunning_nominal_X.Integrator_CSTATE_g * tunning_nominal_U.gain[5] +
+           tunning_nominal_B.y_e * tunning_nominal_U.gain[3]) +
     tunning_nominal_B.Gain2 * tunning_nominal_U.gain[4];
 
   /* RateTransition: '<Root>/Rate Transition  ' incorporates:
@@ -895,6 +901,12 @@ void tunning_nominalModelClass::tunning_nominal_derivatives()
 
   /* Derivatives for Integrator: '<S7>/Integrator1' */
   _rtXdot->Integrator1_CSTATE_j = tunning_nominal_B.yaw_e;
+
+  /* Derivatives for Integrator: '<S4>/Integrator1' */
+  _rtXdot->Integrator1_CSTATE_c = tunning_nominal_B.x_e;
+
+  /* Derivatives for Integrator: '<S4>/Integrator' */
+  _rtXdot->Integrator_CSTATE_g = tunning_nominal_B.y_e;
 }
 
 /* Model initialize function */
@@ -972,6 +984,12 @@ void tunning_nominalModelClass::initialize()
 
   /* InitializeConditions for Integrator: '<S7>/Integrator1' */
   tunning_nominal_X.Integrator1_CSTATE_j = 0.0;
+
+  /* InitializeConditions for Integrator: '<S4>/Integrator1' */
+  tunning_nominal_X.Integrator1_CSTATE_c = 0.0;
+
+  /* InitializeConditions for Integrator: '<S4>/Integrator' */
+  tunning_nominal_X.Integrator_CSTATE_g = 0.0;
 }
 
 /* Model terminate function */

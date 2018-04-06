@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1163
+ * Model version              : 1.1168
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Apr  6 11:31:47 2018
+ * C++ source code generated on : Fri Apr  6 16:28:58 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -185,6 +185,8 @@ typedef struct {
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
   real_T Integrator_CSTATE_i;          /* '<S5>/Integrator' */
   real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_c;         /* '<S4>/Integrator1' */
+  real_T Integrator_CSTATE_g;          /* '<S4>/Integrator' */
 } X_tunning_nominal_T;
 
 /* State derivatives (auto storage) */
@@ -193,6 +195,8 @@ typedef struct {
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
   real_T Integrator_CSTATE_i;          /* '<S5>/Integrator' */
   real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE_c;         /* '<S4>/Integrator1' */
+  real_T Integrator_CSTATE_g;          /* '<S4>/Integrator' */
 } XDot_tunning_nominal_T;
 
 /* State disabled  */
@@ -201,6 +205,8 @@ typedef struct {
   boolean_T Integrator_CSTATE;         /* '<S6>/Integrator' */
   boolean_T Integrator_CSTATE_i;       /* '<S5>/Integrator' */
   boolean_T Integrator1_CSTATE_j;      /* '<S7>/Integrator1' */
+  boolean_T Integrator1_CSTATE_c;      /* '<S4>/Integrator1' */
+  boolean_T Integrator_CSTATE_g;       /* '<S4>/Integrator' */
 } XDis_tunning_nominal_T;
 
 #ifndef ODE4_INTG
@@ -253,8 +259,8 @@ struct tag_RTM_tunning_nominal_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T blkStateChange;
-  real_T odeY[4];
-  real_T odeF[4][4];
+  real_T odeY[6];
+  real_T odeF[4][6];
   ODE4_IntgData intgData;
 
   /*
@@ -376,7 +382,7 @@ class tunning_nominalModelClass {
  * '<S1>'   : 'tunning_nominal/Actuator_Fault'
  * '<S2>'   : 'tunning_nominal/Test_config_and_data'
  * '<S3>'   : 'tunning_nominal/Thrust2command'
- * '<S4>'   : 'tunning_nominal/XY PD Controller'
+ * '<S4>'   : 'tunning_nominal/XY PID Controller'
  * '<S5>'   : 'tunning_nominal/pitch_controller_int'
  * '<S6>'   : 'tunning_nominal/roll_controller_int'
  * '<S7>'   : 'tunning_nominal/yaw_controller'

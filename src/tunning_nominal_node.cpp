@@ -147,13 +147,11 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         else if (config.new_controller_gains){
           gGain[0]  = config.kx;
           gGain[1]  = config.kvx;
-          gGain[2]  = 0.0;
-          //gGain[2]  = config.kix;
+          gGain[2]  = config.kix;
 
           gGain[3]  = config.ky;
           gGain[4]  = config.kvy;
-          gGain[5]  = 0.0;
-          //gGain[5]  = config.kiy;
+          gGain[5]  = config.kiy;
 
           gGain[6]  = config.kz;
           gGain[7]  = config.kvz;
@@ -248,10 +246,10 @@ int main(int argc, char** argv) {
 
   gGain[0]  = 0.05;       // x
   gGain[1]  = 0.1;        // vx
-  gGain[2]  = 0.0;        // integral x
+  gGain[2]  = 0.001;      // integral x
   gGain[3]  = -0.05;      // y
   gGain[4]  = -0.1;
-  gGain[5]  = 0.0;
+  gGain[5]  = 0.001;
   gGain[6]  = 13.86;      // z
   gGain[7]  = 6.93;
   gGain[8]  = 10.395;
