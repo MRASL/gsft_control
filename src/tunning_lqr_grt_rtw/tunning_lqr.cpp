@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_lqr".
  *
- * Model version              : 1.1140
+ * Model version              : 1.1142
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Apr  6 10:47:37 2018
+ * C++ source code generated on : Fri Apr  6 11:33:33 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -591,9 +591,16 @@ void tunning_lqrModelClass::step()
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = 0.5;
       rtb_ff_idx_1 = tunning_lqr_U.Y0[3] + 1.5707963267948966;
+    } else if (rtb_Clock <= 50.0) {
+      /* '<S12>:1:15' elseif t <=50 */
+      /* '<S12>:1:16' ref = [Y0(1); Y0(2); 0.5; Y0(4)]; */
+      rtb_Sum1_g = tunning_lqr_U.Y0[0];
+      rtb_Clock = tunning_lqr_U.Y0[1];
+      rtb_ff_idx_0 = 0.5;
+      rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     } else {
-      /* '<S12>:1:15' else */
-      /* '<S12>:1:16' ref = Y0; */
+      /* '<S12>:1:17' else */
+      /* '<S12>:1:18' ref = Y0; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = tunning_lqr_U.Y0[2];
@@ -602,32 +609,32 @@ void tunning_lqrModelClass::step()
     break;
 
    case 2:
-    /* '<S12>:1:18' case 2      % circular tracking */
+    /* '<S12>:1:20' case 2      % circular tracking */
     /*  circular tracking */
-    /* '<S12>:1:19' if t<=10 */
+    /* '<S12>:1:21' if t<=10 */
     if (rtb_Clock <= 10.0) {
-      /* '<S12>:1:20' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+      /* '<S12>:1:22' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = 0.75;
       rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     } else if (rtb_Clock <= 50.0) {
-      /* '<S12>:1:21' elseif t <= 50 */
-      /* '<S12>:1:22' ref = [cos(t); sin(t); 0.75; Y0(4)]; */
+      /* '<S12>:1:23' elseif t <= 50 */
+      /* '<S12>:1:24' ref = [cos(t); sin(t); 0.75; Y0(4)]; */
       rtb_Sum1_g = std::cos(rtb_Clock);
       rtb_Clock = std::sin(rtb_Clock);
       rtb_ff_idx_0 = 0.75;
       rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     } else if (rtb_Clock <= 60.0) {
-      /* '<S12>:1:23' elseif t <= 60 */
-      /* '<S12>:1:24' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+      /* '<S12>:1:25' elseif t <= 60 */
+      /* '<S12>:1:26' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = 0.75;
       rtb_ff_idx_1 = tunning_lqr_U.Y0[3];
     } else {
-      /* '<S12>:1:25' else */
-      /* '<S12>:1:26' ref = Y0; */
+      /* '<S12>:1:27' else */
+      /* '<S12>:1:28' ref = Y0; */
       rtb_Sum1_g = tunning_lqr_U.Y0[0];
       rtb_Clock = tunning_lqr_U.Y0[1];
       rtb_ff_idx_0 = tunning_lqr_U.Y0[2];
@@ -638,8 +645,8 @@ void tunning_lqrModelClass::step()
     break;
 
    default:
-    /* '<S12>:1:29' otherwise */
-    /* '<S12>:1:30' ref = Y0; */
+    /* '<S12>:1:31' otherwise */
+    /* '<S12>:1:32' ref = Y0; */
     rtb_Sum1_g = tunning_lqr_U.Y0[0];
     rtb_Clock = tunning_lqr_U.Y0[1];
     rtb_ff_idx_0 = tunning_lqr_U.Y0[2];

@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1162
+ * Model version              : 1.1163
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Apr  6 10:46:15 2018
+ * C++ source code generated on : Fri Apr  6 11:31:47 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -457,9 +457,16 @@ void tunning_nominalModelClass::step()
       rtb_TLMN_idx_1 = tunning_nominal_U.Y0[1];
       rtb_TLMN_idx_2 = 0.5;
       rtb_TLMN_idx_3 = tunning_nominal_U.Y0[3] + 1.5707963267948966;
+    } else if (rtb_Clock <= 50.0) {
+      /* '<S11>:1:15' elseif t <=50 */
+      /* '<S11>:1:16' ref = [Y0(1); Y0(2); 0.5; Y0(4)]; */
+      rtb_TLMN_idx_0 = tunning_nominal_U.Y0[0];
+      rtb_TLMN_idx_1 = tunning_nominal_U.Y0[1];
+      rtb_TLMN_idx_2 = 0.5;
+      rtb_TLMN_idx_3 = tunning_nominal_U.Y0[3];
     } else {
-      /* '<S11>:1:15' else */
-      /* '<S11>:1:16' ref = Y0; */
+      /* '<S11>:1:17' else */
+      /* '<S11>:1:18' ref = Y0; */
       rtb_TLMN_idx_0 = tunning_nominal_U.Y0[0];
       rtb_TLMN_idx_1 = tunning_nominal_U.Y0[1];
       rtb_TLMN_idx_2 = tunning_nominal_U.Y0[2];
@@ -468,32 +475,32 @@ void tunning_nominalModelClass::step()
     break;
 
    case 2:
-    /* '<S11>:1:18' case 2      % circular tracking */
+    /* '<S11>:1:20' case 2      % circular tracking */
     /*  circular tracking */
-    /* '<S11>:1:19' if t<=10 */
+    /* '<S11>:1:21' if t<=10 */
     if (rtb_Clock <= 10.0) {
-      /* '<S11>:1:20' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+      /* '<S11>:1:22' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
       rtb_TLMN_idx_0 = tunning_nominal_U.Y0[0];
       rtb_TLMN_idx_1 = tunning_nominal_U.Y0[1];
       rtb_TLMN_idx_2 = 0.75;
       rtb_TLMN_idx_3 = tunning_nominal_U.Y0[3];
     } else if (rtb_Clock <= 50.0) {
-      /* '<S11>:1:21' elseif t <= 50 */
-      /* '<S11>:1:22' ref = [cos(t); sin(t); 0.75; Y0(4)]; */
+      /* '<S11>:1:23' elseif t <= 50 */
+      /* '<S11>:1:24' ref = [cos(t); sin(t); 0.75; Y0(4)]; */
       rtb_TLMN_idx_0 = std::cos(rtb_Clock);
       rtb_TLMN_idx_1 = std::sin(rtb_Clock);
       rtb_TLMN_idx_2 = 0.75;
       rtb_TLMN_idx_3 = tunning_nominal_U.Y0[3];
     } else if (rtb_Clock <= 60.0) {
-      /* '<S11>:1:23' elseif t <= 60 */
-      /* '<S11>:1:24' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+      /* '<S11>:1:25' elseif t <= 60 */
+      /* '<S11>:1:26' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
       rtb_TLMN_idx_0 = tunning_nominal_U.Y0[0];
       rtb_TLMN_idx_1 = tunning_nominal_U.Y0[1];
       rtb_TLMN_idx_2 = 0.75;
       rtb_TLMN_idx_3 = tunning_nominal_U.Y0[3];
     } else {
-      /* '<S11>:1:25' else */
-      /* '<S11>:1:26' ref = Y0; */
+      /* '<S11>:1:27' else */
+      /* '<S11>:1:28' ref = Y0; */
       rtb_TLMN_idx_0 = tunning_nominal_U.Y0[0];
       rtb_TLMN_idx_1 = tunning_nominal_U.Y0[1];
       rtb_TLMN_idx_2 = tunning_nominal_U.Y0[2];
@@ -504,8 +511,8 @@ void tunning_nominalModelClass::step()
     break;
 
    default:
-    /* '<S11>:1:29' otherwise */
-    /* '<S11>:1:30' ref = Y0; */
+    /* '<S11>:1:31' otherwise */
+    /* '<S11>:1:32' ref = Y0; */
     rtb_TLMN_idx_0 = tunning_nominal_U.Y0[0];
     rtb_TLMN_idx_1 = tunning_nominal_U.Y0[1];
     rtb_TLMN_idx_2 = tunning_nominal_U.Y0[2];
