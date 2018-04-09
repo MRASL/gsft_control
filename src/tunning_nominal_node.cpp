@@ -244,12 +244,12 @@ int main(int argc, char** argv) {
   bool control_actived = false;
   bool end_mission  = false;
 
-  gGain[0]  = 0.1019;       // x
-  gGain[1]  = 0.1529;        // vx
-  gGain[2]  = 0.0255;      // integral x
-  gGain[3]  = -0.1019;      // y
-  gGain[4]  = -0.1529;
-  gGain[5]  = -0.0255;
+  gGain[0]  = 0.2294;       // x
+  gGain[1]  = 0.2294;        // vx
+  gGain[2]  = 0.0860;      // integral x
+  gGain[3]  = -0.2294;      // y
+  gGain[4]  = -0.2294;
+  gGain[5]  = -0.0860;
   gGain[6]  = 13.86;      // z
   gGain[7]  = 6.93;
   gGain[8]  = 10.395;
