@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1168
+ * Model version              : 1.1175
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Apr  6 16:28:58 2018
+ * C++ source code generated on : Mon Apr  9 14:33:41 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -152,61 +152,59 @@ typedef struct {
   real_T d_z;                          /* '<S2>/Sum5' */
   real_T d_z_k;                        /* '<Root>/Rate Transition   ' */
   real_T vz;                           /* '<Root>/Rate Transition   ' */
-  real_T Sum1;                         /* '<S8>/Sum1' */
+  real_T Sum1;                         /* '<S9>/Sum1' */
   real_T dT;                           /* '<Root>/               ' */
-  real_T Sum[4];                       /* '<S2>/Sum' */
-  real_T RateTransition[4];            /* '<Root>/Rate Transition ' */
   real_T d_x;                          /* '<S2>/Sum1' */
   real_T d_x_b;                        /* '<Root>/Rate Transition   ' */
-  real_T x_e;                          /* '<S4>/x_e' */
   real_T vx;                           /* '<Root>/Rate Transition   ' */
-  real_T Gain1;                        /* '<S4>/Gain1' */
   real_T d_y;                          /* '<S2>/Sum4' */
   real_T d_y_l;                        /* '<Root>/Rate Transition   ' */
-  real_T y_e;                          /* '<S4>/y_e' */
   real_T vy;                           /* '<Root>/Rate Transition   ' */
-  real_T Gain2;                        /* '<S4>/Gain2' */
-  real_T RateTransition_e;             /* '<Root>/Rate Transition  ' */
+  real_T RateTransition;               /* '<Root>/Rate Transition  ' */
   real_T Sum8;                         /* '<Root>/Sum8' */
   real_T u;                            /* '<Root>/         ' */
   real_T Sum7;                         /* '<Root>/Sum7' */
   real_T u_i;                          /* '<Root>/                        ' */
-  real_T pitch;                        /* '<S5>/pitch' */
-  real_T Sum2;                         /* '<S5>/Sum2' */
-  real_T roll;                         /* '<S6>/roll' */
-  real_T Sum2_o;                       /* '<S6>/Sum2' */
-  real_T yaw_e;                        /* '<S7>/yaw_e' */
-  real_T z_e;                          /* '<S8>/z_e' */
+  real_T Sum[4];                       /* '<S2>/Sum' */
+  real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
+  real_T x_e;                          /* '<S5>/x_e' */
+  real_T y_e;                          /* '<S5>/y_e' */
+  real_T pitch;                        /* '<S6>/pitch' */
+  real_T Sum2;                         /* '<S6>/Sum2' */
+  real_T roll;                         /* '<S7>/roll' */
+  real_T Sum2_o;                       /* '<S7>/Sum2' */
+  real_T yaw_e;                        /* '<S8>/yaw_e' */
+  real_T z_e;                          /* '<S9>/z_e' */
 } B_tunning_nominal_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
-  real_T Integrator_CSTATE_i;          /* '<S5>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_c;         /* '<S4>/Integrator1' */
-  real_T Integrator_CSTATE_g;          /* '<S4>/Integrator' */
+  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S7>/Integrator' */
+  real_T Integrator_CSTATE_i;          /* '<S6>/Integrator' */
+  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_d;         /* '<S5>/Integrator1' */
+  real_T Integrator_CSTATE_e;          /* '<S5>/Integrator' */
 } X_tunning_nominal_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
-  real_T Integrator_CSTATE_i;          /* '<S5>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
-  real_T Integrator1_CSTATE_c;         /* '<S4>/Integrator1' */
-  real_T Integrator_CSTATE_g;          /* '<S4>/Integrator' */
+  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S7>/Integrator' */
+  real_T Integrator_CSTATE_i;          /* '<S6>/Integrator' */
+  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
+  real_T Integrator1_CSTATE_d;         /* '<S5>/Integrator1' */
+  real_T Integrator_CSTATE_e;          /* '<S5>/Integrator' */
 } XDot_tunning_nominal_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S8>/Integrator1' */
-  boolean_T Integrator_CSTATE;         /* '<S6>/Integrator' */
-  boolean_T Integrator_CSTATE_i;       /* '<S5>/Integrator' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S7>/Integrator1' */
-  boolean_T Integrator1_CSTATE_c;      /* '<S4>/Integrator1' */
-  boolean_T Integrator_CSTATE_g;       /* '<S4>/Integrator' */
+  boolean_T Integrator1_CSTATE;        /* '<S9>/Integrator1' */
+  boolean_T Integrator_CSTATE;         /* '<S7>/Integrator' */
+  boolean_T Integrator_CSTATE_i;       /* '<S6>/Integrator' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S8>/Integrator1' */
+  boolean_T Integrator1_CSTATE_d;      /* '<S5>/Integrator1' */
+  boolean_T Integrator_CSTATE_e;       /* '<S5>/Integrator' */
 } XDis_tunning_nominal_T;
 
 #ifndef ODE4_INTG
@@ -359,9 +357,11 @@ class tunning_nominalModelClass {
  * These blocks were eliminated from the model due to optimizations:
  *
  * Block '<S5>/Reshape' : Reshape block reduction
+ * Block '<S5>/Reshape1' : Reshape block reduction
  * Block '<S6>/Reshape' : Reshape block reduction
  * Block '<S7>/Reshape' : Reshape block reduction
  * Block '<S8>/Reshape' : Reshape block reduction
+ * Block '<S9>/Reshape' : Reshape block reduction
  */
 
 /*-
@@ -382,13 +382,14 @@ class tunning_nominalModelClass {
  * '<S1>'   : 'tunning_nominal/Actuator_Fault'
  * '<S2>'   : 'tunning_nominal/Test_config_and_data'
  * '<S3>'   : 'tunning_nominal/Thrust2command'
- * '<S4>'   : 'tunning_nominal/XY PID Controller'
- * '<S5>'   : 'tunning_nominal/pitch_controller_int'
- * '<S6>'   : 'tunning_nominal/roll_controller_int'
- * '<S7>'   : 'tunning_nominal/yaw_controller'
- * '<S8>'   : 'tunning_nominal/z_controller'
- * '<S9>'   : 'tunning_nominal/Test_config_and_data/FFW'
- * '<S10>'  : 'tunning_nominal/Test_config_and_data/LOE_'
- * '<S11>'  : 'tunning_nominal/Test_config_and_data/MATLAB Function'
+ * '<S4>'   : 'tunning_nominal/XY PID Controller1'
+ * '<S5>'   : 'tunning_nominal/XY State Feedback'
+ * '<S6>'   : 'tunning_nominal/pitch_controller_int'
+ * '<S7>'   : 'tunning_nominal/roll_controller_int'
+ * '<S8>'   : 'tunning_nominal/yaw_controller'
+ * '<S9>'   : 'tunning_nominal/z_controller'
+ * '<S10>'  : 'tunning_nominal/Test_config_and_data/FFW'
+ * '<S11>'  : 'tunning_nominal/Test_config_and_data/LOE_'
+ * '<S12>'  : 'tunning_nominal/Test_config_and_data/MATLAB Function'
  */
 #endif                                 /* RTW_HEADER_tunning_nominal_h_ */
