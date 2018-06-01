@@ -255,6 +255,7 @@ int main(int argc, char** argv) {
     }
 
     if (control_actived) {                                    // controller active after take-off request
+        // Initialization before Step
         gController.tunning_lqr_U.mode = gTest_mode;
 
         for (unsigned int i=0; i< 4; i++) {

@@ -244,24 +244,24 @@ int main(int argc, char** argv) {
   bool control_actived = false;
   bool end_mission  = false;
 
-  gGain[0]  = 0.2294;       // x
-  gGain[1]  = 0.2294;        // vx
-  gGain[2]  = 0.0860;      // integral x
-  gGain[3]  = -0.2294;      // y
-  gGain[4]  = -0.2294;
-  gGain[5]  = -0.0860;
-  gGain[6]  = 13.86;      // z
-  gGain[7]  = 6.93;
-  gGain[8]  = 10.395;
-  gGain[9]  = 1.2512;     // roll
-  gGain[10] = 0.3128;
-  gGain[11] = 1.8768;
-  gGain[12] = 1.6521;     // pitch
-  gGain[13] = 0.4130;
-  gGain[14] = 2.4782;
-  gGain[15] = 0.2198;     // yaw
-  gGain[16] = 0.2198;
-  gGain[17] = 0.0824;
+  gGain[0]  = 0.5414;       // x from LQR
+  gGain[1]  = 0.4108;       // vx
+  gGain[2]  = 0.3162;      // integral x
+  gGain[3]  = -0.5262;      // y
+  gGain[4]  = -0.3851;
+  gGain[5]  = -0.3162;
+  gGain[6]  = 14.7226;      // z
+  gGain[7]  = 6.8078;
+  gGain[8]  = 12.2474;
+  gGain[9]  = 1.5756;     // roll
+  gGain[10] = 0.3320;
+  gGain[11] = 0.0;
+  gGain[12] = 1.7578;     // pitch
+  gGain[13] = 0.4025;
+  gGain[14] = 0.0;
+  gGain[15] = 0.4980;     // yaw
+  gGain[16] = 0.3130;
+  gGain[17] = 0.3162;
 
   while(ros::ok()) {
     R_W_B = gOdometry.orientation_W_B.toRotationMatrix();
@@ -287,6 +287,7 @@ int main(int argc, char** argv) {
     }
 
     if (control_actived) {                                    // controller active after take-off request
+        // Initialization before Step
         gController.tunning_nominal_U.mode = gTest_mode;
 
         for (unsigned int i=0; i< 4; i++) {
