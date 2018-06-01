@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1179
+ * Model version              : 1.1184
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jun  1 16:22:03 2018
+ * C++ source code generated on : Fri Jun  1 16:57:51 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -161,18 +161,16 @@ typedef struct {
   real_T d_y_l;                        /* '<Root>/Rate Transition   ' */
   real_T vy;                           /* '<Root>/Rate Transition   ' */
   real_T RateTransition;               /* '<Root>/Rate Transition  ' */
-  real_T Sum8;                         /* '<Root>/Sum8' */
-  real_T u;                            /* '<Root>/         ' */
   real_T Sum7;                         /* '<Root>/Sum7' */
-  real_T u_i;                          /* '<Root>/                        ' */
+  real_T u;                            /* '<Root>/                        ' */
+  real_T roll;                         /* '<S8>/roll' */
+  real_T Sum8;                         /* '<Root>/Sum8' */
+  real_T u_c;                          /* '<Root>/         ' */
+  real_T pitch;                        /* '<S6>/pitch' */
   real_T Sum[4];                       /* '<S2>/Sum' */
   real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
   real_T x_e;                          /* '<S5>/x_e' */
   real_T y_e;                          /* '<S5>/y_e' */
-  real_T pitch;                        /* '<S6>/pitch' */
-  real_T Sum2;                         /* '<S6>/Sum2' */
-  real_T roll;                         /* '<S8>/roll' */
-  real_T Sum2_n;                       /* '<S8>/Sum2' */
   real_T yaw_e;                        /* '<S10>/yaw_e' */
   real_T z_e;                          /* '<S11>/z_e' */
 } B_tunning_nominal_T;
@@ -180,31 +178,25 @@ typedef struct {
 /* Continuous states (auto storage) */
 typedef struct {
   real_T Integrator1_CSTATE;           /* '<S11>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S8>/Integrator' */
-  real_T Integrator_CSTATE_k;          /* '<S6>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S10>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S5>/Integrator1' */
-  real_T Integrator_CSTATE_e;          /* '<S5>/Integrator' */
+  real_T Integrator_CSTATE;            /* '<S5>/Integrator' */
+  real_T Integrator1_CSTATE_j;         /* '<S10>/Integrator1' */
 } X_tunning_nominal_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
   real_T Integrator1_CSTATE;           /* '<S11>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S8>/Integrator' */
-  real_T Integrator_CSTATE_k;          /* '<S6>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S10>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S5>/Integrator1' */
-  real_T Integrator_CSTATE_e;          /* '<S5>/Integrator' */
+  real_T Integrator_CSTATE;            /* '<S5>/Integrator' */
+  real_T Integrator1_CSTATE_j;         /* '<S10>/Integrator1' */
 } XDot_tunning_nominal_T;
 
 /* State disabled  */
 typedef struct {
   boolean_T Integrator1_CSTATE;        /* '<S11>/Integrator1' */
-  boolean_T Integrator_CSTATE;         /* '<S8>/Integrator' */
-  boolean_T Integrator_CSTATE_k;       /* '<S6>/Integrator' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S10>/Integrator1' */
   boolean_T Integrator1_CSTATE_d;      /* '<S5>/Integrator1' */
-  boolean_T Integrator_CSTATE_e;       /* '<S5>/Integrator' */
+  boolean_T Integrator_CSTATE;         /* '<S5>/Integrator' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S10>/Integrator1' */
 } XDis_tunning_nominal_T;
 
 #ifndef ODE4_INTG
@@ -257,8 +249,8 @@ struct tag_RTM_tunning_nominal_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T blkStateChange;
-  real_T odeY[6];
-  real_T odeF[4][6];
+  real_T odeY[4];
+  real_T odeF[4][4];
   ODE4_IntgData intgData;
 
   /*
