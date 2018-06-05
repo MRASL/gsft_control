@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1184
+ * Model version              : 1.1189
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jun  1 16:57:51 2018
+ * C++ source code generated on : Tue Jun  5 15:04:27 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -348,6 +348,9 @@ class tunning_nominalModelClass {
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
+ * Block '<Root>/                 ' : Eliminated since input and output rates are identical
+ * Block '<Root>/                          ' : Eliminated since input and output rates are identical
+ * Block '<Root>/                             ' : Eliminated since input and output rates are identical
  * Block '<S5>/Reshape' : Reshape block reduction
  * Block '<S5>/Reshape1' : Reshape block reduction
  * Block '<S6>/Reshape' : Reshape block reduction

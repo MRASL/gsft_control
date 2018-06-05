@@ -6,6 +6,7 @@
 
  <group ns="firefly">
     <node name="tunning_nominal" pkg="gsft_control" type="tunning_nominal_node" output="screen">
+<!--       <param name="~run_frequency"  value="1000" />      -->
        <remap from="odometry" to="odometry_sensor1/odometry" />
     </node>
   </group>

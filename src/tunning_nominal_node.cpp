@@ -56,7 +56,36 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
     config.RESET = false;
   }
   else if (level & gsft_control::controllerDyn_ENABLE_CTRL){
+      if (config.new_controller_gains){
+        gGain[0]  = config.kx;      // x
+        gGain[1]  = config.kvx;     // vx
+        gGain[2]  = config.kix;     // integral x
+
+        gGain[3]  = config.ky;      // y
+        gGain[4]  = config.kvy;
+        gGain[5]  = config.kiy;
+
+        gGain[6]  = config.kz;      // z
+        gGain[7]  = config.kvz;
+        gGain[8]  = config.kiz;
+
+        gGain[9]  = config.kphi;    // roll
+        gGain[10] = config.kp;
+        gGain[11] = config.kiphi;
+
+        gGain[12] = config.ktheta;  // pitch
+        gGain[13] = config.kq;
+        gGain[14] = config.kitheta;
+
+        gGain[15] = config.kpsi;    // yaw
+        gGain[16] = config.kr;
+        gGain[17] = config.kipsi;
+        ROS_INFO("New controller gains");
+        config.new_controller_gains   = false;
+      }
+
       gTest_mode = config.test_mode;
+
       if (config.enable_take_off && !gInit_flag){     // only once
         gY0[0]    = gOdometry.position_W.x();
         gY0[1]    = gOdometry.position_W.y();
@@ -69,42 +98,29 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gRef[3]   = gY0[3];
       //  }
 
-      /*  gGain[0]  = config.kx;      // x
+        gGain[0]  = config.kx;      // x
         gGain[1]  = config.kvx;     // vx
-        gGain[2]  = 0.0;            // integral x
+        gGain[2]  = config.kix;     // integral x
+
         gGain[3]  = config.ky;      // y
         gGain[4]  = config.kvy;
-        gGain[5]  = 0.0;
+        gGain[5]  = config.kiy;
+
         gGain[6]  = config.kz;      // z
         gGain[7]  = config.kvz;
         gGain[8]  = config.kiz;
+
         gGain[9]  = config.kphi;    // roll
         gGain[10] = config.kp;
         gGain[11] = config.kiphi;
+
         gGain[12] = config.ktheta;  // pitch
         gGain[13] = config.kq;
         gGain[14] = config.kitheta;
+
         gGain[15] = config.kpsi;    // yaw
         gGain[16] = config.kr;
-        gGain[17] = config.kipsi;  */
-        config.kx      = gGain[0];
-        config.kvx     = gGain[1];
-        config.kix     = gGain[2];
-        config.ky      = gGain[3] ;
-        config.kvy     = gGain[4];
-        config.kiy     = gGain[5];
-        config.kz      = gGain[6];
-        config.kvz     = gGain[7];
-        config.kiz     = gGain[8];
-        config.kphi    = gGain[9];
-        config.kp      = gGain[10];
-        config.kiphi   = gGain[11];
-        config.ktheta  = gGain[12];
-        config.kq      = gGain[13];
-        config.kitheta =  gGain[14];
-        config.kpsi    = gGain[15];
-        config.kr      = gGain[16];
-        config.kipsi   = gGain[17];
+        gGain[17] = config.kipsi;
 
         gLOE[0]   = config.LOE_1;
         gLOE[1]   = config.LOE_2;
@@ -143,33 +159,6 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
           gRef[3]   = config.ref_yaw_deg*3.14159/180.0;
           ROS_INFO("Waypoint Request: x_ref = %f, y_ref = %f, z_ref = %f, psi_ref = %f(deg)",gRef[0],gRef[1],gRef[2],gRef[3]);
           config.send_waypoint   = false;
-        }
-        else if (config.new_controller_gains){
-          gGain[0]  = config.kx;
-          gGain[1]  = config.kvx;
-          gGain[2]  = config.kix;
-
-          gGain[3]  = config.ky;
-          gGain[4]  = config.kvy;
-          gGain[5]  = config.kiy;
-
-          gGain[6]  = config.kz;
-          gGain[7]  = config.kvz;
-          gGain[8]  = config.kiz;
-
-          gGain[9]  = config.kphi;
-          gGain[10] = config.kp;
-          gGain[11] = config.kiphi;
-
-          gGain[12] = config.ktheta;
-          gGain[13] = config.kq;
-          gGain[14] = config.kitheta;
-
-          gGain[15] = config.kpsi;
-          gGain[16] = config.kr;
-          gGain[17] = config.kipsi;
-          ROS_INFO("New controller gains");
-          config.new_controller_gains   = false;
         }
       }
   }
@@ -215,6 +204,11 @@ int main(int argc, char** argv) {
 
   ros::Timer timer = nh.createTimer(ros::Duration(0.01),timmerCallback);
 
+  // int run_freq = 1000;
+  // pnh.getParam("run_frequency",run_freq);
+  // ROS_INFO("Param: run frequency = %d",run_freq);
+  //ros::Rate r(run_freq);
+  
   ros::Rate r(1000);
 
   gInit_flag        = false;
@@ -244,7 +238,7 @@ int main(int argc, char** argv) {
   bool control_actived = false;
   bool end_mission  = false;
 
-  gGain[0]  = 0.5414;       // x from LQR
+/*  gGain[0]  = 0.5414;       // x from LQR
   gGain[1]  = 0.4108;       // vx
   gGain[2]  = 0.3162;      // integral x
   gGain[3]  = -0.5262;      // y
@@ -261,7 +255,7 @@ int main(int argc, char** argv) {
   gGain[14] = 0.0;
   gGain[15] = 0.4980;     // yaw
   gGain[16] = 0.3130;
-  gGain[17] = 0.3162;
+  gGain[17] = 0.3162;  */
 
   while(ros::ok()) {
     R_W_B = gOdometry.orientation_W_B.toRotationMatrix();
@@ -299,9 +293,9 @@ int main(int argc, char** argv) {
         for (unsigned int i=0; i< 18; i++) {
           gController.tunning_nominal_U.gain[i] = gGain[i];
         }
-        gController.tunning_nominal_U.X[0]  = gOdometry.position_W.x();
-        gController.tunning_nominal_U.X[1]  = gOdometry.position_W.y();
-        gController.tunning_nominal_U.X[2]  = gOdometry.position_W.z();
+        gController.tunning_nominal_U.X[0]   = gOdometry.position_W.x();
+        gController.tunning_nominal_U.X[1]   = gOdometry.position_W.y();
+        gController.tunning_nominal_U.X[2]   = gOdometry.position_W.z();
         gController.tunning_nominal_U.X[3 ]  = velocity_W.x();
         gController.tunning_nominal_U.X[4 ]  = velocity_W.y();
         gController.tunning_nominal_U.X[5 ]  = velocity_W.z();
