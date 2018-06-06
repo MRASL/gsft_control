@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1189
+ * Model version              : 1.1191
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jun  5 15:04:27 2018
+ * C++ source code generated on : Wed Jun  6 16:40:34 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -589,22 +589,22 @@ void tunning_nominalModelClass::step()
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = 0.5;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
-    } else if (rtb_Clock <= 20.0) {
-      /* '<S14>:1:22' elseif t <= 20 */
+    } else if (rtb_Clock <= 30.0) {
+      /* '<S14>:1:22' elseif t <= 30 */
       /* '<S14>:1:23' ref = [Y0(1)-1.5; Y0(2); 0.5; Y0(4)]; */
       rtb_Sum1_a = tunning_nominal_U.Y0[0] - 1.5;
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = 0.5;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
-    } else if (rtb_Clock <= 35.0) {
-      /* '<S14>:1:24' elseif t <=35 */
+    } else if (rtb_Clock <= 50.0) {
+      /* '<S14>:1:24' elseif t <= 50 */
       /* '<S14>:1:25' ref = [Y0(1)+1.5; Y0(2); 0.5; Y0(4)]; */
       rtb_Sum1_a = tunning_nominal_U.Y0[0] + 1.5;
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = 0.5;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
-    } else if (rtb_Clock <= 45.0) {
-      /* '<S14>:1:26' elseif t <=45 */
+    } else if (rtb_Clock <= 60.0) {
+      /* '<S14>:1:26' elseif t <= 60 */
       /* '<S14>:1:27' ref = [Y0(1); Y0(2); 0.5; Y0(4)]; */
       rtb_Sum1_a = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
