@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1193
+ * Model version              : 1.1207
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jun 27 10:18:49 2018
+ * C++ source code generated on : Wed Jun 27 15:49:42 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -169,18 +169,22 @@ typedef struct {
   real_T Sum8;                         /* '<Root>/Sum8' */
   real_T u_c;                          /* '<Root>/         ' */
   real_T pitch;                        /* '<S6>/pitch' */
-  real_T RateLimiter[4];               /* '<Root>/Rate Limiter' */
+  real_T Sum[4];                       /* '<S2>/Sum' */
   real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
-  real_T x_e;                          /* '<S5>/x_e' */
-  real_T y_e;                          /* '<S5>/y_e' */
-  real_T yaw_e;                        /* '<S10>/yaw_e' */
-  real_T z_e;                          /* '<S11>/z_e' */
+  real_T Sum1_g;                       /* '<S5>/Sum1' */
+  real_T Sum4;                         /* '<S5>/Sum4' */
+  real_T pi_2_rad_per_sec;             /* '<S10>/pi_2_rad_per_sec' */
+  real_T Sum3;                         /* '<S10>/Sum3' */
+  real_T Sum3_h;                       /* '<S11>/Sum3' */
 } B_tunning_nominal_T;
 
 /* Block states (auto storage) for system '<Root>' */
 typedef struct {
-  real_T PrevY[4];                     /* '<Root>/Rate Limiter' */
-  real_T LastMajorTime;                /* '<Root>/Rate Limiter' */
+  real_T PrevY;                        /* '<S5>/4m_per_sec' */
+  real_T PrevY_d;                      /* '<S5>/4m_per_sec ' */
+  real_T PrevY_k;                      /* '<S10>/pi_2_rad_per_sec' */
+  real_T LastMajorTime;                /* '<S10>/pi_2_rad_per_sec' */
+  real_T PrevY_c;                      /* '<S11>/2m_per_sec' */
 } DW_tunning_nominal_T;
 
 /* Continuous states (auto storage) */
@@ -284,6 +288,8 @@ struct tag_RTM_tunning_nominal_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    uint32_T clockTick2;
+    uint32_T clockTickH2;
     struct {
       uint8_T TID[3];
     } TaskCounters;
