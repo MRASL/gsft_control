@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1191
+ * Model version              : 1.1193
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jun  6 16:40:34 2018
+ * C++ source code generated on : Wed Jun 27 10:18:49 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -33,6 +33,8 @@
 
 /* Shared type includes */
 #include "multiword_types.h"
+#include "rtGetInf.h"
+#include "rt_nonfinite.h"
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetBlkStateChangeFlag
@@ -167,13 +169,19 @@ typedef struct {
   real_T Sum8;                         /* '<Root>/Sum8' */
   real_T u_c;                          /* '<Root>/         ' */
   real_T pitch;                        /* '<S6>/pitch' */
-  real_T Sum[4];                       /* '<S2>/Sum' */
+  real_T RateLimiter[4];               /* '<Root>/Rate Limiter' */
   real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
   real_T x_e;                          /* '<S5>/x_e' */
   real_T y_e;                          /* '<S5>/y_e' */
   real_T yaw_e;                        /* '<S10>/yaw_e' */
   real_T z_e;                          /* '<S11>/z_e' */
 } B_tunning_nominal_T;
+
+/* Block states (auto storage) for system '<Root>' */
+typedef struct {
+  real_T PrevY[4];                     /* '<Root>/Rate Limiter' */
+  real_T LastMajorTime;                /* '<Root>/Rate Limiter' */
+} DW_tunning_nominal_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
@@ -333,6 +341,9 @@ class tunning_nominalModelClass {
  private:
   /* Block signals */
   B_tunning_nominal_T tunning_nominal_B;
+
+  /* Block states */
+  DW_tunning_nominal_T tunning_nominal_DW;
   X_tunning_nominal_T tunning_nominal_X;/* Block continuous states */
 
   /* Real-Time Model */
