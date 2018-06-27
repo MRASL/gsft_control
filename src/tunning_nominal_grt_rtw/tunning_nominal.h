@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1214
+ * Model version              : 1.1215
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jun 27 17:53:25 2018
+ * C++ source code generated on : Wed Jun 27 18:27:08 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -169,8 +169,8 @@ typedef struct {
   real_T pitch;                        /* '<S6>/pitch' */
   real_T Sum[4];                       /* '<S2>/Sum' */
   real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
-  real_T Sum1_g;                       /* '<S5>/Sum1' */
-  real_T Sum4;                         /* '<S5>/Sum4' */
+  real_T DeadZone1cm;                  /* '<S5>/Dead Zone 1cm' */
+  real_T DeadZone1cm_k;                /* '<S5>/Dead Zone 1cm ' */
   real_T Sum3;                         /* '<S10>/Sum3' */
   real_T Sum3_h;                       /* '<S11>/Sum3' */
 } B_tunning_nominal_T;
