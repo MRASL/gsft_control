@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1207
+ * Model version              : 1.1209
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jun 27 15:49:42 2018
+ * C++ source code generated on : Wed Jun 27 16:38:11 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -304,10 +304,10 @@ void tunning_nominalModelClass::step()
     tunning_nominal_B.u = tunning_nominal_B.Sum7;
 
     /* Saturate: '<S8>/roll' */
-    if (tunning_nominal_B.u > 0.52359877559829882) {
-      tunning_nominal_B.roll = 0.52359877559829882;
-    } else if (tunning_nominal_B.u < -0.52359877559829882) {
-      tunning_nominal_B.roll = -0.52359877559829882;
+    if (tunning_nominal_B.u > 0.78539816339744828) {
+      tunning_nominal_B.roll = 0.78539816339744828;
+    } else if (tunning_nominal_B.u < -0.78539816339744828) {
+      tunning_nominal_B.roll = -0.78539816339744828;
     } else {
       tunning_nominal_B.roll = tunning_nominal_B.u;
     }
@@ -316,10 +316,10 @@ void tunning_nominalModelClass::step()
     tunning_nominal_B.u_c = tunning_nominal_B.Sum8;
 
     /* Saturate: '<S6>/pitch' */
-    if (tunning_nominal_B.u_c > 0.52359877559829882) {
-      tunning_nominal_B.pitch = 0.52359877559829882;
-    } else if (tunning_nominal_B.u_c < -0.52359877559829882) {
-      tunning_nominal_B.pitch = -0.52359877559829882;
+    if (tunning_nominal_B.u_c > 0.78539816339744828) {
+      tunning_nominal_B.pitch = 0.78539816339744828;
+    } else if (tunning_nominal_B.u_c < -0.78539816339744828) {
+      tunning_nominal_B.pitch = -0.78539816339744828;
     } else {
       tunning_nominal_B.pitch = tunning_nominal_B.u_c;
     }
@@ -843,31 +843,17 @@ void tunning_nominalModelClass::step()
       (&tunning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
     /* Saturate: '<S11>/z' */
     if (tunning_nominal_B.RateTransition_g[2] > 1.75) {
-      rtb_ff_idx_0 = 1.75;
+      u0 = 1.75;
     } else if (tunning_nominal_B.RateTransition_g[2] < 0.0) {
-      rtb_ff_idx_0 = 0.0;
+      u0 = 0.0;
     } else {
-      rtb_ff_idx_0 = tunning_nominal_B.RateTransition_g[2];
+      u0 = tunning_nominal_B.RateTransition_g[2];
     }
 
     /* End of Saturate: '<S11>/z' */
 
-    /* RateLimiter: '<S11>/2m_per_sec' */
-    rtb_uNm_p = rtb_ff_idx_0 - tunning_nominal_DW.PrevY_c;
-    if (rtb_uNm_p > 0.01) {
-      rtb_ff_idx_0 = tunning_nominal_DW.PrevY_c + 0.01;
-    } else {
-      if (rtb_uNm_p < -0.01) {
-        rtb_ff_idx_0 = tunning_nominal_DW.PrevY_c + -0.01;
-      }
-    }
-
-    tunning_nominal_DW.PrevY_c = rtb_ff_idx_0;
-
-    /* End of RateLimiter: '<S11>/2m_per_sec' */
-
     /* Sum: '<S11>/Sum3' */
-    tunning_nominal_B.Sum3_h = rtb_ff_idx_0 - tunning_nominal_B.d_z_k;
+    tunning_nominal_B.Sum3_h = u0 - tunning_nominal_B.d_z_k;
   }
 
   if (rtmIsMajorTimeStep((&tunning_nominal_M))) {
@@ -1042,9 +1028,6 @@ void tunning_nominalModelClass::initialize()
 
   /* InitializeConditions for RateLimiter: '<S10>/pi_2_rad_per_sec' */
   tunning_nominal_DW.LastMajorTime = (rtInf);
-
-  /* InitializeConditions for RateLimiter: '<S11>/2m_per_sec' */
-  tunning_nominal_DW.PrevY_c = 0.0;
 }
 
 /* Model terminate function */
