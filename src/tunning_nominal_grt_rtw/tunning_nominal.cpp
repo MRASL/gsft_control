@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1231
+ * Model version              : 1.1233
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jun 29 14:18:42 2018
+ * C++ source code generated on : Fri Jun 29 14:30:26 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -296,7 +296,9 @@ void tunning_nominalModelClass::step()
   /* Sum: '<Root>/Sum8' */
   tunning_nominal_B.Sum8 = rtb_d_psi + rtb_ff_idx_1;
 
-  /* ZeroOrderHold: '<Root>/                        ' */
+  /* ZeroOrderHold: '<Root>/                        ' incorporates:
+   *  ZeroOrderHold: '<Root>/         '
+   */
   if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
       (&tunning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
     tunning_nominal_B.u = tunning_nominal_B.Sum7;
@@ -311,9 +313,18 @@ void tunning_nominalModelClass::step()
     }
 
     /* End of Saturate: '<S8>/roll' */
-
-    /* ZeroOrderHold: '<Root>/         ' */
     tunning_nominal_B.u_c = tunning_nominal_B.Sum8;
+
+    /* Saturate: '<S6>/pitch' */
+    if (tunning_nominal_B.u_c > 0.78539816339744828) {
+      tunning_nominal_B.pitch = 0.78539816339744828;
+    } else if (tunning_nominal_B.u_c < -0.78539816339744828) {
+      tunning_nominal_B.pitch = -0.78539816339744828;
+    } else {
+      tunning_nominal_B.pitch = tunning_nominal_B.u_c;
+    }
+
+    /* End of Saturate: '<S6>/pitch' */
   }
 
   /* End of ZeroOrderHold: '<Root>/                        ' */
@@ -352,7 +363,7 @@ void tunning_nominalModelClass::step()
    *  SignalConversion: '<S6>/TmpSignal ConversionAtProductInport2'
    *  Sum: '<S6>/Sum1'
    */
-  rtb_ff_idx_0 = tunning_nominal_B.u_c - (tunning_nominal_U.gain[12] *
+  rtb_ff_idx_0 = tunning_nominal_B.pitch - (tunning_nominal_U.gain[12] *
     tunning_nominal_U.X[7] + tunning_nominal_U.gain[13] * tunning_nominal_U.X[10]);
   if (rtb_ff_idx_0 > 2.0) {
     /* Sum: '<Root>/Sum2' */
@@ -734,31 +745,6 @@ void tunning_nominalModelClass::step()
   /* End of RateTransition: '<Root>/Rate Transition ' */
   if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
       (&tunning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
-    /* Saturate: '<S5>/x' */
-    if (tunning_nominal_B.RateTransition_g[0] > 2.0) {
-      rtb_uNm_p = 2.0;
-    } else if (tunning_nominal_B.RateTransition_g[0] < -2.0) {
-      rtb_uNm_p = -2.0;
-    } else {
-      rtb_uNm_p = tunning_nominal_B.RateTransition_g[0];
-    }
-
-    /* End of Saturate: '<S5>/x' */
-
-    /* RateLimiter: '<S5>/3m_per_sec  ' */
-    rtb_Clock = rtb_uNm_p - tunning_nominal_DW.PrevY;
-    if (rtb_Clock > 0.015) {
-      rtb_uNm_p = tunning_nominal_DW.PrevY + 0.015;
-    } else {
-      if (rtb_Clock < -0.015) {
-        rtb_uNm_p = tunning_nominal_DW.PrevY + -0.015;
-      }
-    }
-
-    tunning_nominal_DW.PrevY = rtb_uNm_p;
-
-    /* End of RateLimiter: '<S5>/3m_per_sec  ' */
-
     /* Saturate: '<S5>/y' */
     if (tunning_nominal_B.RateTransition_g[1] > 2.0) {
       u0 = 2.0;
@@ -771,21 +757,32 @@ void tunning_nominalModelClass::step()
     /* End of Saturate: '<S5>/y' */
 
     /* Sum: '<S5>/Sum4' */
-    rtb_Clock = u0 - tunning_nominal_B.d_y_l;
+    rtb_uNm_p = u0 - tunning_nominal_B.d_y_l;
 
     /* DeadZone: '<S5>/Dead Zone 1cm' */
-    if (rtb_Clock > 0.01) {
-      tunning_nominal_B.DeadZone1cm = rtb_Clock - 0.01;
-    } else if (rtb_Clock >= -0.01) {
+    if (rtb_uNm_p > 0.01) {
+      tunning_nominal_B.DeadZone1cm = rtb_uNm_p - 0.01;
+    } else if (rtb_uNm_p >= -0.01) {
       tunning_nominal_B.DeadZone1cm = 0.0;
     } else {
-      tunning_nominal_B.DeadZone1cm = rtb_Clock - -0.01;
+      tunning_nominal_B.DeadZone1cm = rtb_uNm_p - -0.01;
     }
 
     /* End of DeadZone: '<S5>/Dead Zone 1cm' */
 
+    /* Saturate: '<S5>/x' */
+    if (tunning_nominal_B.RateTransition_g[0] > 2.0) {
+      u0 = 2.0;
+    } else if (tunning_nominal_B.RateTransition_g[0] < -2.0) {
+      u0 = -2.0;
+    } else {
+      u0 = tunning_nominal_B.RateTransition_g[0];
+    }
+
+    /* End of Saturate: '<S5>/x' */
+
     /* Sum: '<S5>/Sum1' */
-    rtb_uNm_p -= tunning_nominal_B.d_x_b;
+    rtb_uNm_p = u0 - tunning_nominal_B.d_x_b;
 
     /* DeadZone: '<S5>/Dead Zone 1cm ' */
     if (rtb_uNm_p > 0.01) {
@@ -861,23 +858,6 @@ void tunning_nominalModelClass::step()
       (&tunning_nominal_M)->Timing.clockTick1++;
       if (!(&tunning_nominal_M)->Timing.clockTick1) {
         (&tunning_nominal_M)->Timing.clockTickH1++;
-      }
-    }
-
-    if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
-        (&tunning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
-      /* Update absolute timer for sample time: [0.005s, 0.0s] */
-      /* The "clockTick2" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.005, which is the step size
-       * of the task. Size of "clockTick2" ensures timer will not overflow during the
-       * application lifespan selected.
-       * Timer of this task consists of two 32 bit unsigned integers.
-       * The two integers represent the low bits Timing.clockTick2 and the high bits
-       * Timing.clockTickH2. When the low bit overflows to 0, the high bits increment.
-       */
-      (&tunning_nominal_M)->Timing.clockTick2++;
-      if (!(&tunning_nominal_M)->Timing.clockTick2) {
-        (&tunning_nominal_M)->Timing.clockTickH2++;
       }
     }
 
@@ -961,10 +941,6 @@ void tunning_nominalModelClass::initialize()
                   sizeof(X_tunning_nominal_T));
   }
 
-  /* states (dwork) */
-  (void) memset((void *)&tunning_nominal_DW, 0,
-                sizeof(DW_tunning_nominal_T));
-
   /* external inputs */
   (void)memset((void *)&tunning_nominal_U, 0, sizeof(ExtU_tunning_nominal_T));
 
@@ -983,9 +959,6 @@ void tunning_nominalModelClass::initialize()
 
   /* InitializeConditions for Integrator: '<S10>/Integrator1' */
   tunning_nominal_X.Integrator1_CSTATE_j = 0.0;
-
-  /* InitializeConditions for RateLimiter: '<S5>/3m_per_sec  ' */
-  tunning_nominal_DW.PrevY = 0.0;
 }
 
 /* Model terminate function */
