@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1215
+ * Model version              : 1.1220
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jun 27 18:27:08 2018
+ * C++ source code generated on : Fri Jun 29 09:48:44 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -296,9 +296,7 @@ void tunning_nominalModelClass::step()
   /* Sum: '<Root>/Sum8' */
   tunning_nominal_B.Sum8 = rtb_d_psi + rtb_ff_idx_1;
 
-  /* ZeroOrderHold: '<Root>/                        ' incorporates:
-   *  ZeroOrderHold: '<Root>/         '
-   */
+  /* ZeroOrderHold: '<Root>/                        ' */
   if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
       (&tunning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
     tunning_nominal_B.u = tunning_nominal_B.Sum7;
@@ -313,18 +311,9 @@ void tunning_nominalModelClass::step()
     }
 
     /* End of Saturate: '<S8>/roll' */
+
+    /* ZeroOrderHold: '<Root>/         ' */
     tunning_nominal_B.u_c = tunning_nominal_B.Sum8;
-
-    /* Saturate: '<S6>/pitch' */
-    if (tunning_nominal_B.u_c > 0.78539816339744828) {
-      tunning_nominal_B.pitch = 0.78539816339744828;
-    } else if (tunning_nominal_B.u_c < -0.78539816339744828) {
-      tunning_nominal_B.pitch = -0.78539816339744828;
-    } else {
-      tunning_nominal_B.pitch = tunning_nominal_B.u_c;
-    }
-
-    /* End of Saturate: '<S6>/pitch' */
   }
 
   /* End of ZeroOrderHold: '<Root>/                        ' */
@@ -363,7 +352,7 @@ void tunning_nominalModelClass::step()
    *  SignalConversion: '<S6>/TmpSignal ConversionAtProductInport2'
    *  Sum: '<S6>/Sum1'
    */
-  rtb_ff_idx_0 = tunning_nominal_B.pitch - (tunning_nominal_U.gain[12] *
+  rtb_ff_idx_0 = tunning_nominal_B.u_c - (tunning_nominal_U.gain[12] *
     tunning_nominal_U.X[7] + tunning_nominal_U.gain[13] * tunning_nominal_U.X[10]);
   if (rtb_ff_idx_0 > 2.0) {
     /* Sum: '<Root>/Sum2' */
