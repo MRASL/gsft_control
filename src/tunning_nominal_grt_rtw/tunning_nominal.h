@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1234
+ * Model version              : 1.1235
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jun 29 14:36:53 2018
+ * C++ source code generated on : Fri Jun 29 15:31:38 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -166,7 +166,6 @@ typedef struct {
   real_T roll;                         /* '<S8>/roll' */
   real_T Sum8;                         /* '<Root>/Sum8' */
   real_T u_c;                          /* '<Root>/         ' */
-  real_T pitch;                        /* '<S6>/pitch' */
   real_T Sum[4];                       /* '<S2>/Sum' */
   real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
   real_T DeadZone1cm;                  /* '<S5>/Dead Zone 1cm' */
@@ -174,11 +173,6 @@ typedef struct {
   real_T Sum3;                         /* '<S10>/Sum3' */
   real_T Sum3_h;                       /* '<S11>/Sum3' */
 } B_tunning_nominal_T;
-
-/* Block states (auto storage) for system '<Root>' */
-typedef struct {
-  real_T PrevY;                        /* '<S5>/3m_per_sec  ' */
-} DW_tunning_nominal_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
@@ -281,8 +275,6 @@ struct tag_RTM_tunning_nominal_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
-    uint32_T clockTick2;
-    uint32_T clockTickH2;
     struct {
       uint8_T TID[3];
     } TaskCounters;
@@ -340,9 +332,6 @@ class tunning_nominalModelClass {
  private:
   /* Block signals */
   B_tunning_nominal_T tunning_nominal_B;
-
-  /* Block states */
-  DW_tunning_nominal_T tunning_nominal_DW;
   X_tunning_nominal_T tunning_nominal_X;/* Block continuous states */
 
   /* Real-Time Model */
