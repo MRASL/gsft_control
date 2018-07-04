@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1249
+ * Model version              : 1.1250
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jul  4 16:51:09 2018
+ * C++ source code generated on : Wed Jul  4 17:24:44 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -720,20 +720,6 @@ void tunning_nominalModelClass::step()
   /* End of RateTransition: '<Root>/Rate Transition ' */
   if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
       (&tunning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
-    /* Saturate: '<S4>/x' */
-    if (tunning_nominal_B.RateTransition_g[0] > 2.0) {
-      u0 = 2.0;
-    } else if (tunning_nominal_B.RateTransition_g[0] < -2.0) {
-      u0 = -2.0;
-    } else {
-      u0 = tunning_nominal_B.RateTransition_g[0];
-    }
-
-    /* End of Saturate: '<S4>/x' */
-
-    /* Sum: '<S4>/Sum1' */
-    tunning_nominal_B.Sum1_g = u0 - tunning_nominal_B.d_x_b;
-
     /* Saturate: '<S4>/y' */
     if (tunning_nominal_B.RateTransition_g[1] > 2.0) {
       u0 = 2.0;
@@ -746,7 +732,43 @@ void tunning_nominalModelClass::step()
     /* End of Saturate: '<S4>/y' */
 
     /* Sum: '<S4>/Sum4' */
-    tunning_nominal_B.Sum4 = u0 - tunning_nominal_B.d_y_l;
+    rtb_uNm_p = u0 - tunning_nominal_B.d_y_l;
+
+    /* DeadZone: '<S4>/Dead Zone 1cm' */
+    if (rtb_uNm_p > 0.01) {
+      tunning_nominal_B.DeadZone1cm = rtb_uNm_p - 0.01;
+    } else if (rtb_uNm_p >= -0.01) {
+      tunning_nominal_B.DeadZone1cm = 0.0;
+    } else {
+      tunning_nominal_B.DeadZone1cm = rtb_uNm_p - -0.01;
+    }
+
+    /* End of DeadZone: '<S4>/Dead Zone 1cm' */
+
+    /* Saturate: '<S4>/x' */
+    if (tunning_nominal_B.RateTransition_g[0] > 2.0) {
+      u0 = 2.0;
+    } else if (tunning_nominal_B.RateTransition_g[0] < -2.0) {
+      u0 = -2.0;
+    } else {
+      u0 = tunning_nominal_B.RateTransition_g[0];
+    }
+
+    /* End of Saturate: '<S4>/x' */
+
+    /* Sum: '<S4>/Sum1' */
+    rtb_uNm_p = u0 - tunning_nominal_B.d_x_b;
+
+    /* DeadZone: '<S4>/Dead Zone 1cm ' */
+    if (rtb_uNm_p > 0.01) {
+      tunning_nominal_B.DeadZone1cm_k = rtb_uNm_p - 0.01;
+    } else if (rtb_uNm_p >= -0.01) {
+      tunning_nominal_B.DeadZone1cm_k = 0.0;
+    } else {
+      tunning_nominal_B.DeadZone1cm_k = rtb_uNm_p - -0.01;
+    }
+
+    /* End of DeadZone: '<S4>/Dead Zone 1cm ' */
   }
 
   /* Saturate: '<S9>/yaw' */
@@ -828,10 +850,10 @@ void tunning_nominalModelClass::tunning_nominal_derivatives()
   _rtXdot->Integrator1_CSTATE = tunning_nominal_B.Sum3_h;
 
   /* Derivatives for Integrator: '<S4>/Integrator1' */
-  _rtXdot->Integrator1_CSTATE_d = tunning_nominal_B.Sum1_g;
+  _rtXdot->Integrator1_CSTATE_d = tunning_nominal_B.DeadZone1cm_k;
 
   /* Derivatives for Integrator: '<S4>/Integrator' */
-  _rtXdot->Integrator_CSTATE = tunning_nominal_B.Sum4;
+  _rtXdot->Integrator_CSTATE = tunning_nominal_B.DeadZone1cm;
 
   /* Derivatives for Integrator: '<S9>/Integrator1' */
   _rtXdot->Integrator1_CSTATE_j = tunning_nominal_B.Sum3;
