@@ -31,7 +31,7 @@ int  gTest_mode;
 
 Eigen::VectorXd gY0(4);        // initial position (equilibrium)
 Eigen::VectorXd gRef(4);       // references (x, y, z, yaw)
-Eigen::VectorXd gGain(18);
+Eigen::VectorXd gGain(19);
 Eigen::VectorXd gLOE(6);
 Eigen::VectorXd gLOE_t(6);
 
@@ -80,6 +80,9 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gGain[15] = config.kpsi;    // yaw
         gGain[16] = config.kr;
         gGain[17] = config.kipsi;
+
+        gGain[18] = config.kffx;
+
         ROS_INFO("New controller gains");
         config.new_controller_gains   = false;
       }
@@ -121,6 +124,8 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gGain[15] = config.kpsi;    // yaw
         gGain[16] = config.kr;
         gGain[17] = config.kipsi;
+
+        gGain[18] = config.kffx;
 
         gLOE[0]   = config.LOE_1;
         gLOE[1]   = config.LOE_2;
@@ -208,7 +213,7 @@ int main(int argc, char** argv) {
   // pnh.getParam("run_frequency",run_freq);
   // ROS_INFO("Param: run frequency = %d",run_freq);
   //ros::Rate r(run_freq);
-  
+
   ros::Rate r(1000);
 
   gInit_flag        = false;
@@ -217,7 +222,7 @@ int main(int argc, char** argv) {
   gPublish          = false;
 
   gRef  << 0.0, 0.0, 0.0, 0.0;
-  gGain = Eigen::VectorXd::Zero(18);
+  gGain = Eigen::VectorXd::Zero(19);
   gLOE  = Eigen::VectorXd::Zero(6);
   gLOE_t  = Eigen::VectorXd::Zero(6);
   gY0   << 0.0, 0.0, 0.0, 0.0;
@@ -275,7 +280,7 @@ int main(int argc, char** argv) {
         for (unsigned int i=0; i< 6; i++) {
           gController.tunning_nominal_U.LOE_t[i]  = gLOE_t[i];   // fault time
         }
-        for (unsigned int i=0; i< 18; i++) {
+        for (unsigned int i=0; i< 19; i++) {
           ROS_INFO("Controller gain k[%d] = %f",i,gGain[i]);
         }
     }
@@ -290,7 +295,7 @@ int main(int argc, char** argv) {
         for (unsigned int i=0; i< 4; i++) {
           gController.tunning_nominal_U.Y0[i]   = gY0[i];
         }
-        for (unsigned int i=0; i< 18; i++) {
+        for (unsigned int i=0; i< 19; i++) {
           gController.tunning_nominal_U.gain[i] = gGain[i];
         }
         gController.tunning_nominal_U.X[0]   = gOdometry.position_W.x();

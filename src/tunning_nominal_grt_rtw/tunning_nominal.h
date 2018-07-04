@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1237
+ * Model version              : 1.1247
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jun 29 16:26:38 2018
+ * C++ source code generated on : Wed Jul  4 09:49:27 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -151,45 +151,52 @@
 typedef struct {
   real_T d_z;                          /* '<S2>/Sum5' */
   real_T d_z_k;                        /* '<Root>/Rate Transition   ' */
-  real_T Sum1;                         /* '<S11>/Sum1' */
+  real_T vz;                           /* '<Root>/Rate Transition   ' */
+  real_T Sum1;                         /* '<S10>/Sum1' */
   real_T dT;                           /* '<Root>/               ' */
+  real_T Sum[4];                       /* '<S2>/Sum' */
+  real_T RateTransition[4];            /* '<Root>/Rate Transition ' */
+  real_T x;                            /* '<S5>/x' */
   real_T d_x;                          /* '<S2>/Sum1' */
   real_T d_x_b;                        /* '<Root>/Rate Transition   ' */
+  real_T Sum1_g;                       /* '<S5>/Sum1' */
+  real_T vx;                           /* '<Root>/Rate Transition   ' */
   real_T d_y;                          /* '<S2>/Sum4' */
   real_T d_y_l;                        /* '<Root>/Rate Transition   ' */
+  real_T vy;                           /* '<Root>/Rate Transition   ' */
+  real_T RateTransition_e;             /* '<Root>/Rate Transition  ' */
   real_T Sum7;                         /* '<Root>/Sum7' */
-  real_T roll;                         /* '<S8>/roll' */
+  real_T u;                            /* '<Root>/                        ' */
   real_T Sum8;                         /* '<Root>/Sum8' */
-  real_T u;                            /* '<Root>/         ' */
-  real_T Sum[4];                       /* '<S2>/Sum' */
-  real_T Sum1_g;                       /* '<S5>/Sum1' */
+  real_T u_c;                          /* '<Root>/         ' */
+  real_T Sum1_k;                       /* '<S6>/Sum1' */
   real_T Sum4;                         /* '<S5>/Sum4' */
-  real_T Sum3;                         /* '<S10>/Sum3' */
-  real_T Sum3_h;                       /* '<S11>/Sum3' */
+  real_T Sum3;                         /* '<S9>/Sum3' */
+  real_T Sum3_h;                       /* '<S10>/Sum3' */
 } B_tunning_nominal_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S11>/Integrator1' */
-  real_T Integrator1_CSTATE_d;         /* '<S5>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S5>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S5>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S10>/Integrator1' */
+  real_T Integrator1_CSTATE_j2;        /* '<S9>/Integrator1' */
 } X_tunning_nominal_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S11>/Integrator1' */
-  real_T Integrator1_CSTATE_d;         /* '<S5>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S5>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S5>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S10>/Integrator1' */
+  real_T Integrator1_CSTATE_j2;        /* '<S9>/Integrator1' */
 } XDot_tunning_nominal_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S11>/Integrator1' */
-  boolean_T Integrator1_CSTATE_d;      /* '<S5>/Integrator1' */
+  boolean_T Integrator1_CSTATE;        /* '<S10>/Integrator1' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S5>/Integrator1' */
   boolean_T Integrator_CSTATE;         /* '<S5>/Integrator' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S10>/Integrator1' */
+  boolean_T Integrator1_CSTATE_j2;     /* '<S9>/Integrator1' */
 } XDis_tunning_nominal_T;
 
 #ifndef ODE4_INTG
@@ -219,7 +226,7 @@ typedef struct {
   real_T ref[4];                       /* '<Root>/ref' */
   real_T LOE_t[6];                     /* '<Root>/LOE_t' */
   real_T LOE_a[6];                     /* '<Root>/LOE_a' */
-  real_T gain[18];                     /* '<Root>/gain' */
+  real_T gain[19];                     /* '<Root>/gain' */
 } ExtU_tunning_nominal_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
@@ -269,10 +276,14 @@ struct tag_RTM_tunning_nominal_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
@@ -340,14 +351,10 @@ class tunning_nominalModelClass {
  * Block '<Root>/                 ' : Eliminated since input and output rates are identical
  * Block '<Root>/                          ' : Eliminated since input and output rates are identical
  * Block '<Root>/                             ' : Eliminated since input and output rates are identical
- * Block '<Root>/Rate Transition ' : Eliminated since input and output rates are identical
- * Block '<Root>/Rate Transition  ' : Eliminated since input and output rates are identical
- * Block '<S5>/Reshape' : Reshape block reduction
  * Block '<S5>/Reshape1' : Reshape block reduction
- * Block '<S6>/Reshape' : Reshape block reduction
  * Block '<S8>/Reshape' : Reshape block reduction
+ * Block '<S9>/Reshape' : Reshape block reduction
  * Block '<S10>/Reshape' : Reshape block reduction
- * Block '<S11>/Reshape' : Reshape block reduction
  */
 
 /*-
@@ -368,16 +375,15 @@ class tunning_nominalModelClass {
  * '<S1>'   : 'tunning_nominal/Actuator_Fault'
  * '<S2>'   : 'tunning_nominal/Test_config_and_data'
  * '<S3>'   : 'tunning_nominal/Thrust2command'
- * '<S4>'   : 'tunning_nominal/XY PID Controller'
- * '<S5>'   : 'tunning_nominal/XY State Feedback'
- * '<S6>'   : 'tunning_nominal/pitch_controller_SF'
- * '<S7>'   : 'tunning_nominal/pitch_controller_SFint'
+ * '<S4>'   : 'tunning_nominal/XY State Feedback'
+ * '<S5>'   : 'tunning_nominal/X_PIDFF_Y_SF'
+ * '<S6>'   : 'tunning_nominal/pitch_controller_P_D'
+ * '<S7>'   : 'tunning_nominal/pitch_controller_SF'
  * '<S8>'   : 'tunning_nominal/roll_controller_SF'
- * '<S9>'   : 'tunning_nominal/roll_controller_SFint'
- * '<S10>'  : 'tunning_nominal/yaw_controller'
- * '<S11>'  : 'tunning_nominal/z_controller'
- * '<S12>'  : 'tunning_nominal/Test_config_and_data/FFW'
- * '<S13>'  : 'tunning_nominal/Test_config_and_data/LOE_'
- * '<S14>'  : 'tunning_nominal/Test_config_and_data/MATLAB Function'
+ * '<S9>'   : 'tunning_nominal/yaw_controller'
+ * '<S10>'  : 'tunning_nominal/z_controller'
+ * '<S11>'  : 'tunning_nominal/Test_config_and_data/FFW'
+ * '<S12>'  : 'tunning_nominal/Test_config_and_data/LOE_'
+ * '<S13>'  : 'tunning_nominal/Test_config_and_data/MATLAB Function'
  */
 #endif                                 /* RTW_HEADER_tunning_nominal_h_ */
