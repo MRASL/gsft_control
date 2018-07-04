@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1250
+ * Model version              : 1.1253
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jul  4 17:24:44 2018
+ * C++ source code generated on : Wed Jul  4 18:42:51 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -114,7 +114,7 @@ void tunning_nominalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo
 /* Model step function */
 void tunning_nominalModelClass::step()
 {
-  real_T rtb_d_psi;
+  real_T rtb_Sum3_b;
   real_T rtb_uNm_p;
   real_T rtb_u[6];
   real_T rtb_LOE_out[6];
@@ -201,9 +201,9 @@ void tunning_nominalModelClass::step()
    *  Product: '<S4>/Product3'
    *  SignalConversion: '<S4>/TmpSignal ConversionAtProduct3Inport2'
    */
-  rtb_d_psi = tunning_nominal_U.gain[2] * tunning_nominal_X.Integrator1_CSTATE_d
-    - (tunning_nominal_U.gain[0] * tunning_nominal_B.d_x_b +
-       tunning_nominal_U.gain[1] * tunning_nominal_B.vx);
+  rtb_Sum3_b = tunning_nominal_U.gain[2] *
+    tunning_nominal_X.Integrator1_CSTATE_d - (tunning_nominal_U.gain[0] *
+    tunning_nominal_B.d_x_b + tunning_nominal_U.gain[1] * tunning_nominal_B.vx);
 
   /* Sum: '<S2>/Sum4' incorporates:
    *  Inport: '<Root>/X'
@@ -286,15 +286,15 @@ void tunning_nominalModelClass::step()
    *  Fcn: '<Root>/Fcn1'
    */
   tunning_nominal_B.Sum7 = (rtb_uNm_p * std::cos
-    (tunning_nominal_B.RateTransition) + rtb_d_psi * std::sin
+    (tunning_nominal_B.RateTransition) + rtb_Sum3_b * std::sin
     (tunning_nominal_B.RateTransition)) + rtb_ff_idx_0;
 
   /* Fcn: '<Root>/Fcn' */
-  rtb_d_psi = -rtb_uNm_p * std::sin(tunning_nominal_B.RateTransition) +
-    rtb_d_psi * std::cos(tunning_nominal_B.RateTransition);
+  rtb_Sum3_b = -rtb_uNm_p * std::sin(tunning_nominal_B.RateTransition) +
+    rtb_Sum3_b * std::cos(tunning_nominal_B.RateTransition);
 
   /* Sum: '<Root>/Sum8' */
-  tunning_nominal_B.Sum8 = rtb_d_psi + rtb_ff_idx_1;
+  tunning_nominal_B.Sum8 = rtb_Sum3_b + rtb_ff_idx_1;
   if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
       (&tunning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
     /* ZeroOrderHold: '<Root>/                        ' */
@@ -308,7 +308,7 @@ void tunning_nominalModelClass::step()
    *  Inport: '<Root>/X'
    *  Inport: '<Root>/Y0'
    */
-  rtb_d_psi = tunning_nominal_U.X[8] - tunning_nominal_U.Y0[3];
+  rtb_Sum3_b = tunning_nominal_U.X[8] - tunning_nominal_U.Y0[3];
 
   /* Saturate: '<Root>/2Nm ' incorporates:
    *  Inport: '<Root>/X'
@@ -363,7 +363,7 @@ void tunning_nominalModelClass::step()
    */
   rtb_ff_idx_1 = tunning_nominal_U.gain[17] *
     tunning_nominal_X.Integrator1_CSTATE_j - (tunning_nominal_U.gain[15] *
-    rtb_d_psi + tunning_nominal_U.gain[16] * tunning_nominal_U.X[11]);
+    rtb_Sum3_b + tunning_nominal_U.gain[16] * tunning_nominal_U.X[11]);
   if (rtb_ff_idx_1 > 1.0) {
     /* Sum: '<Root>/Sum2' */
     rtb_ff_idx_1 = 1.0;
@@ -783,7 +783,18 @@ void tunning_nominalModelClass::step()
   /* End of Saturate: '<S9>/yaw' */
 
   /* Sum: '<S9>/Sum3' */
-  tunning_nominal_B.Sum3 = u0 - rtb_d_psi;
+  rtb_Sum3_b = u0 - rtb_Sum3_b;
+
+  /* DeadZone: '<S9>/Dead Zone 2deg' */
+  if (rtb_Sum3_b > 0.034906585039886591) {
+    tunning_nominal_B.DeadZone2deg = rtb_Sum3_b - 0.034906585039886591;
+  } else if (rtb_Sum3_b >= -0.034906585039886591) {
+    tunning_nominal_B.DeadZone2deg = 0.0;
+  } else {
+    tunning_nominal_B.DeadZone2deg = rtb_Sum3_b - -0.034906585039886591;
+  }
+
+  /* End of DeadZone: '<S9>/Dead Zone 2deg' */
   if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
       (&tunning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
     /* Saturate: '<S10>/z' */
@@ -798,7 +809,7 @@ void tunning_nominalModelClass::step()
     /* End of Saturate: '<S10>/z' */
 
     /* Sum: '<S10>/Sum3' */
-    tunning_nominal_B.Sum3_h = u0 - tunning_nominal_B.d_z_k;
+    tunning_nominal_B.Sum3 = u0 - tunning_nominal_B.d_z_k;
   }
 
   if (rtmIsMajorTimeStep((&tunning_nominal_M))) {
@@ -847,7 +858,7 @@ void tunning_nominalModelClass::tunning_nominal_derivatives()
   _rtXdot = ((XDot_tunning_nominal_T *) (&tunning_nominal_M)->derivs);
 
   /* Derivatives for Integrator: '<S10>/Integrator1' */
-  _rtXdot->Integrator1_CSTATE = tunning_nominal_B.Sum3_h;
+  _rtXdot->Integrator1_CSTATE = tunning_nominal_B.Sum3;
 
   /* Derivatives for Integrator: '<S4>/Integrator1' */
   _rtXdot->Integrator1_CSTATE_d = tunning_nominal_B.DeadZone1cm_k;
@@ -856,7 +867,7 @@ void tunning_nominalModelClass::tunning_nominal_derivatives()
   _rtXdot->Integrator_CSTATE = tunning_nominal_B.DeadZone1cm;
 
   /* Derivatives for Integrator: '<S9>/Integrator1' */
-  _rtXdot->Integrator1_CSTATE_j = tunning_nominal_B.Sum3;
+  _rtXdot->Integrator1_CSTATE_j = tunning_nominal_B.DeadZone2deg;
 }
 
 /* Model initialize function */
