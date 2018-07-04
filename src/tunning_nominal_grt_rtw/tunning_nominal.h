@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1247
+ * Model version              : 1.1249
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jul  4 09:49:27 2018
+ * C++ source code generated on : Wed Jul  4 16:51:09 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -154,23 +154,21 @@ typedef struct {
   real_T vz;                           /* '<Root>/Rate Transition   ' */
   real_T Sum1;                         /* '<S10>/Sum1' */
   real_T dT;                           /* '<Root>/               ' */
-  real_T Sum[4];                       /* '<S2>/Sum' */
-  real_T RateTransition[4];            /* '<Root>/Rate Transition ' */
-  real_T x;                            /* '<S5>/x' */
   real_T d_x;                          /* '<S2>/Sum1' */
   real_T d_x_b;                        /* '<Root>/Rate Transition   ' */
-  real_T Sum1_g;                       /* '<S5>/Sum1' */
   real_T vx;                           /* '<Root>/Rate Transition   ' */
   real_T d_y;                          /* '<S2>/Sum4' */
   real_T d_y_l;                        /* '<Root>/Rate Transition   ' */
   real_T vy;                           /* '<Root>/Rate Transition   ' */
-  real_T RateTransition_e;             /* '<Root>/Rate Transition  ' */
+  real_T RateTransition;               /* '<Root>/Rate Transition  ' */
   real_T Sum7;                         /* '<Root>/Sum7' */
   real_T u;                            /* '<Root>/                        ' */
   real_T Sum8;                         /* '<Root>/Sum8' */
   real_T u_c;                          /* '<Root>/         ' */
-  real_T Sum1_k;                       /* '<S6>/Sum1' */
-  real_T Sum4;                         /* '<S5>/Sum4' */
+  real_T Sum[4];                       /* '<S2>/Sum' */
+  real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
+  real_T Sum1_g;                       /* '<S4>/Sum1' */
+  real_T Sum4;                         /* '<S4>/Sum4' */
   real_T Sum3;                         /* '<S9>/Sum3' */
   real_T Sum3_h;                       /* '<S10>/Sum3' */
 } B_tunning_nominal_T;
@@ -178,25 +176,25 @@ typedef struct {
 /* Continuous states (auto storage) */
 typedef struct {
   real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S5>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S5>/Integrator' */
-  real_T Integrator1_CSTATE_j2;        /* '<S9>/Integrator1' */
+  real_T Integrator1_CSTATE_d;         /* '<S4>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S4>/Integrator' */
+  real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
 } X_tunning_nominal_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
   real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
-  real_T Integrator1_CSTATE_j;         /* '<S5>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S5>/Integrator' */
-  real_T Integrator1_CSTATE_j2;        /* '<S9>/Integrator1' */
+  real_T Integrator1_CSTATE_d;         /* '<S4>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S4>/Integrator' */
+  real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
 } XDot_tunning_nominal_T;
 
 /* State disabled  */
 typedef struct {
   boolean_T Integrator1_CSTATE;        /* '<S10>/Integrator1' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S5>/Integrator1' */
-  boolean_T Integrator_CSTATE;         /* '<S5>/Integrator' */
-  boolean_T Integrator1_CSTATE_j2;     /* '<S9>/Integrator1' */
+  boolean_T Integrator1_CSTATE_d;      /* '<S4>/Integrator1' */
+  boolean_T Integrator_CSTATE;         /* '<S4>/Integrator' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S9>/Integrator1' */
 } XDis_tunning_nominal_T;
 
 #ifndef ODE4_INTG
@@ -351,7 +349,9 @@ class tunning_nominalModelClass {
  * Block '<Root>/                 ' : Eliminated since input and output rates are identical
  * Block '<Root>/                          ' : Eliminated since input and output rates are identical
  * Block '<Root>/                             ' : Eliminated since input and output rates are identical
- * Block '<S5>/Reshape1' : Reshape block reduction
+ * Block '<S4>/Reshape' : Reshape block reduction
+ * Block '<S4>/Reshape1' : Reshape block reduction
+ * Block '<S7>/Reshape' : Reshape block reduction
  * Block '<S8>/Reshape' : Reshape block reduction
  * Block '<S9>/Reshape' : Reshape block reduction
  * Block '<S10>/Reshape' : Reshape block reduction
