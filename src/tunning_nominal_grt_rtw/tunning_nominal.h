@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1274
+ * Model version              : 1.1275
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul  5 17:10:14 2018
+ * C++ source code generated on : Fri Jul  6 10:28:05 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -151,17 +151,22 @@
 typedef struct {
   real_T d_z;                          /* '<S2>/Sum5' */
   real_T d_z_k;                        /* '<Root>/Rate Transition   ' */
+  real_T vz;                           /* '<Root>/Rate Transition   ' */
   real_T Sum1;                         /* '<S10>/Sum1' */
   real_T dT;                           /* '<Root>/               ' */
   real_T d_x;                          /* '<S2>/Sum1' */
   real_T d_x_b;                        /* '<Root>/Rate Transition   ' */
+  real_T vx;                           /* '<Root>/Rate Transition   ' */
   real_T d_y;                          /* '<S2>/Sum4' */
   real_T d_y_l;                        /* '<Root>/Rate Transition   ' */
+  real_T vy;                           /* '<Root>/Rate Transition   ' */
+  real_T RateTransition;               /* '<Root>/Rate Transition  ' */
   real_T Sum7;                         /* '<Root>/Sum7' */
   real_T u;                            /* '<Root>/                        ' */
   real_T Sum8;                         /* '<Root>/Sum8' */
   real_T u_c;                          /* '<Root>/         ' */
   real_T Sum[4];                       /* '<S2>/Sum' */
+  real_T RateTransition_g[4];          /* '<Root>/Rate Transition ' */
   real_T Sum1_g;                       /* '<S4>/Sum1' */
   real_T Sum4;                         /* '<S4>/Sum4' */
   real_T Sum3;                         /* '<S9>/Sum3' */
@@ -269,10 +274,14 @@ struct tag_RTM_tunning_nominal_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
@@ -340,8 +349,6 @@ class tunning_nominalModelClass {
  * Block '<Root>/                 ' : Eliminated since input and output rates are identical
  * Block '<Root>/                          ' : Eliminated since input and output rates are identical
  * Block '<Root>/                             ' : Eliminated since input and output rates are identical
- * Block '<Root>/Rate Transition ' : Eliminated since input and output rates are identical
- * Block '<Root>/Rate Transition  ' : Eliminated since input and output rates are identical
  * Block '<S4>/Reshape' : Reshape block reduction
  * Block '<S4>/Reshape1' : Reshape block reduction
  * Block '<S7>/Reshape' : Reshape block reduction
