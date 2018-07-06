@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1278
+ * Model version              : 1.1279
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jul  6 11:44:02 2018
+ * C++ source code generated on : Fri Jul  6 12:06:33 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -96,9 +96,9 @@ void tunning_nominalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo
 void tunning_nominalModelClass::step()
 {
   real_T rtb_d_z;
-  real_T rtb_Sum1_k;
+  real_T rtb_d_x;
   real_T rtb_d_psi;
-  real_T rtb_Sum4;
+  real_T rtb_d_y;
   real_T rtb_uNm_p;
   real_T rtb_u[6];
   real_T rtb_LOE_out[6];
@@ -139,7 +139,7 @@ void tunning_nominalModelClass::step()
    *  Inport: '<Root>/X'
    *  Inport: '<Root>/Y0'
    */
-  rtb_Sum1_k = tunning_nominal_U.X[0] - tunning_nominal_U.Y0[0];
+  rtb_d_x = tunning_nominal_U.X[0] - tunning_nominal_U.Y0[0];
 
   /* Sum: '<S4>/Sum2' incorporates:
    *  Inport: '<Root>/X'
@@ -150,14 +150,14 @@ void tunning_nominalModelClass::step()
    *  SignalConversion: '<S4>/TmpSignal ConversionAtProduct3Inport2'
    */
   rtb_d_psi = tunning_nominal_U.gain[2] * tunning_nominal_X.Integrator1_CSTATE_d
-    - (tunning_nominal_U.gain[0] * rtb_Sum1_k + tunning_nominal_U.gain[1] *
+    - (tunning_nominal_U.gain[0] * rtb_d_x + tunning_nominal_U.gain[1] *
        tunning_nominal_U.X[3]);
 
   /* Sum: '<S2>/Sum4' incorporates:
    *  Inport: '<Root>/X'
    *  Inport: '<Root>/Y0'
    */
-  rtb_Sum4 = tunning_nominal_U.X[1] - tunning_nominal_U.Y0[1];
+  rtb_d_y = tunning_nominal_U.X[1] - tunning_nominal_U.Y0[1];
 
   /* MATLAB Function: '<S2>/FFW' */
   rtb_ff_idx_0 = 0.0;
@@ -172,7 +172,7 @@ void tunning_nominalModelClass::step()
    *  SignalConversion: '<S4>/TmpSignal ConversionAtProduct1Inport2'
    */
   rtb_uNm_p = tunning_nominal_U.gain[5] * tunning_nominal_X.Integrator_CSTATE -
-    (tunning_nominal_U.gain[3] * rtb_Sum4 + tunning_nominal_U.gain[4] *
+    (tunning_nominal_U.gain[3] * rtb_d_y + tunning_nominal_U.gain[4] *
      tunning_nominal_U.X[4]);
 
   /* Clock: '<Root>/Clock' */
@@ -648,31 +648,6 @@ void tunning_nominalModelClass::step()
   rtb_ff_idx_0 -= tunning_nominal_U.Y0[2];
   rtb_ff_idx_1 -= tunning_nominal_U.Y0[3];
 
-  /* Saturate: '<S4>/y' */
-  if (rtb_Clock > 2.0) {
-    rtb_Clock = 2.0;
-  } else {
-    if (rtb_Clock < -2.0) {
-      rtb_Clock = -2.0;
-    }
-  }
-
-  /* End of Saturate: '<S4>/y' */
-
-  /* Sum: '<S4>/Sum4' */
-  rtb_Sum4 = rtb_Clock - rtb_Sum4;
-
-  /* DeadZone: '<S4>/Dead Zone 1cm' */
-  if (rtb_Sum4 > 0.01) {
-    tunning_nominal_B.DeadZone1cm = rtb_Sum4 - 0.01;
-  } else if (rtb_Sum4 >= -0.01) {
-    tunning_nominal_B.DeadZone1cm = 0.0;
-  } else {
-    tunning_nominal_B.DeadZone1cm = rtb_Sum4 - -0.01;
-  }
-
-  /* End of DeadZone: '<S4>/Dead Zone 1cm' */
-
   /* Saturate: '<S4>/x' */
   if (rtb_uNm_p > 2.0) {
     rtb_uNm_p = 2.0;
@@ -685,18 +660,21 @@ void tunning_nominalModelClass::step()
   /* End of Saturate: '<S4>/x' */
 
   /* Sum: '<S4>/Sum1' */
-  rtb_Sum1_k = rtb_uNm_p - rtb_Sum1_k;
+  tunning_nominal_B.Sum1 = rtb_uNm_p - rtb_d_x;
 
-  /* DeadZone: '<S4>/Dead Zone 1cm ' */
-  if (rtb_Sum1_k > 0.01) {
-    tunning_nominal_B.DeadZone1cm_k = rtb_Sum1_k - 0.01;
-  } else if (rtb_Sum1_k >= -0.01) {
-    tunning_nominal_B.DeadZone1cm_k = 0.0;
+  /* Saturate: '<S4>/y' */
+  if (rtb_Clock > 2.0) {
+    rtb_Clock = 2.0;
   } else {
-    tunning_nominal_B.DeadZone1cm_k = rtb_Sum1_k - -0.01;
+    if (rtb_Clock < -2.0) {
+      rtb_Clock = -2.0;
+    }
   }
 
-  /* End of DeadZone: '<S4>/Dead Zone 1cm ' */
+  /* End of Saturate: '<S4>/y' */
+
+  /* Sum: '<S4>/Sum4' */
+  tunning_nominal_B.Sum4 = rtb_Clock - rtb_d_y;
 
   /* Saturate: '<S9>/yaw' */
   if (rtb_ff_idx_1 > 3.1415926535897931) {
@@ -772,10 +750,10 @@ void tunning_nominalModelClass::tunning_nominal_derivatives()
   _rtXdot->Integrator1_CSTATE = tunning_nominal_B.Sum3_h;
 
   /* Derivatives for Integrator: '<S4>/Integrator1' */
-  _rtXdot->Integrator1_CSTATE_d = tunning_nominal_B.DeadZone1cm_k;
+  _rtXdot->Integrator1_CSTATE_d = tunning_nominal_B.Sum1;
 
   /* Derivatives for Integrator: '<S4>/Integrator' */
-  _rtXdot->Integrator_CSTATE = tunning_nominal_B.DeadZone1cm;
+  _rtXdot->Integrator_CSTATE = tunning_nominal_B.Sum4;
 
   /* Derivatives for Integrator: '<S9>/Integrator1' */
   _rtXdot->Integrator1_CSTATE_j = tunning_nominal_B.Sum3;
