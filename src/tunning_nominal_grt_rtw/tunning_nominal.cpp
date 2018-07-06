@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1275
+ * Model version              : 1.1276
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jul  6 10:28:05 2018
+ * C++ source code generated on : Fri Jul  6 10:38:39 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -588,45 +588,45 @@ void tunning_nominalModelClass::step()
     /*  waypoint */
     /* '<S13>:1:7' if t<=10 */
     if (rtb_Clock <= 10.0) {
-      /* '<S13>:1:8' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+      /* '<S13>:1:8' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
-      rtb_ff_idx_0 = 0.75;
+      rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
     } else if (rtb_Clock <= 20.0) {
       /* '<S13>:1:9' elseif t <= 20 */
-      /* '<S13>:1:10' ref = [Y0(1)+1; Y0(2)-1; 0.75; Y0(4)]; */
+      /* '<S13>:1:10' ref = [Y0(1)+1; Y0(2)-1; 1; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0] + 1.0;
       rtb_Clock = tunning_nominal_U.Y0[1] - 1.0;
-      rtb_ff_idx_0 = 0.75;
+      rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
     } else if (rtb_Clock <= 30.0) {
       /* '<S13>:1:11' elseif t <=30 */
-      /* '<S13>:1:12' ref = [Y0(1)-1; Y0(2)+1; 0.75; Y0(4)]; */
+      /* '<S13>:1:12' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0] - 1.0;
       rtb_Clock = tunning_nominal_U.Y0[1] + 1.0;
-      rtb_ff_idx_0 = 0.75;
+      rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
     } else if (rtb_Clock <= 40.0) {
       /* '<S13>:1:13' elseif t <=40 */
-      /* '<S13>:1:14' ref = [Y0(1)-1; Y0(2)+1; 0.75; Y0(4)+pi/2]; */
+      /* '<S13>:1:14' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)+pi/2]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0] - 1.0;
       rtb_Clock = tunning_nominal_U.Y0[1] + 1.0;
-      rtb_ff_idx_0 = 0.75;
+      rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3] + 1.5707963267948966;
     } else if (rtb_Clock <= 50.0) {
       /* '<S13>:1:15' elseif t <=50 */
-      /* '<S13>:1:16' ref = [Y0(1); Y0(2); 0.75; Y0(4)+pi/2]; */
+      /* '<S13>:1:16' ref = [Y0(1); Y0(2); 1; Y0(4)+pi/2]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
-      rtb_ff_idx_0 = 0.75;
+      rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3] + 1.5707963267948966;
     } else if (rtb_Clock <= 60.0) {
       /* '<S13>:1:17' elseif t <=60 */
-      /* '<S13>:1:18' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+      /* '<S13>:1:18' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
-      rtb_ff_idx_0 = 0.75;
+      rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
     } else {
       /* '<S13>:1:19' else */
