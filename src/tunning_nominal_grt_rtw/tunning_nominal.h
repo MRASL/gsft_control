@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1299
+ * Model version              : 1.1301
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jul 10 09:26:57 2018
+ * C++ source code generated on : Tue Jul 10 10:02:46 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -33,6 +33,8 @@
 
 /* Shared type includes */
 #include "multiword_types.h"
+#include "rtGetInf.h"
+#include "rt_nonfinite.h"
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetBlkStateChangeFlag
@@ -149,35 +151,48 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T Saturation[6];                /* '<S3>/Saturation' */
-  real_T Sum1;                         /* '<S4>/Sum1' */
-  real_T Sum4;                         /* '<S4>/Sum4' */
-  real_T Sum3;                         /* '<S7>/Sum3' */
-  real_T Sum3_h;                       /* '<S8>/Sum3' */
+  real_T u[6];                         /* '<Root>/                  ' */
+  real_T Saturation[6];                /* '<S4>/Saturation' */
+  real_T Memory[6];                    /* '<S2>/Memory' */
+  real_T Sum1[3];                      /* '<S10>/Sum1' */
+  real_T Sum1_g;                       /* '<S5>/Sum1' */
+  real_T Sum4;                         /* '<S5>/Sum4' */
+  real_T Sum3;                         /* '<S8>/Sum3' */
+  real_T Sum3_h;                       /* '<S9>/Sum3' */
+  real_T gamma[3];                     /* '<S2>/MATLAB Function1' */
 } B_tunning_nominal_T;
+
+/* Block states (auto storage) for system '<Root>' */
+typedef struct {
+  real_T Memory_PreviousInput[6];      /* '<S2>/Memory' */
+  real_T TimeStampA;                   /* '<S2>/Derivative' */
+  real_T LastUAtTimeA[3];              /* '<S2>/Derivative' */
+  real_T TimeStampB;                   /* '<S2>/Derivative' */
+  real_T LastUAtTimeB[3];              /* '<S2>/Derivative' */
+} DW_tunning_nominal_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
-  real_T Integrator1_CSTATE_d;         /* '<S4>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S4>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
+  real_T Integrator1_CSTATE_d;         /* '<S5>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S5>/Integrator' */
+  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
 } X_tunning_nominal_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S8>/Integrator1' */
-  real_T Integrator1_CSTATE_d;         /* '<S4>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S4>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S7>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S9>/Integrator1' */
+  real_T Integrator1_CSTATE_d;         /* '<S5>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S5>/Integrator' */
+  real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
 } XDot_tunning_nominal_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S8>/Integrator1' */
-  boolean_T Integrator1_CSTATE_d;      /* '<S4>/Integrator1' */
-  boolean_T Integrator_CSTATE;         /* '<S4>/Integrator' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S7>/Integrator1' */
+  boolean_T Integrator1_CSTATE;        /* '<S9>/Integrator1' */
+  boolean_T Integrator1_CSTATE_d;      /* '<S5>/Integrator1' */
+  boolean_T Integrator_CSTATE;         /* '<S5>/Integrator' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S8>/Integrator1' */
 } XDis_tunning_nominal_T;
 
 #ifndef ODE4_INTG
@@ -197,6 +212,11 @@ typedef struct {
    * Referenced by: '<Root>/Control Allocation'
    */
   real_T ControlAllocation_Gain[24];
+
+  /* Expression: Ib
+   * Referenced by: '<S2>/Constant1'
+   */
+  real_T Constant1_Value[9];
 } ConstP_tunning_nominal_T;
 
 /* External inputs (root inport signals with auto storage) */
@@ -216,6 +236,7 @@ typedef struct {
   real_T virtual_control[4];           /* '<Root>/virtual_control' */
   real_T ref_out[4];                   /* '<Root>/ref_out' */
   real_T LOE[6];                       /* '<Root>/LOE' */
+  real_T gamma[3];                     /* '<Root>/gamma' */
 } ExtY_tunning_nominal_T;
 
 /* Real-time Model Data Structure */
@@ -310,6 +331,9 @@ class tunning_nominalModelClass {
  private:
   /* Block signals */
   B_tunning_nominal_T tunning_nominal_B;
+
+  /* Block states */
+  DW_tunning_nominal_T tunning_nominal_DW;
   X_tunning_nominal_T tunning_nominal_X;/* Block continuous states */
 
   /* Real-Time Model */
@@ -328,12 +352,12 @@ class tunning_nominalModelClass {
  * Block '<Root>/                 ' : Eliminated since input and output rates are identical
  * Block '<Root>/                          ' : Eliminated since input and output rates are identical
  * Block '<Root>/                             ' : Eliminated since input and output rates are identical
- * Block '<S4>/Reshape' : Reshape block reduction
- * Block '<S4>/Reshape1' : Reshape block reduction
  * Block '<S5>/Reshape' : Reshape block reduction
+ * Block '<S5>/Reshape1' : Reshape block reduction
  * Block '<S6>/Reshape' : Reshape block reduction
  * Block '<S7>/Reshape' : Reshape block reduction
  * Block '<S8>/Reshape' : Reshape block reduction
+ * Block '<S9>/Reshape' : Reshape block reduction
  */
 
 /*-
@@ -352,15 +376,20 @@ class tunning_nominalModelClass {
  *
  * '<Root>' : 'tunning_nominal'
  * '<S1>'   : 'tunning_nominal/Actuator_Fault'
- * '<S2>'   : 'tunning_nominal/Test_config_and_data'
- * '<S3>'   : 'tunning_nominal/Thrust2command'
- * '<S4>'   : 'tunning_nominal/XY State Feedback'
- * '<S5>'   : 'tunning_nominal/pitch_controller_SF'
- * '<S6>'   : 'tunning_nominal/roll_controller_SF'
- * '<S7>'   : 'tunning_nominal/yaw_controller'
- * '<S8>'   : 'tunning_nominal/z_controller'
- * '<S9>'   : 'tunning_nominal/Test_config_and_data/FFW'
- * '<S10>'  : 'tunning_nominal/Test_config_and_data/LOE_'
- * '<S11>'  : 'tunning_nominal/Test_config_and_data/MATLAB Function'
+ * '<S2>'   : 'tunning_nominal/FDD  '
+ * '<S3>'   : 'tunning_nominal/Test_config_and_data'
+ * '<S4>'   : 'tunning_nominal/Thrust2command'
+ * '<S5>'   : 'tunning_nominal/XY State Feedback'
+ * '<S6>'   : 'tunning_nominal/pitch_controller_SF'
+ * '<S7>'   : 'tunning_nominal/roll_controller_SF'
+ * '<S8>'   : 'tunning_nominal/yaw_controller'
+ * '<S9>'   : 'tunning_nominal/z_controller'
+ * '<S10>'  : 'tunning_nominal/FDD  /Cross Product'
+ * '<S11>'  : 'tunning_nominal/FDD  /MATLAB Function1'
+ * '<S12>'  : 'tunning_nominal/FDD  /Cross Product/Subsystem'
+ * '<S13>'  : 'tunning_nominal/FDD  /Cross Product/Subsystem2'
+ * '<S14>'  : 'tunning_nominal/Test_config_and_data/FFW'
+ * '<S15>'  : 'tunning_nominal/Test_config_and_data/LOE_'
+ * '<S16>'  : 'tunning_nominal/Test_config_and_data/MATLAB Function'
  */
 #endif                                 /* RTW_HEADER_tunning_nominal_h_ */

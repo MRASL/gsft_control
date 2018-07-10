@@ -142,9 +142,9 @@ add_library(matlab_simulink
   src/tunning_nominal_grt_rtw/tunning_nominal_data.cpp
   src/tunning_nominal_grt_rtw/tunning_nominal.cpp
 
-##  src/tunning_nominal_grt_rtw/rtGetInf.cpp
-##  src/tunning_nominal_grt_rtw/rtGetNaN.cpp
-##  src/tunning_nominal_grt_rtw/rt_nonfinite.cpp
+  src/tunning_nominal_grt_rtw/rtGetInf.cpp
+  src/tunning_nominal_grt_rtw/rtGetNaN.cpp
+  src/tunning_nominal_grt_rtw/rt_nonfinite.cpp
 
 )
 add_dependencies(matlab_simulink ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
