@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1301
+ * Model version              : 1.1310
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jul 10 10:02:46 2018
+ * C++ source code generated on : Tue Jul 10 19:42:53 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -35,8 +35,37 @@ const ConstP_tunning_nominal_T tunning_nominal_ConstP = {
     -4.5662100456621, 4.5662100456621, -4.5662100456620989, 4.5662100456620971,
     -4.5662100456621006, 4.5662100456620989 },
 
-  /* Expression: Ib
-   * Referenced by: '<S2>/Constant1'
+  /* Pooled Parameter (Expression: Ib)
+   * Referenced by:
+   *   '<S2>/Constant1'
+   *   '<S3>/Constant1'
    */
-  { 0.0347563, 0.0, 0.0, 0.0, 0.0458929, 0.0, 0.0, 0.0, 0.0977 }
+  { 0.0347563, 0.0, 0.0, 0.0, 0.0458929, 0.0, 0.0, 0.0, 0.0977 },
+
+  /* Expression: pInitialization.M
+   * Referenced by: '<S20>/KalmanGainM'
+   */
+  { 0.0025117070656732539, 0.0, 0.0, 0.0031583038057353121, 0.0, 0.0, 0.0,
+    0.0025117070656733207, 0.0, 0.0, 0.0031583038057346282, 0.0, 0.0, 0.0,
+    0.002511707065675771, 0.0, 0.0, 0.003158303805736627 },
+
+  /* Expression: pInitialization.C
+   * Referenced by: '<S16>/C'
+   */
+  { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0 },
+
+  /* Expression: pInitialization.A
+   * Referenced by: '<S16>/A'
+   */
+  { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+    0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 1.0,
+    0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 1.0 },
+
+  /* Expression: pInitialization.L
+   * Referenced by: '<S20>/KalmanGainL'
+   */
+  { 0.0025148653694789893, 0.0, 0.0, 0.0031583038057353121, 0.0, 0.0, 0.0,
+    0.0025148653694790552, 0.0, 0.0, 0.0031583038057346282, 0.0, 0.0, 0.0,
+    0.0025148653694815077, 0.0, 0.0, 0.003158303805736627 }
 };

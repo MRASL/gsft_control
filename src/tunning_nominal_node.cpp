@@ -407,9 +407,19 @@ int main(int argc, char** argv) {
       uav_state_msg->moment.y      = gController.tunning_nominal_Y.virtual_control[2];
       uav_state_msg->moment.z      = gController.tunning_nominal_Y.virtual_control[3];
 
-      uav_state_msg->LOE13.x  = gController.tunning_nominal_Y.LOE[0];
-      uav_state_msg->LOE13.y  = gController.tunning_nominal_Y.LOE[1];
-      uav_state_msg->LOE13.z  = gController.tunning_nominal_Y.LOE[2];
+      uav_state_msg->LOE13.x  = gController.tunning_nominal_Y.gamma[0];
+      uav_state_msg->LOE13.y  = gController.tunning_nominal_Y.gamma[1];
+      uav_state_msg->LOE13.z  = gController.tunning_nominal_Y.gamma[2];
+      uav_state_msg->LOE46.x  = gController.tunning_nominal_Y.gamma_Kal[0];
+      uav_state_msg->LOE46.y  = gController.tunning_nominal_Y.gamma_Kal[1];
+      uav_state_msg->LOE46.z  = gController.tunning_nominal_Y.gamma_Kal[2];
+
+      uav_state_msg->acc_diff.x = gController.tunning_nominal_Y.acc_diff[0];
+      uav_state_msg->acc_diff.y = gController.tunning_nominal_Y.acc_diff[1];
+      uav_state_msg->acc_diff.z = gController.tunning_nominal_Y.acc_diff[2];
+      uav_state_msg->acc_Kal.x  = gController.tunning_nominal_Y.acc_Kal[0];
+      uav_state_msg->acc_Kal.y  = gController.tunning_nominal_Y.acc_Kal[1];
+      uav_state_msg->acc_Kal.z  = gController.tunning_nominal_Y.acc_Kal[2];
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);
