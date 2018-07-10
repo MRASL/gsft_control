@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1286
+ * Model version              : 1.1294
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jul  9 10:36:17 2018
+ * C++ source code generated on : Tue Jul 10 08:57:07 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,6 +149,7 @@
 
 /* Block signals (auto storage) */
 typedef struct {
+  real_T Saturation[6];                /* '<S3>/Saturation' */
   real_T Sum1;                         /* '<S4>/Sum1' */
   real_T Sum4;                         /* '<S4>/Sum4' */
   real_T Sum3;                         /* '<S7>/Sum3' */

@@ -283,9 +283,6 @@ int main(int argc, char** argv) {
         for (unsigned int i=0; i< 19; i++) {
           ROS_INFO("Controller gain k[%d] = %f",i,gGain[i]);
         }
-        for (unsigned int i=0; i< 19; i++) {
-          ROS_INFO("LOE [%d] = %f",i,gLOE[i]);
-        }
     }
 
     if (control_actived) {                                    // controller active after take-off request

@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1286
+ * Model version              : 1.1294
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jul  9 10:36:17 2018
+ * C++ source code generated on : Tue Jul 10 08:57:07 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -365,14 +365,11 @@ void tunning_nominalModelClass::step()
 
   /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[0] = 200.0;
+    tunning_nominal_B.Saturation[0] = 200.0;
   } else if (u0 < 0.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[0] = 0.0;
+    tunning_nominal_B.Saturation[0] = 0.0;
   } else {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[0] = u0;
+    tunning_nominal_B.Saturation[0] = u0;
   }
 
   /* Gain: '<S3>/mapping_0_200' incorporates:
@@ -387,14 +384,11 @@ void tunning_nominalModelClass::step()
 
   /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[1] = 200.0;
+    tunning_nominal_B.Saturation[1] = 200.0;
   } else if (u0 < 0.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[1] = 0.0;
+    tunning_nominal_B.Saturation[1] = 0.0;
   } else {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[1] = u0;
+    tunning_nominal_B.Saturation[1] = u0;
   }
 
   /* Gain: '<S3>/mapping_0_200' incorporates:
@@ -409,14 +403,11 @@ void tunning_nominalModelClass::step()
 
   /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[2] = 200.0;
+    tunning_nominal_B.Saturation[2] = 200.0;
   } else if (u0 < 0.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[2] = 0.0;
+    tunning_nominal_B.Saturation[2] = 0.0;
   } else {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[2] = u0;
+    tunning_nominal_B.Saturation[2] = u0;
   }
 
   /* Gain: '<S3>/mapping_0_200' incorporates:
@@ -431,14 +422,11 @@ void tunning_nominalModelClass::step()
 
   /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[3] = 200.0;
+    tunning_nominal_B.Saturation[3] = 200.0;
   } else if (u0 < 0.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[3] = 0.0;
+    tunning_nominal_B.Saturation[3] = 0.0;
   } else {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[3] = u0;
+    tunning_nominal_B.Saturation[3] = u0;
   }
 
   /* Gain: '<S3>/mapping_0_200' incorporates:
@@ -453,14 +441,11 @@ void tunning_nominalModelClass::step()
 
   /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[4] = 200.0;
+    tunning_nominal_B.Saturation[4] = 200.0;
   } else if (u0 < 0.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[4] = 0.0;
+    tunning_nominal_B.Saturation[4] = 0.0;
   } else {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[4] = u0;
+    tunning_nominal_B.Saturation[4] = u0;
   }
 
   /* Gain: '<S3>/mapping_0_200' incorporates:
@@ -475,14 +460,22 @@ void tunning_nominalModelClass::step()
 
   /* Saturate: '<S3>/Saturation' */
   if (u0 > 200.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[5] = 200.0;
+    tunning_nominal_B.Saturation[5] = 200.0;
   } else if (u0 < 0.0) {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[5] = 0.0;
+    tunning_nominal_B.Saturation[5] = 0.0;
   } else {
-    /* Outport: '<Root>/motor_command' */
-    tunning_nominal_Y.motor_command[5] = u0;
+    tunning_nominal_B.Saturation[5] = u0;
+  }
+
+  if (rtmIsMajorTimeStep((&tunning_nominal_M))) {
+    /* Outport: '<Root>/motor_command' incorporates:
+     *  ZeroOrderHold: '<Root>/Zero-Order Hold'
+     */
+    for (i = 0; i < 6; i++) {
+      tunning_nominal_Y.motor_command[i] = tunning_nominal_B.Saturation[i];
+    }
+
+    /* End of Outport: '<Root>/motor_command' */
   }
 
   /* Outport: '<Root>/virtual_control' incorporates:
