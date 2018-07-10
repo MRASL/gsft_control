@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1294
+ * Model version              : 1.1299
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jul 10 08:57:07 2018
+ * C++ source code generated on : Tue Jul 10 09:26:57 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -508,51 +508,44 @@ void tunning_nominalModelClass::step()
    case 1:
     /* '<S11>:1:6' case 1      % waypoint */
     /*  waypoint */
-    /* '<S11>:1:7' if t<=10 */
-    if (rtb_Clock <= 10.0) {
+    /* '<S11>:1:7' if t<=15 */
+    if (rtb_Clock <= 15.0) {
       /* '<S11>:1:8' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
-    } else if (rtb_Clock <= 20.0) {
-      /* '<S11>:1:9' elseif t <= 20 */
+    } else if (rtb_Clock <= 25.0) {
+      /* '<S11>:1:9' elseif t <= 25 */
       /* '<S11>:1:10' ref = [Y0(1)+1; Y0(2)-1; 1; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0] + 1.0;
       rtb_Clock = tunning_nominal_U.Y0[1] - 1.0;
       rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
-    } else if (rtb_Clock <= 30.0) {
-      /* '<S11>:1:11' elseif t <=30 */
+    } else if (rtb_Clock <= 35.0) {
+      /* '<S11>:1:11' elseif t <=35 */
       /* '<S11>:1:12' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0] - 1.0;
       rtb_Clock = tunning_nominal_U.Y0[1] + 1.0;
       rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
-    } else if (rtb_Clock <= 40.0) {
-      /* '<S11>:1:13' elseif t <=40 */
-      /* '<S11>:1:14' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)+pi/2]; */
+    } else if (rtb_Clock <= 45.0) {
+      /* '<S11>:1:13' elseif t <=45 */
+      /* '<S11>:1:14' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0] - 1.0;
       rtb_Clock = tunning_nominal_U.Y0[1] + 1.0;
       rtb_ff_idx_0 = 1.0;
-      rtb_ff_idx_1 = tunning_nominal_U.Y0[3] + 1.5707963267948966;
-    } else if (rtb_Clock <= 50.0) {
-      /* '<S11>:1:15' elseif t <=50 */
-      /* '<S11>:1:16' ref = [Y0(1); Y0(2); 1; Y0(4)+pi/2]; */
-      rtb_uNm_p = tunning_nominal_U.Y0[0];
-      rtb_Clock = tunning_nominal_U.Y0[1];
-      rtb_ff_idx_0 = 1.0;
-      rtb_ff_idx_1 = tunning_nominal_U.Y0[3] + 1.5707963267948966;
-    } else if (rtb_Clock <= 60.0) {
-      /* '<S11>:1:17' elseif t <=60 */
-      /* '<S11>:1:18' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
+      rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
+    } else if (rtb_Clock <= 55.0) {
+      /* '<S11>:1:15' elseif t <=55 */
+      /* '<S11>:1:16' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = 1.0;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
     } else {
-      /* '<S11>:1:19' else */
-      /* '<S11>:1:20' ref = Y0; */
+      /* '<S11>:1:17' else */
+      /* '<S11>:1:18' ref = Y0; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = tunning_nominal_U.Y0[2];
@@ -573,32 +566,32 @@ void tunning_nominalModelClass::step()
     break;
 
    case 2:
-    /* '<S11>:1:33' case 2      % circular tracking */
+    /* '<S11>:1:31' case 2      % circular tracking */
     /*  circular tracking */
-    /* '<S11>:1:34' if t<=10 */
+    /* '<S11>:1:32' if t<=10 */
     if (rtb_Clock <= 10.0) {
-      /* '<S11>:1:35' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+      /* '<S11>:1:33' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = 0.75;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
     } else if (rtb_Clock <= 50.0) {
-      /* '<S11>:1:36' elseif t <= 50 */
-      /* '<S11>:1:37' ref = [cos(t); sin(t); 0.75; Y0(4)]; */
+      /* '<S11>:1:34' elseif t <= 50 */
+      /* '<S11>:1:35' ref = [cos(t); sin(t); 0.75; Y0(4)]; */
       rtb_uNm_p = std::cos(rtb_Clock);
       rtb_Clock = std::sin(rtb_Clock);
       rtb_ff_idx_0 = 0.75;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
     } else if (rtb_Clock <= 60.0) {
-      /* '<S11>:1:38' elseif t <= 60 */
-      /* '<S11>:1:39' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+      /* '<S11>:1:36' elseif t <= 60 */
+      /* '<S11>:1:37' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = 0.75;
       rtb_ff_idx_1 = tunning_nominal_U.Y0[3];
     } else {
-      /* '<S11>:1:40' else */
-      /* '<S11>:1:41' ref = Y0; */
+      /* '<S11>:1:38' else */
+      /* '<S11>:1:39' ref = Y0; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = tunning_nominal_U.Y0[2];
@@ -609,8 +602,8 @@ void tunning_nominalModelClass::step()
     break;
 
    default:
-    /* '<S11>:1:44' otherwise */
-    /* '<S11>:1:45' ref = Y0; */
+    /* '<S11>:1:42' otherwise */
+    /* '<S11>:1:43' ref = Y0; */
     rtb_uNm_p = tunning_nominal_U.Y0[0];
     rtb_Clock = tunning_nominal_U.Y0[1];
     rtb_ff_idx_0 = tunning_nominal_U.Y0[2];
