@@ -423,6 +423,10 @@ int main(int argc, char** argv) {
       uav_state_msg->acc_Kalman.y = gController.tunning_nominal_Y.acc_Kalman[1];
       uav_state_msg->acc_Kalman.z = gController.tunning_nominal_Y.acc_Kalman[2];
 
+      uav_state_msg->real_M.x = gController.tunning_nominal_Y.real_M[0];
+      uav_state_msg->real_M.y = gController.tunning_nominal_Y.real_M[1];
+      uav_state_msg->real_M.z = gController.tunning_nominal_Y.real_M[2];
+
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);
       gPublish = false;
