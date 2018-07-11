@@ -14,7 +14,7 @@ geometry_msgs/Vector3 rotation_speed_B
 float64 total_thrust
 geometry_msgs/Vector3 moment
 
-geometry_msgs/Vector3 acc_diff
-geometry_msgs/Vector3 acc_Kal
-geometry_msgs/Vector3 LOE13
-geometry_msgs/Vector3 LOE46
+geometry_msgs/Vector3 acc_calcul
+geometry_msgs/Vector3 acc_Kalman
+geometry_msgs/Vector3 LOE13_calcul
+geometry_msgs/Vector3 LOE13_Kalman

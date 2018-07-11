@@ -376,9 +376,9 @@ int main(int argc, char** argv) {
       uav_state_msg->moment.y      = gController.tunning_lqr_Y.virtual_control[2];
       uav_state_msg->moment.z      = gController.tunning_lqr_Y.virtual_control[3];
 
-      uav_state_msg->LOE13.x  = gController.tunning_lqr_Y.LOE[0];
+  /*    uav_state_msg->LOE13.x  = gController.tunning_lqr_Y.LOE[0];
       uav_state_msg->LOE13.y  = gController.tunning_lqr_Y.LOE[1];
-      uav_state_msg->LOE13.z  = gController.tunning_lqr_Y.LOE[2];
+      uav_state_msg->LOE13.z  = gController.tunning_lqr_Y.LOE[2]; */
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);

@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1332
+ * Model version              : 1.1360
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jul 10 22:13:49 2018
+ * C++ source code generated on : Wed Jul 11 10:54:34 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -108,17 +108,17 @@ void tunning_nominal_MATLABFunction1(const real_T rtu_u[6], const real_T rtu_y[3
   real_T rtu_u_0[3];
   int32_T i;
 
-  /* MATLAB Function 'FDD  /MATLAB Function1': '<S13>:1' */
-  /* '<S13>:1:2' arm = 0.215; */
-  /* '<S13>:1:2' gra = 9.81; */
-  /* '<S13>:1:2' factor = 0.0365; */
-  /* '<S13>:1:4' M = [arm/2 arm arm/2; */
-  /* '<S13>:1:5'       -sqrt(3)*arm/2 0 sqrt(3)*arm/2; */
-  /* '<S13>:1:6'       -factor factor -factor]; */
-  /* '<S13>:1:8' diff = [u(1) - u(4) ; */
-  /* '<S13>:1:9'         u(2) - u(5) ; */
-  /* '<S13>:1:10'         u(3) - u(6) ]; */
-  /* '<S13>:1:11' Residu_1_4 = diff - inv(M)*y; */
+  /* MATLAB Function 'FDD  /MATLAB Function1': '<S12>:1' */
+  /* '<S12>:1:2' arm = 0.215; */
+  /* '<S12>:1:2' gra = 9.81; */
+  /* '<S12>:1:2' factor = 0.0365; */
+  /* '<S12>:1:4' M = [arm/2 arm arm/2; */
+  /* '<S12>:1:5'       -sqrt(3)*arm/2 0 sqrt(3)*arm/2; */
+  /* '<S12>:1:6'       -factor factor -factor]; */
+  /* '<S12>:1:8' diff = [u(1) - u(4) ; */
+  /* '<S12>:1:9'         u(2) - u(5) ; */
+  /* '<S12>:1:10'         u(3) - u(6) ]; */
+  /* '<S12>:1:11' Residu_1_4 = diff - inv(M)*y; */
   rtu_u_0[0] = rtu_u[0] - rtu_u[3];
   rtu_u_0[1] = rtu_u[1] - rtu_u[4];
   rtu_u_0[2] = rtu_u[2] - rtu_u[5];
@@ -128,9 +128,9 @@ void tunning_nominal_MATLABFunction1(const real_T rtu_u[6], const real_T rtu_y[3
   }
 
   /*  Residu_1_4 */
-  /* '<S13>:1:14' gamma    = [1-(-Residu_1_4(1) + u(1))/u(1) */
-  /* '<S13>:1:15'             1-(-Residu_1_4(2) + u(2))/u(2) */
-  /* '<S13>:1:16'             1-(-Residu_1_4(3) + u(3))/u(3)]; */
+  /* '<S12>:1:14' gamma    = [1-(-Residu_1_4(1) + u(1))/u(1) */
+  /* '<S12>:1:15'             1-(-Residu_1_4(2) + u(2))/u(2) */
+  /* '<S12>:1:16'             1-(-Residu_1_4(3) + u(3))/u(3)]; */
   localB->gamma[0] = 1.0 - (-Residu_1_4[0] + rtu_u[0]) / rtu_u[0];
   localB->gamma[1] = 1.0 - (-Residu_1_4[1] + rtu_u[1]) / rtu_u[1];
   localB->gamma[2] = 1.0 - (-Residu_1_4[2] + rtu_u[2]) / rtu_u[2];
@@ -141,7 +141,6 @@ void tunning_nominalModelClass::step()
 {
   /* local block i/o variables */
   real_T rtb_Memory[6];
-  real_T rtb_TSamp[3];
   real_T rtb_Sum3_p[3];
   real_T rtb_Memory_k[6];
   real_T rtb_Sum3_c[3];
@@ -175,7 +174,6 @@ void tunning_nominalModelClass::step()
     real_T rtb_uNm_p;
     real_T rtb_LOE_out[6];
     real_T rtb_Product_n[3];
-    real_T rtb_Diff[3];
     real_T rtb_Clock;
     int32_T i;
     real_T tmp[3];
@@ -239,20 +237,20 @@ void tunning_nominalModelClass::step()
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/mode'
      */
-    /* MATLAB Function 'Test_config_and_data/FFW': '<S66>:1' */
-    /* '<S66>:1:2' ff = [0;0]; */
-    /* '<S66>:1:3' g = 9.81; */
+    /* MATLAB Function 'Test_config_and_data/FFW': '<S65>:1' */
+    /* '<S65>:1:2' ff = [0;0]; */
+    /* '<S65>:1:3' g = 9.81; */
     /*  [x;y] = [cos(t); sin(t)] */
-    /* '<S66>:1:5' if (test_mode == 2) */
+    /* '<S65>:1:5' if (test_mode == 2) */
     if ((tunning_nominal_U.mode == 2.0) && ((rtb_Clock >= 10.0) && (rtb_Clock <=
           50.0))) {
-      /* '<S66>:1:6' if (t >=10) && (t<= 50) */
-      /* '<S66>:1:7' axref_N = -cos(t); */
-      /* '<S66>:1:8' ayref_N = -sin(t); */
-      /* '<S66>:1:10' axref_b = cos(X(8))*cos(X(9))*axref_N + cos(X(8))*sin(X(9))*ayref_N; */
-      /* '<S66>:1:11' ayref_b = (sin(X(7))*sin(X(8))*cos(X(9)) - cos(X(7))*sin(X(9)))*axref_N + (sin(X(7))*sin(X(8))*sin(X(9)) + cos(X(7))*cos(X(9)))*ayref_N; */
+      /* '<S65>:1:6' if (t >=10) && (t<= 50) */
+      /* '<S65>:1:7' axref_N = -cos(t); */
+      /* '<S65>:1:8' ayref_N = -sin(t); */
+      /* '<S65>:1:10' axref_b = cos(X(8))*cos(X(9))*axref_N + cos(X(8))*sin(X(9))*ayref_N; */
+      /* '<S65>:1:11' ayref_b = (sin(X(7))*sin(X(8))*cos(X(9)) - cos(X(7))*sin(X(9)))*axref_N + (sin(X(7))*sin(X(8))*sin(X(9)) + cos(X(7))*cos(X(9)))*ayref_N; */
       /*   */
-      /* '<S66>:1:13' ff = [-ayref_b/g; axref_b/g]; */
+      /* '<S65>:1:13' ff = [-ayref_b/g; axref_b/g]; */
       rtb_ff_idx_0 = -((std::sin(tunning_nominal_U.X[6]) * std::sin
                         (tunning_nominal_U.X[7]) * std::cos(tunning_nominal_U.X
         [8]) - std::cos(tunning_nominal_U.X[6]) * std::sin(tunning_nominal_U.X[8]))
@@ -265,8 +263,8 @@ void tunning_nominalModelClass::step()
                       (tunning_nominal_U.X[7]) * std::sin(tunning_nominal_U.X[8])
                       * -std::sin(rtb_Clock)) / 9.81;
     } else {
-      /* '<S66>:1:14' else */
-      /* '<S66>:1:15' ff = [0;0]; */
+      /* '<S65>:1:14' else */
+      /* '<S65>:1:15' ff = [0;0]; */
     }
 
     /* Sum: '<S8>/Sum1' incorporates:
@@ -363,9 +361,9 @@ void tunning_nominalModelClass::step()
     }
 
     /* End of Saturate: '<Root>/1Nm' */
-    /* MATLAB Function 'Test_config_and_data/LOE_': '<S67>:1' */
-    /* '<S67>:1:2' LOE_out = [0;0;0;0;0;0]; */
-    /* '<S67>:1:3' for i = 1:6 */
+    /* MATLAB Function 'Test_config_and_data/LOE_': '<S66>:1' */
+    /* '<S66>:1:2' LOE_out = [0;0;0;0;0;0]; */
+    /* '<S66>:1:3' for i = 1:6 */
     for (i = 0; i < 6; i++) {
       /* Gain: '<Root>/Control Allocation' incorporates:
        *  Saturate: '<Root>/                  '
@@ -394,9 +392,9 @@ void tunning_nominalModelClass::step()
        */
       rtb_LOE_out[i] = 0.0;
 
-      /* '<S67>:1:4' if t>= LOE_t(i) */
+      /* '<S66>:1:4' if t>= LOE_t(i) */
       if (rtb_Clock >= tunning_nominal_U.LOE_t[i]) {
-        /* '<S67>:1:5' LOE_out(i) = LOE(i); */
+        /* '<S66>:1:5' LOE_out(i) = LOE(i); */
         rtb_LOE_out[i] = tunning_nominal_U.LOE_a[i];
       }
 
@@ -556,14 +554,14 @@ void tunning_nominalModelClass::step()
      *  Inport: '<Root>/mode'
      *  Inport: '<Root>/ref'
      */
-    /* MATLAB Function 'Test_config_and_data/MATLAB Function': '<S68>:1' */
-    /* '<S68>:1:2' ref = Y0; */
-    /* '<S68>:1:3' switch test_mode */
+    /* MATLAB Function 'Test_config_and_data/MATLAB Function': '<S67>:1' */
+    /* '<S67>:1:2' ref = Y0; */
+    /* '<S67>:1:3' switch test_mode */
     switch ((int32_T)tunning_nominal_U.mode) {
      case 0:
-      /* '<S68>:1:4' case 0      % manual test */
+      /* '<S67>:1:4' case 0      % manual test */
       /*  manual test */
-      /* '<S68>:1:5' ref = ref_manual; */
+      /* '<S67>:1:5' ref = ref_manual; */
       rtb_uNm_p = tunning_nominal_U.ref[0];
       rtb_Clock = tunning_nominal_U.ref[1];
       rtb_ff_idx_0 = tunning_nominal_U.ref[2];
@@ -571,46 +569,46 @@ void tunning_nominalModelClass::step()
       break;
 
      case 1:
-      /* '<S68>:1:6' case 1      % waypoint */
+      /* '<S67>:1:6' case 1      % waypoint */
       /*  waypoint */
-      /* '<S68>:1:7' if t<=15 */
+      /* '<S67>:1:7' if t<=15 */
       if (rtb_Clock <= 15.0) {
-        /* '<S68>:1:8' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
+        /* '<S67>:1:8' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
         rtb_uNm_p = tunning_nominal_U.Y0[0];
         rtb_Clock = tunning_nominal_U.Y0[1];
         rtb_ff_idx_0 = 1.0;
         rtb_ref_idx_3 = tunning_nominal_U.Y0[3];
       } else if (rtb_Clock <= 25.0) {
-        /* '<S68>:1:9' elseif t <= 25 */
-        /* '<S68>:1:10' ref = [Y0(1)+1; Y0(2)-1; 1; Y0(4)]; */
+        /* '<S67>:1:9' elseif t <= 25 */
+        /* '<S67>:1:10' ref = [Y0(1)+1; Y0(2)-1; 1; Y0(4)]; */
         rtb_uNm_p = tunning_nominal_U.Y0[0] + 1.0;
         rtb_Clock = tunning_nominal_U.Y0[1] - 1.0;
         rtb_ff_idx_0 = 1.0;
         rtb_ref_idx_3 = tunning_nominal_U.Y0[3];
       } else if (rtb_Clock <= 35.0) {
-        /* '<S68>:1:11' elseif t <=35 */
-        /* '<S68>:1:12' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
+        /* '<S67>:1:11' elseif t <=35 */
+        /* '<S67>:1:12' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
         rtb_uNm_p = tunning_nominal_U.Y0[0] - 1.0;
         rtb_Clock = tunning_nominal_U.Y0[1] + 1.0;
         rtb_ff_idx_0 = 1.0;
         rtb_ref_idx_3 = tunning_nominal_U.Y0[3];
       } else if (rtb_Clock <= 45.0) {
-        /* '<S68>:1:13' elseif t <=45 */
-        /* '<S68>:1:14' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
+        /* '<S67>:1:13' elseif t <=45 */
+        /* '<S67>:1:14' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
         rtb_uNm_p = tunning_nominal_U.Y0[0] - 1.0;
         rtb_Clock = tunning_nominal_U.Y0[1] + 1.0;
         rtb_ff_idx_0 = 1.0;
         rtb_ref_idx_3 = tunning_nominal_U.Y0[3];
       } else if (rtb_Clock <= 55.0) {
-        /* '<S68>:1:15' elseif t <=55 */
-        /* '<S68>:1:16' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
+        /* '<S67>:1:15' elseif t <=55 */
+        /* '<S67>:1:16' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
         rtb_uNm_p = tunning_nominal_U.Y0[0];
         rtb_Clock = tunning_nominal_U.Y0[1];
         rtb_ff_idx_0 = 1.0;
         rtb_ref_idx_3 = tunning_nominal_U.Y0[3];
       } else {
-        /* '<S68>:1:17' else */
-        /* '<S68>:1:18' ref = Y0; */
+        /* '<S67>:1:17' else */
+        /* '<S67>:1:18' ref = Y0; */
         rtb_uNm_p = tunning_nominal_U.Y0[0];
         rtb_Clock = tunning_nominal_U.Y0[1];
         rtb_ff_idx_0 = tunning_nominal_U.Y0[2];
@@ -631,32 +629,32 @@ void tunning_nominalModelClass::step()
       break;
 
      case 2:
-      /* '<S68>:1:31' case 2      % circular tracking */
+      /* '<S67>:1:31' case 2      % circular tracking */
       /*  circular tracking */
-      /* '<S68>:1:32' if t<=10 */
+      /* '<S67>:1:32' if t<=10 */
       if (rtb_Clock <= 10.0) {
-        /* '<S68>:1:33' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+        /* '<S67>:1:33' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
         rtb_uNm_p = tunning_nominal_U.Y0[0];
         rtb_Clock = tunning_nominal_U.Y0[1];
         rtb_ff_idx_0 = 0.75;
         rtb_ref_idx_3 = tunning_nominal_U.Y0[3];
       } else if (rtb_Clock <= 50.0) {
-        /* '<S68>:1:34' elseif t <= 50 */
-        /* '<S68>:1:35' ref = [cos(t); sin(t); 0.75; Y0(4)]; */
+        /* '<S67>:1:34' elseif t <= 50 */
+        /* '<S67>:1:35' ref = [cos(t); sin(t); 0.75; Y0(4)]; */
         rtb_uNm_p = std::cos(rtb_Clock);
         rtb_Clock = std::sin(rtb_Clock);
         rtb_ff_idx_0 = 0.75;
         rtb_ref_idx_3 = tunning_nominal_U.Y0[3];
       } else if (rtb_Clock <= 60.0) {
-        /* '<S68>:1:36' elseif t <= 60 */
-        /* '<S68>:1:37' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+        /* '<S67>:1:36' elseif t <= 60 */
+        /* '<S67>:1:37' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
         rtb_uNm_p = tunning_nominal_U.Y0[0];
         rtb_Clock = tunning_nominal_U.Y0[1];
         rtb_ff_idx_0 = 0.75;
         rtb_ref_idx_3 = tunning_nominal_U.Y0[3];
       } else {
-        /* '<S68>:1:38' else */
-        /* '<S68>:1:39' ref = Y0; */
+        /* '<S67>:1:38' else */
+        /* '<S67>:1:39' ref = Y0; */
         rtb_uNm_p = tunning_nominal_U.Y0[0];
         rtb_Clock = tunning_nominal_U.Y0[1];
         rtb_ff_idx_0 = tunning_nominal_U.Y0[2];
@@ -667,8 +665,8 @@ void tunning_nominalModelClass::step()
       break;
 
      default:
-      /* '<S68>:1:42' otherwise */
-      /* '<S68>:1:43' ref = Y0; */
+      /* '<S67>:1:42' otherwise */
+      /* '<S67>:1:43' ref = Y0; */
       rtb_uNm_p = tunning_nominal_U.Y0[0];
       rtb_Clock = tunning_nominal_U.Y0[1];
       rtb_ff_idx_0 = tunning_nominal_U.Y0[2];
@@ -697,38 +695,28 @@ void tunning_nominalModelClass::step()
       }
 
       /* End of Memory: '<S2>/Memory' */
+
+      /* Product: '<S2>/Product1' incorporates:
+       *  Constant: '<S2>/Constant1'
+       *  Inport: '<Root>/X'
+       */
       for (i = 0; i < 3; i++) {
-        /* SampleTimeMath: '<S12>/TSamp' incorporates:
-         *  Inport: '<Root>/X'
-         *
-         * About '<S12>/TSamp':
-         *  y = u * K where K = 1 / ( w * Ts )
-         */
-        rtb_TSamp[i] = tunning_nominal_U.X[i + 9] * 1000.0;
-
-        /* Sum: '<S12>/Diff' incorporates:
-         *  UnitDelay: '<S12>/UD'
-         */
-        rtb_Diff[i] = rtb_TSamp[i] - tunning_nominal_DW.UD_DSTATE[i];
-
-        /* Product: '<S2>/Product1' incorporates:
-         *  Constant: '<S2>/Constant1'
-         *  Inport: '<Root>/X'
-         */
         rtb_Product_n[i] = tunning_nominal_ConstP.pooled6[i + 6] *
           tunning_nominal_U.X[11] + (tunning_nominal_ConstP.pooled6[i + 3] *
           tunning_nominal_U.X[10] + tunning_nominal_ConstP.pooled6[i] *
           tunning_nominal_U.X[9]);
       }
 
+      /* End of Product: '<S2>/Product1' */
+
       /* Sum: '<S11>/Sum1' incorporates:
        *  Inport: '<Root>/X'
-       *  Product: '<S14>/i x k'
-       *  Product: '<S14>/j x i'
-       *  Product: '<S14>/k x j'
-       *  Product: '<S15>/i x j'
-       *  Product: '<S15>/j x k'
-       *  Product: '<S15>/k x i'
+       *  Product: '<S13>/i x k'
+       *  Product: '<S13>/j x i'
+       *  Product: '<S13>/k x j'
+       *  Product: '<S14>/i x j'
+       *  Product: '<S14>/j x k'
+       *  Product: '<S14>/k x i'
        */
       tmp[0] = tunning_nominal_U.X[10] * rtb_Product_n[2];
       tmp[1] = tunning_nominal_U.X[11] * rtb_Product_n[0];
@@ -739,14 +727,17 @@ void tunning_nominalModelClass::step()
 
       /* Sum: '<S2>/Sum3' incorporates:
        *  Constant: '<S2>/Constant1'
+       *  Inport: '<Root>/X'
        *  Product: '<S2>/Product'
        *  Sum: '<S11>/Sum1'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Sum3_p[i] = ((tunning_nominal_ConstP.pooled6[i + 3] * rtb_Diff[1] +
-                          tunning_nominal_ConstP.pooled6[i] * rtb_Diff[0]) +
-                         tunning_nominal_ConstP.pooled6[i + 6] * rtb_Diff[2]) +
-          (tmp[i] - tmp_0[i]);
+        rtb_Sum3_p[i] = ((tunning_nominal_ConstP.pooled6[i + 3] *
+                          tunning_nominal_U.X[13] +
+                          tunning_nominal_ConstP.pooled6[i] *
+                          tunning_nominal_U.X[12]) +
+                         tunning_nominal_ConstP.pooled6[i + 6] *
+                         tunning_nominal_U.X[14]) + (tmp[i] - tmp_0[i]);
       }
 
       /* End of Sum: '<S2>/Sum3' */
@@ -755,47 +746,37 @@ void tunning_nominalModelClass::step()
       tunning_nominal_MATLABFunction1(rtb_Memory, rtb_Sum3_p,
         &tunning_nominal_B.sf_MATLABFunction1);
 
-      /* Outport: '<Root>/gamma' */
-      tunning_nominal_Y.gamma[0] = tunning_nominal_B.sf_MATLABFunction1.gamma[0];
-
-      /* Outport: '<Root>/acc_diff' */
-      tunning_nominal_Y.acc_diff[0] = rtb_Diff[0];
-
-      /* Outport: '<Root>/gamma' */
-      tunning_nominal_Y.gamma[1] = tunning_nominal_B.sf_MATLABFunction1.gamma[1];
-
-      /* Outport: '<Root>/acc_diff' */
-      tunning_nominal_Y.acc_diff[1] = rtb_Diff[1];
-
-      /* Outport: '<Root>/gamma' */
-      tunning_nominal_Y.gamma[2] = tunning_nominal_B.sf_MATLABFunction1.gamma[2];
-
-      /* Outport: '<Root>/acc_diff' */
-      tunning_nominal_Y.acc_diff[2] = rtb_Diff[2];
+      /* Outport: '<Root>/LOE13_calcul' */
+      tunning_nominal_Y.LOE13_calcul[0] =
+        tunning_nominal_B.sf_MATLABFunction1.gamma[0];
+      tunning_nominal_Y.LOE13_calcul[1] =
+        tunning_nominal_B.sf_MATLABFunction1.gamma[1];
+      tunning_nominal_Y.LOE13_calcul[2] =
+        tunning_nominal_B.sf_MATLABFunction1.gamma[2];
       for (i = 0; i < 6; i++) {
         /* Memory: '<S3>/Memory' */
         rtb_Memory_k[i] = tunning_nominal_DW.Memory_PreviousInput_k[i];
 
-        /* Delay: '<S17>/MemoryX' */
+        /* Delay: '<S16>/MemoryX' */
         if (tunning_nominal_DW.icLoad != 0) {
           tunning_nominal_DW.MemoryX_DSTATE[i] = 0.0;
         }
       }
 
-      /* Outputs for Atomic SubSystem: '<S17>/UseCurrentEstimator' */
-      /* Outputs for Enabled SubSystem: '<S44>/Enabled Subsystem' incorporates:
-       *  EnablePort: '<S65>/Enable'
+      /* Outputs for Atomic SubSystem: '<S16>/UseCurrentEstimator' */
+      /* Outputs for Enabled SubSystem: '<S43>/Enabled Subsystem' incorporates:
+       *  EnablePort: '<S64>/Enable'
        */
       if (!tunning_nominal_DW.EnabledSubsystem_MODE) {
         tunning_nominal_DW.EnabledSubsystem_MODE = true;
       }
 
-      /* Sum: '<S65>/Add1' incorporates:
-       *  Constant: '<S17>/C'
-       *  Delay: '<S17>/MemoryX'
+      /* Sum: '<S64>/Add1' incorporates:
+       *  Constant: '<S16>/C'
+       *  Delay: '<S16>/MemoryX'
        *  Inport: '<Root>/X'
-       *  Product: '<S65>/Product'
-       *  Product: '<S65>/Product2'
+       *  Product: '<S64>/Product'
+       *  Product: '<S64>/Product2'
        */
       for (i = 0; i < 3; i++) {
         rtb_ff_idx_1 = 0.0;
@@ -807,10 +788,10 @@ void tunning_nominalModelClass::step()
         tmp[i] = tunning_nominal_U.X[9 + i] - rtb_ff_idx_1;
       }
 
-      /* End of Sum: '<S65>/Add1' */
+      /* End of Sum: '<S64>/Add1' */
       for (i = 0; i < 6; i++) {
-        /* Product: '<S65>/Product2' incorporates:
-         *  Constant: '<S21>/KalmanGainM'
+        /* Product: '<S64>/Product2' incorporates:
+         *  Constant: '<S20>/KalmanGainM'
          */
         tunning_nominal_B.Product2[i] = 0.0;
         tunning_nominal_B.Product2[i] +=
@@ -820,22 +801,22 @@ void tunning_nominalModelClass::step()
         tunning_nominal_B.Product2[i] +=
           tunning_nominal_ConstP.KalmanGainM_Value[i + 12] * tmp[2];
 
-        /* Sum: '<S44>/Add' incorporates:
-         *  Delay: '<S17>/MemoryX'
+        /* Sum: '<S43>/Add' incorporates:
+         *  Delay: '<S16>/MemoryX'
          */
         rtb_LOE_out[i] = tunning_nominal_B.Product2[i] +
           tunning_nominal_DW.MemoryX_DSTATE[i];
       }
 
-      /* End of Outputs for SubSystem: '<S44>/Enabled Subsystem' */
-      /* End of Outputs for SubSystem: '<S17>/UseCurrentEstimator' */
+      /* End of Outputs for SubSystem: '<S43>/Enabled Subsystem' */
+      /* End of Outputs for SubSystem: '<S16>/UseCurrentEstimator' */
 
       /* Product: '<S3>/Product1' incorporates:
        *  Constant: '<S3>/Constant1'
        *  Inport: '<Root>/X'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Diff[i] = tunning_nominal_ConstP.pooled6[i + 6] *
+        rtb_Product_n[i] = tunning_nominal_ConstP.pooled6[i + 6] *
           tunning_nominal_U.X[11] + (tunning_nominal_ConstP.pooled6[i + 3] *
           tunning_nominal_U.X[10] + tunning_nominal_ConstP.pooled6[i] *
           tunning_nominal_U.X[9]);
@@ -843,26 +824,26 @@ void tunning_nominalModelClass::step()
 
       /* End of Product: '<S3>/Product1' */
 
-      /* Sum: '<S16>/Sum1' incorporates:
+      /* Sum: '<S15>/Sum1' incorporates:
        *  Inport: '<Root>/X'
-       *  Product: '<S19>/i x k'
-       *  Product: '<S19>/j x i'
-       *  Product: '<S19>/k x j'
-       *  Product: '<S20>/i x j'
-       *  Product: '<S20>/j x k'
-       *  Product: '<S20>/k x i'
+       *  Product: '<S18>/i x k'
+       *  Product: '<S18>/j x i'
+       *  Product: '<S18>/k x j'
+       *  Product: '<S19>/i x j'
+       *  Product: '<S19>/j x k'
+       *  Product: '<S19>/k x i'
        */
-      tmp[0] = tunning_nominal_U.X[10] * rtb_Diff[2];
-      tmp[1] = tunning_nominal_U.X[11] * rtb_Diff[0];
-      tmp[2] = tunning_nominal_U.X[9] * rtb_Diff[1];
-      tmp_0[0] = tunning_nominal_U.X[11] * rtb_Diff[1];
-      tmp_0[1] = tunning_nominal_U.X[9] * rtb_Diff[2];
-      tmp_0[2] = tunning_nominal_U.X[10] * rtb_Diff[0];
+      tmp[0] = tunning_nominal_U.X[10] * rtb_Product_n[2];
+      tmp[1] = tunning_nominal_U.X[11] * rtb_Product_n[0];
+      tmp[2] = tunning_nominal_U.X[9] * rtb_Product_n[1];
+      tmp_0[0] = tunning_nominal_U.X[11] * rtb_Product_n[1];
+      tmp_0[1] = tunning_nominal_U.X[9] * rtb_Product_n[2];
+      tmp_0[2] = tunning_nominal_U.X[10] * rtb_Product_n[0];
 
       /* Sum: '<S3>/Sum3' incorporates:
        *  Constant: '<S3>/Constant1'
        *  Product: '<S3>/Product'
-       *  Sum: '<S16>/Sum1'
+       *  Sum: '<S15>/Sum1'
        */
       for (i = 0; i < 3; i++) {
         rtb_Sum3_c[i] = ((tunning_nominal_ConstP.pooled6[i + 3] * rtb_LOE_out[4]
@@ -877,29 +858,29 @@ void tunning_nominalModelClass::step()
       tunning_nominal_MATLABFunction1(rtb_Memory_k, rtb_Sum3_c,
         &tunning_nominal_B.sf_MATLABFunction1_j);
 
-      /* Outport: '<Root>/gamma_Kal' */
-      tunning_nominal_Y.gamma_Kal[0] =
+      /* Outport: '<Root>/LOE13_Kalman' */
+      tunning_nominal_Y.LOE13_Kalman[0] =
         tunning_nominal_B.sf_MATLABFunction1_j.gamma[0];
 
-      /* Outport: '<Root>/acc_Kal' */
-      tunning_nominal_Y.acc_Kal[0] = rtb_LOE_out[3];
+      /* Outport: '<Root>/acc_Kalman' */
+      tunning_nominal_Y.acc_Kalman[0] = rtb_LOE_out[3];
 
-      /* Outport: '<Root>/gamma_Kal' */
-      tunning_nominal_Y.gamma_Kal[1] =
+      /* Outport: '<Root>/LOE13_Kalman' */
+      tunning_nominal_Y.LOE13_Kalman[1] =
         tunning_nominal_B.sf_MATLABFunction1_j.gamma[1];
 
-      /* Outport: '<Root>/acc_Kal' */
-      tunning_nominal_Y.acc_Kal[1] = rtb_LOE_out[4];
+      /* Outport: '<Root>/acc_Kalman' */
+      tunning_nominal_Y.acc_Kalman[1] = rtb_LOE_out[4];
 
-      /* Outport: '<Root>/gamma_Kal' */
-      tunning_nominal_Y.gamma_Kal[2] =
+      /* Outport: '<Root>/LOE13_Kalman' */
+      tunning_nominal_Y.LOE13_Kalman[2] =
         tunning_nominal_B.sf_MATLABFunction1_j.gamma[2];
 
-      /* Outport: '<Root>/acc_Kal' */
-      tunning_nominal_Y.acc_Kal[2] = rtb_LOE_out[5];
+      /* Outport: '<Root>/acc_Kalman' */
+      tunning_nominal_Y.acc_Kalman[2] = rtb_LOE_out[5];
 
-      /* Outputs for Enabled SubSystem: '<S39>/MeasurementUpdate' incorporates:
-       *  EnablePort: '<S64>/Enable'
+      /* Outputs for Enabled SubSystem: '<S38>/MeasurementUpdate' incorporates:
+       *  EnablePort: '<S63>/Enable'
        */
       if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
           (!tunning_nominal_DW.MeasurementUpdate_MODE)) {
@@ -908,10 +889,10 @@ void tunning_nominalModelClass::step()
 
       if (tunning_nominal_DW.MeasurementUpdate_MODE) {
         for (i = 0; i < 3; i++) {
-          /* Product: '<S64>/C[k]*xhat[k|k-1]' incorporates:
-           *  Constant: '<S17>/C'
-           *  Delay: '<S17>/MemoryX'
-           *  Sum: '<S64>/Add1'
+          /* Product: '<S63>/C[k]*xhat[k|k-1]' incorporates:
+           *  Constant: '<S16>/C'
+           *  Delay: '<S16>/MemoryX'
+           *  Sum: '<S63>/Add1'
            */
           tmp[i] = 0.0;
           for (i_0 = 0; i_0 < 6; i_0++) {
@@ -919,18 +900,18 @@ void tunning_nominalModelClass::step()
               tunning_nominal_DW.MemoryX_DSTATE[i_0];
           }
 
-          /* End of Product: '<S64>/C[k]*xhat[k|k-1]' */
+          /* End of Product: '<S63>/C[k]*xhat[k|k-1]' */
 
-          /* Sum: '<S64>/Sum' incorporates:
+          /* Sum: '<S63>/Sum' incorporates:
            *  Inport: '<Root>/X'
-           *  Product: '<S64>/Product3'
-           *  Sum: '<S64>/Add1'
+           *  Product: '<S63>/Product3'
+           *  Sum: '<S63>/Add1'
            */
           tmp_0[i] = tunning_nominal_U.X[9 + i] - tmp[i];
         }
 
-        /* Product: '<S64>/Product3' incorporates:
-         *  Constant: '<S21>/KalmanGainL'
+        /* Product: '<S63>/Product3' incorporates:
+         *  Constant: '<S20>/KalmanGainL'
          */
         for (i = 0; i < 6; i++) {
           tunning_nominal_B.Product3[i] = 0.0;
@@ -943,12 +924,12 @@ void tunning_nominalModelClass::step()
         }
       }
 
-      /* End of Outputs for SubSystem: '<S39>/MeasurementUpdate' */
+      /* End of Outputs for SubSystem: '<S38>/MeasurementUpdate' */
       for (i = 0; i < 6; i++) {
-        /* Product: '<S39>/A[k]*xhat[k|k-1]' incorporates:
-         *  Constant: '<S17>/A'
-         *  Delay: '<S17>/MemoryX'
-         *  Sum: '<S39>/Add'
+        /* Product: '<S38>/A[k]*xhat[k|k-1]' incorporates:
+         *  Constant: '<S16>/A'
+         *  Delay: '<S16>/MemoryX'
+         *  Sum: '<S38>/Add'
          */
         rtb_LOE_out[i] = 0.0;
         for (i_0 = 0; i_0 < 6; i_0++) {
@@ -956,9 +937,9 @@ void tunning_nominalModelClass::step()
             tunning_nominal_DW.MemoryX_DSTATE[i_0];
         }
 
-        /* End of Product: '<S39>/A[k]*xhat[k|k-1]' */
+        /* End of Product: '<S38>/A[k]*xhat[k|k-1]' */
 
-        /* Sum: '<S39>/Add' */
+        /* Sum: '<S38>/Add' */
         rtb_Add[i] = rtb_LOE_out[i] + tunning_nominal_B.Product3[i];
       }
     }
@@ -1031,12 +1012,7 @@ void tunning_nominalModelClass::step()
   if (rtmIsMajorTimeStep((&tunning_nominal_M))) {
     int32_T i;
     if (rtmIsMajorTimeStep((&tunning_nominal_M))) {
-      /* Update for UnitDelay: '<S12>/UD' */
-      tunning_nominal_DW.UD_DSTATE[0] = rtb_TSamp[0];
-      tunning_nominal_DW.UD_DSTATE[1] = rtb_TSamp[1];
-      tunning_nominal_DW.UD_DSTATE[2] = rtb_TSamp[2];
-
-      /* Update for Delay: '<S17>/MemoryX' */
+      /* Update for Delay: '<S16>/MemoryX' */
       tunning_nominal_DW.icLoad = 0U;
       for (i = 0; i < 6; i++) {
         /* Update for Memory: '<S2>/Memory' */
@@ -1045,7 +1021,7 @@ void tunning_nominalModelClass::step()
         /* Update for Memory: '<S3>/Memory' */
         tunning_nominal_DW.Memory_PreviousInput_k[i] = tunning_nominal_B.u[i];
 
-        /* Update for Delay: '<S17>/MemoryX' */
+        /* Update for Delay: '<S16>/MemoryX' */
         tunning_nominal_DW.MemoryX_DSTATE[i] = rtb_Add[i];
       }
     }
@@ -1190,17 +1166,12 @@ void tunning_nominalModelClass::initialize()
     /* InitializeConditions for Integrator: '<S9>/Integrator1' */
     tunning_nominal_X.Integrator1_CSTATE_j = 0.0;
 
-    /* InitializeConditions for UnitDelay: '<S12>/UD' */
-    tunning_nominal_DW.UD_DSTATE[0] = 0.0;
-    tunning_nominal_DW.UD_DSTATE[1] = 0.0;
-    tunning_nominal_DW.UD_DSTATE[2] = 0.0;
-
-    /* InitializeConditions for Delay: '<S17>/MemoryX' */
+    /* InitializeConditions for Delay: '<S16>/MemoryX' */
     tunning_nominal_DW.icLoad = 1U;
 
-    /* SystemInitialize for Enabled SubSystem: '<S39>/MeasurementUpdate' */
-    /* SystemInitialize for Atomic SubSystem: '<S17>/UseCurrentEstimator' */
-    /* SystemInitialize for Enabled SubSystem: '<S44>/Enabled Subsystem' */
+    /* SystemInitialize for Enabled SubSystem: '<S38>/MeasurementUpdate' */
+    /* SystemInitialize for Atomic SubSystem: '<S16>/UseCurrentEstimator' */
+    /* SystemInitialize for Enabled SubSystem: '<S43>/Enabled Subsystem' */
     for (i = 0; i < 6; i++) {
       /* InitializeConditions for Memory: '<S2>/Memory' */
       tunning_nominal_DW.Memory_PreviousInput[i] = 2.5179000000000005;
@@ -1208,16 +1179,16 @@ void tunning_nominalModelClass::initialize()
       /* InitializeConditions for Memory: '<S3>/Memory' */
       tunning_nominal_DW.Memory_PreviousInput_k[i] = 2.5179000000000005;
 
-      /* SystemInitialize for Outport: '<S65>/deltax' */
+      /* SystemInitialize for Outport: '<S64>/deltax' */
       tunning_nominal_B.Product2[i] = 0.0;
 
-      /* SystemInitialize for Outport: '<S64>/L*(y[k]-yhat[k|k-1])' */
+      /* SystemInitialize for Outport: '<S63>/L*(y[k]-yhat[k|k-1])' */
       tunning_nominal_B.Product3[i] = 0.0;
     }
 
-    /* End of SystemInitialize for SubSystem: '<S44>/Enabled Subsystem' */
-    /* End of SystemInitialize for SubSystem: '<S17>/UseCurrentEstimator' */
-    /* End of SystemInitialize for SubSystem: '<S39>/MeasurementUpdate' */
+    /* End of SystemInitialize for SubSystem: '<S43>/Enabled Subsystem' */
+    /* End of SystemInitialize for SubSystem: '<S16>/UseCurrentEstimator' */
+    /* End of SystemInitialize for SubSystem: '<S38>/MeasurementUpdate' */
   }
 }
 

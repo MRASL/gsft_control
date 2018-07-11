@@ -29,24 +29,43 @@ bool gEmergency_status;
 
 int  gTest_mode;
 
+ros::Time gPrev_it;
+
 Eigen::VectorXd gY0(4);        // initial position (equilibrium)
 Eigen::VectorXd gRef(4);       // references (x, y, z, yaw)
 Eigen::VectorXd gGain(19);
 Eigen::VectorXd gLOE(6);
 Eigen::VectorXd gLOE_t(6);
+Eigen::VectorXd gAng_acc_calcul(3); // derivative of angular velocity
 
 double gPsi;                   // heading (rad)
 
 mav_msgs::EigenOdometry gOdometry;
 
 void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
-  mav_msgs::eigenOdometryFromMsg(*odom, &gOdometry);
+
+  ros::Time current_time = ros::Time::now();
+  ros::Duration Td = current_time - gPrev_it;
+  gPrev_it = current_time;
+
+  Eigen::VectorXd prev_ang_velocity(3);
+  prev_ang_velocity[0] = gOdometry.angular_velocity_B.x();
+  prev_ang_velocity[1] = gOdometry.angular_velocity_B.y();
+  prev_ang_velocity[2] = gOdometry.angular_velocity_B.z();
+
+  mav_msgs::eigenOdometryFromMsg(*odom, &gOdometry);   // new measurement
+
+  gAng_acc_calcul[0] = (gOdometry.angular_velocity_B.x() - prev_ang_velocity[0])/Td.toSec();
+  gAng_acc_calcul[1] = (gOdometry.angular_velocity_B.y() - prev_ang_velocity[1])/Td.toSec();
+  gAng_acc_calcul[2] = (gOdometry.angular_velocity_B.z() - prev_ang_velocity[2])/Td.toSec();
+
   if ((gOdometry.position_W.x() > 2.5)||(gOdometry.position_W.x() < -2.5)||(gOdometry.position_W.y() > 2.5)||(gOdometry.position_W.y() < -2.5)||(gOdometry.position_W.z() > 1.75))
   {
     if (!gEmergency_status){
       gEmergency_status = true;
     }
   }
+
   //if (gLanding_flag || gInit)
 }
 
@@ -243,24 +262,7 @@ int main(int argc, char** argv) {
   bool control_actived = false;
   bool end_mission  = false;
 
-/*  gGain[0]  = 0.5414;       // x from LQR
-  gGain[1]  = 0.4108;       // vx
-  gGain[2]  = 0.3162;      // integral x
-  gGain[3]  = -0.5262;      // y
-  gGain[4]  = -0.3851;
-  gGain[5]  = -0.3162;
-  gGain[6]  = 14.7226;      // z
-  gGain[7]  = 6.8078;
-  gGain[8]  = 12.2474;
-  gGain[9]  = 1.5756;     // roll
-  gGain[10] = 0.3320;
-  gGain[11] = 0.0;
-  gGain[12] = 1.7578;     // pitch
-  gGain[13] = 0.4025;
-  gGain[14] = 0.0;
-  gGain[15] = 0.4980;     // yaw
-  gGain[16] = 0.3130;
-  gGain[17] = 0.3162;  */
+  gPrev_it = ros::Time::now();
 
   while(ros::ok()) {
     R_W_B = gOdometry.orientation_W_B.toRotationMatrix();
@@ -407,19 +409,19 @@ int main(int argc, char** argv) {
       uav_state_msg->moment.y      = gController.tunning_nominal_Y.virtual_control[2];
       uav_state_msg->moment.z      = gController.tunning_nominal_Y.virtual_control[3];
 
-      uav_state_msg->LOE13.x  = gController.tunning_nominal_Y.gamma[0];
-      uav_state_msg->LOE13.y  = gController.tunning_nominal_Y.gamma[1];
-      uav_state_msg->LOE13.z  = gController.tunning_nominal_Y.gamma[2];
-      uav_state_msg->LOE46.x  = gController.tunning_nominal_Y.gamma_Kal[0];
-      uav_state_msg->LOE46.y  = gController.tunning_nominal_Y.gamma_Kal[1];
-      uav_state_msg->LOE46.z  = gController.tunning_nominal_Y.gamma_Kal[2];
+      uav_state_msg->LOE13_calcul.x  = gController.tunning_nominal_Y.LOE13_calcul[0];
+      uav_state_msg->LOE13_calcul.y  = gController.tunning_nominal_Y.LOE13_calcul[1];
+      uav_state_msg->LOE13_calcul.z  = gController.tunning_nominal_Y.LOE13_calcul[2];
+      uav_state_msg->LOE13_Kalman.x  = gController.tunning_nominal_Y.LOE13_Kalman[0];
+      uav_state_msg->LOE13_Kalman.y  = gController.tunning_nominal_Y.LOE13_Kalman[1];
+      uav_state_msg->LOE13_Kalman.z  = gController.tunning_nominal_Y.LOE13_Kalman[2];
 
-      uav_state_msg->acc_diff.x = gController.tunning_nominal_Y.acc_diff[0];
-      uav_state_msg->acc_diff.y = gController.tunning_nominal_Y.acc_diff[1];
-      uav_state_msg->acc_diff.z = gController.tunning_nominal_Y.acc_diff[2];
-      uav_state_msg->acc_Kal.x  = gController.tunning_nominal_Y.acc_Kal[0];
-      uav_state_msg->acc_Kal.y  = gController.tunning_nominal_Y.acc_Kal[1];
-      uav_state_msg->acc_Kal.z  = gController.tunning_nominal_Y.acc_Kal[2];
+      uav_state_msg->acc_calcul.x = gAng_acc_calcul[0];
+      uav_state_msg->acc_calcul.y = gAng_acc_calcul[1];
+      uav_state_msg->acc_calcul.z = gAng_acc_calcul[2];
+      uav_state_msg->acc_Kalman.x = gController.tunning_nominal_Y.acc_Kalman[0];
+      uav_state_msg->acc_Kalman.y = gController.tunning_nominal_Y.acc_Kalman[1];
+      uav_state_msg->acc_Kalman.z = gController.tunning_nominal_Y.acc_Kalman[2];
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);
