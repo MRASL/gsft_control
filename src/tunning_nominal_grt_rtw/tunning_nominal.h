@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1310
+ * Model version              : 1.1312
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jul 10 19:42:53 2018
+ * C++ source code generated on : Tue Jul 10 21:13:56 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -156,16 +156,18 @@ typedef struct {
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T u[6];                         /* '<Root>/                  ' */
+  real_T u[12];                        /* '<Root>/                 ' */
+  real_T u_c[6];                       /* '<Root>/                  ' */
   real_T Saturation[6];                /* '<S5>/Saturation' */
   real_T Memory[6];                    /* '<S2>/Memory' */
   real_T Derivative[3];                /* '<S2>/Derivative' */
-  real_T Sum1[3];                      /* '<S11>/Sum1' */
   real_T ZeroOrderHold1[3];            /* '<Root>/Zero-Order Hold1' */
   real_T ZeroOrderHold3[3];            /* '<Root>/Zero-Order Hold3' */
+  real_T Memory_k[6];                  /* '<S3>/Memory' */
+  real_T Product[3];                   /* '<S3>/Product' */
   real_T ZeroOrderHold2[3];            /* '<Root>/Zero-Order Hold2' */
   real_T ZeroOrderHold4[3];            /* '<Root>/Zero-Order Hold4' */
-  real_T Sum1_g;                       /* '<S6>/Sum1' */
+  real_T Sum1;                         /* '<S6>/Sum1' */
   real_T Sum4;                         /* '<S6>/Sum4' */
   real_T Sum3;                         /* '<S9>/Sum3' */
   real_T Sum3_h;                       /* '<S10>/Sum3' */
@@ -442,7 +444,6 @@ class tunning_nominalModelClass {
  * Block '<S16>/Reset' : Unused code path elimination
  * Block '<S16>/Reshapeyhat' : Unused code path elimination
  * Block '<S58>/CheckSignalProperties' : Unused code path elimination
- * Block '<Root>/                 ' : Eliminated since input and output rates are identical
  * Block '<Root>/                          ' : Eliminated since input and output rates are identical
  * Block '<Root>/                             ' : Eliminated since input and output rates are identical
  * Block '<S59>/Conversion' : Eliminate redundant data type conversion
