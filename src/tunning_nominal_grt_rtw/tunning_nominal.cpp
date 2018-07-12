@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1373
+ * Model version              : 1.1379
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jul 11 20:18:12 2018
+ * C++ source code generated on : Wed Jul 11 22:16:01 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -856,8 +856,11 @@ void tunning_nominalModelClass::step()
       /* Outport: '<Root>/acc_Kalman' */
       tunning_nominal_Y.acc_Kalman[0] = rtb_LOE_out[3];
 
-      /* Outport: '<Root>/real_M' */
-      tunning_nominal_Y.real_M[0] = rtb_Sum3_p[0];
+      /* Outport: '<Root>/M_calcul' */
+      tunning_nominal_Y.M_calcul[0] = rtb_Sum3_p[0];
+
+      /* Outport: '<Root>/M_Kalman' */
+      tunning_nominal_Y.M_Kalman[0] = rtb_Sum3_c[0];
 
       /* Outport: '<Root>/LOE13_Kalman' */
       tunning_nominal_Y.LOE13_Kalman[1] =
@@ -866,8 +869,11 @@ void tunning_nominalModelClass::step()
       /* Outport: '<Root>/acc_Kalman' */
       tunning_nominal_Y.acc_Kalman[1] = rtb_LOE_out[4];
 
-      /* Outport: '<Root>/real_M' */
-      tunning_nominal_Y.real_M[1] = rtb_Sum3_p[1];
+      /* Outport: '<Root>/M_calcul' */
+      tunning_nominal_Y.M_calcul[1] = rtb_Sum3_p[1];
+
+      /* Outport: '<Root>/M_Kalman' */
+      tunning_nominal_Y.M_Kalman[1] = rtb_Sum3_c[1];
 
       /* Outport: '<Root>/LOE13_Kalman' */
       tunning_nominal_Y.LOE13_Kalman[2] =
@@ -876,8 +882,11 @@ void tunning_nominalModelClass::step()
       /* Outport: '<Root>/acc_Kalman' */
       tunning_nominal_Y.acc_Kalman[2] = rtb_LOE_out[5];
 
-      /* Outport: '<Root>/real_M' */
-      tunning_nominal_Y.real_M[2] = rtb_Sum3_p[2];
+      /* Outport: '<Root>/M_calcul' */
+      tunning_nominal_Y.M_calcul[2] = rtb_Sum3_p[2];
+
+      /* Outport: '<Root>/M_Kalman' */
+      tunning_nominal_Y.M_Kalman[2] = rtb_Sum3_c[2];
 
       /* Outputs for Enabled SubSystem: '<S38>/MeasurementUpdate' incorporates:
        *  EnablePort: '<S63>/Enable'
