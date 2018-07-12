@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1421
+ * Model version              : 1.1423
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul 12 17:40:59 2018
+ * C++ source code generated on : Thu Jul 12 18:05:02 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -276,6 +276,8 @@ typedef struct {
   real_T acc_Kalman[3];                /* '<Root>/acc_Kalman' */
   real_T M_calcul[3];                  /* '<Root>/M_calcul' */
   real_T M_Kalman[3];                  /* '<Root>/M_Kalman' */
+  real_T thrust_pre[6];                /* '<Root>/thrust_pre' */
+  real_T thrust_filtered[6];           /* '<Root>/thrust_filtered' */
 } ExtY_tunning_nominal_T;
 
 /* Real-time Model Data Structure */

@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1421
+ * Model version              : 1.1423
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul 12 17:40:59 2018
+ * C++ source code generated on : Thu Jul 12 18:05:02 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -906,6 +906,12 @@ void tunning_nominalModelClass::step()
       } else {
         tunning_nominal_B.u[i] = tmp_0;
       }
+
+      /* Outport: '<Root>/thrust_pre' */
+      tunning_nominal_Y.thrust_pre[i] = tunning_nominal_B.u[i];
+
+      /* Outport: '<Root>/thrust_filtered' */
+      tunning_nominal_Y.thrust_filtered[i] = tunning_nominal_B.Filter[i];
     }
 
     if (rtmIsMajorTimeStep((&tunning_nominal_M))) {

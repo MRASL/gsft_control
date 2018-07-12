@@ -21,3 +21,5 @@ geometry_msgs/Vector3 LOE13_Kalman
 geometry_msgs/Vector3 LOE13_true
 geometry_msgs/Vector3 M_calcul
 geometry_msgs/Vector3 M_Kalman
+geometry_msgs/Vector3 thrust_pre
+geometry_msgs/Vector3 thrust_filtered
