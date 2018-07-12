@@ -7,15 +7,15 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1379
+ * Model version              : 1.1394
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jul 11 22:16:01 2018
+ * C++ source code generated on : Thu Jul 12 11:11:18 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
  * Embedded hardware selection: 32-bit Generic
  * Code generation objective: Execution efficiency
- * Validation result: Passed (1), Warnings (3), Error (0)
+ * Validation result: Not run
  */
 
 #ifndef RTW_HEADER_tunning_nominal_types_h_

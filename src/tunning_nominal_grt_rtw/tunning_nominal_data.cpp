@@ -7,15 +7,15 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1379
+ * Model version              : 1.1394
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jul 11 22:16:01 2018
+ * C++ source code generated on : Thu Jul 12 11:11:18 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
  * Embedded hardware selection: 32-bit Generic
  * Code generation objective: Execution efficiency
- * Validation result: Passed (1), Warnings (3), Error (0)
+ * Validation result: Not run
  */
 
 #include "tunning_nominal.h"
@@ -23,6 +23,19 @@
 
 /* Constant parameters (auto storage) */
 const ConstP_tunning_nominal_T tunning_nominal_ConstP = {
+  /* Expression: pInitialization.M
+   * Referenced by: '<S23>/KalmanGainM'
+   */
+  { 0.0079211629758334789, 0.0, 0.0, 0.031497283010252966, 0.0, 0.0, 0.0,
+    0.0079211629757368965, 0.0, 0.0, 0.031497283010219305, 0.0, 0.0, 0.0,
+    0.00792116297581871, 0.0, 0.0, 0.031497283010214649 },
+
+  /* Expression: pInitialization.C
+   * Referenced by: '<S20>/C'
+   */
+  { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0 },
+
   /* Expression: B_ENU_inv
    * Referenced by: '<Root>/Control Allocation'
    */
@@ -42,30 +55,17 @@ const ConstP_tunning_nominal_T tunning_nominal_ConstP = {
    */
   { 0.0347563, 0.0, 0.0, 0.0, 0.0458929, 0.0, 0.0, 0.0, 0.0977 },
 
-  /* Expression: pInitialization.M
-   * Referenced by: '<S20>/KalmanGainM'
-   */
-  { 0.0025117070656732539, 0.0, 0.0, 0.0031583038057353121, 0.0, 0.0, 0.0,
-    0.0025117070656733207, 0.0, 0.0, 0.0031583038057346282, 0.0, 0.0, 0.0,
-    0.002511707065675771, 0.0, 0.0, 0.003158303805736627 },
-
-  /* Expression: pInitialization.C
-   * Referenced by: '<S16>/C'
-   */
-  { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0 },
-
   /* Expression: pInitialization.A
-   * Referenced by: '<S16>/A'
+   * Referenced by: '<S20>/A'
    */
   { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 1.0 },
 
   /* Expression: pInitialization.L
-   * Referenced by: '<S20>/KalmanGainL'
+   * Referenced by: '<S23>/KalmanGainL'
    */
-  { 0.0025148653694789893, 0.0, 0.0, 0.0031583038057353121, 0.0, 0.0, 0.0,
-    0.0025148653694790552, 0.0, 0.0, 0.0031583038057346282, 0.0, 0.0, 0.0,
-    0.0025148653694815077, 0.0, 0.0, 0.003158303805736627 }
+  { 0.0079526602588437332, 0.0, 0.0, 0.031497283010252966, 0.0, 0.0, 0.0,
+    0.007952660258747116, 0.0, 0.0, 0.031497283010219305, 0.0, 0.0, 0.0,
+    0.0079526602588289239, 0.0, 0.0, 0.031497283010214649 }
 };

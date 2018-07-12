@@ -330,8 +330,8 @@ int main(int argc, char** argv) {
             else
             {
               motor_command[i] = gController.tunning_nominal_Y.motor_command[i];        // normalized [1 .. 200] => Asctec Firefly
-              motor_RPM[i]     = 1250.0 + motor_command[i]*43.75;                   // real RPM
-              motor_speed[i]   = motor_RPM[i]/9.5493;                               // rad/s => Gazebo
+              motor_RPM[i]     = 1250.0 + motor_command[i]*43.75;                       // real RPM
+              motor_speed[i]   = motor_RPM[i]/9.5493;                                   // rad/s => Gazebo
             }
         }
 
@@ -425,6 +425,9 @@ int main(int argc, char** argv) {
       uav_state_msg->LOE13_Kalman.x  = gController.tunning_nominal_Y.LOE13_Kalman[0];
       uav_state_msg->LOE13_Kalman.y  = gController.tunning_nominal_Y.LOE13_Kalman[1];
       uav_state_msg->LOE13_Kalman.z  = gController.tunning_nominal_Y.LOE13_Kalman[2];
+      uav_state_msg->LOE13_true.x    = gController.tunning_nominal_Y.LOE[0];
+      uav_state_msg->LOE13_true.y    = gController.tunning_nominal_Y.LOE[1];
+      uav_state_msg->LOE13_true.z    = gController.tunning_nominal_Y.LOE[2];
 
       uav_state_msg->M_calcul.x = gController.tunning_nominal_Y.M_calcul[0];
       uav_state_msg->M_calcul.y = gController.tunning_nominal_Y.M_calcul[1];
