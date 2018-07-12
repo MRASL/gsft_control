@@ -29,14 +29,14 @@ bool gEmergency_status;
 
 int  gTest_mode;
 
-ros::Time gPrev_it;
+//ros::Time gPrev_it;
 
 Eigen::VectorXd gY0(4);        // initial position (equilibrium)
 Eigen::VectorXd gRef(4);       // references (x, y, z, yaw)
 Eigen::VectorXd gGain(19);
 Eigen::VectorXd gLOE(6);
 Eigen::VectorXd gLOE_t(6);
-Eigen::VectorXd gAng_acc_calcul(3); // derivative of angular velocity
+// Eigen::VectorXd gAng_acc_calcul(3); // derivative of angular velocity
 
 double gPsi;                   // heading (rad)
 
@@ -44,20 +44,20 @@ mav_msgs::EigenOdometry gOdometry;
 
 void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
 
-  ros::Time current_time = ros::Time::now();
+/*  ros::Time current_time = ros::Time::now();
   ros::Duration Td = current_time - gPrev_it;
   gPrev_it = current_time;
 
   Eigen::VectorXd prev_ang_velocity(3);
   prev_ang_velocity[0] = gOdometry.angular_velocity_B.x();
   prev_ang_velocity[1] = gOdometry.angular_velocity_B.y();
-  prev_ang_velocity[2] = gOdometry.angular_velocity_B.z();
+  prev_ang_velocity[2] = gOdometry.angular_velocity_B.z(); */
 
   mav_msgs::eigenOdometryFromMsg(*odom, &gOdometry);   // new measurement
 
-  gAng_acc_calcul[0] = (gOdometry.angular_velocity_B.x() - prev_ang_velocity[0])/Td.toSec();
+  /*gAng_acc_calcul[0] = (gOdometry.angular_velocity_B.x() - prev_ang_velocity[0])/Td.toSec();
   gAng_acc_calcul[1] = (gOdometry.angular_velocity_B.y() - prev_ang_velocity[1])/Td.toSec();
-  gAng_acc_calcul[2] = (gOdometry.angular_velocity_B.z() - prev_ang_velocity[2])/Td.toSec();
+  gAng_acc_calcul[2] = (gOdometry.angular_velocity_B.z() - prev_ang_velocity[2])/Td.toSec();*/
 
   if ((gOdometry.position_W.x() > 2.5)||(gOdometry.position_W.x() < -2.5)||(gOdometry.position_W.y() > 2.5)||(gOdometry.position_W.y() < -2.5)||(gOdometry.position_W.z() > 1.75))
   {
@@ -262,7 +262,7 @@ int main(int argc, char** argv) {
   bool control_actived = false;
   bool end_mission  = false;
 
-  gPrev_it = ros::Time::now();
+//  gPrev_it = ros::Time::now();
 
   while(ros::ok()) {
     R_W_B = gOdometry.orientation_W_B.toRotationMatrix();
@@ -312,9 +312,9 @@ int main(int argc, char** argv) {
         gController.tunning_nominal_U.X[9 ]  = gOdometry.angular_velocity_B.x();
         gController.tunning_nominal_U.X[10]  = gOdometry.angular_velocity_B.y();
         gController.tunning_nominal_U.X[11]  = gOdometry.angular_velocity_B.z();
-        gController.tunning_nominal_U.X[12]  = gAng_acc_calcul[0];
+        /*gController.tunning_nominal_U.X[12]  = gAng_acc_calcul[0];
         gController.tunning_nominal_U.X[13]  = gAng_acc_calcul[1];
-        gController.tunning_nominal_U.X[14]  = gAng_acc_calcul[2];
+        gController.tunning_nominal_U.X[14]  = gAng_acc_calcul[2]; */
 
         // Run Matlab controller
         gController.step();
