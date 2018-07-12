@@ -312,6 +312,9 @@ int main(int argc, char** argv) {
         gController.tunning_nominal_U.X[9 ]  = gOdometry.angular_velocity_B.x();
         gController.tunning_nominal_U.X[10]  = gOdometry.angular_velocity_B.y();
         gController.tunning_nominal_U.X[11]  = gOdometry.angular_velocity_B.z();
+        gController.tunning_nominal_U.X[12]  = gAng_acc_calcul[0];
+        gController.tunning_nominal_U.X[13]  = gAng_acc_calcul[1];
+        gController.tunning_nominal_U.X[14]  = gAng_acc_calcul[2];
 
         // Run Matlab controller
         gController.step();
@@ -409,19 +412,19 @@ int main(int argc, char** argv) {
       uav_state_msg->moment.y      = gController.tunning_nominal_Y.virtual_control[2];
       uav_state_msg->moment.z      = gController.tunning_nominal_Y.virtual_control[3];
 
-      uav_state_msg->LOE13_calcul.x  = gController.tunning_nominal_Y.LOE13_calcul[0];
-      uav_state_msg->LOE13_calcul.y  = gController.tunning_nominal_Y.LOE13_calcul[1];
-      uav_state_msg->LOE13_calcul.z  = gController.tunning_nominal_Y.LOE13_calcul[2];
-      uav_state_msg->LOE13_Kalman.x  = gController.tunning_nominal_Y.LOE13_Kalman[0];
-      uav_state_msg->LOE13_Kalman.y  = gController.tunning_nominal_Y.LOE13_Kalman[1];
-      uav_state_msg->LOE13_Kalman.z  = gController.tunning_nominal_Y.LOE13_Kalman[2];
-
       uav_state_msg->acc_calcul.x = gAng_acc_calcul[0];
       uav_state_msg->acc_calcul.y = gAng_acc_calcul[1];
       uav_state_msg->acc_calcul.z = gAng_acc_calcul[2];
       uav_state_msg->acc_Kalman.x = gController.tunning_nominal_Y.acc_Kalman[0];
       uav_state_msg->acc_Kalman.y = gController.tunning_nominal_Y.acc_Kalman[1];
       uav_state_msg->acc_Kalman.z = gController.tunning_nominal_Y.acc_Kalman[2];
+
+      uav_state_msg->LOE13_calcul.x  = gController.tunning_nominal_Y.LOE13_calcul[0];
+      uav_state_msg->LOE13_calcul.y  = gController.tunning_nominal_Y.LOE13_calcul[1];
+      uav_state_msg->LOE13_calcul.z  = gController.tunning_nominal_Y.LOE13_calcul[2];
+      uav_state_msg->LOE13_Kalman.x  = gController.tunning_nominal_Y.LOE13_Kalman[0];
+      uav_state_msg->LOE13_Kalman.y  = gController.tunning_nominal_Y.LOE13_Kalman[1];
+      uav_state_msg->LOE13_Kalman.z  = gController.tunning_nominal_Y.LOE13_Kalman[2];
 
       uav_state_msg->real_M.x = gController.tunning_nominal_Y.real_M[0];
       uav_state_msg->real_M.y = gController.tunning_nominal_Y.real_M[1];

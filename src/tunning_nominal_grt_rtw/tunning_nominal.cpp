@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1370
+ * Model version              : 1.1373
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Jul 11 18:19:52 2018
+ * C++ source code generated on : Wed Jul 11 20:18:12 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -100,17 +100,11 @@ void tunning_nominalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo
 void tunning_nominal_MATLABFunction1(const real_T rtu_u[6], const real_T rtu_y[3],
   B_MATLABFunction1_tunning_nom_T *localB)
 {
-  real_T Residu_1_4[3];
-  static const real_T a[9] = { 1.5503875968992249, 3.1007751937984493,
-    1.5503875968992249, -2.6853500892540736, -0.0, 2.6853500892540736,
-    -9.1324200913242013, 9.1324200913242013, -9.1324200913242013 };
-
-  real_T rtu_u_0[3];
-  int32_T i;
+  real_T Y_idx_1;
+  real_T Y_idx_2;
 
   /* MATLAB Function 'FDD  /MATLAB Function1': '<S12>:1' */
   /* '<S12>:1:2' arm = 0.215; */
-  /* '<S12>:1:2' gra = 9.81; */
   /* '<S12>:1:2' factor = 0.0365; */
   /* '<S12>:1:4' M = [arm/2 arm arm/2; */
   /* '<S12>:1:5'       -sqrt(3)*arm/2 0 sqrt(3)*arm/2; */
@@ -118,22 +112,21 @@ void tunning_nominal_MATLABFunction1(const real_T rtu_u[6], const real_T rtu_y[3
   /* '<S12>:1:8' diff = [u(1) - u(4) ; */
   /* '<S12>:1:9'         u(2) - u(5) ; */
   /* '<S12>:1:10'         u(3) - u(6) ]; */
-  /* '<S12>:1:11' Residu_1_4 = diff - inv(M)*y; */
-  rtu_u_0[0] = rtu_u[0] - rtu_u[3];
-  rtu_u_0[1] = rtu_u[1] - rtu_u[4];
-  rtu_u_0[2] = rtu_u[2] - rtu_u[5];
-  for (i = 0; i < 3; i++) {
-    Residu_1_4[i] = rtu_u_0[i] - (a[i + 6] * rtu_y[2] + (a[i + 3] * rtu_y[1] +
-      a[i] * rtu_y[0]));
-  }
+  /* '<S12>:1:11' Residu = diff - M\y; */
+  Y_idx_1 = rtu_y[0] - rtu_y[1] * -0.57735026918962584;
+  Y_idx_2 = ((rtu_y[2] - rtu_y[1] * 0.19603055651554735) - Y_idx_1 *
+             0.16976744186046511) / -0.10949999999999999;
+  Y_idx_1 -= Y_idx_2 * 0.215;
+  Y_idx_1 /= 0.215;
 
   /*  Residu_1_4 */
-  /* '<S12>:1:14' gamma    = [1-(-Residu_1_4(1) + u(1))/u(1) */
-  /* '<S12>:1:15'             1-(-Residu_1_4(2) + u(2))/u(2) */
-  /* '<S12>:1:16'             1-(-Residu_1_4(3) + u(3))/u(3)]; */
-  localB->gamma[0] = 1.0 - (-Residu_1_4[0] + rtu_u[0]) / rtu_u[0];
-  localB->gamma[1] = 1.0 - (-Residu_1_4[1] + rtu_u[1]) / rtu_u[1];
-  localB->gamma[2] = 1.0 - (-Residu_1_4[2] + rtu_u[2]) / rtu_u[2];
+  /* '<S12>:1:14' gamma    = [Residu(1)/u(1) */
+  /* '<S12>:1:15'             Residu(2)/u(2) */
+  /* '<S12>:1:16'             Residu(3)/u(3)]; */
+  localB->gamma[0] = ((rtu_u[0] - rtu_u[3]) - ((rtu_y[1] - Y_idx_2 *
+    0.18619546181365429) - Y_idx_1 * 0.0) / -0.18619546181365429) / rtu_u[0];
+  localB->gamma[1] = ((rtu_u[1] - rtu_u[4]) - Y_idx_1) / rtu_u[1];
+  localB->gamma[2] = ((rtu_u[2] - rtu_u[5]) - Y_idx_2) / rtu_u[2];
 }
 
 /* Model step function */
@@ -854,11 +847,11 @@ void tunning_nominalModelClass::step()
 
       /* MATLAB Function: '<S3>/MATLAB Function1' */
       tunning_nominal_MATLABFunction1(rtb_Memory_k, rtb_Sum3_c,
-        &tunning_nominal_B.sf_MATLABFunction1_j);
+        &tunning_nominal_B.sf_MATLABFunction1_b);
 
       /* Outport: '<Root>/LOE13_Kalman' */
       tunning_nominal_Y.LOE13_Kalman[0] =
-        tunning_nominal_B.sf_MATLABFunction1_j.gamma[0];
+        tunning_nominal_B.sf_MATLABFunction1_b.gamma[0];
 
       /* Outport: '<Root>/acc_Kalman' */
       tunning_nominal_Y.acc_Kalman[0] = rtb_LOE_out[3];
@@ -868,7 +861,7 @@ void tunning_nominalModelClass::step()
 
       /* Outport: '<Root>/LOE13_Kalman' */
       tunning_nominal_Y.LOE13_Kalman[1] =
-        tunning_nominal_B.sf_MATLABFunction1_j.gamma[1];
+        tunning_nominal_B.sf_MATLABFunction1_b.gamma[1];
 
       /* Outport: '<Root>/acc_Kalman' */
       tunning_nominal_Y.acc_Kalman[1] = rtb_LOE_out[4];
@@ -878,7 +871,7 @@ void tunning_nominalModelClass::step()
 
       /* Outport: '<Root>/LOE13_Kalman' */
       tunning_nominal_Y.LOE13_Kalman[2] =
-        tunning_nominal_B.sf_MATLABFunction1_j.gamma[2];
+        tunning_nominal_B.sf_MATLABFunction1_b.gamma[2];
 
       /* Outport: '<Root>/acc_Kalman' */
       tunning_nominal_Y.acc_Kalman[2] = rtb_LOE_out[5];
