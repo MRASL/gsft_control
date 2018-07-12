@@ -9,7 +9,7 @@
  *
  * Model version              : 1.1423
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul 12 18:05:02 2018
+ * C++ source code generated on : Thu Jul 12 19:14:16 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -686,9 +686,9 @@ void tunning_nominalModelClass::step()
        *  Inport: '<Root>/X'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Product_n[i] = tunning_nominal_ConstP.pooled7[i + 6] *
-          tunning_nominal_U.X[11] + (tunning_nominal_ConstP.pooled7[i + 3] *
-          tunning_nominal_U.X[10] + tunning_nominal_ConstP.pooled7[i] *
+        rtb_Product_n[i] = tunning_nominal_ConstP.pooled6[i + 6] *
+          tunning_nominal_U.X[11] + (tunning_nominal_ConstP.pooled6[i + 3] *
+          tunning_nominal_U.X[10] + tunning_nominal_ConstP.pooled6[i] *
           tunning_nominal_U.X[9]);
       }
 
@@ -717,11 +717,11 @@ void tunning_nominalModelClass::step()
        *  Sum: '<S12>/Sum1'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Sum3_p[i] = ((tunning_nominal_ConstP.pooled7[i + 3] *
+        rtb_Sum3_p[i] = ((tunning_nominal_ConstP.pooled6[i + 3] *
                           tunning_nominal_U.X[13] +
-                          tunning_nominal_ConstP.pooled7[i] *
+                          tunning_nominal_ConstP.pooled6[i] *
                           tunning_nominal_U.X[12]) +
-                         tunning_nominal_ConstP.pooled7[i + 6] *
+                         tunning_nominal_ConstP.pooled6[i + 6] *
                          tunning_nominal_U.X[14]) + (rtb_LOE_out_0[i] -
           rtb_LOE_out_1[i]);
       }
@@ -803,9 +803,9 @@ void tunning_nominalModelClass::step()
        *  Constant: '<S3>/Constant1'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Product_n[i] = tunning_nominal_ConstP.pooled7[i + 6] * rtb_LOE_out[2]
-          + (tunning_nominal_ConstP.pooled7[i + 3] * rtb_LOE_out[1] +
-             tunning_nominal_ConstP.pooled7[i] * rtb_LOE_out[0]);
+        rtb_Product_n[i] = tunning_nominal_ConstP.pooled6[i + 6] * rtb_LOE_out[2]
+          + (tunning_nominal_ConstP.pooled6[i + 3] * rtb_LOE_out[1] +
+             tunning_nominal_ConstP.pooled6[i] * rtb_LOE_out[0]);
       }
 
       /* End of Product: '<S3>/Product1' */
@@ -832,9 +832,9 @@ void tunning_nominalModelClass::step()
        *  Sum: '<S16>/Sum1'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Sum3_c[i] = (((tunning_nominal_ConstP.pooled7[i + 3] * rtb_LOE_out[4]
-                           + tunning_nominal_ConstP.pooled7[i] * rtb_LOE_out[3])
-                          + tunning_nominal_ConstP.pooled7[i + 6] * rtb_LOE_out
+        rtb_Sum3_c[i] = (((tunning_nominal_ConstP.pooled6[i + 3] * rtb_LOE_out[4]
+                           + tunning_nominal_ConstP.pooled6[i] * rtb_LOE_out[3])
+                          + tunning_nominal_ConstP.pooled6[i + 6] * rtb_LOE_out
                           [5]) + tunning_nominal_ConstP.Constant_Value_g[i]) +
           (rtb_LOE_out_0[i] - rtb_LOE_out_1[i]);
       }
@@ -1111,13 +1111,13 @@ void tunning_nominalModelClass::tunning_nominal_derivatives()
   for (is = 0; is < 6; is++) {
     _rtXdot->Filter_CSTATE[is] = 0.0;
     for (ci = is; ci < is + 1; ci++) {
-      _rtXdot->Filter_CSTATE[is] += -200.0 * tunning_nominal_X.Filter_CSTATE[ci];
+      _rtXdot->Filter_CSTATE[is] += -100.0 * tunning_nominal_X.Filter_CSTATE[ci];
     }
   }
 
   for (is = 0; is < 6; is++) {
     for (ci = is; ci < is + 1; ci++) {
-      _rtXdot->Filter_CSTATE[is] += 200.0 * tunning_nominal_B.u[ci];
+      _rtXdot->Filter_CSTATE[is] += 100.0 * tunning_nominal_B.u[ci];
     }
   }
 
