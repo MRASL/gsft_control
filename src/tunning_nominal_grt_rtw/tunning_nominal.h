@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1417
+ * Model version              : 1.1421
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul 12 16:22:42 2018
+ * C++ source code generated on : Thu Jul 12 17:40:59 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -154,6 +154,7 @@ typedef struct {
 
 /* Block signals (auto storage) */
 typedef struct {
+  real_T Filter[6];                    /* '<Root>/Filter' */
   real_T u[6];                         /* '<Root>/                  ' */
   real_T Sum1;                         /* '<S7>/Sum1' */
   real_T Sum4;                         /* '<S7>/Sum4' */
@@ -177,6 +178,7 @@ typedef struct {
 
 /* Continuous states (auto storage) */
 typedef struct {
+  real_T Filter_CSTATE[6];             /* '<Root>/Filter' */
   real_T Integrator1_CSTATE;           /* '<S11>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S7>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S7>/Integrator' */
@@ -185,6 +187,7 @@ typedef struct {
 
 /* State derivatives (auto storage) */
 typedef struct {
+  real_T Filter_CSTATE[6];             /* '<Root>/Filter' */
   real_T Integrator1_CSTATE;           /* '<S11>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S7>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S7>/Integrator' */
@@ -193,6 +196,7 @@ typedef struct {
 
 /* State disabled  */
 typedef struct {
+  boolean_T Filter_CSTATE[6];          /* '<Root>/Filter' */
   boolean_T Integrator1_CSTATE;        /* '<S11>/Integrator1' */
   boolean_T Integrator1_CSTATE_d;      /* '<S7>/Integrator1' */
   boolean_T Integrator_CSTATE;         /* '<S7>/Integrator' */
@@ -212,17 +216,12 @@ typedef struct {
 
 /* Constant parameters (auto storage) */
 typedef struct {
-  /* Expression: B_ENU_inv
-   * Referenced by: '<Root>/Control Allocation'
-   */
-  real_T ControlAllocation_Gain[24];
-
   /* Pooled Parameter (Expression: Ib)
    * Referenced by:
    *   '<S2>/Constant1'
    *   '<S3>/Constant1'
    */
-  real_T pooled6[9];
+  real_T pooled7[9];
 
   /* Expression: M_bias'
    * Referenced by: '<S3>/Constant'
@@ -238,6 +237,11 @@ typedef struct {
    * Referenced by: '<S4>/C'
    */
   real_T C_Value[18];
+
+  /* Expression: B_ENU_inv
+   * Referenced by: '<Root>/Control Allocation'
+   */
+  real_T ControlAllocation_Gain[24];
 
   /* Expression: pInitialization.A
    * Referenced by: '<S4>/A'
@@ -286,8 +290,8 @@ struct tag_RTM_tunning_nominal_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T blkStateChange;
-  real_T odeY[4];
-  real_T odeF[4][4];
+  real_T odeY[10];
+  real_T odeF[4][10];
   ODE4_IntgData intgData;
 
   /*
