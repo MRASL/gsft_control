@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1412
+ * Model version              : 1.1417
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul 12 13:40:46 2018
+ * C++ source code generated on : Thu Jul 12 16:22:42 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -832,15 +832,17 @@ void tunning_nominalModelClass::step()
       rtb_LOE_out_1[2] = rtb_LOE_out[1] * rtb_Product_n[0];
 
       /* Sum: '<S3>/Sum3' incorporates:
+       *  Constant: '<S3>/Constant'
        *  Constant: '<S3>/Constant1'
        *  Product: '<S3>/Product'
        *  Sum: '<S16>/Sum1'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Sum3_c[i] = ((tunning_nominal_ConstP.pooled6[i + 3] * rtb_LOE_out[4]
-                          + tunning_nominal_ConstP.pooled6[i] * rtb_LOE_out[3])
-                         + tunning_nominal_ConstP.pooled6[i + 6] * rtb_LOE_out[5])
-          + (rtb_LOE_out_0[i] - rtb_LOE_out_1[i]);
+        rtb_Sum3_c[i] = (((tunning_nominal_ConstP.pooled6[i + 3] * rtb_LOE_out[4]
+                           + tunning_nominal_ConstP.pooled6[i] * rtb_LOE_out[3])
+                          + tunning_nominal_ConstP.pooled6[i + 6] * rtb_LOE_out
+                          [5]) + tunning_nominal_ConstP.Constant_Value_g[i]) +
+          (rtb_LOE_out_0[i] - rtb_LOE_out_1[i]);
       }
 
       /* End of Sum: '<S3>/Sum3' */

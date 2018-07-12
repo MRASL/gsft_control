@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1412
+ * Model version              : 1.1417
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul 12 13:40:46 2018
+ * C++ source code generated on : Thu Jul 12 16:22:42 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -223,6 +223,11 @@ typedef struct {
    *   '<S3>/Constant1'
    */
   real_T pooled6[9];
+
+  /* Expression: M_bias'
+   * Referenced by: '<S3>/Constant'
+   */
+  real_T Constant_Value_g[3];
 
   /* Expression: pInitialization.M
    * Referenced by: '<S20>/KalmanGainM'
