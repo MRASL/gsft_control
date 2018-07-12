@@ -412,7 +412,15 @@ int main(int argc, char** argv) {
       uav_state_msg->moment.y      = gController.tunning_nominal_Y.virtual_control[2];
       uav_state_msg->moment.z      = gController.tunning_nominal_Y.virtual_control[3];
 
-      uav_state_msg->acc_calcul.x = gAng_acc_calcul[0];
+
+      uav_state_msg->LOE13_estimated.x  = gController.tunning_nominal_Y.LOE13_estimated[0];
+      uav_state_msg->LOE13_estimated.y  = gController.tunning_nominal_Y.LOE13_estimated[1];
+      uav_state_msg->LOE13_estimated.z  = gController.tunning_nominal_Y.LOE13_estimated[2];
+      uav_state_msg->LOE13_true.x    = gController.tunning_nominal_Y.LOE_true[0];
+      uav_state_msg->LOE13_true.y    = gController.tunning_nominal_Y.LOE_true[1];
+      uav_state_msg->LOE13_true.z    = gController.tunning_nominal_Y.LOE_true[2];
+
+   /* uav_state_msg->acc_calcul.x = gAng_acc_calcul[0];
       uav_state_msg->acc_calcul.y = gAng_acc_calcul[1];
       uav_state_msg->acc_calcul.z = gAng_acc_calcul[2];
       uav_state_msg->acc_Kalman.x = gController.tunning_nominal_Y.acc_Kalman[0];
@@ -432,9 +440,7 @@ int main(int argc, char** argv) {
       uav_state_msg->LOE13_Kalman.x  = gController.tunning_nominal_Y.LOE13_Kalman[0];
       uav_state_msg->LOE13_Kalman.y  = gController.tunning_nominal_Y.LOE13_Kalman[1];
       uav_state_msg->LOE13_Kalman.z  = gController.tunning_nominal_Y.LOE13_Kalman[2];
-      uav_state_msg->LOE13_true.x    = gController.tunning_nominal_Y.LOE[0];
-      uav_state_msg->LOE13_true.y    = gController.tunning_nominal_Y.LOE[1];
-      uav_state_msg->LOE13_true.z    = gController.tunning_nominal_Y.LOE[2];
+
 
       uav_state_msg->thrust_pre.x    = gController.tunning_nominal_Y.thrust_pre[0];
       uav_state_msg->thrust_pre.y    = gController.tunning_nominal_Y.thrust_pre[1];
@@ -442,7 +448,7 @@ int main(int argc, char** argv) {
 
       uav_state_msg->thrust_filtered.x    = gController.tunning_nominal_Y.thrust_filtered[0];
       uav_state_msg->thrust_filtered.y    = gController.tunning_nominal_Y.thrust_filtered[1];
-      uav_state_msg->thrust_filtered.z    = gController.tunning_nominal_Y.thrust_filtered[2];
+      uav_state_msg->thrust_filtered.z    = gController.tunning_nominal_Y.thrust_filtered[2];  */
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);

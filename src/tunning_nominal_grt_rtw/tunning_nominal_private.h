@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1423
+ * Model version              : 1.1430
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul 12 19:14:16 2018
+ * C++ source code generated on : Thu Jul 12 19:31:02 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -22,7 +22,6 @@
 #define RTW_HEADER_tunning_nominal_private_h_
 #include "rtwtypes.h"
 #include "multiword_types.h"
-#include "tunning_nominal.h"
 
 /* Private macros used by the generated code to access rtModel */
 #ifndef rtmIsMajorTimeStep
@@ -40,9 +39,6 @@
 #ifndef rtmSetTPtr
 # define rtmSetTPtr(rtm, val)          ((rtm)->Timing.t = (val))
 #endif
-
-extern void tunning_nominal_MATLABFunction1(const real_T rtu_u[6], const real_T
-  rtu_y[3], B_MATLABFunction1_tunning_nom_T *localB);
 
 /* private model entry point functions */
 extern void tunning_nominal_derivatives();
