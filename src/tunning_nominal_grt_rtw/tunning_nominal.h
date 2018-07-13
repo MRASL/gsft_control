@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1431
+ * Model version              : 1.1433
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul 12 19:39:18 2018
+ * C++ source code generated on : Thu Jul 12 20:42:08 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -156,6 +156,7 @@ typedef struct {
   real_T Sum3_h;                       /* '<S10>/Sum3' */
   real_T Product2[6];                  /* '<S59>/Product2' */
   real_T Product3[6];                  /* '<S58>/Product3' */
+  real_T gamma[3];                     /* '<S2>/MATLAB Function1' */
 } B_tunning_nominal_T;
 
 /* Block states (auto storage) for system '<Root>' */
@@ -173,6 +174,7 @@ typedef struct {
   real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
   real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
+  real_T Filter_CSTATE[3];             /* '<Root>/Filter' */
 } X_tunning_nominal_T;
 
 /* State derivatives (auto storage) */
@@ -181,6 +183,7 @@ typedef struct {
   real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
   real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
+  real_T Filter_CSTATE[3];             /* '<Root>/Filter' */
 } XDot_tunning_nominal_T;
 
 /* State disabled  */
@@ -189,6 +192,7 @@ typedef struct {
   boolean_T Integrator1_CSTATE_d;      /* '<S6>/Integrator1' */
   boolean_T Integrator_CSTATE;         /* '<S6>/Integrator' */
   boolean_T Integrator1_CSTATE_j;      /* '<S9>/Integrator1' */
+  boolean_T Filter_CSTATE[3];          /* '<Root>/Filter' */
 } XDis_tunning_nominal_T;
 
 #ifndef ODE4_INTG
@@ -272,8 +276,8 @@ struct tag_RTM_tunning_nominal_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T blkStateChange;
-  real_T odeY[4];
-  real_T odeF[4][4];
+  real_T odeY[7];
+  real_T odeF[4][7];
   ODE4_IntgData intgData;
 
   /*

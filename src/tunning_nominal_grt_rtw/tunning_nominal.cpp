@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1431
+ * Model version              : 1.1433
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jul 12 19:39:18 2018
+ * C++ source code generated on : Thu Jul 12 20:42:08 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -40,7 +40,7 @@ void tunning_nominalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo
   real_T *f3 = id->f[3];
   real_T temp;
   int_T i;
-  int_T nXc = 4;
+  int_T nXc = 7;
   rtsiSetSimTimeStep(si,MINOR_TIME_STEP);
 
   /* Save the state values at time t in y, we'll use x as ynew. */
@@ -125,9 +125,9 @@ void tunning_nominalModelClass::step()
     real_T rtb_d_y;
     real_T rtb_uNm_p;
     real_T rtb_LOE_out[6];
+    real_T rtb_Filter[3];
     real_T rtb_Sum1_l[3];
     real_T rtb_Clock;
-    real_T rtb_Sum3_i[3];
     int32_T i;
     real_T rtb_LOE_out_0[3];
     real_T rtb_LOE_out_1[3];
@@ -641,6 +641,13 @@ void tunning_nominalModelClass::step()
     }
 
     /* End of Outport: '<Root>/LOE_true' */
+
+    /* Outport: '<Root>/LOE13_estimated' incorporates:
+     *  StateSpace: '<Root>/Filter'
+     */
+    tunning_nominal_Y.LOE13_estimated[0] = tunning_nominal_X.Filter_CSTATE[0];
+    tunning_nominal_Y.LOE13_estimated[1] = tunning_nominal_X.Filter_CSTATE[1];
+    tunning_nominal_Y.LOE13_estimated[2] = tunning_nominal_X.Filter_CSTATE[2];
     if (rtmIsMajorTimeStep((&tunning_nominal_M))) {
       /* Delay: '<S3>/MemoryX' */
       if (tunning_nominal_DW.icLoad != 0) {
@@ -671,7 +678,7 @@ void tunning_nominalModelClass::step()
             tunning_nominal_DW.MemoryX_DSTATE[i_0];
         }
 
-        rtb_Sum1_l[i] = tunning_nominal_U.X[9 + i] - rtb_ff_idx_1;
+        rtb_Filter[i] = tunning_nominal_U.X[9 + i] - rtb_ff_idx_1;
       }
 
       /* End of Sum: '<S59>/Add1' */
@@ -681,11 +688,11 @@ void tunning_nominalModelClass::step()
          */
         tunning_nominal_B.Product2[i] = 0.0;
         tunning_nominal_B.Product2[i] +=
-          tunning_nominal_ConstP.KalmanGainM_Value[i] * rtb_Sum1_l[0];
+          tunning_nominal_ConstP.KalmanGainM_Value[i] * rtb_Filter[0];
         tunning_nominal_B.Product2[i] +=
-          tunning_nominal_ConstP.KalmanGainM_Value[i + 6] * rtb_Sum1_l[1];
+          tunning_nominal_ConstP.KalmanGainM_Value[i + 6] * rtb_Filter[1];
         tunning_nominal_B.Product2[i] +=
-          tunning_nominal_ConstP.KalmanGainM_Value[i + 12] * rtb_Sum1_l[2];
+          tunning_nominal_ConstP.KalmanGainM_Value[i + 12] * rtb_Filter[2];
 
         /* Sum: '<S38>/Add' incorporates:
          *  Delay: '<S3>/MemoryX'
@@ -732,7 +739,7 @@ void tunning_nominalModelClass::step()
        *  Sum: '<S11>/Sum1'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Sum3_i[i] = (((tunning_nominal_ConstP.Constant1_Value[i + 3] *
+        rtb_Filter[i] = (((tunning_nominal_ConstP.Constant1_Value[i + 3] *
                            rtb_LOE_out[4] +
                            tunning_nominal_ConstP.Constant1_Value[i] *
                            rtb_LOE_out[3]) +
@@ -744,7 +751,9 @@ void tunning_nominalModelClass::step()
 
       /* End of Sum: '<S2>/Sum3' */
 
-      /* MATLAB Function: '<S2>/MATLAB Function1' */
+      /* MATLAB Function: '<S2>/MATLAB Function1' incorporates:
+       *  Memory: '<S2>/Memory'
+       */
       /* MATLAB Function 'FDD_Kalman/MATLAB Function1': '<S12>:1' */
       /* '<S12>:1:2' arm = 0.215; */
       /* '<S12>:1:2' factor = 0.0365; */
@@ -755,35 +764,28 @@ void tunning_nominalModelClass::step()
       /* '<S12>:1:9'         u(2) - u(5) ; */
       /* '<S12>:1:10'         u(3) - u(6) ]; */
       /* '<S12>:1:11' Residu = diff - M\y; */
-      rtb_Sum1_l[1] = rtb_Sum3_i[0] - rtb_Sum3_i[1] * -0.57735026918962584;
-      rtb_Sum1_l[2] = (rtb_Sum3_i[2] - rtb_Sum3_i[1] * 0.19603055651554735) -
+      rtb_Sum1_l[1] = rtb_Filter[0] - rtb_Filter[1] * -0.57735026918962584;
+      rtb_Sum1_l[2] = (rtb_Filter[2] - rtb_Filter[1] * 0.19603055651554735) -
         rtb_Sum1_l[1] * 0.16976744186046511;
       rtb_Sum1_l[2] /= -0.10949999999999999;
-      rtb_Sum1_l[0] = rtb_Sum3_i[1] - rtb_Sum1_l[2] * 0.18619546181365429;
+      rtb_Sum1_l[0] = rtb_Filter[1] - rtb_Sum1_l[2] * 0.18619546181365429;
       rtb_Sum1_l[1] -= rtb_Sum1_l[2] * 0.215;
       rtb_Sum1_l[1] /= 0.215;
       rtb_Sum1_l[0] -= rtb_Sum1_l[1] * 0.0;
       rtb_Sum1_l[0] /= -0.18619546181365429;
 
-      /* Outport: '<Root>/LOE13_estimated' incorporates:
-       *  MATLAB Function: '<S2>/MATLAB Function1'
-       *  Memory: '<S2>/Memory'
-       */
       /*  Residu_1_4 */
       /* '<S12>:1:14' gamma    = [Residu(1)/u(1) */
       /* '<S12>:1:15'             Residu(2)/u(2) */
       /* '<S12>:1:16'             Residu(3)/u(3)]; */
-      tunning_nominal_Y.LOE13_estimated[0] =
-        ((tunning_nominal_DW.Memory_PreviousInput[0] -
-          tunning_nominal_DW.Memory_PreviousInput[3]) - rtb_Sum1_l[0]) /
+      tunning_nominal_B.gamma[0] = ((tunning_nominal_DW.Memory_PreviousInput[0]
+        - tunning_nominal_DW.Memory_PreviousInput[3]) - rtb_Sum1_l[0]) /
         tunning_nominal_DW.Memory_PreviousInput[0];
-      tunning_nominal_Y.LOE13_estimated[1] =
-        ((tunning_nominal_DW.Memory_PreviousInput[1] -
-          tunning_nominal_DW.Memory_PreviousInput[4]) - rtb_Sum1_l[1]) /
+      tunning_nominal_B.gamma[1] = ((tunning_nominal_DW.Memory_PreviousInput[1]
+        - tunning_nominal_DW.Memory_PreviousInput[4]) - rtb_Sum1_l[1]) /
         tunning_nominal_DW.Memory_PreviousInput[1];
-      tunning_nominal_Y.LOE13_estimated[2] =
-        ((tunning_nominal_DW.Memory_PreviousInput[2] -
-          tunning_nominal_DW.Memory_PreviousInput[5]) - rtb_Sum1_l[2]) /
+      tunning_nominal_B.gamma[2] = ((tunning_nominal_DW.Memory_PreviousInput[2]
+        - tunning_nominal_DW.Memory_PreviousInput[5]) - rtb_Sum1_l[2]) /
         tunning_nominal_DW.Memory_PreviousInput[2];
 
       /* Outputs for Enabled SubSystem: '<S33>/MeasurementUpdate' incorporates:
@@ -801,9 +803,9 @@ void tunning_nominalModelClass::step()
            *  Delay: '<S3>/MemoryX'
            *  Sum: '<S58>/Add1'
            */
-          rtb_Sum1_l[i] = 0.0;
+          rtb_Filter[i] = 0.0;
           for (i_0 = 0; i_0 < 6; i_0++) {
-            rtb_Sum1_l[i] += tunning_nominal_ConstP.C_Value[3 * i_0 + i] *
+            rtb_Filter[i] += tunning_nominal_ConstP.C_Value[3 * i_0 + i] *
               tunning_nominal_DW.MemoryX_DSTATE[i_0];
           }
 
@@ -814,7 +816,7 @@ void tunning_nominalModelClass::step()
            *  Product: '<S58>/Product3'
            *  Sum: '<S58>/Add1'
            */
-          rtb_LOE_out_0[i] = tunning_nominal_U.X[9 + i] - rtb_Sum1_l[i];
+          rtb_Sum1_l[i] = tunning_nominal_U.X[9 + i] - rtb_Filter[i];
         }
 
         /* Product: '<S58>/Product3' incorporates:
@@ -823,11 +825,11 @@ void tunning_nominalModelClass::step()
         for (i = 0; i < 6; i++) {
           tunning_nominal_B.Product3[i] = 0.0;
           tunning_nominal_B.Product3[i] +=
-            tunning_nominal_ConstP.KalmanGainL_Value[i] * rtb_LOE_out_0[0];
+            tunning_nominal_ConstP.KalmanGainL_Value[i] * rtb_Sum1_l[0];
           tunning_nominal_B.Product3[i] +=
-            tunning_nominal_ConstP.KalmanGainL_Value[i + 6] * rtb_LOE_out_0[1];
+            tunning_nominal_ConstP.KalmanGainL_Value[i + 6] * rtb_Sum1_l[1];
           tunning_nominal_B.Product3[i] +=
-            tunning_nominal_ConstP.KalmanGainL_Value[i + 12] * rtb_LOE_out_0[2];
+            tunning_nominal_ConstP.KalmanGainL_Value[i + 12] * rtb_Sum1_l[2];
         }
       }
 
@@ -922,12 +924,13 @@ void tunning_nominalModelClass::step()
       /* Update for Delay: '<S3>/MemoryX' */
       tunning_nominal_DW.icLoad = 0U;
       for (i = 0; i < 6; i++) {
+        tunning_nominal_DW.MemoryX_DSTATE[i] = rtb_Add[i];
+
         /* Update for Memory: '<S2>/Memory' */
         tunning_nominal_DW.Memory_PreviousInput[i] = tunning_nominal_B.u[i];
-
-        /* Update for Delay: '<S3>/MemoryX' */
-        tunning_nominal_DW.MemoryX_DSTATE[i] = rtb_Add[i];
       }
+
+      /* End of Update for Delay: '<S3>/MemoryX' */
     }
   }                                    /* end MajorTimeStep */
 
@@ -985,6 +988,17 @@ void tunning_nominalModelClass::tunning_nominal_derivatives()
 
   /* Derivatives for Integrator: '<S9>/Integrator1' */
   _rtXdot->Integrator1_CSTATE_j = tunning_nominal_B.Sum3;
+
+  /* Derivatives for StateSpace: '<Root>/Filter' */
+  _rtXdot->Filter_CSTATE[0] = 0.0;
+  _rtXdot->Filter_CSTATE[1] = 0.0;
+  _rtXdot->Filter_CSTATE[2] = 0.0;
+  _rtXdot->Filter_CSTATE[0] += -100.0 * tunning_nominal_X.Filter_CSTATE[0];
+  _rtXdot->Filter_CSTATE[1] += -100.0 * tunning_nominal_X.Filter_CSTATE[1];
+  _rtXdot->Filter_CSTATE[2] += -100.0 * tunning_nominal_X.Filter_CSTATE[2];
+  _rtXdot->Filter_CSTATE[0] += 100.0 * tunning_nominal_B.gamma[0];
+  _rtXdot->Filter_CSTATE[1] += 100.0 * tunning_nominal_B.gamma[1];
+  _rtXdot->Filter_CSTATE[2] += 100.0 * tunning_nominal_B.gamma[2];
 }
 
 /* Model initialize function */
@@ -1069,6 +1083,11 @@ void tunning_nominalModelClass::initialize()
 
     /* InitializeConditions for Integrator: '<S9>/Integrator1' */
     tunning_nominal_X.Integrator1_CSTATE_j = 0.0;
+
+    /* InitializeConditions for StateSpace: '<Root>/Filter' */
+    tunning_nominal_X.Filter_CSTATE[0] = 0.0;
+    tunning_nominal_X.Filter_CSTATE[1] = 0.0;
+    tunning_nominal_X.Filter_CSTATE[2] = 0.0;
 
     /* InitializeConditions for Delay: '<S3>/MemoryX' */
     tunning_nominal_DW.icLoad = 1U;
