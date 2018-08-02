@@ -1,0 +1,7 @@
+<launch>
+	<node pkg="gsft_control" type="tunning_nominal_node" name="tunning_nominal" output="screen">
+		<!-- <rosparam command="load" file="$(find gsft_control)/cfg/firefly.yaml" /> -->
+		<remap from="odometry" to="/msf_core/odometry" />
+		<remap from="command/motor_rpm" to="/fcu/command/direct_motor" />
+	</node>
+</launch>
