@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1444
+ * Model version              : 1.1445
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Aug  2 11:07:56 2018
+ * C++ source code generated on : Mon Aug  6 16:36:07 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -951,9 +951,9 @@ void tunning_nominalModelClass::step()
       (&(&tunning_nominal_M)->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.001s, 0.0s] */
+      /* Update absolute timer for sample time: [0.005s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.001, which is the step size
+       * been executed. The resolution of this integer timer is 0.005, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -1032,7 +1032,7 @@ void tunning_nominalModelClass::initialize()
                     &(&tunning_nominal_M)->intgData);
   rtsiSetSolverName(&(&tunning_nominal_M)->solverInfo,"ode4");
   rtmSetTPtr(getRTM(), &(&tunning_nominal_M)->Timing.tArray[0]);
-  (&tunning_nominal_M)->Timing.stepSize0 = 0.001;
+  (&tunning_nominal_M)->Timing.stepSize0 = 0.005;
 
   /* block I/O */
   (void) memset(((void *) &tunning_nominal_B), 0,
