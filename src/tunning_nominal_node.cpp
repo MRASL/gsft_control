@@ -233,7 +233,7 @@ int main(int argc, char** argv) {
   // ROS_INFO("Param: run frequency = %d",run_freq);
   //ros::Rate r(run_freq);
 
-  ros::Rate r(200);
+  ros::Rate r(1000);
 
   gInit_flag        = false;
   gLanding_flag     = false;
