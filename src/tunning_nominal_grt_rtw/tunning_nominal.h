@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1446
+ * Model version              : 1.1448
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Aug  6 16:55:40 2018
+ * C++ source code generated on : Tue Aug  7 10:41:21 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,15 +149,10 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T Sum2;                         /* '<S6>/Sum2' */
-  real_T Sum3;                         /* '<S6>/Sum3' */
-  real_T T_outer[3];                   /* '<Root>/T_outer' */
-  real_T Fcn1;                         /* '<Root>/Fcn1' */
-  real_T Fcn;                          /* '<Root>/Fcn' */
   real_T u[6];                         /* '<Root>/                  ' */
   real_T Sum1;                         /* '<S6>/Sum1' */
   real_T Sum4;                         /* '<S6>/Sum4' */
-  real_T Sum3_n;                       /* '<S11>/Sum3' */
+  real_T Sum3;                         /* '<S11>/Sum3' */
   real_T Sum3_h;                       /* '<S12>/Sum3' */
   real_T Product2[6];                  /* '<S61>/Product2' */
   real_T Product3[6];                  /* '<S60>/Product3' */
@@ -304,14 +299,10 @@ struct tag_RTM_tunning_nominal_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
-    struct {
-      uint8_T TID[3];
-    } TaskCounters;
-
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[3];
+    time_T tArray[2];
   } Timing;
 };
 
