@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1453
+ * Model version              : 1.1454
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Aug  7 12:28:09 2018
+ * C++ source code generated on : Tue Aug  7 17:22:31 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,16 +149,7 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T d_z;                          /* '<S4>/Sum5' */
-  real_T d_z_k;                        /* '<Root>/T_outer  ' */
-  real_T vz;                           /* '<Root>/T_outer  ' */
-  real_T d_x;                          /* '<S4>/Sum1' */
-  real_T d_x_j;                        /* '<Root>/T_outer  ' */
-  real_T vx;                           /* '<Root>/T_outer  ' */
   real_T Sum2;                         /* '<S6>/Sum2' */
-  real_T d_y;                          /* '<S4>/Sum4' */
-  real_T d_y_l;                        /* '<Root>/T_outer  ' */
-  real_T vy;                           /* '<Root>/T_outer  ' */
   real_T Sum3;                         /* '<S6>/Sum3' */
   real_T T_outer[3];                   /* '<Root>/T_outer' */
   real_T Fcn1;                         /* '<Root>/Fcn1' */
