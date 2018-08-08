@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1455
+ * Model version              : 1.1458
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Aug  7 17:46:46 2018
+ * C++ source code generated on : Wed Aug  8 13:44:43 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -154,15 +154,13 @@ typedef struct {
   real_T T_outer[3];                   /* '<Root>/T_outer' */
   real_T Fcn1;                         /* '<Root>/Fcn1' */
   real_T Fcn;                          /* '<Root>/Fcn' */
-  real_T uNm;                          /* '<Root>/1Nm' */
-  real_T T_outer1;                     /* '<Root>/T_outer1' */
   real_T u[6];                         /* '<Root>/                  ' */
   real_T Sum1;                         /* '<S6>/Sum1' */
   real_T Sum4;                         /* '<S6>/Sum4' */
-  real_T Sum3_n;                       /* '<S11>/Sum3' */
-  real_T Sum3_h;                       /* '<S12>/Sum3' */
-  real_T Product2[6];                  /* '<S61>/Product2' */
-  real_T Product3[6];                  /* '<S60>/Product3' */
+  real_T Sum3_n;                       /* '<S9>/Sum3' */
+  real_T Sum3_h;                       /* '<S10>/Sum3' */
+  real_T Product2[6];                  /* '<S59>/Product2' */
+  real_T Product3[6];                  /* '<S58>/Product3' */
 } B_tunning_nominal_T;
 
 /* Block states (auto storage) for system '<Root>' */
@@ -170,32 +168,32 @@ typedef struct {
   real_T MemoryX_DSTATE[6];            /* '<S3>/MemoryX' */
   real_T Memory_PreviousInput[6];      /* '<S2>/Memory' */
   uint8_T icLoad;                      /* '<S3>/MemoryX' */
-  boolean_T MeasurementUpdate_MODE;    /* '<S35>/MeasurementUpdate' */
-  boolean_T EnabledSubsystem_MODE;     /* '<S40>/Enabled Subsystem' */
+  boolean_T MeasurementUpdate_MODE;    /* '<S33>/MeasurementUpdate' */
+  boolean_T EnabledSubsystem_MODE;     /* '<S38>/Enabled Subsystem' */
 } DW_tunning_nominal_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S12>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S11>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
 } X_tunning_nominal_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S12>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S10>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
-  real_T Integrator1_CSTATE_j;         /* '<S11>/Integrator1' */
+  real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
 } XDot_tunning_nominal_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S12>/Integrator1' */
+  boolean_T Integrator1_CSTATE;        /* '<S10>/Integrator1' */
   boolean_T Integrator1_CSTATE_d;      /* '<S6>/Integrator1' */
   boolean_T Integrator_CSTATE;         /* '<S6>/Integrator' */
-  boolean_T Integrator1_CSTATE_j;      /* '<S11>/Integrator1' */
+  boolean_T Integrator1_CSTATE_j;      /* '<S9>/Integrator1' */
 } XDis_tunning_nominal_T;
 
 #ifndef ODE4_INTG
@@ -227,7 +225,7 @@ typedef struct {
   real_T Constant1_Value[9];
 
   /* Expression: pInitialization.M
-   * Referenced by: '<S17>/KalmanGainM'
+   * Referenced by: '<S15>/KalmanGainM'
    */
   real_T KalmanGainM_Value[18];
 
@@ -242,7 +240,7 @@ typedef struct {
   real_T A_Value[36];
 
   /* Expression: pInitialization.L
-   * Referenced by: '<S17>/KalmanGainL'
+   * Referenced by: '<S15>/KalmanGainL'
    */
   real_T KalmanGainL_Value[18];
 } ConstP_tunning_nominal_T;
@@ -381,20 +379,24 @@ class tunning_nominalModelClass {
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<S17>/ConstantP' : Unused code path elimination
- * Block '<S17>/CovarianceZ' : Unused code path elimination
+ * Block '<S15>/ConstantP' : Unused code path elimination
+ * Block '<S15>/CovarianceZ' : Unused code path elimination
+ * Block '<S54>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S55>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S56>/Conversion' : Unused code path elimination
  * Block '<S56>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S57>/Conversion' : Unused code path elimination
  * Block '<S57>/Data Type Duplicate' : Unused code path elimination
- * Block '<S58>/Conversion' : Unused code path elimination
- * Block '<S58>/Data Type Duplicate' : Unused code path elimination
- * Block '<S59>/Conversion' : Unused code path elimination
- * Block '<S59>/Data Type Duplicate' : Unused code path elimination
- * Block '<S18>/Add1' : Unused code path elimination
- * Block '<S18>/Product' : Unused code path elimination
- * Block '<S18>/Product1' : Unused code path elimination
+ * Block '<S16>/Add1' : Unused code path elimination
+ * Block '<S16>/Product' : Unused code path elimination
+ * Block '<S16>/Product1' : Unused code path elimination
+ * Block '<S17>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S18>/Data Type Duplicate' : Unused code path elimination
  * Block '<S19>/Data Type Duplicate' : Unused code path elimination
  * Block '<S20>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S21>/Conversion' : Unused code path elimination
  * Block '<S21>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S22>/Conversion' : Unused code path elimination
  * Block '<S22>/Data Type Duplicate' : Unused code path elimination
  * Block '<S23>/Conversion' : Unused code path elimination
  * Block '<S23>/Data Type Duplicate' : Unused code path elimination
@@ -408,13 +410,9 @@ class tunning_nominalModelClass {
  * Block '<S27>/Data Type Duplicate' : Unused code path elimination
  * Block '<S28>/Conversion' : Unused code path elimination
  * Block '<S28>/Data Type Duplicate' : Unused code path elimination
- * Block '<S29>/Conversion' : Unused code path elimination
  * Block '<S29>/Data Type Duplicate' : Unused code path elimination
- * Block '<S30>/Conversion' : Unused code path elimination
  * Block '<S30>/Data Type Duplicate' : Unused code path elimination
  * Block '<S31>/Data Type Duplicate' : Unused code path elimination
- * Block '<S32>/Data Type Duplicate' : Unused code path elimination
- * Block '<S33>/Data Type Duplicate' : Unused code path elimination
  * Block '<S3>/G' : Unused code path elimination
  * Block '<S3>/H' : Unused code path elimination
  * Block '<S3>/ManualSwitchPZ' : Unused code path elimination
@@ -422,24 +420,24 @@ class tunning_nominalModelClass {
  * Block '<S3>/P0' : Unused code path elimination
  * Block '<S3>/Q' : Unused code path elimination
  * Block '<S3>/R' : Unused code path elimination
- * Block '<S36>/Constant' : Unused code path elimination
+ * Block '<S34>/Constant' : Unused code path elimination
  * Block '<S3>/Reset' : Unused code path elimination
  * Block '<S3>/Reshapeyhat' : Unused code path elimination
- * Block '<S55>/CheckSignalProperties' : Unused code path elimination
+ * Block '<S53>/CheckSignalProperties' : Unused code path elimination
  * Block '<Root>/                          ' : Eliminated since input and output rates are identical
  * Block '<Root>/                             ' : Eliminated since input and output rates are identical
  * Block '<Root>/                                     ' : Eliminated since input and output rates are identical
- * Block '<S56>/Conversion' : Eliminate redundant data type conversion
- * Block '<S57>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S54>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S55>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S17>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S18>/Conversion' : Eliminate redundant data type conversion
  * Block '<S19>/Conversion' : Eliminate redundant data type conversion
  * Block '<S20>/Conversion' : Eliminate redundant data type conversion
- * Block '<S21>/Conversion' : Eliminate redundant data type conversion
- * Block '<S22>/Conversion' : Eliminate redundant data type conversion
  * Block '<S3>/DataTypeConversionEnable' : Eliminate redundant data type conversion
+ * Block '<S29>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S30>/Conversion' : Eliminate redundant data type conversion
  * Block '<S31>/Conversion' : Eliminate redundant data type conversion
- * Block '<S32>/Conversion' : Eliminate redundant data type conversion
- * Block '<S33>/Conversion' : Eliminate redundant data type conversion
- * Block '<S35>/Reshape' : Reshape block reduction
+ * Block '<S33>/Reshape' : Reshape block reduction
  * Block '<S3>/ReshapeX0' : Reshape block reduction
  * Block '<S3>/Reshapeu' : Reshape block reduction
  * Block '<S3>/Reshapexhat' : Reshape block reduction
@@ -447,10 +445,10 @@ class tunning_nominalModelClass {
  * Block '<Root>/Rate Transition' : Eliminated since input and output rates are identical
  * Block '<S6>/Reshape' : Reshape block reduction
  * Block '<S6>/Reshape1' : Reshape block reduction
+ * Block '<S7>/Reshape' : Reshape block reduction
+ * Block '<S8>/Reshape' : Reshape block reduction
  * Block '<S9>/Reshape' : Reshape block reduction
  * Block '<S10>/Reshape' : Reshape block reduction
- * Block '<S11>/Reshape' : Reshape block reduction
- * Block '<S12>/Reshape' : Reshape block reduction
  */
 
 /*-
@@ -474,63 +472,61 @@ class tunning_nominalModelClass {
  * '<S4>'   : 'tunning_nominal/Test_config_and_data'
  * '<S5>'   : 'tunning_nominal/Thrust2command'
  * '<S6>'   : 'tunning_nominal/XY State Feedback'
- * '<S7>'   : 'tunning_nominal/X_PIDFF_Y_SF'
- * '<S8>'   : 'tunning_nominal/pitch_controller_P_D'
- * '<S9>'   : 'tunning_nominal/pitch_controller_SF'
- * '<S10>'  : 'tunning_nominal/roll_controller_SF'
- * '<S11>'  : 'tunning_nominal/yaw_controller'
- * '<S12>'  : 'tunning_nominal/z_controller'
- * '<S13>'  : 'tunning_nominal/FDD_Kalman/Cross Product'
- * '<S14>'  : 'tunning_nominal/FDD_Kalman/MATLAB Function1'
- * '<S15>'  : 'tunning_nominal/FDD_Kalman/Cross Product/Subsystem'
- * '<S16>'  : 'tunning_nominal/FDD_Kalman/Cross Product/Subsystem2'
- * '<S17>'  : 'tunning_nominal/Kalman Filter/CalculatePL'
- * '<S18>'  : 'tunning_nominal/Kalman Filter/CalculateYhat'
- * '<S19>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionA'
- * '<S20>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionB'
- * '<S21>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionC'
- * '<S22>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionD'
- * '<S23>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionG'
- * '<S24>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionH'
- * '<S25>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionN'
- * '<S26>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionP'
- * '<S27>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionP0'
- * '<S28>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionQ'
- * '<S29>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionR'
- * '<S30>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionReset'
- * '<S31>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionX'
- * '<S32>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionX0'
- * '<S33>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionu'
- * '<S34>'  : 'tunning_nominal/Kalman Filter/MemoryP'
- * '<S35>'  : 'tunning_nominal/Kalman Filter/Observer'
- * '<S36>'  : 'tunning_nominal/Kalman Filter/ReducedQRN'
- * '<S37>'  : 'tunning_nominal/Kalman Filter/ScalarExpansionP0'
- * '<S38>'  : 'tunning_nominal/Kalman Filter/ScalarExpansionQ'
- * '<S39>'  : 'tunning_nominal/Kalman Filter/ScalarExpansionR'
- * '<S40>'  : 'tunning_nominal/Kalman Filter/UseCurrentEstimator'
- * '<S41>'  : 'tunning_nominal/Kalman Filter/checkA'
- * '<S42>'  : 'tunning_nominal/Kalman Filter/checkB'
- * '<S43>'  : 'tunning_nominal/Kalman Filter/checkC'
- * '<S44>'  : 'tunning_nominal/Kalman Filter/checkD'
- * '<S45>'  : 'tunning_nominal/Kalman Filter/checkEnable'
- * '<S46>'  : 'tunning_nominal/Kalman Filter/checkG'
- * '<S47>'  : 'tunning_nominal/Kalman Filter/checkH'
- * '<S48>'  : 'tunning_nominal/Kalman Filter/checkN'
- * '<S49>'  : 'tunning_nominal/Kalman Filter/checkP0'
- * '<S50>'  : 'tunning_nominal/Kalman Filter/checkQ'
- * '<S51>'  : 'tunning_nominal/Kalman Filter/checkR'
- * '<S52>'  : 'tunning_nominal/Kalman Filter/checkReset'
- * '<S53>'  : 'tunning_nominal/Kalman Filter/checkX0'
- * '<S54>'  : 'tunning_nominal/Kalman Filter/checku'
- * '<S55>'  : 'tunning_nominal/Kalman Filter/checky'
- * '<S56>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionL'
- * '<S57>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionM'
- * '<S58>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionP'
- * '<S59>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionZ'
- * '<S60>'  : 'tunning_nominal/Kalman Filter/Observer/MeasurementUpdate'
- * '<S61>'  : 'tunning_nominal/Kalman Filter/UseCurrentEstimator/Enabled Subsystem'
- * '<S62>'  : 'tunning_nominal/Test_config_and_data/FFW'
- * '<S63>'  : 'tunning_nominal/Test_config_and_data/LOE_'
- * '<S64>'  : 'tunning_nominal/Test_config_and_data/MATLAB Function'
+ * '<S7>'   : 'tunning_nominal/pitch_controller_SF'
+ * '<S8>'   : 'tunning_nominal/roll_controller_SF'
+ * '<S9>'   : 'tunning_nominal/yaw_controller'
+ * '<S10>'  : 'tunning_nominal/z_controller'
+ * '<S11>'  : 'tunning_nominal/FDD_Kalman/Cross Product'
+ * '<S12>'  : 'tunning_nominal/FDD_Kalman/MATLAB Function1'
+ * '<S13>'  : 'tunning_nominal/FDD_Kalman/Cross Product/Subsystem'
+ * '<S14>'  : 'tunning_nominal/FDD_Kalman/Cross Product/Subsystem2'
+ * '<S15>'  : 'tunning_nominal/Kalman Filter/CalculatePL'
+ * '<S16>'  : 'tunning_nominal/Kalman Filter/CalculateYhat'
+ * '<S17>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionA'
+ * '<S18>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionB'
+ * '<S19>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionC'
+ * '<S20>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionD'
+ * '<S21>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionG'
+ * '<S22>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionH'
+ * '<S23>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionN'
+ * '<S24>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionP'
+ * '<S25>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionP0'
+ * '<S26>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionQ'
+ * '<S27>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionR'
+ * '<S28>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionReset'
+ * '<S29>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionX'
+ * '<S30>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionX0'
+ * '<S31>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionu'
+ * '<S32>'  : 'tunning_nominal/Kalman Filter/MemoryP'
+ * '<S33>'  : 'tunning_nominal/Kalman Filter/Observer'
+ * '<S34>'  : 'tunning_nominal/Kalman Filter/ReducedQRN'
+ * '<S35>'  : 'tunning_nominal/Kalman Filter/ScalarExpansionP0'
+ * '<S36>'  : 'tunning_nominal/Kalman Filter/ScalarExpansionQ'
+ * '<S37>'  : 'tunning_nominal/Kalman Filter/ScalarExpansionR'
+ * '<S38>'  : 'tunning_nominal/Kalman Filter/UseCurrentEstimator'
+ * '<S39>'  : 'tunning_nominal/Kalman Filter/checkA'
+ * '<S40>'  : 'tunning_nominal/Kalman Filter/checkB'
+ * '<S41>'  : 'tunning_nominal/Kalman Filter/checkC'
+ * '<S42>'  : 'tunning_nominal/Kalman Filter/checkD'
+ * '<S43>'  : 'tunning_nominal/Kalman Filter/checkEnable'
+ * '<S44>'  : 'tunning_nominal/Kalman Filter/checkG'
+ * '<S45>'  : 'tunning_nominal/Kalman Filter/checkH'
+ * '<S46>'  : 'tunning_nominal/Kalman Filter/checkN'
+ * '<S47>'  : 'tunning_nominal/Kalman Filter/checkP0'
+ * '<S48>'  : 'tunning_nominal/Kalman Filter/checkQ'
+ * '<S49>'  : 'tunning_nominal/Kalman Filter/checkR'
+ * '<S50>'  : 'tunning_nominal/Kalman Filter/checkReset'
+ * '<S51>'  : 'tunning_nominal/Kalman Filter/checkX0'
+ * '<S52>'  : 'tunning_nominal/Kalman Filter/checku'
+ * '<S53>'  : 'tunning_nominal/Kalman Filter/checky'
+ * '<S54>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionL'
+ * '<S55>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionM'
+ * '<S56>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionP'
+ * '<S57>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionZ'
+ * '<S58>'  : 'tunning_nominal/Kalman Filter/Observer/MeasurementUpdate'
+ * '<S59>'  : 'tunning_nominal/Kalman Filter/UseCurrentEstimator/Enabled Subsystem'
+ * '<S60>'  : 'tunning_nominal/Test_config_and_data/FFW'
+ * '<S61>'  : 'tunning_nominal/Test_config_and_data/LOE_'
+ * '<S62>'  : 'tunning_nominal/Test_config_and_data/MATLAB Function'
  */
 #endif                                 /* RTW_HEADER_tunning_nominal_h_ */
