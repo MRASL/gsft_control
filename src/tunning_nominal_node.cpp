@@ -100,7 +100,6 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gGain[16] = config.kr;
         gGain[17] = config.kipsi;
 
-        gGain[18] = config.kffx;
 
         ROS_INFO("New controller gains");
         config.new_controller_gains   = false;
@@ -144,7 +143,6 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gGain[16] = config.kr;
         gGain[17] = config.kipsi;
 
-        gGain[18] = config.kffx;
 
         gLOE[0]   = config.LOE_1;
         gLOE[1]   = config.LOE_2;
@@ -233,7 +231,7 @@ int main(int argc, char** argv) {
   // ROS_INFO("Param: run frequency = %d",run_freq);
   //ros::Rate r(run_freq);
 
-  ros::Rate r(200);
+  ros::Rate r(1000);
 
   gInit_flag        = false;
   gLanding_flag     = false;
@@ -355,6 +353,10 @@ int main(int argc, char** argv) {
         }
         actuator_msg->header.stamp =  ros::Time::now();
         motor_velocity_reference_pub_.publish(actuator_msg);
+
+        if (gController.tunning_nominal_Y.ref_out[2] <= 0.25 && gTest_mode > 0){
+          gLanding_flag = true;
+        }
 
     } else { // control_actived = false ( before take-off)
       mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);

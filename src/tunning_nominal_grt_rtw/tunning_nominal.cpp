@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1462
+ * Model version              : 1.1464
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Aug 16 10:07:03 2018
+ * C++ source code generated on : Thu Aug 16 11:15:46 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -35,7 +35,7 @@ static void rate_scheduler(RT_MODEL_tunning_nominal_T *const tunning_nominal_M)
    * counter is reset when it reaches its limit (zero means run).
    */
   (tunning_nominal_M->Timing.TaskCounters.TID[2])++;
-  if ((tunning_nominal_M->Timing.TaskCounters.TID[2]) > 1) {/* Sample time: [0.01s, 0.0s] */
+  if ((tunning_nominal_M->Timing.TaskCounters.TID[2]) > 4) {/* Sample time: [0.005s, 0.0s] */
     tunning_nominal_M->Timing.TaskCounters.TID[2] = 0;
   }
 }
@@ -995,9 +995,9 @@ void tunning_nominalModelClass::step()
       (&(&tunning_nominal_M)->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.005s, 0.0s] */
+      /* Update absolute timer for sample time: [0.001s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.005, which is the step size
+       * been executed. The resolution of this integer timer is 0.001, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -1078,7 +1078,7 @@ void tunning_nominalModelClass::initialize()
                     &(&tunning_nominal_M)->intgData);
   rtsiSetSolverName(&(&tunning_nominal_M)->solverInfo,"ode4");
   rtmSetTPtr(getRTM(), &(&tunning_nominal_M)->Timing.tArray[0]);
-  (&tunning_nominal_M)->Timing.stepSize0 = 0.005;
+  (&tunning_nominal_M)->Timing.stepSize0 = 0.001;
 
   /* block I/O */
   (void) memset(((void *) &tunning_nominal_B), 0,
