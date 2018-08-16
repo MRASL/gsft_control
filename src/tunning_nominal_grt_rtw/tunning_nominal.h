@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1472
+ * Model version              : 1.1473
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Aug 16 14:05:13 2018
+ * C++ source code generated on : Thu Aug 16 14:41:37 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -380,6 +380,7 @@ class tunning_nominalModelClass {
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
+ * Block '<Root>/Gain' : Unused code path elimination
  * Block '<S15>/ConstantP' : Unused code path elimination
  * Block '<S15>/CovarianceZ' : Unused code path elimination
  * Block '<S54>/Data Type Duplicate' : Unused code path elimination
