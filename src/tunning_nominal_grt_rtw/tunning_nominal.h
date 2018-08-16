@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1461
+ * Model version              : 1.1462
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Aug 15 17:20:38 2018
+ * C++ source code generated on : Thu Aug 16 10:07:03 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,41 +149,18 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T kiz;                          /* '<Root>/T_outer2' */
-  real_T kz;                           /* '<Root>/T_outer2' */
-  real_T kvz;                          /* '<Root>/T_outer2' */
-  real_T d_z;                          /* '<S4>/Sum5' */
-  real_T d_z_o;                        /* '<Root>/T_outer1' */
-  real_T vz;                           /* '<Root>/T_outer1' */
-  real_T Product1;                     /* '<S10>/Product1' */
-  real_T kix;                          /* '<Root>/T_outer2' */
-  real_T kx;                           /* '<Root>/T_outer2' */
-  real_T kvx;                          /* '<Root>/T_outer2' */
-  real_T d_x;                          /* '<S4>/Sum1' */
-  real_T d_x_c;                        /* '<Root>/T_outer1' */
-  real_T vx;                           /* '<Root>/T_outer1' */
-  real_T Product3;                     /* '<S6>/Product3' */
   real_T Sum2;                         /* '<S6>/Sum2' */
-  real_T kiy;                          /* '<Root>/T_outer2' */
-  real_T ky;                           /* '<Root>/T_outer2' */
-  real_T kvy;                          /* '<Root>/T_outer2' */
-  real_T d_y;                          /* '<S4>/Sum4' */
-  real_T d_y_f;                        /* '<Root>/T_outer1' */
-  real_T vy;                           /* '<Root>/T_outer1' */
-  real_T Product1_g;                   /* '<S6>/Product1' */
   real_T Sum3;                         /* '<S6>/Sum3' */
   real_T T_outer[3];                   /* '<Root>/T_outer' */
   real_T Fcn1;                         /* '<Root>/Fcn1' */
   real_T Fcn;                          /* '<Root>/Fcn' */
   real_T u[6];                         /* '<Root>/                  ' */
-  real_T Sum[4];                       /* '<S4>/Sum' */
-  real_T T_outer3[4];                  /* '<Root>/T_outer3' */
   real_T Sum1;                         /* '<S6>/Sum1' */
   real_T Sum4;                         /* '<S6>/Sum4' */
   real_T Sum3_n;                       /* '<S9>/Sum3' */
   real_T Sum3_h;                       /* '<S10>/Sum3' */
   real_T Product2[6];                  /* '<S59>/Product2' */
-  real_T Product3_g[6];                /* '<S58>/Product3' */
+  real_T Product3[6];                  /* '<S58>/Product3' */
 } B_tunning_nominal_T;
 
 /* Block states (auto storage) for system '<Root>' */
