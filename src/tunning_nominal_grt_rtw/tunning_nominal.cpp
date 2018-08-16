@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1496
+ * Model version              : 1.1498
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Aug 16 19:08:48 2018
+ * C++ source code generated on : Thu Aug 16 19:47:29 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -226,10 +226,10 @@ void tunning_nominalModelClass::step()
     /* '<S7>:1:3' phi_d = asin(-ydd/zbody_d); */
     rtb_Gain1 = std::asin(-rtb_Gain1 / zbody_d);
 
-    /* '<S7>:1:4' theta_d = asin(xdd/(cos(phi_d)+zgdd)); */
+    /* '<S7>:1:4' theta_d = asin(xdd/(cos(phi_d)*zgdd)); */
     /* '<S7>:1:5' att = [zbody_d;theta_d;phi_d]; */
     tunning_nominal_B.att[0] = zbody_d;
-    tunning_nominal_B.att[1] = std::asin(rtb_Gain_a / (std::cos(rtb_Gain1) +
+    tunning_nominal_B.att[1] = std::asin(rtb_Gain_a / (std::cos(rtb_Gain1) *
       rtb_Sum1_g));
     tunning_nominal_B.att[2] = rtb_Gain1;
 
