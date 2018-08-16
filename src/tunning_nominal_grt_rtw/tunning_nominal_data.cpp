@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1478
+ * Model version              : 1.1485
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Aug 16 16:26:09 2018
+ * C++ source code generated on : Thu Aug 16 17:39:51 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -46,7 +46,7 @@ const ConstP_tunning_nominal_T tunning_nominal_ConstP = {
   { 0.0347563, 0.0, 0.0, 0.0, 0.0458929, 0.0, 0.0, 0.0, 0.0977 },
 
   /* Expression: pInitialization.M
-   * Referenced by: '<S15>/KalmanGainM'
+   * Referenced by: '<S16>/KalmanGainM'
    */
   { 0.0013828503617181014, 0.0, 0.0, 0.000956799230966391, 0.0, 0.0, 0.0,
     0.0030895047538060691, 0.0, 0.0, 0.004779906439668552, 0.0, 0.0, 0.0,
@@ -66,7 +66,7 @@ const ConstP_tunning_nominal_T tunning_nominal_ConstP = {
     0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 1.0 },
 
   /* Expression: pInitialization.L
-   * Referenced by: '<S15>/KalmanGainL'
+   * Referenced by: '<S16>/KalmanGainL'
    */
   { 0.0013838071609490678, 0.0, 0.0, 0.000956799230966391, 0.0, 0.0, 0.0,
     0.0030942846602457375, 0.0, 0.0, 0.004779906439668552, 0.0, 0.0, 0.0,
