@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1473
+ * Model version              : 1.1478
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Aug 16 14:41:37 2018
+ * C++ source code generated on : Thu Aug 16 16:26:09 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -153,8 +153,8 @@ typedef struct {
   real_T Sum2;                         /* '<S6>/Sum2' */
   real_T Sum3;                         /* '<S6>/Sum3' */
   real_T T_outer[3];                   /* '<Root>/T_outer' */
-  real_T Fcn1;                         /* '<Root>/Fcn1' */
-  real_T Fcn;                          /* '<Root>/Fcn' */
+  real_T Gain1;                        /* '<Root>/Gain1' */
+  real_T Gain2;                        /* '<Root>/Gain2' */
   real_T u[6];                         /* '<Root>/                  ' */
   real_T Sum1;                         /* '<S6>/Sum1' */
   real_T Sum4;                         /* '<S6>/Sum4' */
@@ -380,7 +380,6 @@ class tunning_nominalModelClass {
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<Root>/Gain' : Unused code path elimination
  * Block '<S15>/ConstantP' : Unused code path elimination
  * Block '<S15>/CovarianceZ' : Unused code path elimination
  * Block '<S54>/Data Type Duplicate' : Unused code path elimination
