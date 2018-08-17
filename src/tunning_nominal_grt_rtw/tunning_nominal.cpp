@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1483
+ * Model version              : 1.1480
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Aug 17 12:22:18 2018
+ * C++ source code generated on : Fri Aug 17 14:23:53 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -155,6 +155,16 @@ void tunning_nominalModelClass::step()
     real_T rtb_ref_idx_1;
     real_T rtb_ref_idx_0;
     real_T u0;
+    if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
+        (&tunning_nominal_M)->Timing.TaskCounters.TID[1] == 0) {
+      /* Product: '<Root>/Product' incorporates:
+       *  Inport: '<Root>/X'
+       *  Trigonometry: '<Root>/Trigonometric Function'
+       *  Trigonometry: '<Root>/Trigonometric Function1'
+       */
+      tunning_nominal_B.Product = std::cos(tunning_nominal_U.X[7]) * std::cos
+        (tunning_nominal_U.X[6]);
+    }
 
     /* Sum: '<S4>/Sum5' incorporates:
      *  Inport: '<Root>/X'
@@ -285,6 +295,7 @@ void tunning_nominalModelClass::step()
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/gain'
      *  Integrator: '<S10>/Integrator1'
+     *  Product: '<Root>/Divide'
      *  Product: '<S10>/Product'
      *  Product: '<S10>/Product1'
      *  SignalConversion: '<S10>/TmpSignal ConversionAtProduct1Inport2'
@@ -295,7 +306,8 @@ void tunning_nominalModelClass::step()
                       tunning_nominal_X.Integrator1_CSTATE -
                       (tunning_nominal_U.gain[6] * rtb_d_z +
                        tunning_nominal_U.gain[7] * tunning_nominal_U.X[5])) *
-                     0.64935064935064934 + 9.81) * 1.54;
+                     0.64935064935064934 + 9.81) * (1.0 /
+      tunning_nominal_B.Product) * 1.54;
 
     /* Saturate: '<Root>/2Nm ' incorporates:
      *  Inport: '<Root>/X'
