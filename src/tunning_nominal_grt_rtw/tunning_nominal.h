@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1499
+ * Model version              : 1.1496
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Aug 22 16:06:30 2018
+ * C++ source code generated on : Wed Aug 22 16:10:37 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -150,6 +150,8 @@
 /* Block signals (auto storage) */
 typedef struct {
   real_T Product;                      /* '<Root>/Product' */
+  real_T Gain1;                        /* '<S6>/Gain1' */
+  real_T Gain;                         /* '<S6>/Gain' */
   real_T T_outer[3];                   /* '<Root>/T_outer' */
   real_T Fcn1;                         /* '<Root>/Fcn1' */
   real_T Fcn;                          /* '<Root>/Fcn' */
@@ -158,7 +160,6 @@ typedef struct {
   real_T Sum4;                         /* '<S6>/Sum4' */
   real_T Sum3;                         /* '<S10>/Sum3' */
   real_T Sum3_h;                       /* '<S11>/Sum3' */
-  real_T att[2];                       /* '<Root>/formule5 ' */
   real_T Product2[6];                  /* '<S60>/Product2' */
   real_T Product3[6];                  /* '<S59>/Product3' */
 } B_tunning_nominal_T;
@@ -175,24 +176,24 @@ typedef struct {
 /* Continuous states (auto storage) */
 typedef struct {
   real_T Integrator1_CSTATE;           /* '<S11>/Integrator1' */
-  real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
+  real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator1_CSTATE_j;         /* '<S10>/Integrator1' */
 } X_tunning_nominal_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
   real_T Integrator1_CSTATE;           /* '<S11>/Integrator1' */
-  real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
+  real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator1_CSTATE_j;         /* '<S10>/Integrator1' */
 } XDot_tunning_nominal_T;
 
 /* State disabled  */
 typedef struct {
   boolean_T Integrator1_CSTATE;        /* '<S11>/Integrator1' */
-  boolean_T Integrator1_CSTATE_d;      /* '<S6>/Integrator1' */
   boolean_T Integrator_CSTATE;         /* '<S6>/Integrator' */
+  boolean_T Integrator1_CSTATE_d;      /* '<S6>/Integrator1' */
   boolean_T Integrator1_CSTATE_j;      /* '<S10>/Integrator1' */
 } XDis_tunning_nominal_T;
 
@@ -472,7 +473,7 @@ class tunning_nominalModelClass {
  * '<S4>'   : 'tunning_nominal/Test_config_and_data'
  * '<S5>'   : 'tunning_nominal/Thrust2command'
  * '<S6>'   : 'tunning_nominal/XY State Feedback'
- * '<S7>'   : 'tunning_nominal/formule5 '
+ * '<S7>'   : 'tunning_nominal/formule4 '
  * '<S8>'   : 'tunning_nominal/pitch_controller_SF'
  * '<S9>'   : 'tunning_nominal/roll_controller_SF'
  * '<S10>'  : 'tunning_nominal/yaw_controller'
