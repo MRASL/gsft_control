@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1486
+ * Model version              : 1.1487
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Aug 27 10:15:25 2018
+ * C++ source code generated on : Mon Aug 27 13:16:21 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -41,23 +41,45 @@ static void rate_scheduler(RT_MODEL_tunning_nominal_T *const tunning_nominal_M)
 }
 
 /*
- * This function updates continuous states using the ODE4 fixed-step
+ * This function updates continuous states using the ODE5 fixed-step
  * solver algorithm
  */
 void tunning_nominalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo
   *si )
 {
+  /* Solver Matrices */
+  static const real_T rt_ODE5_A[6] = {
+    1.0/5.0, 3.0/10.0, 4.0/5.0, 8.0/9.0, 1.0, 1.0
+  };
+
+  static const real_T rt_ODE5_B[6][6] = {
+    { 1.0/5.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+
+    { 3.0/40.0, 9.0/40.0, 0.0, 0.0, 0.0, 0.0 },
+
+    { 44.0/45.0, -56.0/15.0, 32.0/9.0, 0.0, 0.0, 0.0 },
+
+    { 19372.0/6561.0, -25360.0/2187.0, 64448.0/6561.0, -212.0/729.0, 0.0, 0.0 },
+
+    { 9017.0/3168.0, -355.0/33.0, 46732.0/5247.0, 49.0/176.0, -5103.0/18656.0,
+      0.0 },
+
+    { 35.0/384.0, 0.0, 500.0/1113.0, 125.0/192.0, -2187.0/6784.0, 11.0/84.0 }
+  };
+
   time_T t = rtsiGetT(si);
   time_T tnew = rtsiGetSolverStopTime(si);
   time_T h = rtsiGetStepSize(si);
   real_T *x = rtsiGetContStates(si);
-  ODE4_IntgData *id = (ODE4_IntgData *)rtsiGetSolverData(si);
+  ODE5_IntgData *id = (ODE5_IntgData *)rtsiGetSolverData(si);
   real_T *y = id->y;
   real_T *f0 = id->f[0];
   real_T *f1 = id->f[1];
   real_T *f2 = id->f[2];
   real_T *f3 = id->f[3];
-  real_T temp;
+  real_T *f4 = id->f[4];
+  real_T *f5 = id->f[5];
+  real_T hB[6];
   int_T i;
   int_T nXc = 4;
   rtsiSetSimTimeStep(si,MINOR_TIME_STEP);
@@ -71,41 +93,84 @@ void tunning_nominalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo
   rtsiSetdX(si, f0);
   tunning_nominal_derivatives();
 
-  /* f1 = f(t + (h/2), y + (h/2)*f0) */
-  temp = 0.5 * h;
+  /* f(:,2) = feval(odefile, t + hA(1), y + f*hB(:,1), args(:)(*)); */
+  hB[0] = h * rt_ODE5_B[0][0];
   for (i = 0; i < nXc; i++) {
-    x[i] = y[i] + (temp*f0[i]);
+    x[i] = y[i] + (f0[i]*hB[0]);
   }
 
-  rtsiSetT(si, t + temp);
+  rtsiSetT(si, t + h*rt_ODE5_A[0]);
   rtsiSetdX(si, f1);
   this->step();
   tunning_nominal_derivatives();
 
-  /* f2 = f(t + (h/2), y + (h/2)*f1) */
-  for (i = 0; i < nXc; i++) {
-    x[i] = y[i] + (temp*f1[i]);
+  /* f(:,3) = feval(odefile, t + hA(2), y + f*hB(:,2), args(:)(*)); */
+  for (i = 0; i <= 1; i++) {
+    hB[i] = h * rt_ODE5_B[1][i];
   }
 
+  for (i = 0; i < nXc; i++) {
+    x[i] = y[i] + (f0[i]*hB[0] + f1[i]*hB[1]);
+  }
+
+  rtsiSetT(si, t + h*rt_ODE5_A[1]);
   rtsiSetdX(si, f2);
   this->step();
   tunning_nominal_derivatives();
 
-  /* f3 = f(t + h, y + h*f2) */
-  for (i = 0; i < nXc; i++) {
-    x[i] = y[i] + (h*f2[i]);
+  /* f(:,4) = feval(odefile, t + hA(3), y + f*hB(:,3), args(:)(*)); */
+  for (i = 0; i <= 2; i++) {
+    hB[i] = h * rt_ODE5_B[2][i];
   }
 
-  rtsiSetT(si, tnew);
+  for (i = 0; i < nXc; i++) {
+    x[i] = y[i] + (f0[i]*hB[0] + f1[i]*hB[1] + f2[i]*hB[2]);
+  }
+
+  rtsiSetT(si, t + h*rt_ODE5_A[2]);
   rtsiSetdX(si, f3);
   this->step();
   tunning_nominal_derivatives();
 
-  /* tnew = t + h
-     ynew = y + (h/6)*(f0 + 2*f1 + 2*f2 + 2*f3) */
-  temp = h / 6.0;
+  /* f(:,5) = feval(odefile, t + hA(4), y + f*hB(:,4), args(:)(*)); */
+  for (i = 0; i <= 3; i++) {
+    hB[i] = h * rt_ODE5_B[3][i];
+  }
+
   for (i = 0; i < nXc; i++) {
-    x[i] = y[i] + temp*(f0[i] + 2.0*f1[i] + 2.0*f2[i] + f3[i]);
+    x[i] = y[i] + (f0[i]*hB[0] + f1[i]*hB[1] + f2[i]*hB[2] +
+                   f3[i]*hB[3]);
+  }
+
+  rtsiSetT(si, t + h*rt_ODE5_A[3]);
+  rtsiSetdX(si, f4);
+  this->step();
+  tunning_nominal_derivatives();
+
+  /* f(:,6) = feval(odefile, t + hA(5), y + f*hB(:,5), args(:)(*)); */
+  for (i = 0; i <= 4; i++) {
+    hB[i] = h * rt_ODE5_B[4][i];
+  }
+
+  for (i = 0; i < nXc; i++) {
+    x[i] = y[i] + (f0[i]*hB[0] + f1[i]*hB[1] + f2[i]*hB[2] +
+                   f3[i]*hB[3] + f4[i]*hB[4]);
+  }
+
+  rtsiSetT(si, tnew);
+  rtsiSetdX(si, f5);
+  this->step();
+  tunning_nominal_derivatives();
+
+  /* tnew = t + hA(6);
+     ynew = y + f*hB(:,6); */
+  for (i = 0; i <= 5; i++) {
+    hB[i] = h * rt_ODE5_B[5][i];
+  }
+
+  for (i = 0; i < nXc; i++) {
+    x[i] = y[i] + (f0[i]*hB[0] + f1[i]*hB[1] + f2[i]*hB[2] +
+                   f3[i]*hB[3] + f4[i]*hB[4] + f5[i]*hB[5]);
   }
 
   rtsiSetSimTimeStep(si,MAJOR_TIME_STEP);
@@ -1077,10 +1142,12 @@ void tunning_nominalModelClass::initialize()
   (&tunning_nominal_M)->intgData.f[1] = (&tunning_nominal_M)->odeF[1];
   (&tunning_nominal_M)->intgData.f[2] = (&tunning_nominal_M)->odeF[2];
   (&tunning_nominal_M)->intgData.f[3] = (&tunning_nominal_M)->odeF[3];
+  (&tunning_nominal_M)->intgData.f[4] = (&tunning_nominal_M)->odeF[4];
+  (&tunning_nominal_M)->intgData.f[5] = (&tunning_nominal_M)->odeF[5];
   getRTM()->contStates = ((X_tunning_nominal_T *) &tunning_nominal_X);
   rtsiSetSolverData(&(&tunning_nominal_M)->solverInfo, (void *)
                     &(&tunning_nominal_M)->intgData);
-  rtsiSetSolverName(&(&tunning_nominal_M)->solverInfo,"ode4");
+  rtsiSetSolverName(&(&tunning_nominal_M)->solverInfo,"ode5");
   rtmSetTPtr(getRTM(), &(&tunning_nominal_M)->Timing.tArray[0]);
   (&tunning_nominal_M)->Timing.stepSize0 = 0.001;
 
