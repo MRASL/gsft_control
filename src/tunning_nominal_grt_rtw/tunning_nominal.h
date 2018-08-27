@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1487
+ * Model version              : 1.1489
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Aug 27 13:16:21 2018
+ * C++ source code generated on : Mon Aug 27 13:33:59 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -81,14 +81,6 @@
 
 #ifndef rtmSetOdeF
 # define rtmSetOdeF(rtm, val)          ((rtm)->odeF = (val))
-#endif
-
-#ifndef rtmGetOdeY
-# define rtmGetOdeY(rtm)               ((rtm)->odeY)
-#endif
-
-#ifndef rtmSetOdeY
-# define rtmSetOdeY(rtm, val)          ((rtm)->odeY = (val))
 #endif
 
 #ifndef rtmGetPeriodicContStateIndices
@@ -196,14 +188,13 @@ typedef struct {
   boolean_T Integrator1_CSTATE_j;      /* '<S9>/Integrator1' */
 } XDis_tunning_nominal_T;
 
-#ifndef ODE5_INTG
-#define ODE5_INTG
+#ifndef ODE1_INTG
+#define ODE1_INTG
 
-/* ODE5 Integration Data */
+/* ODE1 Integration Data */
 typedef struct {
-  real_T *y;                           /* output */
-  real_T *f[6];                        /* derivatives */
-} ODE5_IntgData;
+  real_T *f[1];                        /* derivatives */
+} ODE1_IntgData;
 
 #endif
 
@@ -277,9 +268,8 @@ struct tag_RTM_tunning_nominal_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T blkStateChange;
-  real_T odeY[4];
-  real_T odeF[6][4];
-  ODE5_IntgData intgData;
+  real_T odeF[1][4];
+  ODE1_IntgData intgData;
 
   /*
    * Sizes:
