@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1490
+ * Model version              : 1.1491
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Aug 28 14:38:29 2018
+ * C++ source code generated on : Tue Aug 28 15:21:44 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -196,14 +196,14 @@ typedef struct {
   boolean_T Integrator1_CSTATE_j;      /* '<S9>/Integrator1' */
 } XDis_tunning_nominal_T;
 
-#ifndef ODE4_INTG
-#define ODE4_INTG
+#ifndef ODE5_INTG
+#define ODE5_INTG
 
-/* ODE4 Integration Data */
+/* ODE5 Integration Data */
 typedef struct {
   real_T *y;                           /* output */
-  real_T *f[4];                        /* derivatives */
-} ODE4_IntgData;
+  real_T *f[6];                        /* derivatives */
+} ODE5_IntgData;
 
 #endif
 
@@ -278,8 +278,8 @@ struct tag_RTM_tunning_nominal_T {
   boolean_T derivCacheNeedsReset;
   boolean_T blkStateChange;
   real_T odeY[4];
-  real_T odeF[4][4];
-  ODE4_IntgData intgData;
+  real_T odeF[6][4];
+  ODE5_IntgData intgData;
 
   /*
    * Sizes:
