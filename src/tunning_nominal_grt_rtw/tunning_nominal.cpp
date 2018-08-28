@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1489
+ * Model version              : 1.1490
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Aug 27 14:35:43 2018
+ * C++ source code generated on : Tue Aug 28 14:38:29 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -41,25 +41,71 @@ static void rate_scheduler(RT_MODEL_tunning_nominal_T *const tunning_nominal_M)
 }
 
 /*
- * This function updates continuous states using the ODE1 fixed-step
+ * This function updates continuous states using the ODE4 fixed-step
  * solver algorithm
  */
 void tunning_nominalModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo
   *si )
 {
+  time_T t = rtsiGetT(si);
   time_T tnew = rtsiGetSolverStopTime(si);
   time_T h = rtsiGetStepSize(si);
   real_T *x = rtsiGetContStates(si);
-  ODE1_IntgData *id = (ODE1_IntgData *)rtsiGetSolverData(si);
+  ODE4_IntgData *id = (ODE4_IntgData *)rtsiGetSolverData(si);
+  real_T *y = id->y;
   real_T *f0 = id->f[0];
+  real_T *f1 = id->f[1];
+  real_T *f2 = id->f[2];
+  real_T *f3 = id->f[3];
+  real_T temp;
   int_T i;
   int_T nXc = 4;
   rtsiSetSimTimeStep(si,MINOR_TIME_STEP);
+
+  /* Save the state values at time t in y, we'll use x as ynew. */
+  (void) memcpy(y, x,
+                (uint_T)nXc*sizeof(real_T));
+
+  /* Assumes that rtsiSetT and ModelOutputs are up-to-date */
+  /* f0 = f(t,y) */
   rtsiSetdX(si, f0);
   tunning_nominal_derivatives();
+
+  /* f1 = f(t + (h/2), y + (h/2)*f0) */
+  temp = 0.5 * h;
+  for (i = 0; i < nXc; i++) {
+    x[i] = y[i] + (temp*f0[i]);
+  }
+
+  rtsiSetT(si, t + temp);
+  rtsiSetdX(si, f1);
+  this->step();
+  tunning_nominal_derivatives();
+
+  /* f2 = f(t + (h/2), y + (h/2)*f1) */
+  for (i = 0; i < nXc; i++) {
+    x[i] = y[i] + (temp*f1[i]);
+  }
+
+  rtsiSetdX(si, f2);
+  this->step();
+  tunning_nominal_derivatives();
+
+  /* f3 = f(t + h, y + h*f2) */
+  for (i = 0; i < nXc; i++) {
+    x[i] = y[i] + (h*f2[i]);
+  }
+
   rtsiSetT(si, tnew);
-  for (i = 0; i < nXc; ++i) {
-    x[i] += h * f0[i];
+  rtsiSetdX(si, f3);
+  this->step();
+  tunning_nominal_derivatives();
+
+  /* tnew = t + h
+     ynew = y + (h/6)*(f0 + 2*f1 + 2*f2 + 2*f3) */
+  temp = h / 6.0;
+  for (i = 0; i < nXc; i++) {
+    x[i] = y[i] + temp*(f0[i] + 2.0*f1[i] + 2.0*f2[i] + f3[i]);
   }
 
   rtsiSetSimTimeStep(si,MAJOR_TIME_STEP);
@@ -1026,11 +1072,15 @@ void tunning_nominalModelClass::initialize()
   }
 
   rtsiSetSimTimeStep(&(&tunning_nominal_M)->solverInfo, MAJOR_TIME_STEP);
+  (&tunning_nominal_M)->intgData.y = (&tunning_nominal_M)->odeY;
   (&tunning_nominal_M)->intgData.f[0] = (&tunning_nominal_M)->odeF[0];
+  (&tunning_nominal_M)->intgData.f[1] = (&tunning_nominal_M)->odeF[1];
+  (&tunning_nominal_M)->intgData.f[2] = (&tunning_nominal_M)->odeF[2];
+  (&tunning_nominal_M)->intgData.f[3] = (&tunning_nominal_M)->odeF[3];
   getRTM()->contStates = ((X_tunning_nominal_T *) &tunning_nominal_X);
   rtsiSetSolverData(&(&tunning_nominal_M)->solverInfo, (void *)
                     &(&tunning_nominal_M)->intgData);
-  rtsiSetSolverName(&(&tunning_nominal_M)->solverInfo,"ode1");
+  rtsiSetSolverName(&(&tunning_nominal_M)->solverInfo,"ode4");
   rtmSetTPtr(getRTM(), &(&tunning_nominal_M)->Timing.tArray[0]);
   (&tunning_nominal_M)->Timing.stepSize0 = 0.001;
 
