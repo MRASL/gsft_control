@@ -7,9 +7,9 @@
  *
  * Code generation for model "tunning_nominal".
  *
- * Model version              : 1.1493
+ * Model version              : 1.1496
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Aug 29 10:13:44 2018
+ * C++ source code generated on : Wed Aug 29 12:47:35 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -142,13 +142,16 @@ void tunning_nominalModelClass::step()
     real_T rtb_d_x;
     real_T rtb_d_y;
     real_T rtb_d_psi;
+    real_T rtb_T_f[6];
     real_T rtb_LOE_out[6];
     real_T rtb_Sum1_l[3];
-    real_T rtb_Clock;
+    real_T rtb_Add_a[6];
     real_T rtb_Sum3_i[3];
+    real_T rtb_Clock;
+    real_T rtb_MemoryX[6];
     int32_T i;
-    real_T rtb_LOE_out_0[3];
-    real_T rtb_LOE_out_1[3];
+    real_T rtb_Add_f[3];
+    real_T rtb_Add_f_0[3];
     int32_T i_0;
     real_T rtb_ref_idx_3;
     real_T rtb_ref_idx_0;
@@ -402,13 +405,7 @@ void tunning_nominalModelClass::step()
       /* End of MATLAB Function: '<S4>/LOE_' */
     }
 
-    /* Gain: '<S5>/mapping_0_200' incorporates:
-     *  Gain: '<S5>/      '
-     *  Gain: '<S5>/rads_to_RPM'
-     *  MATLAB Function: '<Root>/Actuator_Fault'
-     *  Sqrt: '<S5>/Sqrt1'
-     *  Sum: '<S5>/Sum3'
-     */
+    /* MATLAB Function: '<Root>/Actuator_Fault' */
     /* MATLAB Function 'Actuator_Fault': '<S1>:1' */
     /* '<S1>:1:2' T1 = T(1)*(1-LOE(1)); */
     /* '<S1>:1:3' T2 = T(2)*(1-LOE(2)); */
@@ -417,130 +414,37 @@ void tunning_nominalModelClass::step()
     /* '<S1>:1:6' T5 = T(5)*(1-LOE(5)); */
     /* '<S1>:1:7' T6 = T(6)*(1-LOE(6)); */
     /* '<S1>:1:8' T_f = [T1;T2;T3;T4;T5;T6]; */
-    u0 = (std::sqrt((1.0 - rtb_LOE_out[0]) * tunning_nominal_B.u[0] *
-                    116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
+    rtb_T_f[0] = (1.0 - rtb_LOE_out[0]) * tunning_nominal_B.u[0];
+    rtb_T_f[1] = (1.0 - rtb_LOE_out[1]) * tunning_nominal_B.u[1];
+    rtb_T_f[2] = (1.0 - rtb_LOE_out[2]) * tunning_nominal_B.u[2];
+    rtb_T_f[3] = (1.0 - rtb_LOE_out[3]) * tunning_nominal_B.u[3];
+    rtb_T_f[4] = (1.0 - rtb_LOE_out[4]) * tunning_nominal_B.u[4];
+    rtb_T_f[5] = (1.0 - rtb_LOE_out[5]) * tunning_nominal_B.u[5];
 
-    /* Saturate: '<S5>/Saturation' */
-    if (u0 > 200.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[0] = 200.0;
-    } else if (u0 < 0.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[0] = 0.0;
-    } else {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[0] = u0;
+    /* Outport: '<Root>/motor_command' */
+    for (i = 0; i < 6; i++) {
+      /* Gain: '<S5>/mapping_0_200' incorporates:
+       *  Gain: '<S5>/      '
+       *  Gain: '<S5>/rads_to_RPM'
+       *  Sqrt: '<S5>/Sqrt1'
+       *  Sum: '<S5>/Sum3'
+       */
+      u0 = (std::sqrt(116978.4923343994 * rtb_T_f[i]) * 9.5493 - 1250.0) *
+        0.022857142857142857;
+
+      /* Saturate: '<S5>/Saturation' */
+      if (u0 > 200.0) {
+        tunning_nominal_Y.motor_command[i] = 200.0;
+      } else if (u0 < 0.0) {
+        tunning_nominal_Y.motor_command[i] = 0.0;
+      } else {
+        tunning_nominal_Y.motor_command[i] = u0;
+      }
+
+      /* End of Saturate: '<S5>/Saturation' */
     }
 
-    /* Gain: '<S5>/mapping_0_200' incorporates:
-     *  Gain: '<S5>/      '
-     *  Gain: '<S5>/rads_to_RPM'
-     *  MATLAB Function: '<Root>/Actuator_Fault'
-     *  Sqrt: '<S5>/Sqrt1'
-     *  Sum: '<S5>/Sum3'
-     */
-    u0 = (std::sqrt((1.0 - rtb_LOE_out[1]) * tunning_nominal_B.u[1] *
-                    116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
-
-    /* Saturate: '<S5>/Saturation' */
-    if (u0 > 200.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[1] = 200.0;
-    } else if (u0 < 0.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[1] = 0.0;
-    } else {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[1] = u0;
-    }
-
-    /* Gain: '<S5>/mapping_0_200' incorporates:
-     *  Gain: '<S5>/      '
-     *  Gain: '<S5>/rads_to_RPM'
-     *  MATLAB Function: '<Root>/Actuator_Fault'
-     *  Sqrt: '<S5>/Sqrt1'
-     *  Sum: '<S5>/Sum3'
-     */
-    u0 = (std::sqrt((1.0 - rtb_LOE_out[2]) * tunning_nominal_B.u[2] *
-                    116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
-
-    /* Saturate: '<S5>/Saturation' */
-    if (u0 > 200.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[2] = 200.0;
-    } else if (u0 < 0.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[2] = 0.0;
-    } else {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[2] = u0;
-    }
-
-    /* Gain: '<S5>/mapping_0_200' incorporates:
-     *  Gain: '<S5>/      '
-     *  Gain: '<S5>/rads_to_RPM'
-     *  MATLAB Function: '<Root>/Actuator_Fault'
-     *  Sqrt: '<S5>/Sqrt1'
-     *  Sum: '<S5>/Sum3'
-     */
-    u0 = (std::sqrt((1.0 - rtb_LOE_out[3]) * tunning_nominal_B.u[3] *
-                    116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
-
-    /* Saturate: '<S5>/Saturation' */
-    if (u0 > 200.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[3] = 200.0;
-    } else if (u0 < 0.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[3] = 0.0;
-    } else {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[3] = u0;
-    }
-
-    /* Gain: '<S5>/mapping_0_200' incorporates:
-     *  Gain: '<S5>/      '
-     *  Gain: '<S5>/rads_to_RPM'
-     *  MATLAB Function: '<Root>/Actuator_Fault'
-     *  Sqrt: '<S5>/Sqrt1'
-     *  Sum: '<S5>/Sum3'
-     */
-    u0 = (std::sqrt((1.0 - rtb_LOE_out[4]) * tunning_nominal_B.u[4] *
-                    116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
-
-    /* Saturate: '<S5>/Saturation' */
-    if (u0 > 200.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[4] = 200.0;
-    } else if (u0 < 0.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[4] = 0.0;
-    } else {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[4] = u0;
-    }
-
-    /* Gain: '<S5>/mapping_0_200' incorporates:
-     *  Gain: '<S5>/      '
-     *  Gain: '<S5>/rads_to_RPM'
-     *  MATLAB Function: '<Root>/Actuator_Fault'
-     *  Sqrt: '<S5>/Sqrt1'
-     *  Sum: '<S5>/Sum3'
-     */
-    u0 = (std::sqrt((1.0 - rtb_LOE_out[5]) * tunning_nominal_B.u[5] *
-                    116978.4923343994) * 9.5493 - 1250.0) * 0.022857142857142857;
-
-    /* Saturate: '<S5>/Saturation' */
-    if (u0 > 200.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[5] = 200.0;
-    } else if (u0 < 0.0) {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[5] = 0.0;
-    } else {
-      /* Outport: '<Root>/motor_command' */
-      tunning_nominal_Y.motor_command[5] = u0;
-    }
+    /* End of Outport: '<Root>/motor_command' */
 
     /* Outport: '<Root>/virtual_control' */
     tunning_nominal_Y.virtual_control[0] = rtb_ref_idx_0;
@@ -690,10 +594,12 @@ void tunning_nominalModelClass::step()
     if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
         (&tunning_nominal_M)->Timing.TaskCounters.TID[1] == 0) {
       /* Delay: '<S3>/MemoryX' */
-      if (tunning_nominal_DW.icLoad != 0) {
-        for (i = 0; i < 6; i++) {
+      for (i = 0; i < 6; i++) {
+        if (tunning_nominal_DW.icLoad != 0) {
           tunning_nominal_DW.MemoryX_DSTATE[i] = 0.0;
         }
+
+        rtb_MemoryX[i] = tunning_nominal_DW.MemoryX_DSTATE[i];
       }
 
       /* Outputs for Atomic SubSystem: '<S3>/UseCurrentEstimator' */
@@ -737,7 +643,7 @@ void tunning_nominalModelClass::step()
         /* Sum: '<S38>/Add' incorporates:
          *  Delay: '<S3>/MemoryX'
          */
-        rtb_LOE_out[i] = tunning_nominal_B.Product2[i] +
+        rtb_Add_a[i] = tunning_nominal_B.Product2[i] +
           tunning_nominal_DW.MemoryX_DSTATE[i];
       }
 
@@ -749,10 +655,10 @@ void tunning_nominalModelClass::step()
        */
       for (i = 0; i < 3; i++) {
         rtb_Sum1_l[i] = tunning_nominal_ConstP.Constant1_Value[i + 6] *
-          rtb_LOE_out[2] + (tunning_nominal_ConstP.Constant1_Value[i + 3] *
-                            rtb_LOE_out[1] +
-                            tunning_nominal_ConstP.Constant1_Value[i] *
-                            rtb_LOE_out[0]);
+          rtb_Add_a[2] + (tunning_nominal_ConstP.Constant1_Value[i + 3] *
+                          rtb_Add_a[1] +
+                          tunning_nominal_ConstP.Constant1_Value[i] * rtb_Add_a
+                          [0]);
       }
 
       /* End of Product: '<S2>/Product1' */
@@ -765,12 +671,12 @@ void tunning_nominalModelClass::step()
        *  Product: '<S14>/j x k'
        *  Product: '<S14>/k x i'
        */
-      rtb_LOE_out_0[0] = rtb_LOE_out[1] * rtb_Sum1_l[2];
-      rtb_LOE_out_0[1] = rtb_LOE_out[2] * rtb_Sum1_l[0];
-      rtb_LOE_out_0[2] = rtb_LOE_out[0] * rtb_Sum1_l[1];
-      rtb_LOE_out_1[0] = rtb_LOE_out[2] * rtb_Sum1_l[1];
-      rtb_LOE_out_1[1] = rtb_LOE_out[0] * rtb_Sum1_l[2];
-      rtb_LOE_out_1[2] = rtb_LOE_out[1] * rtb_Sum1_l[0];
+      rtb_Add_f[0] = rtb_Add_a[1] * rtb_Sum1_l[2];
+      rtb_Add_f[1] = rtb_Add_a[2] * rtb_Sum1_l[0];
+      rtb_Add_f[2] = rtb_Add_a[0] * rtb_Sum1_l[1];
+      rtb_Add_f_0[0] = rtb_Add_a[2] * rtb_Sum1_l[1];
+      rtb_Add_f_0[1] = rtb_Add_a[0] * rtb_Sum1_l[2];
+      rtb_Add_f_0[2] = rtb_Add_a[1] * rtb_Sum1_l[0];
 
       /* Sum: '<S2>/Sum3' incorporates:
        *  Constant: '<S2>/Constant'
@@ -780,13 +686,13 @@ void tunning_nominalModelClass::step()
        */
       for (i = 0; i < 3; i++) {
         rtb_Sum3_i[i] = (((tunning_nominal_ConstP.Constant1_Value[i + 3] *
-                           rtb_LOE_out[4] +
+                           rtb_Add_a[4] +
                            tunning_nominal_ConstP.Constant1_Value[i] *
-                           rtb_LOE_out[3]) +
+                           rtb_Add_a[3]) +
                           tunning_nominal_ConstP.Constant1_Value[i + 6] *
-                          rtb_LOE_out[5]) +
+                          rtb_Add_a[5]) +
                          tunning_nominal_ConstP.Constant_Value_g[i]) +
-          (rtb_LOE_out_0[i] - rtb_LOE_out_1[i]);
+          (rtb_Add_f[i] - rtb_Add_f_0[i]);
       }
 
       /* End of Sum: '<S2>/Sum3' */
@@ -832,6 +738,35 @@ void tunning_nominalModelClass::step()
         ((tunning_nominal_DW.Memory_PreviousInput[2] -
           tunning_nominal_DW.Memory_PreviousInput[5]) - rtb_Sum1_l[2]) /
         tunning_nominal_DW.Memory_PreviousInput[2];
+    }
+
+    for (i = 0; i < 6; i++) {
+      /* Outport: '<Root>/thrust_pre' */
+      tunning_nominal_Y.thrust_pre[i] = tunning_nominal_B.u[i];
+
+      /* Outport: '<Root>/thrust_after' */
+      tunning_nominal_Y.thrust_after[i] = rtb_T_f[i];
+    }
+
+    if (rtmIsMajorTimeStep((&tunning_nominal_M)) &&
+        (&tunning_nominal_M)->Timing.TaskCounters.TID[1] == 0) {
+      /* Outport: '<Root>/acc_Kalman' */
+      tunning_nominal_Y.acc_Kalman[0] = rtb_Add_a[3];
+
+      /* Outport: '<Root>/M_Kalman' */
+      tunning_nominal_Y.M_Kalman[0] = rtb_Sum3_i[0];
+
+      /* Outport: '<Root>/acc_Kalman' */
+      tunning_nominal_Y.acc_Kalman[1] = rtb_Add_a[4];
+
+      /* Outport: '<Root>/M_Kalman' */
+      tunning_nominal_Y.M_Kalman[1] = rtb_Sum3_i[1];
+
+      /* Outport: '<Root>/acc_Kalman' */
+      tunning_nominal_Y.acc_Kalman[2] = rtb_Add_a[5];
+
+      /* Outport: '<Root>/M_Kalman' */
+      tunning_nominal_Y.M_Kalman[2] = rtb_Sum3_i[2];
 
       /* Outputs for Enabled SubSystem: '<S33>/MeasurementUpdate' incorporates:
        *  EnablePort: '<S58>/Enable'
@@ -845,13 +780,12 @@ void tunning_nominalModelClass::step()
         for (i = 0; i < 3; i++) {
           /* Product: '<S58>/C[k]*xhat[k|k-1]' incorporates:
            *  Constant: '<S3>/C'
-           *  Delay: '<S3>/MemoryX'
            *  Sum: '<S58>/Add1'
            */
           rtb_Sum1_l[i] = 0.0;
           for (i_0 = 0; i_0 < 6; i_0++) {
             rtb_Sum1_l[i] += tunning_nominal_ConstP.C_Value[3 * i_0 + i] *
-              tunning_nominal_DW.MemoryX_DSTATE[i_0];
+              rtb_MemoryX[i_0];
           }
 
           /* End of Product: '<S58>/C[k]*xhat[k|k-1]' */
@@ -861,7 +795,7 @@ void tunning_nominalModelClass::step()
            *  Product: '<S58>/Product3'
            *  Sum: '<S58>/Add1'
            */
-          rtb_LOE_out_0[i] = tunning_nominal_U.X[9 + i] - rtb_Sum1_l[i];
+          rtb_Add_f[i] = tunning_nominal_U.X[9 + i] - rtb_Sum1_l[i];
         }
 
         /* Product: '<S58>/Product3' incorporates:
@@ -870,11 +804,11 @@ void tunning_nominalModelClass::step()
         for (i = 0; i < 6; i++) {
           tunning_nominal_B.Product3[i] = 0.0;
           tunning_nominal_B.Product3[i] +=
-            tunning_nominal_ConstP.KalmanGainL_Value[i] * rtb_LOE_out_0[0];
+            tunning_nominal_ConstP.KalmanGainL_Value[i] * rtb_Add_f[0];
           tunning_nominal_B.Product3[i] +=
-            tunning_nominal_ConstP.KalmanGainL_Value[i + 6] * rtb_LOE_out_0[1];
+            tunning_nominal_ConstP.KalmanGainL_Value[i + 6] * rtb_Add_f[1];
           tunning_nominal_B.Product3[i] +=
-            tunning_nominal_ConstP.KalmanGainL_Value[i + 12] * rtb_LOE_out_0[2];
+            tunning_nominal_ConstP.KalmanGainL_Value[i + 12] * rtb_Add_f[2];
         }
       }
 
@@ -882,13 +816,12 @@ void tunning_nominalModelClass::step()
       for (i = 0; i < 6; i++) {
         /* Product: '<S33>/A[k]*xhat[k|k-1]' incorporates:
          *  Constant: '<S3>/A'
-         *  Delay: '<S3>/MemoryX'
          *  Sum: '<S33>/Add'
          */
         rtb_LOE_out[i] = 0.0;
         for (i_0 = 0; i_0 < 6; i_0++) {
           rtb_LOE_out[i] += tunning_nominal_ConstP.A_Value[6 * i_0 + i] *
-            tunning_nominal_DW.MemoryX_DSTATE[i_0];
+            rtb_MemoryX[i_0];
         }
 
         /* End of Product: '<S33>/A[k]*xhat[k|k-1]' */

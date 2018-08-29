@@ -16,3 +16,8 @@ geometry_msgs/Vector3 moment
 
 geometry_msgs/Vector3 LOE13_estimated
 geometry_msgs/Vector3 LOE13_true
+
+geometry_msgs/Vector3 thrust_pre
+geometry_msgs/Vector3 thrust_after
+geometry_msgs/Vector3 acc_Kalman
+geometry_msgs/Vector3 M_Kalman
