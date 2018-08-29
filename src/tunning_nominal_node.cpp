@@ -429,6 +429,10 @@ int main(int argc, char** argv) {
       uav_state_msg->thrust_after.y  = gController.tunning_nominal_Y.thrust_after[1];
       uav_state_msg->thrust_after.z  = gController.tunning_nominal_Y.thrust_after[2];
 
+      uav_state_msg->vel_Kalman.x = gController.tunning_nominal_Y.vel_Kalman[0];
+      uav_state_msg->vel_Kalman.y = gController.tunning_nominal_Y.vel_Kalman[1];
+      uav_state_msg->vel_Kalman.z = gController.tunning_nominal_Y.vel_Kalman[2];
+
       uav_state_msg->acc_Kalman.x = gController.tunning_nominal_Y.acc_Kalman[0];
       uav_state_msg->acc_Kalman.y = gController.tunning_nominal_Y.acc_Kalman[1];
       uav_state_msg->acc_Kalman.z = gController.tunning_nominal_Y.acc_Kalman[2];
