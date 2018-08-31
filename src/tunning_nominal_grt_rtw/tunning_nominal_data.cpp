@@ -9,7 +9,7 @@
  *
  * Model version              : 1.1498
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed Aug 29 15:46:23 2018
+ * C++ source code generated on : Fri Aug 31 14:28:54 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -38,7 +38,7 @@ const ConstP_tunning_nominal_T tunning_nominal_ConstP = {
   /* Expression: M_bias'
    * Referenced by: '<S2>/Constant'
    */
-  { -0.01, -0.04, 0.0 },
+  { -0.005, -0.04, 0.0 },
 
   /* Expression: Ib
    * Referenced by: '<S2>/Constant1'
@@ -48,9 +48,9 @@ const ConstP_tunning_nominal_T tunning_nominal_ConstP = {
   /* Expression: pInitialization.M
    * Referenced by: '<S15>/KalmanGainM'
    */
-  { 0.0013828503617181014, 0.0, 0.0, 0.000956799230966391, 0.0, 0.0, 0.0,
-    0.0030895047538060691, 0.0, 0.0, 0.004779906439668552, 0.0, 0.0, 0.0,
-    0.0030895047538062703, 0.0, 0.0, 0.0047799064396673212 },
+  { 0.0013828503617152289, 0.0, 0.0, 0.000956799230965245, 0.0, 0.0, 0.0,
+    0.001382850361721501, 0.0, 0.0, 0.00095679923096881356, 0.0, 0.0, 0.0,
+    0.00055009940149860072, 0.0, 0.0, 0.00015134630638216127 },
 
   /* Expression: pInitialization.C
    * Referenced by: '<S3>/C'
@@ -68,7 +68,7 @@ const ConstP_tunning_nominal_T tunning_nominal_ConstP = {
   /* Expression: pInitialization.L
    * Referenced by: '<S15>/KalmanGainL'
    */
-  { 0.0013838071609490678, 0.0, 0.0, 0.000956799230966391, 0.0, 0.0, 0.0,
-    0.0030942846602457375, 0.0, 0.0, 0.004779906439668552, 0.0, 0.0, 0.0,
-    0.0030942846602459379, 0.0, 0.0, 0.0047799064396673212 }
+  { 0.001383807160946194, 0.0, 0.0, 0.000956799230965245, 0.0, 0.0, 0.0,
+    0.0013838071609524698, 0.0, 0.0, 0.00095679923096881356, 0.0, 0.0, 0.0,
+    0.00055025074780498283, 0.0, 0.0, 0.00015134630638216127 }
 };
