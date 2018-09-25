@@ -1,11 +1,11 @@
 /*
- * tunning_lqr_data.cpp
+ * tuning_lqr_data.cpp
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "tunning_lqr".
+ * Code generation for model "tuning_lqr".
  *
  * Model version              : 1.1142
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
@@ -18,11 +18,11 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#include "tunning_lqr.h"
-#include "tunning_lqr_private.h"
+#include "tuning_lqr.h"
+#include "tuning_lqr_private.h"
 
 /* Constant parameters (auto storage) */
-const ConstP_tunning_lqr_T tunning_lqr_ConstP = {
+const ConstP_tuning_lqr_T tuning_lqr_ConstP = {
   /* Expression: B_ENU_inv
    * Referenced by: '<Root>/Control Allocation'
    */

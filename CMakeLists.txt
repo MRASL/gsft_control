@@ -10,6 +10,7 @@ project(gsft_control)
 find_package(catkin REQUIRED COMPONENTS
     dynamic_reconfigure
     mav_msgs
+    asctec_hl_comm
     nav_msgs
     sensor_msgs
     cmake_modules
@@ -114,7 +115,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
     INCLUDE_DIRS include
 ##    LIBRARIES gsft_control
-    CATKIN_DEPENDS dynamic_reconfigure geometry_msgs mav_msgs nav_msgs roscpp sensor_msgs trajectory_msgs message_generation std_msgs geometry_msgs
+    CATKIN_DEPENDS dynamic_reconfigure geometry_msgs mav_msgs nav_msgs roscpp sensor_msgs trajectory_msgs message_generation std_msgs geometry_msgs asctec_hl_comm
     DEPENDS EIGEN3
 )
 
@@ -128,23 +129,27 @@ include_directories(
  include
  R2017a/extern/include
  R2017a/simulink/include
- src/tunning_lqr_grt_rtw/
- src/tunning_nominal_grt_rtw/
+ src/tuning_lqr_grt_rtw/
+ src/tuning_nominal_grt_rtw/
+ src/tuning_GS1_grt_rtw/
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
 
 add_library(matlab_simulink
 
-  src/tunning_lqr_grt_rtw/tunning_lqr_data.cpp
-  src/tunning_lqr_grt_rtw/tunning_lqr.cpp
+  src/tuning_lqr_grt_rtw/tuning_lqr_data.cpp
+  src/tuning_lqr_grt_rtw/tuning_lqr.cpp
 
-  src/tunning_nominal_grt_rtw/tunning_nominal_data.cpp
-  src/tunning_nominal_grt_rtw/tunning_nominal.cpp
+  src/tuning_nominal_grt_rtw/tuning_nominal_data.cpp
+  src/tuning_nominal_grt_rtw/tuning_nominal.cpp
 
-  #src/tunning_nominal_grt_rtw/rtGetInf.cpp
-  #src/tunning_nominal_grt_rtw/rtGetNaN.cpp
-  #src/tunning_nominal_grt_rtw/rt_nonfinite.cpp
+  src/tuning_GS1_grt_rtw/tuning_GS1_data.cpp
+  src/tuning_GS1_grt_rtw/tuning_GS1.cpp
+
+  #src/tuning_nominal_grt_rtw/rtGetInf.cpp
+  #src/tuning_nominal_grt_rtw/rtGetNaN.cpp
+  #src/tuning_nominal_grt_rtw/rt_nonfinite.cpp
 
 )
 add_dependencies(matlab_simulink ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -153,35 +158,44 @@ add_dependencies(matlab_simulink ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 
-add_executable(tunning_lqr_node
-    src/tunning_lqr_node.cpp
+add_executable(tuning_lqr_node
+    src/tuning_lqr_node.cpp
 )
-add_dependencies(tunning_lqr_node
+add_dependencies(tuning_lqr_node
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
     matlab_simulink
 )
-target_link_libraries(tunning_lqr_node
+target_link_libraries(tuning_lqr_node
     matlab_simulink
     ${catkin_LIBRARIES}
 )
 
-
-
-
-add_executable(tunning_nominal_node
-    src/tunning_nominal_node.cpp
+add_executable(tuning_nominal_node
+    src/tuning_nominal_node.cpp
 )
-add_dependencies(tunning_nominal_node
+add_dependencies(tuning_nominal_node
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
     matlab_simulink
 )
-target_link_libraries(tunning_nominal_node
+target_link_libraries(tuning_nominal_node
     matlab_simulink
     ${catkin_LIBRARIES}
 )
 
+add_executable(tuning_GS1_node
+    src/tuning_GS1_node.cpp
+)
+add_dependencies(tuning_GS1_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_simulink
+)
+target_link_libraries(tuning_GS1_node
+    matlab_simulink
+    ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##

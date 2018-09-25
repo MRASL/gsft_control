@@ -1,11 +1,11 @@
 /*
- * tunning_lqr.h
+ * tuning_lqr.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "tunning_lqr".
+ * Code generation for model "tuning_lqr".
  *
  * Model version              : 1.1142
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
@@ -18,18 +18,18 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_tunning_lqr_h_
-#define RTW_HEADER_tunning_lqr_h_
+#ifndef RTW_HEADER_tuning_lqr_h_
+#define RTW_HEADER_tuning_lqr_h_
 #include <cmath>
 #include <string.h>
-#ifndef tunning_lqr_COMMON_INCLUDES_
-# define tunning_lqr_COMMON_INCLUDES_
+#ifndef tuning_lqr_COMMON_INCLUDES_
+# define tuning_lqr_COMMON_INCLUDES_
 #include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#endif                                 /* tunning_lqr_COMMON_INCLUDES_ */
+#endif                                 /* tuning_lqr_COMMON_INCLUDES_ */
 
-#include "tunning_lqr_types.h"
+#include "tuning_lqr_types.h"
 
 /* Shared type includes */
 #include "multiword_types.h"
@@ -173,7 +173,7 @@ typedef struct {
   real_T y_e;                          /* '<S7>/y_e' */
   real_T yaw_e;                        /* '<S8>/yaw_e' */
   real_T z_e;                          /* '<S9>/z_e' */
-} B_tunning_lqr_T;
+} B_tuning_lqr_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
@@ -181,7 +181,7 @@ typedef struct {
   real_T Integrator1_CSTATE_h;         /* '<S6>/Integrator1' */
   real_T Integrator1_CSTATE_g;         /* '<S7>/Integrator1' */
   real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
-} X_tunning_lqr_T;
+} X_tuning_lqr_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
@@ -189,7 +189,7 @@ typedef struct {
   real_T Integrator1_CSTATE_h;         /* '<S6>/Integrator1' */
   real_T Integrator1_CSTATE_g;         /* '<S7>/Integrator1' */
   real_T Integrator1_CSTATE_j;         /* '<S8>/Integrator1' */
-} XDot_tunning_lqr_T;
+} XDot_tuning_lqr_T;
 
 /* State disabled  */
 typedef struct {
@@ -197,7 +197,7 @@ typedef struct {
   boolean_T Integrator1_CSTATE_h;      /* '<S6>/Integrator1' */
   boolean_T Integrator1_CSTATE_g;      /* '<S7>/Integrator1' */
   boolean_T Integrator1_CSTATE_j;      /* '<S8>/Integrator1' */
-} XDis_tunning_lqr_T;
+} XDis_tuning_lqr_T;
 
 #ifndef ODE4_INTG
 #define ODE4_INTG
@@ -216,7 +216,7 @@ typedef struct {
    * Referenced by: '<Root>/Control Allocation'
    */
   real_T ControlAllocation_Gain[24];
-} ConstP_tunning_lqr_T;
+} ConstP_tuning_lqr_T;
 
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
@@ -227,7 +227,7 @@ typedef struct {
   real_T LOE_t[6];                     /* '<Root>/LOE_t' */
   real_T LOE_a[6];                     /* '<Root>/LOE_a' */
   real_T gain[18];                     /* '<Root>/gain' */
-} ExtU_tunning_lqr_T;
+} ExtU_tuning_lqr_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
 typedef struct {
@@ -235,13 +235,13 @@ typedef struct {
   real_T virtual_control[4];           /* '<Root>/virtual_control' */
   real_T ref_out[4];                   /* '<Root>/ref_out' */
   real_T LOE[6];                       /* '<Root>/LOE' */
-} ExtY_tunning_lqr_T;
+} ExtY_tuning_lqr_T;
 
 /* Real-time Model Data Structure */
-struct tag_RTM_tunning_lqr_T {
+struct tag_RTM_tuning_lqr_T {
   const char_T *errorStatus;
   RTWSolverInfo solverInfo;
-  X_tunning_lqr_T *contStates;
+  X_tuning_lqr_T *contStates;
   int_T *periodicContStateIndices;
   real_T *periodicContStateRanges;
   real_T *derivs;
@@ -299,17 +299,17 @@ extern "C" {
 #endif
 
 /* Constant parameters (auto storage) */
-extern const ConstP_tunning_lqr_T tunning_lqr_ConstP;
+extern const ConstP_tuning_lqr_T tuning_lqr_ConstP;
 
-/* Class declaration for model tunning_lqr */
-class tunning_lqrModelClass {
+/* Class declaration for model tuning_lqr */
+class tuning_lqrModelClass {
   /* public data and function members */
  public:
   /* External inputs */
-  ExtU_tunning_lqr_T tunning_lqr_U;
+  ExtU_tuning_lqr_T tuning_lqr_U;
 
   /* External outputs */
-  ExtY_tunning_lqr_T tunning_lqr_Y;
+  ExtY_tuning_lqr_T tuning_lqr_Y;
 
   /* model initialize function */
   void initialize();
@@ -321,28 +321,28 @@ class tunning_lqrModelClass {
   void terminate();
 
   /* Constructor */
-  tunning_lqrModelClass();
+  tuning_lqrModelClass();
 
   /* Destructor */
-  ~tunning_lqrModelClass();
+  ~tuning_lqrModelClass();
 
   /* Real-Time Model get method */
-  RT_MODEL_tunning_lqr_T * getRTM();
+  RT_MODEL_tuning_lqr_T * getRTM();
 
   /* private data and function members */
  private:
   /* Block signals */
-  B_tunning_lqr_T tunning_lqr_B;
-  X_tunning_lqr_T tunning_lqr_X;       /* Block continuous states */
+  B_tuning_lqr_T tuning_lqr_B;
+  X_tuning_lqr_T tuning_lqr_X;       /* Block continuous states */
 
   /* Real-Time Model */
-  RT_MODEL_tunning_lqr_T tunning_lqr_M;
+  RT_MODEL_tuning_lqr_T tuning_lqr_M;
 
   /* Continuous states update member function*/
   void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si );
 
   /* Derivatives member function */
-  void tunning_lqr_derivatives();
+  void tuning_lqr_derivatives();
 };
 
 /*-
@@ -370,18 +370,18 @@ class tunning_lqrModelClass {
  *
  * Here is the system hierarchy for this model
  *
- * '<Root>' : 'tunning_lqr'
- * '<S1>'   : 'tunning_lqr/Actuator_Fault'
- * '<S2>'   : 'tunning_lqr/Test_config_and_data'
- * '<S3>'   : 'tunning_lqr/Thrust2command'
- * '<S4>'   : 'tunning_lqr/pitch_controller'
- * '<S5>'   : 'tunning_lqr/roll_controller'
- * '<S6>'   : 'tunning_lqr/x_controller '
- * '<S7>'   : 'tunning_lqr/y_controller'
- * '<S8>'   : 'tunning_lqr/yaw_controller'
- * '<S9>'   : 'tunning_lqr/z_controller'
- * '<S10>'  : 'tunning_lqr/Test_config_and_data/FFW'
- * '<S11>'  : 'tunning_lqr/Test_config_and_data/LOE_'
- * '<S12>'  : 'tunning_lqr/Test_config_and_data/MATLAB Function'
+ * '<Root>' : 'tuning_lqr'
+ * '<S1>'   : 'tuning_lqr/Actuator_Fault'
+ * '<S2>'   : 'tuning_lqr/Test_config_and_data'
+ * '<S3>'   : 'tuning_lqr/Thrust2command'
+ * '<S4>'   : 'tuning_lqr/pitch_controller'
+ * '<S5>'   : 'tuning_lqr/roll_controller'
+ * '<S6>'   : 'tuning_lqr/x_controller '
+ * '<S7>'   : 'tuning_lqr/y_controller'
+ * '<S8>'   : 'tuning_lqr/yaw_controller'
+ * '<S9>'   : 'tuning_lqr/z_controller'
+ * '<S10>'  : 'tuning_lqr/Test_config_and_data/FFW'
+ * '<S11>'  : 'tuning_lqr/Test_config_and_data/LOE_'
+ * '<S12>'  : 'tuning_lqr/Test_config_and_data/MATLAB Function'
  */
-#endif                                 /* RTW_HEADER_tunning_lqr_h_ */
+#endif                                 /* RTW_HEADER_tuning_lqr_h_ */

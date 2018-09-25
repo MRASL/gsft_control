@@ -15,12 +15,13 @@
 
 #include <gsft_control/LOE.h>
 #include <gsft_control/UAVState.h>
-#include <tunning_nominal.h>
+#include <tuning_GS1.h>
+#include <asctec_hl_comm/MotorSpeed.h>
 
 #include <dynamic_reconfigure/server.h>
 #include <gsft_control/controllerDynConfig.h>
 
-tunning_nominalModelClass gController;
+tuning_GS1ModelClass gController;
 
 bool gPublish;
 bool gInit_flag;
@@ -36,6 +37,7 @@ Eigen::VectorXd gRef(4);       // references (x, y, z, yaw)
 Eigen::VectorXd gGain(19);
 Eigen::VectorXd gLOE(6);
 Eigen::VectorXd gLOE_t(6);
+Eigen::VectorXd gMotor_measurement(6);
 // Eigen::VectorXd gAng_acc_calcul(3); // derivative of angular velocity
 
 double gPsi;                   // heading (rad)
@@ -67,6 +69,12 @@ void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
   }
 
   //if (gLanding_flag || gInit)
+}
+
+void MotorSpeedCallback(const asctec_hl_comm::MotorSpeed::ConstPtr &motor) {
+  for (unsigned int i = 0; i <6; ++i) {
+    gMotor_measurement[i] = motor->motor_speed[i];
+  }
 }
 
 void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t level) {
@@ -202,13 +210,16 @@ void timmerCallback(const ros::TimerEvent&)
 }
 
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "tunning_nominal_node");
+  ros::init(argc, argv, "tuning_GS1_node");
   ros::NodeHandle nh;
   ros::NodeHandle pnh("~");
-  ROS_INFO("tunning_nominal_node main started");
+  ROS_INFO("tuning_GS1_node main started");
 
   ros::Subscriber odometry_sub_;
   odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1, OdometryCallback);
+
+  ros::Subscriber motor_speed_measurement_sub_;
+  motor_speed_measurement_sub_ = nh.subscribe(mav_msgs::default_topics::MOTOR_MEASUREMENT, 1, MotorSpeedCallback);
 
   /*ros::Subscriber lost_control_sub_;
   lost_control_sub_ = nh.subscribe(gsft_control::default_topics::LOE, 1, LostControlCallback);*/
@@ -275,10 +286,10 @@ int main(int argc, char** argv) {
         control_actived = true;
 
         for (unsigned int i=0; i< 6; i++) {
-          gController.tunning_nominal_U.LOE_a[i]  = gLOE[i];     // fault amplitude
+          gController.tuning_GS1_U.LOE_a[i]  = gLOE[i];     // fault amplitude
         }
         for (unsigned int i=0; i< 6; i++) {
-          gController.tunning_nominal_U.LOE_t[i]  = gLOE_t[i];   // fault time
+          gController.tuning_GS1_U.LOE_t[i]  = gLOE_t[i];   // fault time
         }
         for (unsigned int i=0; i< 19; i++) {
           ROS_INFO("Controller gain k[%d] = %f",i,gGain[i]);
@@ -287,32 +298,32 @@ int main(int argc, char** argv) {
 
     if (control_actived) {                                    // controller active after take-off request
         // Initialization before Step
-        gController.tunning_nominal_U.mode = gTest_mode;
+        gController.tuning_GS1_U.mode = gTest_mode;
 
         for (unsigned int i=0; i< 4; i++) {
-          gController.tunning_nominal_U.ref[i]  = gRef[i];
+          gController.tuning_GS1_U.ref[i]  = gRef[i];
         }
         for (unsigned int i=0; i< 4; i++) {
-          gController.tunning_nominal_U.Y0[i]   = gY0[i];
+          gController.tuning_GS1_U.Y0[i]   = gY0[i];
         }
         for (unsigned int i=0; i< 19; i++) {
-          gController.tunning_nominal_U.gain[i] = gGain[i];
+          gController.tuning_GS1_U.gain[i] = gGain[i];
         }
-        gController.tunning_nominal_U.X[0]   = gOdometry.position_W.x();
-        gController.tunning_nominal_U.X[1]   = gOdometry.position_W.y();
-        gController.tunning_nominal_U.X[2]   = gOdometry.position_W.z();
-        gController.tunning_nominal_U.X[3 ]  = velocity_W.x();
-        gController.tunning_nominal_U.X[4 ]  = velocity_W.y();
-        gController.tunning_nominal_U.X[5 ]  = velocity_W.z();
-        gController.tunning_nominal_U.X[6 ]  = phi;
-        gController.tunning_nominal_U.X[7 ]  = theta;
-        gController.tunning_nominal_U.X[8 ]  = gPsi;
-        gController.tunning_nominal_U.X[9 ]  = gOdometry.angular_velocity_B.x();
-        gController.tunning_nominal_U.X[10]  = gOdometry.angular_velocity_B.y();
-        gController.tunning_nominal_U.X[11]  = gOdometry.angular_velocity_B.z();
-        /*gController.tunning_nominal_U.X[12]  = gAng_acc_calcul[0];
-        gController.tunning_nominal_U.X[13]  = gAng_acc_calcul[1];
-        gController.tunning_nominal_U.X[14]  = gAng_acc_calcul[2]; */
+        gController.tuning_GS1_U.X[0]   = gOdometry.position_W.x();
+        gController.tuning_GS1_U.X[1]   = gOdometry.position_W.y();
+        gController.tuning_GS1_U.X[2]   = gOdometry.position_W.z();
+        gController.tuning_GS1_U.X[3 ]  = velocity_W.x();
+        gController.tuning_GS1_U.X[4 ]  = velocity_W.y();
+        gController.tuning_GS1_U.X[5 ]  = velocity_W.z();
+        gController.tuning_GS1_U.X[6 ]  = phi;
+        gController.tuning_GS1_U.X[7 ]  = theta;
+        gController.tuning_GS1_U.X[8 ]  = gPsi;
+        gController.tuning_GS1_U.X[9 ]  = gOdometry.angular_velocity_B.x();
+        gController.tuning_GS1_U.X[10]  = gOdometry.angular_velocity_B.y();
+        gController.tuning_GS1_U.X[11]  = gOdometry.angular_velocity_B.z();
+        /*gController.tuning_GS1_U.X[12]  = gAng_acc_calcul[0];
+        gController.tuning_GS1_U.X[13]  = gAng_acc_calcul[1];
+        gController.tuning_GS1_U.X[14]  = gAng_acc_calcul[2]; */
 
         // Run Matlab controller
         gController.step();
@@ -327,7 +338,7 @@ int main(int argc, char** argv) {
             }
             else
             {
-              motor_command[i] = gController.tunning_nominal_Y.motor_command[i];        // normalized [1 .. 200] => Asctec Firefly
+              motor_command[i] = gController.tuning_GS1_Y.motor_command[i];        // normalized [1 .. 200] => Asctec Firefly
               motor_RPM[i]     = 1250.0 + motor_command[i]*43.75;                       // real RPM
               motor_speed[i]   = motor_RPM[i]/9.5493;                                   // rad/s => Gazebo
             }
@@ -354,7 +365,7 @@ int main(int argc, char** argv) {
         actuator_msg->header.stamp =  ros::Time::now();
         motor_velocity_reference_pub_.publish(actuator_msg);
 
-        if (gController.tunning_nominal_Y.ref_out[2] <= 0.25 && gTest_mode > 0){
+        if (gController.tuning_GS1_Y.ref_out[2] <= 0.25 && gTest_mode > 0){
           gLanding_flag = true;
         }
 
@@ -373,7 +384,7 @@ int main(int argc, char** argv) {
 
     if (gEmergency_status)
     {
-      ROS_ERROR("tunning_nominal_node emergency status");
+      ROS_ERROR("tuning_GS1_node emergency status");
       ROS_INFO("x = %f, y = %f, z = %f",gOdometry.position_W.x(),gOdometry.position_W.y(),gOdometry.position_W.z());
       ros::Duration(0.5).sleep();
       gController.terminate();
@@ -392,10 +403,10 @@ int main(int argc, char** argv) {
     // Publish data: UAV state in World frame
     if (gPublish){
       gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
-      uav_state_msg->position_ref.x  = gController.tunning_nominal_Y.ref_out[0];    // gRef only for manual test
-      uav_state_msg->position_ref.y  = gController.tunning_nominal_Y.ref_out[1];
-      uav_state_msg->position_ref.z  = gController.tunning_nominal_Y.ref_out[2];
-      uav_state_msg->heading_ref     = gController.tunning_nominal_Y.ref_out[3];
+      uav_state_msg->position_ref.x  = gController.tuning_GS1_Y.ref_out[0];    // gRef only for manual test
+      uav_state_msg->position_ref.y  = gController.tuning_GS1_Y.ref_out[1];
+      uav_state_msg->position_ref.z  = gController.tuning_GS1_Y.ref_out[2];
+      uav_state_msg->heading_ref     = gController.tuning_GS1_Y.ref_out[3];
 
       uav_state_msg->position_W.x  = gOdometry.position_W.x();
       uav_state_msg->position_W.y  = gOdometry.position_W.y();
@@ -409,37 +420,37 @@ int main(int argc, char** argv) {
       uav_state_msg->rotation_speed_B.x  = gOdometry.angular_velocity_B.x();
       uav_state_msg->rotation_speed_B.y  = gOdometry.angular_velocity_B.y();
       uav_state_msg->rotation_speed_B.z  = gOdometry.angular_velocity_B.z();
-      uav_state_msg->total_thrust  = gController.tunning_nominal_Y.virtual_control[0];
-      uav_state_msg->moment.x      = gController.tunning_nominal_Y.virtual_control[1];
-      uav_state_msg->moment.y      = gController.tunning_nominal_Y.virtual_control[2];
-      uav_state_msg->moment.z      = gController.tunning_nominal_Y.virtual_control[3];
+      uav_state_msg->total_thrust  = gController.tuning_GS1_Y.virtual_control[0];
+      uav_state_msg->moment.x      = gController.tuning_GS1_Y.virtual_control[1];
+      uav_state_msg->moment.y      = gController.tuning_GS1_Y.virtual_control[2];
+      uav_state_msg->moment.z      = gController.tuning_GS1_Y.virtual_control[3];
 
-      uav_state_msg->LOE13_estimated.x  = gController.tunning_nominal_Y.LOE13_estimated[0];
-      uav_state_msg->LOE13_estimated.y  = gController.tunning_nominal_Y.LOE13_estimated[1];
-      uav_state_msg->LOE13_estimated.z  = gController.tunning_nominal_Y.LOE13_estimated[2];
-      uav_state_msg->LOE13_true.x    = gController.tunning_nominal_Y.LOE_true[0];
-      uav_state_msg->LOE13_true.y    = gController.tunning_nominal_Y.LOE_true[1];
-      uav_state_msg->LOE13_true.z    = gController.tunning_nominal_Y.LOE_true[2];
+      uav_state_msg->LOE13_estimated.x  = gController.tuning_GS1_Y.LOE13_estimated[0];
+      uav_state_msg->LOE13_estimated.y  = gController.tuning_GS1_Y.LOE13_estimated[1];
+      uav_state_msg->LOE13_estimated.z  = gController.tuning_GS1_Y.LOE13_estimated[2];
+      uav_state_msg->LOE13_true.x    = gController.tuning_GS1_Y.LOE_true[0];
+      uav_state_msg->LOE13_true.y    = gController.tuning_GS1_Y.LOE_true[1];
+      uav_state_msg->LOE13_true.z    = gController.tuning_GS1_Y.LOE_true[2];
 
-      uav_state_msg->thrust_pre.x    = gController.tunning_nominal_Y.thrust_pre[0];
-      uav_state_msg->thrust_pre.y    = gController.tunning_nominal_Y.thrust_pre[1];
-      uav_state_msg->thrust_pre.z    = gController.tunning_nominal_Y.thrust_pre[2];
+      uav_state_msg->thrust_pre.x    = gController.tuning_GS1_Y.thrust_pre[0];
+      uav_state_msg->thrust_pre.y    = gController.tuning_GS1_Y.thrust_pre[1];
+      uav_state_msg->thrust_pre.z    = gController.tuning_GS1_Y.thrust_pre[2];
 
-      uav_state_msg->thrust_after.x  = gController.tunning_nominal_Y.thrust_after[0];
-      uav_state_msg->thrust_after.y  = gController.tunning_nominal_Y.thrust_after[1];
-      uav_state_msg->thrust_after.z  = gController.tunning_nominal_Y.thrust_after[2];
+      uav_state_msg->thrust_after.x  = gController.tuning_GS1_Y.thrust_after[0];
+      uav_state_msg->thrust_after.y  = gController.tuning_GS1_Y.thrust_after[1];
+      uav_state_msg->thrust_after.z  = gController.tuning_GS1_Y.thrust_after[2];
 
-      uav_state_msg->vel_Kalman.x = gController.tunning_nominal_Y.vel_Kalman[0];
-      uav_state_msg->vel_Kalman.y = gController.tunning_nominal_Y.vel_Kalman[1];
-      uav_state_msg->vel_Kalman.z = gController.tunning_nominal_Y.vel_Kalman[2];
+      uav_state_msg->vel_Kalman.x = gController.tuning_GS1_Y.vel_Kalman[0];
+      uav_state_msg->vel_Kalman.y = gController.tuning_GS1_Y.vel_Kalman[1];
+      uav_state_msg->vel_Kalman.z = gController.tuning_GS1_Y.vel_Kalman[2];
 
-      uav_state_msg->acc_Kalman.x = gController.tunning_nominal_Y.acc_Kalman[0];
-      uav_state_msg->acc_Kalman.y = gController.tunning_nominal_Y.acc_Kalman[1];
-      uav_state_msg->acc_Kalman.z = gController.tunning_nominal_Y.acc_Kalman[2];
+      uav_state_msg->acc_Kalman.x = gController.tuning_GS1_Y.acc_Kalman[0];
+      uav_state_msg->acc_Kalman.y = gController.tuning_GS1_Y.acc_Kalman[1];
+      uav_state_msg->acc_Kalman.z = gController.tuning_GS1_Y.acc_Kalman[2];
 
-      uav_state_msg->M_Kalman.x = gController.tunning_nominal_Y.M_Kalman[0];
-      uav_state_msg->M_Kalman.y = gController.tunning_nominal_Y.M_Kalman[1];
-      uav_state_msg->M_Kalman.z = gController.tunning_nominal_Y.M_Kalman[2];
+      uav_state_msg->M_Kalman.x = gController.tuning_GS1_Y.M_Kalman[0];
+      uav_state_msg->M_Kalman.y = gController.tuning_GS1_Y.M_Kalman[1];
+      uav_state_msg->M_Kalman.z = gController.tuning_GS1_Y.M_Kalman[2];
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);

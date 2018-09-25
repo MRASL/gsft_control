@@ -18,6 +18,7 @@
   <depend>cmake_modules</depend>
   <depend>geometry_msgs</depend>
   <depend>mav_msgs</depend>
+  <depend>asctec_hl_comm</depend>
   <depend>nav_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>trajectory_msgs</depend>

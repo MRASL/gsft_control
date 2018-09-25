@@ -1,15 +1,15 @@
 /*
- * tunning_nominal.h
+ * tuning_GS1.h
  *
  * Student License - for use by students to meet course requirements and
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "tunning_nominal".
+ * Code generation for model "tuning_GS1".
  *
  * Model version              : 1.1498
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Aug 31 14:28:54 2018
+ * C++ source code generated on : Tue Sep 18 10:42:41 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -18,18 +18,18 @@
  * Validation result: Passed (1), Warnings (3), Error (0)
  */
 
-#ifndef RTW_HEADER_tunning_nominal_h_
-#define RTW_HEADER_tunning_nominal_h_
+#ifndef RTW_HEADER_tuning_GS1_h_
+#define RTW_HEADER_tuning_GS1_h_
 #include <cmath>
 #include <string.h>
-#ifndef tunning_nominal_COMMON_INCLUDES_
-# define tunning_nominal_COMMON_INCLUDES_
+#ifndef tuning_GS1_COMMON_INCLUDES_
+# define tuning_GS1_COMMON_INCLUDES_
 #include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#endif                                 /* tunning_nominal_COMMON_INCLUDES_ */
+#endif                                 /* tuning_GS1_COMMON_INCLUDES_ */
 
-#include "tunning_nominal_types.h"
+#include "tuning_GS1_types.h"
 
 /* Shared type includes */
 #include "multiword_types.h"
@@ -161,7 +161,7 @@ typedef struct {
   real_T Sum3_h;                       /* '<S10>/Sum3' */
   real_T Product2[6];                  /* '<S59>/Product2' */
   real_T Product3[6];                  /* '<S58>/Product3' */
-} B_tunning_nominal_T;
+} B_tuning_GS1_T;
 
 /* Block states (auto storage) for system '<Root>' */
 typedef struct {
@@ -170,7 +170,7 @@ typedef struct {
   uint8_T icLoad;                      /* '<S3>/MemoryX' */
   boolean_T MeasurementUpdate_MODE;    /* '<S33>/MeasurementUpdate' */
   boolean_T EnabledSubsystem_MODE;     /* '<S38>/Enabled Subsystem' */
-} DW_tunning_nominal_T;
+} DW_tuning_GS1_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
@@ -178,7 +178,7 @@ typedef struct {
   real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
   real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
-} X_tunning_nominal_T;
+} X_tuning_GS1_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
@@ -186,7 +186,7 @@ typedef struct {
   real_T Integrator1_CSTATE_d;         /* '<S6>/Integrator1' */
   real_T Integrator_CSTATE;            /* '<S6>/Integrator' */
   real_T Integrator1_CSTATE_j;         /* '<S9>/Integrator1' */
-} XDot_tunning_nominal_T;
+} XDot_tuning_GS1_T;
 
 /* State disabled  */
 typedef struct {
@@ -194,7 +194,7 @@ typedef struct {
   boolean_T Integrator1_CSTATE_d;      /* '<S6>/Integrator1' */
   boolean_T Integrator_CSTATE;         /* '<S6>/Integrator' */
   boolean_T Integrator1_CSTATE_j;      /* '<S9>/Integrator1' */
-} XDis_tunning_nominal_T;
+} XDis_tuning_GS1_T;
 
 #ifndef ODE4_INTG
 #define ODE4_INTG
@@ -243,7 +243,7 @@ typedef struct {
    * Referenced by: '<S15>/KalmanGainL'
    */
   real_T KalmanGainL_Value[18];
-} ConstP_tunning_nominal_T;
+} ConstP_tuning_GS1_T;
 
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
@@ -254,7 +254,7 @@ typedef struct {
   real_T LOE_t[6];                     /* '<Root>/LOE_t' */
   real_T LOE_a[6];                     /* '<Root>/LOE_a' */
   real_T gain[18];                     /* '<Root>/gain' */
-} ExtU_tunning_nominal_T;
+} ExtU_tuning_GS1_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
 typedef struct {
@@ -268,13 +268,13 @@ typedef struct {
   real_T acc_Kalman[3];                /* '<Root>/acc_Kalman' */
   real_T M_Kalman[3];                  /* '<Root>/M_Kalman' */
   real_T vel_Kalman[3];                /* '<Root>/vel_Kalman' */
-} ExtY_tunning_nominal_T;
+} ExtY_tuning_GS1_T;
 
 /* Real-time Model Data Structure */
-struct tag_RTM_tunning_nominal_T {
+struct tag_RTM_tuning_GS1_T {
   const char_T *errorStatus;
   RTWSolverInfo solverInfo;
-  X_tunning_nominal_T *contStates;
+  X_tuning_GS1_T *contStates;
   int_T *periodicContStateIndices;
   real_T *periodicContStateRanges;
   real_T *derivs;
@@ -332,17 +332,17 @@ extern "C" {
 #endif
 
 /* Constant parameters (auto storage) */
-extern const ConstP_tunning_nominal_T tunning_nominal_ConstP;
+extern const ConstP_tuning_GS1_T tuning_GS1_ConstP;
 
-/* Class declaration for model tunning_nominal */
-class tunning_nominalModelClass {
+/* Class declaration for model tuning_GS1 */
+class tuning_GS1ModelClass {
   /* public data and function members */
  public:
   /* External inputs */
-  ExtU_tunning_nominal_T tunning_nominal_U;
+  ExtU_tuning_GS1_T tuning_GS1_U;
 
   /* External outputs */
-  ExtY_tunning_nominal_T tunning_nominal_Y;
+  ExtY_tuning_GS1_T tuning_GS1_Y;
 
   /* model initialize function */
   void initialize();
@@ -354,31 +354,31 @@ class tunning_nominalModelClass {
   void terminate();
 
   /* Constructor */
-  tunning_nominalModelClass();
+  tuning_GS1ModelClass();
 
   /* Destructor */
-  ~tunning_nominalModelClass();
+  ~tuning_GS1ModelClass();
 
   /* Real-Time Model get method */
-  RT_MODEL_tunning_nominal_T * getRTM();
+  RT_MODEL_tuning_GS1_T * getRTM();
 
   /* private data and function members */
  private:
   /* Block signals */
-  B_tunning_nominal_T tunning_nominal_B;
+  B_tuning_GS1_T tuning_GS1_B;
 
   /* Block states */
-  DW_tunning_nominal_T tunning_nominal_DW;
-  X_tunning_nominal_T tunning_nominal_X;/* Block continuous states */
+  DW_tuning_GS1_T tuning_GS1_DW;
+  X_tuning_GS1_T tuning_GS1_X;         /* Block continuous states */
 
   /* Real-Time Model */
-  RT_MODEL_tunning_nominal_T tunning_nominal_M;
+  RT_MODEL_tuning_GS1_T tuning_GS1_M;
 
   /* Continuous states update member function*/
   void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si );
 
   /* Derivatives member function */
-  void tunning_nominal_derivatives();
+  void tuning_GS1_derivatives();
 };
 
 /*-
@@ -470,68 +470,68 @@ class tunning_nominalModelClass {
  *
  * Here is the system hierarchy for this model
  *
- * '<Root>' : 'tunning_nominal'
- * '<S1>'   : 'tunning_nominal/Actuator_Fault'
- * '<S2>'   : 'tunning_nominal/FDD_Kalman'
- * '<S3>'   : 'tunning_nominal/Kalman Filter'
- * '<S4>'   : 'tunning_nominal/Test_config_and_data'
- * '<S5>'   : 'tunning_nominal/Thrust2command'
- * '<S6>'   : 'tunning_nominal/XY State Feedback'
- * '<S7>'   : 'tunning_nominal/pitch_controller_SF'
- * '<S8>'   : 'tunning_nominal/roll_controller_SF'
- * '<S9>'   : 'tunning_nominal/yaw_controller'
- * '<S10>'  : 'tunning_nominal/z_controller'
- * '<S11>'  : 'tunning_nominal/FDD_Kalman/Cross Product'
- * '<S12>'  : 'tunning_nominal/FDD_Kalman/MATLAB Function1'
- * '<S13>'  : 'tunning_nominal/FDD_Kalman/Cross Product/Subsystem'
- * '<S14>'  : 'tunning_nominal/FDD_Kalman/Cross Product/Subsystem2'
- * '<S15>'  : 'tunning_nominal/Kalman Filter/CalculatePL'
- * '<S16>'  : 'tunning_nominal/Kalman Filter/CalculateYhat'
- * '<S17>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionA'
- * '<S18>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionB'
- * '<S19>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionC'
- * '<S20>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionD'
- * '<S21>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionG'
- * '<S22>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionH'
- * '<S23>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionN'
- * '<S24>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionP'
- * '<S25>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionP0'
- * '<S26>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionQ'
- * '<S27>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionR'
- * '<S28>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionReset'
- * '<S29>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionX'
- * '<S30>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionX0'
- * '<S31>'  : 'tunning_nominal/Kalman Filter/DataTypeConversionu'
- * '<S32>'  : 'tunning_nominal/Kalman Filter/MemoryP'
- * '<S33>'  : 'tunning_nominal/Kalman Filter/Observer'
- * '<S34>'  : 'tunning_nominal/Kalman Filter/ReducedQRN'
- * '<S35>'  : 'tunning_nominal/Kalman Filter/ScalarExpansionP0'
- * '<S36>'  : 'tunning_nominal/Kalman Filter/ScalarExpansionQ'
- * '<S37>'  : 'tunning_nominal/Kalman Filter/ScalarExpansionR'
- * '<S38>'  : 'tunning_nominal/Kalman Filter/UseCurrentEstimator'
- * '<S39>'  : 'tunning_nominal/Kalman Filter/checkA'
- * '<S40>'  : 'tunning_nominal/Kalman Filter/checkB'
- * '<S41>'  : 'tunning_nominal/Kalman Filter/checkC'
- * '<S42>'  : 'tunning_nominal/Kalman Filter/checkD'
- * '<S43>'  : 'tunning_nominal/Kalman Filter/checkEnable'
- * '<S44>'  : 'tunning_nominal/Kalman Filter/checkG'
- * '<S45>'  : 'tunning_nominal/Kalman Filter/checkH'
- * '<S46>'  : 'tunning_nominal/Kalman Filter/checkN'
- * '<S47>'  : 'tunning_nominal/Kalman Filter/checkP0'
- * '<S48>'  : 'tunning_nominal/Kalman Filter/checkQ'
- * '<S49>'  : 'tunning_nominal/Kalman Filter/checkR'
- * '<S50>'  : 'tunning_nominal/Kalman Filter/checkReset'
- * '<S51>'  : 'tunning_nominal/Kalman Filter/checkX0'
- * '<S52>'  : 'tunning_nominal/Kalman Filter/checku'
- * '<S53>'  : 'tunning_nominal/Kalman Filter/checky'
- * '<S54>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionL'
- * '<S55>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionM'
- * '<S56>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionP'
- * '<S57>'  : 'tunning_nominal/Kalman Filter/CalculatePL/DataTypeConversionZ'
- * '<S58>'  : 'tunning_nominal/Kalman Filter/Observer/MeasurementUpdate'
- * '<S59>'  : 'tunning_nominal/Kalman Filter/UseCurrentEstimator/Enabled Subsystem'
- * '<S60>'  : 'tunning_nominal/Test_config_and_data/FFW'
- * '<S61>'  : 'tunning_nominal/Test_config_and_data/LOE_'
- * '<S62>'  : 'tunning_nominal/Test_config_and_data/MATLAB Function'
+ * '<Root>' : 'tuning_GS1'
+ * '<S1>'   : 'tuning_GS1/Actuator_Fault'
+ * '<S2>'   : 'tuning_GS1/FDD_Kalman'
+ * '<S3>'   : 'tuning_GS1/Kalman Filter'
+ * '<S4>'   : 'tuning_GS1/Test_config_and_data'
+ * '<S5>'   : 'tuning_GS1/Thrust2command'
+ * '<S6>'   : 'tuning_GS1/XY State Feedback'
+ * '<S7>'   : 'tuning_GS1/pitch_controller_SF'
+ * '<S8>'   : 'tuning_GS1/roll_controller_SF'
+ * '<S9>'   : 'tuning_GS1/yaw_controller'
+ * '<S10>'  : 'tuning_GS1/z_controller'
+ * '<S11>'  : 'tuning_GS1/FDD_Kalman/Cross Product'
+ * '<S12>'  : 'tuning_GS1/FDD_Kalman/MATLAB Function1'
+ * '<S13>'  : 'tuning_GS1/FDD_Kalman/Cross Product/Subsystem'
+ * '<S14>'  : 'tuning_GS1/FDD_Kalman/Cross Product/Subsystem2'
+ * '<S15>'  : 'tuning_GS1/Kalman Filter/CalculatePL'
+ * '<S16>'  : 'tuning_GS1/Kalman Filter/CalculateYhat'
+ * '<S17>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionA'
+ * '<S18>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionB'
+ * '<S19>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionC'
+ * '<S20>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionD'
+ * '<S21>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionG'
+ * '<S22>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionH'
+ * '<S23>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionN'
+ * '<S24>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionP'
+ * '<S25>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionP0'
+ * '<S26>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionQ'
+ * '<S27>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionR'
+ * '<S28>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionReset'
+ * '<S29>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionX'
+ * '<S30>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionX0'
+ * '<S31>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionu'
+ * '<S32>'  : 'tuning_GS1/Kalman Filter/MemoryP'
+ * '<S33>'  : 'tuning_GS1/Kalman Filter/Observer'
+ * '<S34>'  : 'tuning_GS1/Kalman Filter/ReducedQRN'
+ * '<S35>'  : 'tuning_GS1/Kalman Filter/ScalarExpansionP0'
+ * '<S36>'  : 'tuning_GS1/Kalman Filter/ScalarExpansionQ'
+ * '<S37>'  : 'tuning_GS1/Kalman Filter/ScalarExpansionR'
+ * '<S38>'  : 'tuning_GS1/Kalman Filter/UseCurrentEstimator'
+ * '<S39>'  : 'tuning_GS1/Kalman Filter/checkA'
+ * '<S40>'  : 'tuning_GS1/Kalman Filter/checkB'
+ * '<S41>'  : 'tuning_GS1/Kalman Filter/checkC'
+ * '<S42>'  : 'tuning_GS1/Kalman Filter/checkD'
+ * '<S43>'  : 'tuning_GS1/Kalman Filter/checkEnable'
+ * '<S44>'  : 'tuning_GS1/Kalman Filter/checkG'
+ * '<S45>'  : 'tuning_GS1/Kalman Filter/checkH'
+ * '<S46>'  : 'tuning_GS1/Kalman Filter/checkN'
+ * '<S47>'  : 'tuning_GS1/Kalman Filter/checkP0'
+ * '<S48>'  : 'tuning_GS1/Kalman Filter/checkQ'
+ * '<S49>'  : 'tuning_GS1/Kalman Filter/checkR'
+ * '<S50>'  : 'tuning_GS1/Kalman Filter/checkReset'
+ * '<S51>'  : 'tuning_GS1/Kalman Filter/checkX0'
+ * '<S52>'  : 'tuning_GS1/Kalman Filter/checku'
+ * '<S53>'  : 'tuning_GS1/Kalman Filter/checky'
+ * '<S54>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionL'
+ * '<S55>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionM'
+ * '<S56>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionP'
+ * '<S57>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionZ'
+ * '<S58>'  : 'tuning_GS1/Kalman Filter/Observer/MeasurementUpdate'
+ * '<S59>'  : 'tuning_GS1/Kalman Filter/UseCurrentEstimator/Enabled Subsystem'
+ * '<S60>'  : 'tuning_GS1/Test_config_and_data/FFW'
+ * '<S61>'  : 'tuning_GS1/Test_config_and_data/LOE_'
+ * '<S62>'  : 'tuning_GS1/Test_config_and_data/MATLAB Function'
  */
-#endif                                 /* RTW_HEADER_tunning_nominal_h_ */
+#endif                                 /* RTW_HEADER_tuning_GS1_h_ */
