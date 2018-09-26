@@ -28,6 +28,7 @@
 #include <mav_msgs/conversions.h>
 #include <mav_msgs/default_topics.h>
 #include <nav_msgs/Odometry.h>
+#include <asctec_hl_comm/MotorSpeed.h>
 
 #include "parameters.h"
 
@@ -40,14 +41,9 @@ namespace gsft_control {
 // Default values.
 static const std::string kDefaultNamespace = "";
 static const std::string kDefaultCommandMotorSpeedTopic =
-    mav_msgs::default_topics::COMMAND_ACTUATORS; // "command/motor_speed";
-static const std::string kDefaultCommandMultiDofJointTrajectoryTopic =
-    mav_msgs::default_topics::COMMAND_TRAJECTORY; // "command/trajectory"
-static const std::string kDefaultCommandRollPitchYawrateThrustTopic =
-    mav_msgs::default_topics::COMMAND_ROLL_PITCH_YAWRATE_THRUST;
-    // "command/roll_pitch_yawrate_thrust"
-static const std::string kDefaultImuTopic =
-    mav_msgs::default_topics::IMU;      // "imu
+    mav_msgs::default_topics::COMMAND_ACTUATORS; // "command/motor_speed"
+static const std::string kDefaultMotorSpeedTopic =
+    mav_msgs::default_topics::MOTOR_MEASUREMENT; // "motor_speed"
 static const std::string kDefaultOdometryTopic =
     mav_msgs::default_topics::ODOMETRY; // "odometry"
 
@@ -55,7 +51,6 @@ namespace default_topics {
   static constexpr char LOE[] = "lost_control";
   static constexpr char XYZYAW_ERROR[] = "xyz_yaw_error";
   static constexpr char VIRTUAL_CONTROL[] = "virtual_control";
-  static constexpr char COMMAND_RPM[] = "command/motor_rpm";
   static constexpr char UAV_STATE[] = "uav_state";
 }
 
@@ -77,10 +72,19 @@ struct EigenOdometry {
   };
 
   Eigen::Vector3d position;
-  Eigen::Quaterniond orientation;
-  Eigen::Vector3d velocity; // Velocity is expressed in the Body frame!
-  Eigen::Vector3d angular_velocity;
+  Eigen::Quaterniond orientation;       // orientation_W_B
+  Eigen::Vector3d velocity;             // [u v w] velocity is expressed in the Body frame!
+  Eigen::Vector3d angular_velocity;     // [p q r] angular velocity is in the Body frame too!
+
+  inline double getYaw() const { return mav_msgs::yawFromQuaternion(orientation); }
+  inline void getEulerAngles(Eigen::Vector3d* euler_angles) const {
+    mav_msgs::getEulerAnglesFromQuaternion(orientation, euler_angles);
+  }
+  inline Eigen::Vector3d getVelocityWorld() const {
+    return orientation * velocity;    // orientation_W_B * velocity_B
+  }
 };
+
 
 inline void eigenOdometryFromMsg(const nav_msgs::OdometryConstPtr& msg,
                                  EigenOdometry* odometry) {
@@ -130,6 +134,29 @@ inline void skewMatrixFromVector(Eigen::Vector3d& vector, Eigen::Matrix3d* skew_
 inline void vectorFromSkewMatrix(Eigen::Matrix3d& skew_matrix, Eigen::Vector3d* vector) {
   *vector << skew_matrix(2, 1), skew_matrix(0,2), skew_matrix(1, 0);
 }
+
+inline void commandMsg2Thrust(const asctec_hl_comm::MotorSpeedConstPtr& msg,
+                                 Eigen::VectorXd* thrust) {
+  Eigen::VectorXd temp = Eigen::VectorXd::Zero(msg->motor_speed.size());
+   for (unsigned int i=0; i< 6; i++) {
+      temp[i] = kDefaultRotorForceConstant*pow(((1250.0 + 43.75*(msg->motor_speed[i]))/9.5493),2);
+   }
+   *thrust = temp;
+}
+
+inline double command2Thrust(double command) {
+  return kDefaultRotorForceConstant*pow(((1250.0 + 43.75*(command))/9.5493),2);
+}
+
+inline void speedMsg2Thrust(const mav_msgs::ActuatorsConstPtr& msg,
+                               Eigen::VectorXd* thrust) {
+  Eigen::VectorXd temp = Eigen::VectorXd::Zero(msg->angular_velocities.size());
+   for (unsigned int i=0; i< 6; i++) {
+      temp[i] = kDefaultRotorForceConstant*pow(msg->angular_velocities[i],2);
+   }
+   *thrust = temp;
+}
+
 }
 
 #endif // GSFT_CONTROL_COMMON_H

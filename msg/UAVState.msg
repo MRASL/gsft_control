@@ -6,8 +6,8 @@ float64 heading_ref
 
 # state
 geometry_msgs/Vector3 position_W
-geometry_msgs/Vector3 velocity_B
-geometry_msgs/Vector3 euler_angle
+geometry_msgs/Vector3 velocity_W
+geometry_msgs/Vector3 euler_angles
 geometry_msgs/Vector3 rotation_speed_B
 
 # virtual control

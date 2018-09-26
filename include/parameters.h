@@ -13,16 +13,27 @@ static constexpr double kDefaultRotor4Angle = -1.57079632679;
 static constexpr double kDefaultRotor5Angle = -0.52359877559;
 
 // Default vehicle parameters for Asctec Firefly.
-static constexpr double kDefaultMass = 1.56779;
+static constexpr double kDefaultMass      = 1.54;
 static constexpr double kDefaultArmLength = 0.215;
 static constexpr double kDefaultInertiaXx = 0.0347563;
 static constexpr double kDefaultInertiaYy = 0.0458929;
 static constexpr double kDefaultInertiaZz = 0.0977;
 static constexpr double kDefaultRotorForceConstant = 8.54858e-6;
-static constexpr double kDefaultRotorMomentConstant = 1.6e-2;
+// static constexpr double kDefaultRotorMomentConstant = 1.6e-2;
+static constexpr double kDefaultRotorMomentConstant = 3.65e-2;
+static constexpr double kDefaultRotorTimeUpConstant   = 0.0125;     // 80Hz
+static constexpr double kDefaultRotorTimeDownConstant = 0.025;     // 40Hz
 
 // Default physics parameters.
 static constexpr double kDefaultGravity = 9.81;
+static constexpr double kDefaultPi      = 3.14159;
+
+// Default constraints
+static constexpr double kDefaultXmax    = 2.5;
+static constexpr double kDefaultYmax    = 2.5;
+static constexpr double kDefaultZmax    = 1.5;
+
+static constexpr double kDefaultCutoffAltitude    = 0.175;    // CutOff motor (landing)
 
 struct Rotor {
   Rotor()

@@ -1,24 +1,20 @@
 #include <ros/ros.h>
-
-#include <mav_msgs/default_topics.h>
 #include <nav_msgs/Odometry.h>
-#include <mav_msgs/eigen_mav_msgs.h>
-#include <mav_msgs/conversions.h>
 
 #include <tf/tf.h>
 #include <tf_conversions/tf_eigen.h>
-#include <trajectory_msgs/MultiDOFJointTrajectory.h>
+//#include <trajectory_msgs/MultiDOFJointTrajectory.h>
+// #include <mav_msgs/eigen_mav_msgs.h>
 
 #include "parameters.h"
 #include "parameters_ros.h"
 #include "common.h"
 
+#include <tuning_GS1.h>
+#include <dynamic_reconfigure/server.h>
+
 #include <gsft_control/LOE.h>
 #include <gsft_control/UAVState.h>
-#include <tuning_GS1.h>
-#include <asctec_hl_comm/MotorSpeed.h>
-
-#include <dynamic_reconfigure/server.h>
 #include <gsft_control/controllerDynConfig.h>
 
 tuning_GS1ModelClass gController;
@@ -27,55 +23,20 @@ bool gPublish;
 bool gInit_flag;
 bool gLanding_flag;
 bool gEmergency_status;
-
+bool gControl_actived;
 int  gTest_mode;
-
-//ros::Time gPrev_it;
+double gPsi;                   // heading (rad)
 
 Eigen::VectorXd gY0(4);        // initial position (equilibrium)
 Eigen::VectorXd gRef(4);       // references (x, y, z, yaw)
 Eigen::VectorXd gGain(19);
 Eigen::VectorXd gLOE(6);
 Eigen::VectorXd gLOE_t(6);
-Eigen::VectorXd gMotor_measurement(6);
-// Eigen::VectorXd gAng_acc_calcul(3); // derivative of angular velocity
+Eigen::VectorXd gLOE_calcul(6);
+Eigen::VectorXd gThrust_measure(6);
+Eigen::VectorXd gThrust_prev_sent(6);
 
-double gPsi;                   // heading (rad)
-
-mav_msgs::EigenOdometry gOdometry;
-
-void OdometryCallback(const nav_msgs::Odometry::ConstPtr &odom) {
-
-/*  ros::Time current_time = ros::Time::now();
-  ros::Duration Td = current_time - gPrev_it;
-  gPrev_it = current_time;
-
-  Eigen::VectorXd prev_ang_velocity(3);
-  prev_ang_velocity[0] = gOdometry.angular_velocity_B.x();
-  prev_ang_velocity[1] = gOdometry.angular_velocity_B.y();
-  prev_ang_velocity[2] = gOdometry.angular_velocity_B.z(); */
-
-  mav_msgs::eigenOdometryFromMsg(*odom, &gOdometry);   // new measurement
-
-  /*gAng_acc_calcul[0] = (gOdometry.angular_velocity_B.x() - prev_ang_velocity[0])/Td.toSec();
-  gAng_acc_calcul[1] = (gOdometry.angular_velocity_B.y() - prev_ang_velocity[1])/Td.toSec();
-  gAng_acc_calcul[2] = (gOdometry.angular_velocity_B.z() - prev_ang_velocity[2])/Td.toSec();*/
-
-  if ((gOdometry.position_W.x() > 2.5)||(gOdometry.position_W.x() < -2.5)||(gOdometry.position_W.y() > 2.5)||(gOdometry.position_W.y() < -2.5)||(gOdometry.position_W.z() > 1.75))
-  {
-    if (!gEmergency_status){
-      gEmergency_status = true;
-    }
-  }
-
-  //if (gLanding_flag || gInit)
-}
-
-void MotorSpeedCallback(const asctec_hl_comm::MotorSpeed::ConstPtr &motor) {
-  for (unsigned int i = 0; i <6; ++i) {
-    gMotor_measurement[i] = motor->motor_speed[i];
-  }
-}
+gsft_control::EigenOdometry gOdometry;
 
 void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t level) {
   if (config.RESET) {
@@ -87,27 +48,21 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gGain[0]  = config.kx;      // x
         gGain[1]  = config.kvx;     // vx
         gGain[2]  = config.kix;     // integral x
-
         gGain[3]  = config.ky;      // y
         gGain[4]  = config.kvy;
         gGain[5]  = config.kiy;
-
         gGain[6]  = config.kz;      // z
         gGain[7]  = config.kvz;
         gGain[8]  = config.kiz;
-
         gGain[9]  = config.kphi;    // roll
         gGain[10] = config.kp;
         gGain[11] = config.kiphi;
-
         gGain[12] = config.ktheta;  // pitch
         gGain[13] = config.kq;
         gGain[14] = config.kitheta;
-
         gGain[15] = config.kpsi;    // yaw
         gGain[16] = config.kr;
         gGain[17] = config.kipsi;
-
 
         ROS_INFO("New controller gains");
         config.new_controller_gains   = false;
@@ -116,9 +71,9 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
       gTest_mode = config.test_mode;
 
       if (config.enable_take_off && !gInit_flag){     // only once
-        gY0[0]    = gOdometry.position_W.x();
-        gY0[1]    = gOdometry.position_W.y();
-        gY0[2]    = gOdometry.position_W.z();
+        gY0[0]    = gOdometry.position.x();
+        gY0[1]    = gOdometry.position.y();
+        gY0[2]    = gOdometry.position.z();
         gY0[3]    = gPsi;
       //  if (config.test_mode == gsft_control::controllerDyn_TEST_MANUAL){
         gRef[0]   = gY0[0];
@@ -126,31 +81,24 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gRef[2]   = config.ref_z;
         gRef[3]   = gY0[3];
       //  }
-
         gGain[0]  = config.kx;      // x
         gGain[1]  = config.kvx;     // vx
         gGain[2]  = config.kix;     // integral x
-
         gGain[3]  = config.ky;      // y
         gGain[4]  = config.kvy;
         gGain[5]  = config.kiy;
-
         gGain[6]  = config.kz;      // z
         gGain[7]  = config.kvz;
         gGain[8]  = config.kiz;
-
         gGain[9]  = config.kphi;    // roll
         gGain[10] = config.kp;
         gGain[11] = config.kiphi;
-
         gGain[12] = config.ktheta;  // pitch
         gGain[13] = config.kq;
         gGain[14] = config.kitheta;
-
         gGain[15] = config.kpsi;    // yaw
         gGain[16] = config.kr;
         gGain[17] = config.kipsi;
-
 
         gLOE[0]   = config.LOE_1;
         gLOE[1]   = config.LOE_2;
@@ -172,13 +120,13 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
 
       }
       else if (config.enable_landing && !gLanding_flag){   // only once
-        gRef[0]  = gOdometry.position_W.x();
-        gRef[1]  = gOdometry.position_W.y();
-        gRef[2]  = 0.0;
+        gRef[0]  = gOdometry.position.x();
+        gRef[1]  = gOdometry.position.y();
+        gRef[2]  = gY0[2];
         gRef[3]  = gPsi;
         gTest_mode = gsft_control::controllerDyn_TEST_MANUAL;
         gLanding_flag = true;
-        ROS_INFO("Landing Request: %s at x_ref = %f, y_ref = %f,psi_ref = %f(deg)",config.enable_landing?"True":"False",gRef[0],gRef[1],gRef[3]*180.0/3.14159);
+        ROS_INFO("Landing Request: %s at x_ref = %f, y_ref = %f,psi_ref = %f(deg)",config.enable_landing?"True":"False",gRef[0],gRef[1],gRef[3]*180.0/gsft_control::kDefaultPi);
         config.enable_landing  = false;
       }
       else if (gTest_mode == gsft_control::controllerDyn_TEST_MANUAL){
@@ -186,11 +134,37 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
           gRef[0]   = config.ref_x;
           gRef[1]   = config.ref_y;
           gRef[2]   = config.ref_z;
-          gRef[3]   = config.ref_yaw_deg*3.14159/180.0;
+          gRef[3]   = config.ref_yaw_deg*gsft_control::kDefaultPi/180.0;
           ROS_INFO("Waypoint Request: x_ref = %f, y_ref = %f, z_ref = %f, psi_ref = %f(deg)",gRef[0],gRef[1],gRef[2],gRef[3]);
           config.send_waypoint   = false;
         }
       }
+  }
+}
+
+
+//ros::Time gPrev_it;
+// Eigen::VectorXd gAng_acc_calcul(3); // derivative of angular velocity
+void OdometryCallback(const nav_msgs::OdometryConstPtr& odom_msg) {
+  gsft_control::eigenOdometryFromMsg(odom_msg, &gOdometry);   // new measurement
+
+// Derivative of angular velocity => Angular acceleration
+/*  ros::Time current_time = ros::Time::now();
+  ros::Duration Td = current_time - gPrev_it;
+  gPrev_it = current_time;
+  Eigen::VectorXd prev_ang_velocity(3);
+  prev_ang_velocity[0] = gOdometry.angular_velocity.x();  // old measurement
+  mav_msgs::eigenOdometryFromMsg(*odom, &gOdometry);      // new measurement
+  gAng_acc_calcul[0] = (gOdometry.angular_velocity.x() - prev_ang_velocity[0])/Td.toSec();
+*/
+
+  if ((gOdometry.position.x() > gsft_control::kDefaultXmax)||(gOdometry.position.x() < -gsft_control::kDefaultXmax)
+    ||(gOdometry.position.y() > gsft_control::kDefaultYmax)||(gOdometry.position.y() < -gsft_control::kDefaultYmax)
+    ||(gOdometry.position.z() > gsft_control::kDefaultZmax))
+  {
+    if (!gEmergency_status){
+      gEmergency_status = true;
+    }
   }
 }
 
@@ -202,11 +176,38 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
     "]: ---------- TND LOE0 = " << gLOE[0] << std::endl;
 }*/
 
-void timmerCallback(const ros::TimerEvent&)
+// ASCTEC test
+void MotorSpeedCallback(const asctec_hl_comm::MotorSpeedConstPtr& motor_msg) {
+  gsft_control::commandMsg2Thrust(motor_msg,&gThrust_measure);
+  ROS_INFO("Thrust T1 = %f(N)",gThrust_measure[0]);
+ // new measurement
+}
+
+// Gazebo
+void MotorSpeedGazeboCallback(const mav_msgs::ActuatorsConstPtr& motor_msg) {
+  gsft_control::speedMsg2Thrust(motor_msg,&gThrust_measure);
+// ROS_INFO("Thrust T1 = %f(N)",gThrust_measure[0]);
+ // new measurement
+}
+
+void timerPublishCallback(const ros::TimerEvent&)    // calcul LOE
 {
   if (!gPublish){
     gPublish = true;
   }
+}
+
+void timerLOECallback(const ros::TimerEvent&)   // data publish
+{
+  if (gControl_actived){
+    for(unsigned int i=0; i< 6; i++) {
+      if (gThrust_prev_sent[i]!=0){
+        gLOE_calcul[i] = 1-gThrust_measure[i]/gThrust_prev_sent[i];
+      }
+      gThrust_prev_sent[i] = gsft_control::command2Thrust(gController.tuning_GS1_Y.motor_command[i]);
+    }
+  }
+  ROS_INFO("thrust_meas[0] = %f, thrust_prev = %f, LOE[0] = %f",gThrust_measure[0],gThrust_prev_sent[0],gLOE_calcul[0]);
 }
 
 int main(int argc, char** argv) {
@@ -215,75 +216,81 @@ int main(int argc, char** argv) {
   ros::NodeHandle pnh("~");
   ROS_INFO("tuning_GS1_node main started");
 
+  std::string test_scenario;  // Gazebo or Experimental test with Asctec Firefly
+  pnh.getParam("scenario",test_scenario);
+  ROS_INFO_STREAM("test scenario = " <<test_scenario);
+
   ros::Subscriber odometry_sub_;
-  odometry_sub_ = nh.subscribe(mav_msgs::default_topics::ODOMETRY, 1, OdometryCallback);
+  odometry_sub_ = nh.subscribe(gsft_control::kDefaultOdometryTopic, 1, OdometryCallback);
 
-  ros::Subscriber motor_speed_measurement_sub_;
-  motor_speed_measurement_sub_ = nh.subscribe(mav_msgs::default_topics::MOTOR_MEASUREMENT, 1, MotorSpeedCallback);
-
-  /*ros::Subscriber lost_control_sub_;
+  ros::Subscriber motor_speed_sub_;
+  if (test_scenario=="experimental"){
+      motor_speed_sub_ = nh.subscribe(gsft_control::kDefaultMotorSpeedTopic, 1, MotorSpeedCallback);
+  }
+  else{       // Rotors simulator (Gazebo)
+      motor_speed_sub_ = nh.subscribe(gsft_control::kDefaultMotorSpeedTopic, 1, MotorSpeedGazeboCallback);
+  }
+ /*ros::Subscriber lost_control_sub_;
   lost_control_sub_ = nh.subscribe(gsft_control::default_topics::LOE, 1, LostControlCallback);*/
 
-  ros::Publisher motor_RPM_reference_pub_;          // motor speed RPM   => Asctec Firefly test
-  motor_RPM_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
-        gsft_control::default_topics::COMMAND_RPM, 1);
-
-  ros::Publisher motor_velocity_reference_pub_;     // motor speed rad/s => Gazebo test
-  motor_velocity_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
-        mav_msgs::default_topics::COMMAND_ACTUATORS, 1);
+  ros::Publisher motor_speed_reference_pub_;
+  motor_speed_reference_pub_ = nh.advertise<mav_msgs::Actuators>(
+        gsft_control::kDefaultCommandMotorSpeedTopic, 1);   // 'command/motor_speed'
 
   ros::Publisher uav_state_pub_;
   uav_state_pub_ = nh.advertise<gsft_control::UAVState>(gsft_control::default_topics::UAV_STATE, 1);
 
-  ros::Timer timer = nh.createTimer(ros::Duration(0.01),timmerCallback);
-
-  // int run_freq = 1000;
-  // pnh.getParam("run_frequency",run_freq);
-  // ROS_INFO("Param: run frequency = %d",run_freq);
-  //ros::Rate r(run_freq);
+  ros::Timer timerPublish = nh.createTimer(ros::Duration(0.01),timerPublishCallback);
+  ros::Timer timerLOE     = nh.createTimer(ros::Duration(gsft_control::kDefaultRotorTimeUpConstant),timerLOECallback);
 
   ros::Rate r(1000);
 
+  gPublish          = false;
   gInit_flag        = false;
   gLanding_flag     = false;
   gEmergency_status = false;
-  gPublish          = false;
+  gControl_actived  = false;
+  gTest_mode        = 0;
+  gPsi              = 0.0;
 
-  gRef  << 0.0, 0.0, 0.0, 0.0;
-  gGain = Eigen::VectorXd::Zero(19);
-  gLOE  = Eigen::VectorXd::Zero(6);
+  gY0    << 0.0, 0.0, 0.0, 0.0;
+  gRef   << 0.0, 0.0, 0.0, 0.0;
+  gGain   = Eigen::VectorXd::Zero(19);
+  gLOE    = Eigen::VectorXd::Zero(6);
   gLOE_t  = Eigen::VectorXd::Zero(6);
-  gY0   << 0.0, 0.0, 0.0, 0.0;
+  gLOE_calcul = Eigen::VectorXd::Zero(6);
+  gThrust_measure = Eigen::VectorXd::Zero(6);
+  gThrust_prev_sent    = Eigen::VectorXd::Zero(6);
 
   dynamic_reconfigure::Server<gsft_control::controllerDynConfig> server;
   dynamic_reconfigure::Server<gsft_control::controllerDynConfig>::CallbackType f;
   f = boost::bind(&controller_dyn_callback, _1, _2);
   server.setCallback(f);
 
-  double phi, theta;
-  Eigen::Matrix3d R_W_B;
   Eigen::Vector3d velocity_W ;
+  Eigen::Vector3d euler_angles;
 
   Eigen::VectorXd motor_RPM(6);           // range 0 .. 10000 RPM
   Eigen::VectorXd motor_command(6);       // range 0 .. 200
   Eigen::VectorXd motor_speed(6);         // range 0 .. 1047 rad/s
 
-  bool control_actived = false;
-  bool end_mission  = false;
-
 //  gPrev_it = ros::Time::now();
 
   while(ros::ok()) {
-    R_W_B = gOdometry.orientation_W_B.toRotationMatrix();
-    velocity_W =  R_W_B * gOdometry.velocity_B;
+    /*Eigen::Matrix3d R_W_B = gOdometry.orientation.toRotationMatrix();
+    velocity_W =  R_W_B * gOdometry.velocity;
+    double psi = atan2(R_W_B(1,0),R_W_B(0,0));
+    double phi  = atan2(R_W_B(2,1),R_W_B(2,2));
+    double theta = asin(-R_W_B(2,0));*/
 
-    gPsi = atan2(R_W_B(1,0),R_W_B(0,0));
-    phi  = atan2(R_W_B(2,1),R_W_B(2,2));
-    theta = asin(-R_W_B(2,0));
+    velocity_W = gOdometry.getVelocityWorld();
+    gOdometry.getEulerAngles(&euler_angles);
+    gPsi = euler_angles[2];
+    // gPsi = gOdometry.getYaw();                             // same result
 
-    if (gInit_flag && !control_actived) {                     // only once when controller is not actived
+    if (gInit_flag && !gControl_actived) {                     // only once when controller is not actived
         gController.initialize();
-        control_actived = true;
+        gControl_actived = true;
 
         for (unsigned int i=0; i< 6; i++) {
           gController.tuning_GS1_U.LOE_a[i]  = gLOE[i];     // fault amplitude
@@ -296,9 +303,9 @@ int main(int argc, char** argv) {
         }
     }
 
-    if (control_actived) {                                    // controller active after take-off request
-        // Initialization before Step
-        gController.tuning_GS1_U.mode = gTest_mode;
+    if (gControl_actived) {                                    // controller active after take-off request
+        // Initialization before gController.step();
+        gController.tuning_GS1_U.mode = gTest_mode;       // 0 = manual, ...
 
         for (unsigned int i=0; i< 4; i++) {
           gController.tuning_GS1_U.ref[i]  = gRef[i];
@@ -309,67 +316,54 @@ int main(int argc, char** argv) {
         for (unsigned int i=0; i< 19; i++) {
           gController.tuning_GS1_U.gain[i] = gGain[i];
         }
-        gController.tuning_GS1_U.X[0]   = gOdometry.position_W.x();
-        gController.tuning_GS1_U.X[1]   = gOdometry.position_W.y();
-        gController.tuning_GS1_U.X[2]   = gOdometry.position_W.z();
+        gController.tuning_GS1_U.X[0]   = gOdometry.position.x();
+        gController.tuning_GS1_U.X[1]   = gOdometry.position.y();
+        gController.tuning_GS1_U.X[2]   = gOdometry.position.z();
         gController.tuning_GS1_U.X[3 ]  = velocity_W.x();
         gController.tuning_GS1_U.X[4 ]  = velocity_W.y();
         gController.tuning_GS1_U.X[5 ]  = velocity_W.z();
-        gController.tuning_GS1_U.X[6 ]  = phi;
-        gController.tuning_GS1_U.X[7 ]  = theta;
+        gController.tuning_GS1_U.X[6 ]  = euler_angles[0];
+        gController.tuning_GS1_U.X[7 ]  = euler_angles[1];
         gController.tuning_GS1_U.X[8 ]  = gPsi;
-        gController.tuning_GS1_U.X[9 ]  = gOdometry.angular_velocity_B.x();
-        gController.tuning_GS1_U.X[10]  = gOdometry.angular_velocity_B.y();
-        gController.tuning_GS1_U.X[11]  = gOdometry.angular_velocity_B.z();
-        /*gController.tuning_GS1_U.X[12]  = gAng_acc_calcul[0];
-        gController.tuning_GS1_U.X[13]  = gAng_acc_calcul[1];
-        gController.tuning_GS1_U.X[14]  = gAng_acc_calcul[2]; */
+        gController.tuning_GS1_U.X[9 ]  = gOdometry.angular_velocity.x();
+        gController.tuning_GS1_U.X[10]  = gOdometry.angular_velocity.y();
+        gController.tuning_GS1_U.X[11]  = gOdometry.angular_velocity.z();
 
         // Run Matlab controller
         gController.step();
 
         // Received data from Matlab
         for(unsigned int i=0; i< 6; i++) {
-            if (gEmergency_status || (gLanding_flag && (gOdometry.position_W.z() <= 0.175)))
+            if (gEmergency_status || (gLanding_flag && (gOdometry.position.z() <= gsft_control::kDefaultCutoffAltitude)))
             {
               motor_command[i] = 1.0;
               motor_RPM[i]     = 1250;
-              motor_speed[i]   = 130.0;
+              motor_speed[i]   = 130.0;     // 1250/9.5493
             }
             else
             {
               motor_command[i] = gController.tuning_GS1_Y.motor_command[i];        // normalized [1 .. 200] => Asctec Firefly
-              motor_RPM[i]     = 1250.0 + motor_command[i]*43.75;                       // real RPM
-              motor_speed[i]   = motor_RPM[i]/9.5493;                                   // rad/s => Gazebo
+              motor_RPM[i]     = 1250.0 + motor_command[i]*43.75;                  // real RPM
+              motor_speed[i]   = motor_RPM[i]/9.5493;                              // rad/s => Gazebo
             }
         }
 
-        // Send command: RPM and normalized command in 0 .. 200
-        mav_msgs::ActuatorsPtr motorRPM_msg(new mav_msgs::Actuators);
-        motorRPM_msg->angular_velocities.clear();
-        motorRPM_msg->normalized.clear();
+        // Send command: rad/s (Gazebo) and normalized command in 0 .. 200 (Asctec Firefly)
+        mav_msgs::ActuatorsPtr motor_msg(new mav_msgs::Actuators);
+        motor_msg->angular_velocities.clear();
+        motor_msg->normalized.clear();
         for (int i = 0; i < 6; i++) {
-          motorRPM_msg->angular_velocities.push_back(motor_RPM[i]);
-          motorRPM_msg->normalized.push_back(motor_command[i]);
+          motor_msg->angular_velocities.push_back(motor_speed[i]);
+          motor_msg->normalized.push_back(motor_command[i]);
         }
-        motorRPM_msg->header.stamp =  ros::Time::now();
-        motor_RPM_reference_pub_.publish(motorRPM_msg);
+        motor_msg->header.stamp =  ros::Time::now();
+        motor_speed_reference_pub_.publish(motor_msg);
 
-        // Send command: Rotor speed (rad/s)
-        mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
-        actuator_msg->angular_velocities.clear();
-        actuator_msg->normalized.clear();
-        for (int i = 0; i < 6; i++) {
-          actuator_msg->angular_velocities.push_back(motor_speed[i]);
-        }
-        actuator_msg->header.stamp =  ros::Time::now();
-        motor_velocity_reference_pub_.publish(actuator_msg);
-
-        if (gController.tuning_GS1_Y.ref_out[2] <= 0.25 && gTest_mode > 0){
+        if (gController.tuning_GS1_Y.ref_out[2] <= 0.25 && gTest_mode > 0){  // landing (automatic trajectory)
           gLanding_flag = true;
         }
 
-    } else { // control_actived = false ( before take-off)
+    } else { // gControl_actived = false ( before take-off)
       mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
       actuator_msg->angular_velocities.clear();
 
@@ -378,23 +372,22 @@ int main(int argc, char** argv) {
         actuator_msg->normalized.push_back(0.0);
       }
       actuator_msg->header.stamp =  ros::Time::now();
-      motor_RPM_reference_pub_.publish(actuator_msg);
-      motor_velocity_reference_pub_.publish(actuator_msg);
+      motor_speed_reference_pub_.publish(actuator_msg);
     }
 
     if (gEmergency_status)
     {
       ROS_ERROR("tuning_GS1_node emergency status");
-      ROS_INFO("x = %f, y = %f, z = %f",gOdometry.position_W.x(),gOdometry.position_W.y(),gOdometry.position_W.z());
-      ros::Duration(0.5).sleep();
+      ROS_INFO("x = %f, y = %f, z = %f",gOdometry.position.x(),gOdometry.position.y(),gOdometry.position.z());
+      ros::Duration(0.25).sleep();
       gController.terminate();
       break;
     }
 
-    if (gLanding_flag && (gOdometry.position_W.z() <= 0.175))
+    if (gLanding_flag && (gOdometry.position.z() <= gsft_control::kDefaultCutoffAltitude))
     {
       ROS_INFO("Controller desactivated");
-      ROS_INFO("x = %f, y = %f, z = %f",gOdometry.position_W.x(),gOdometry.position_W.y(),gOdometry.position_W.z());
+      ROS_INFO("x = %f, y = %f, z = %f",gOdometry.position.x(),gOdometry.position.y(),gOdometry.position.z());
       ros::Duration(0.5).sleep();
       gController.terminate();
       break;
@@ -408,18 +401,18 @@ int main(int argc, char** argv) {
       uav_state_msg->position_ref.z  = gController.tuning_GS1_Y.ref_out[2];
       uav_state_msg->heading_ref     = gController.tuning_GS1_Y.ref_out[3];
 
-      uav_state_msg->position_W.x  = gOdometry.position_W.x();
-      uav_state_msg->position_W.y  = gOdometry.position_W.y();
-      uav_state_msg->position_W.z  = gOdometry.position_W.z();
-      uav_state_msg->velocity_B.x  = velocity_W.x();
-      uav_state_msg->velocity_B.y  = velocity_W.y();
-      uav_state_msg->velocity_B.z  = velocity_W.z();
-      uav_state_msg->euler_angle.x = phi;
-      uav_state_msg->euler_angle.y = theta;
-      uav_state_msg->euler_angle.z = gPsi;
-      uav_state_msg->rotation_speed_B.x  = gOdometry.angular_velocity_B.x();
-      uav_state_msg->rotation_speed_B.y  = gOdometry.angular_velocity_B.y();
-      uav_state_msg->rotation_speed_B.z  = gOdometry.angular_velocity_B.z();
+      uav_state_msg->position_W.x   = gOdometry.position.x();
+      uav_state_msg->position_W.y   = gOdometry.position.y();
+      uav_state_msg->position_W.z   = gOdometry.position.z();
+      uav_state_msg->velocity_W.x   = velocity_W.x();
+      uav_state_msg->velocity_W.y   = velocity_W.y();
+      uav_state_msg->velocity_W.z   = velocity_W.z();
+      uav_state_msg->euler_angles.x = euler_angles[0];
+      uav_state_msg->euler_angles.y = euler_angles[1];
+      uav_state_msg->euler_angles.z = gPsi;
+      uav_state_msg->rotation_speed_B.x  = gOdometry.angular_velocity.x();
+      uav_state_msg->rotation_speed_B.y  = gOdometry.angular_velocity.y();
+      uav_state_msg->rotation_speed_B.z  = gOdometry.angular_velocity.z();
       uav_state_msg->total_thrust  = gController.tuning_GS1_Y.virtual_control[0];
       uav_state_msg->moment.x      = gController.tuning_GS1_Y.virtual_control[1];
       uav_state_msg->moment.y      = gController.tuning_GS1_Y.virtual_control[2];

@@ -5,7 +5,8 @@
   <arg name="debug" default="false"/>
 
  <group ns="firefly">
-    <node name="tunning_lqr" pkg="gsft_control" type="tunning_lqr_node" output="screen">
+    <node name="tuning_GS1" pkg="gsft_control" type="tuning_GS1_node" output="screen">
+       <param name="~scenario"  value="gazebo" type="str"/>
        <remap from="odometry" to="odometry_sensor1/odometry" />
     </node>
   </group>
