@@ -1,7 +1,7 @@
 <launch>
 	<node pkg="gsft_control" type="tuning_GS1_node" name="tuning_GS1" output="screen">
 		<!-- <rosparam command="load" file="$(find gsft_control)/cfg/firefly.yaml" /> -->
-		<param name="~scenario"  value="experimental" type="str"/>       
+		<param name="~scenario"  value="experimental" type="str"/>
 		<remap from="odometry" to="/msf_core/odometry" />
 		<remap from="command/motor_speed" to="/fcu/command/direct_motor" />
 		<remap from="motor_speed" to="/fcu/motor_speed" />

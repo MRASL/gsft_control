@@ -19,20 +19,20 @@
 
 tuning_GS1ModelClass gController;
 
-bool gPublish;
+bool gPublish_uav_state;
+bool gPublish_LOE;
 bool gInit_flag;
 bool gLanding_flag;
 bool gEmergency_status;
-bool gControl_actived;
+bool gController_active;
 int  gTest_mode;
-double gPsi;                   // heading (rad)
+double gPsi;                    // heading (rad)
 
-Eigen::VectorXd gY0(4);        // initial position (equilibrium)
-Eigen::VectorXd gRef(4);       // references (x, y, z, yaw)
+Eigen::VectorXd gY0(4);         // initial position (equilibrium)
+Eigen::VectorXd gRef(4);        // references (x, y, z, yaw)
 Eigen::VectorXd gGain(19);
-Eigen::VectorXd gLOE(6);
-Eigen::VectorXd gLOE_t(6);
-Eigen::VectorXd gLOE_calcul(6);
+Eigen::VectorXd gLOE(6);        // LOE true
+Eigen::VectorXd gLOE_t(6);      // LOE moment
 Eigen::VectorXd gThrust_measure(6);
 Eigen::VectorXd gThrust_prev_sent(6);
 
@@ -142,7 +142,6 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
   }
 }
 
-
 //ros::Time gPrev_it;
 // Eigen::VectorXd gAng_acc_calcul(3); // derivative of angular velocity
 void OdometryCallback(const nav_msgs::OdometryConstPtr& odom_msg) {
@@ -190,24 +189,18 @@ void MotorSpeedGazeboCallback(const mav_msgs::ActuatorsConstPtr& motor_msg) {
  // new measurement
 }
 
-void timerPublishCallback(const ros::TimerEvent&)    // calcul LOE
+void timerUavStatePublishCallback(const ros::TimerEvent&)
 {
-  if (!gPublish){
-    gPublish = true;
+  if (!gPublish_uav_state){
+    gPublish_uav_state = true;
   }
 }
 
-void timerLOECallback(const ros::TimerEvent&)   // data publish
+void timerLOEPublishCallback(const ros::TimerEvent&)
 {
-  if (gControl_actived){
-    for(unsigned int i=0; i< 6; i++) {
-      if (gThrust_prev_sent[i]!=0){
-        gLOE_calcul[i] = 1-gThrust_measure[i]/gThrust_prev_sent[i];
-      }
-      gThrust_prev_sent[i] = gsft_control::command2Thrust(gController.tuning_GS1_Y.motor_command[i]);
+    if (!gPublish_LOE){
+      gPublish_LOE = true;
     }
-  }
-  ROS_INFO("thrust_meas[0] = %f, thrust_prev = %f, LOE[0] = %f",gThrust_measure[0],gThrust_prev_sent[0],gLOE_calcul[0]);
 }
 
 int main(int argc, char** argv) {
@@ -219,6 +212,9 @@ int main(int argc, char** argv) {
   std::string test_scenario;  // Gazebo or Experimental test with Asctec Firefly
   pnh.getParam("scenario",test_scenario);
   ROS_INFO_STREAM("test scenario = " <<test_scenario);
+
+  /*std::string frame_id;
+  pnh.param("frame_id", frame_id, std::string("matlab")); */
 
   ros::Subscriber odometry_sub_;
   odometry_sub_ = nh.subscribe(gsft_control::kDefaultOdometryTopic, 1, OdometryCallback);
@@ -240,25 +236,28 @@ int main(int argc, char** argv) {
   ros::Publisher uav_state_pub_;
   uav_state_pub_ = nh.advertise<gsft_control::UAVState>(gsft_control::default_topics::UAV_STATE, 1);
 
-  ros::Timer timerPublish = nh.createTimer(ros::Duration(0.01),timerPublishCallback);
-  ros::Timer timerLOE     = nh.createTimer(ros::Duration(gsft_control::kDefaultRotorTimeUpConstant),timerLOECallback);
+  ros::Publisher LOE_pub_;
+  LOE_pub_ = nh.advertise<gsft_control::LOE>(gsft_control::default_topics::LOE, 1);
+
+  ros::Timer timerUavStatePublish = nh.createTimer(ros::Duration(0.01),timerUavStatePublishCallback);
+  ros::Timer timerLOEPublish      = nh.createTimer(ros::Duration(gsft_control::kDefaultRotorTimeUpConstant),timerLOEPublishCallback);
 
   ros::Rate r(1000);
 
-  gPublish          = false;
-  gInit_flag        = false;
-  gLanding_flag     = false;
-  gEmergency_status = false;
-  gControl_actived  = false;
-  gTest_mode        = 0;
-  gPsi              = 0.0;
+  gPublish_uav_state = false;
+  gPublish_LOE       = false;
+  gInit_flag         = false;
+  gLanding_flag      = false;
+  gEmergency_status  = false;
+  gController_active = false;
+  gTest_mode         = 0;
+  gPsi               = 0.0;
 
   gY0    << 0.0, 0.0, 0.0, 0.0;
   gRef   << 0.0, 0.0, 0.0, 0.0;
   gGain   = Eigen::VectorXd::Zero(19);
   gLOE    = Eigen::VectorXd::Zero(6);
   gLOE_t  = Eigen::VectorXd::Zero(6);
-  gLOE_calcul = Eigen::VectorXd::Zero(6);
   gThrust_measure = Eigen::VectorXd::Zero(6);
   gThrust_prev_sent    = Eigen::VectorXd::Zero(6);
 
@@ -276,6 +275,8 @@ int main(int argc, char** argv) {
 
 //  gPrev_it = ros::Time::now();
 
+  // static int seq = 0;
+
   while(ros::ok()) {
     /*Eigen::Matrix3d R_W_B = gOdometry.orientation.toRotationMatrix();
     velocity_W =  R_W_B * gOdometry.velocity;
@@ -288,9 +289,9 @@ int main(int argc, char** argv) {
     gPsi = euler_angles[2];
     // gPsi = gOdometry.getYaw();                             // same result
 
-    if (gInit_flag && !gControl_actived) {                     // only once when controller is not actived
+    if (gInit_flag && !gController_active) {                     // only once when controller is not actived
         gController.initialize();
-        gControl_actived = true;
+        gController_active = true;
 
         for (unsigned int i=0; i< 6; i++) {
           gController.tuning_GS1_U.LOE_a[i]  = gLOE[i];     // fault amplitude
@@ -303,7 +304,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    if (gControl_actived) {                                    // controller active after take-off request
+    if (gController_active) {                                    // controller active after take-off request
         // Initialization before gController.step();
         gController.tuning_GS1_U.mode = gTest_mode;       // 0 = manual, ...
 
@@ -363,7 +364,7 @@ int main(int argc, char** argv) {
           gLanding_flag = true;
         }
 
-    } else { // gControl_actived = false ( before take-off)
+    } else { // gController_active = false ( before take-off)
       mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
       actuator_msg->angular_velocities.clear();
 
@@ -394,7 +395,7 @@ int main(int argc, char** argv) {
     }
 
     // Publish data: UAV state in World frame
-    if (gPublish){
+    if (gPublish_uav_state){
       gsft_control::UAVStatePtr uav_state_msg(new gsft_control::UAVState);
       uav_state_msg->position_ref.x  = gController.tuning_GS1_Y.ref_out[0];    // gRef only for manual test
       uav_state_msg->position_ref.y  = gController.tuning_GS1_Y.ref_out[1];
@@ -418,13 +419,6 @@ int main(int argc, char** argv) {
       uav_state_msg->moment.y      = gController.tuning_GS1_Y.virtual_control[2];
       uav_state_msg->moment.z      = gController.tuning_GS1_Y.virtual_control[3];
 
-      uav_state_msg->LOE13_estimated.x  = gController.tuning_GS1_Y.LOE13_estimated[0];
-      uav_state_msg->LOE13_estimated.y  = gController.tuning_GS1_Y.LOE13_estimated[1];
-      uav_state_msg->LOE13_estimated.z  = gController.tuning_GS1_Y.LOE13_estimated[2];
-      uav_state_msg->LOE13_true.x    = gController.tuning_GS1_Y.LOE_true[0];
-      uav_state_msg->LOE13_true.y    = gController.tuning_GS1_Y.LOE_true[1];
-      uav_state_msg->LOE13_true.z    = gController.tuning_GS1_Y.LOE_true[2];
-
       uav_state_msg->thrust_pre.x    = gController.tuning_GS1_Y.thrust_pre[0];
       uav_state_msg->thrust_pre.y    = gController.tuning_GS1_Y.thrust_pre[1];
       uav_state_msg->thrust_pre.z    = gController.tuning_GS1_Y.thrust_pre[2];
@@ -447,9 +441,30 @@ int main(int argc, char** argv) {
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);
-      gPublish = false;
+      gPublish_uav_state = false;
     }
 
+    if (gPublish_LOE){
+      gsft_control::LOEPtr LOE_msg(new gsft_control::LOE);
+      for(unsigned int i=0; i< 6; i++) {
+        if (gThrust_prev_sent[i]!=0){
+          LOE_msg->LOE_true[i]= gController.tuning_GS1_Y.LOE_true[i];   // use push_back if array size not fixed
+          LOE_msg->LOE_calcul[i] = 1-gThrust_measure[i]/gThrust_prev_sent[i];
+          if (i<3){
+            LOE_msg->LOE_FDD[i] = gController.tuning_GS1_Y.LOE13_estimated[i];
+          }
+        }
+        gThrust_prev_sent[i] = gController.tuning_GS1_Y.thrust_pre[i];
+      }
+
+      /*LOE_msg->header.seq = seq;
+      LOE_msg->header.frame_id = frame_id;*/
+      LOE_msg->header.stamp  =  ros::Time::now();
+      LOE_pub_.publish(LOE_msg);
+      gPublish_LOE = false;
+    }
+
+    // seq++;
     ros::spinOnce();
     r.sleep();
   } // end while

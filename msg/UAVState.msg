@@ -14,9 +14,6 @@ geometry_msgs/Vector3 rotation_speed_B
 float64 total_thrust
 geometry_msgs/Vector3 moment
 
-geometry_msgs/Vector3 LOE13_estimated
-geometry_msgs/Vector3 LOE13_true
-
 geometry_msgs/Vector3 thrust_pre
 geometry_msgs/Vector3 thrust_after
 geometry_msgs/Vector3 vel_Kalman
