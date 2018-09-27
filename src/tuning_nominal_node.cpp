@@ -447,9 +447,9 @@ int main(int argc, char** argv) {
       gsft_control::LOEPtr LOE_msg(new gsft_control::LOE);
       for(unsigned int i=0; i< 6; i++) {
         if (gThrust_prev_sent[i]!=0.0){
+          LOE_msg->LOE_calcul[i] = 1-gThrust_measure[i]/gThrust_prev_sent[i];
         //  LOE_msg->LOE_true[i]= gController.tuning_nominal_Y.LOE_true[i];
           LOE_msg->LOE_true[i]= 1-gThrust_measure[i]/gController.tuning_nominal_Y.thrust_pre[i];
-          LOE_msg->LOE_calcul[i] = 1-gThrust_measure[i]/gThrust_prev_sent[i];
          if (i<3){
              LOE_msg->LOE_FDD[i] = gController.tuning_nominal_Y.LOE13_estimated[i];
           }
