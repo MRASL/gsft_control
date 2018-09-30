@@ -135,7 +135,7 @@ inline void vectorFromSkewMatrix(Eigen::Matrix3d& skew_matrix, Eigen::Vector3d* 
   *vector << skew_matrix(2, 1), skew_matrix(0,2), skew_matrix(1, 0);
 }
 
-inline void commandMsg2Thrust(const asctec_hl_comm::MotorSpeedConstPtr& msg,
+inline void motorMsg2Thrust(const asctec_hl_comm::MotorSpeedConstPtr& msg,
                                  Eigen::VectorXd* thrust) {
   Eigen::VectorXd temp = Eigen::VectorXd::Zero(msg->motor_speed.size());
    for (unsigned int i=0; i< 6; i++) {
@@ -144,9 +144,9 @@ inline void commandMsg2Thrust(const asctec_hl_comm::MotorSpeedConstPtr& msg,
    *thrust = temp;
 }
 
-inline double command2Thrust(double command) {
+/*inline double command2Thrust(uint8_t command) {
   return kDefaultRotorForceConstant*pow(((1250.0 + 43.75*(command))/9.5493),2);
-}
+}*/
 
 inline void speedMsg2Thrust(const mav_msgs::ActuatorsConstPtr& msg,
                                Eigen::VectorXd* thrust) {
