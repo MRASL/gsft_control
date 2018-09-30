@@ -432,31 +432,26 @@ int main(int argc, char** argv) {
       gPublish = false;
 
       // LOE message
-      // if (controller_active){
+      if (controller_active){
         gsft_control::LOEPtr LOE_msg(new gsft_control::LOE);
         for(unsigned int i=0; i< 6; i++) {
           LOE_msg->LOE_true[i]   = gController.tuning_nominal_Y.LOE_true[i];
-          LOE_msg->thrust_measure[i] = gThrust_measure[i];
-          LOE_msg->thrust_prev_sent[i] = thrust_prev_sent[i];
           if (i<3){
             LOE_msg->LOE_FDD[i]  = gController.tuning_nominal_Y.LOE13_estimated[i];
           }
-          if (gController.tuning_nominal_Y.thrust_pre[i]!=0){
-              LOE_msg->LOE_calcul[i] = 1-gThrust_measure[i]/gController.tuning_nominal_Y.thrust_pre[i];
-          }
           if (thrust_prev_sent[i]!=0){
-              LOE_msg->LOE_calcul_corrected[i] = 1-gThrust_measure[i]/thrust_prev_sent[i];
+              LOE_msg->LOE_calcul[i] = 1-gThrust_measure[i]/thrust_prev_sent[i];
           }
           thrust_prev_sent[i] = gController.tuning_nominal_Y.thrust_pre[i];
         }
-      //  if (seq>1){      // TND: to choice here
+        if (seq>3){      // cheat
           LOE_msg->header.seq = seq;
           //LOE_msg->header.frame_id = frame_id;
           LOE_msg->header.stamp  =  ros::Time::now();
           LOE_pub_.publish(LOE_msg);
-      //  }
-      //  seq++;
-      // }
+        }
+        seq++;
+      }
     }
 
     ros::spinOnce();
