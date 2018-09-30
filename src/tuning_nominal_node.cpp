@@ -432,7 +432,7 @@ int main(int argc, char** argv) {
       gPublish = false;
 
       // LOE message
-      if (controller_active){
+      // if (controller_active){
         gsft_control::LOEPtr LOE_msg(new gsft_control::LOE);
         for(unsigned int i=0; i< 6; i++) {
           LOE_msg->LOE_true[i]   = gController.tuning_nominal_Y.LOE_true[i];
@@ -456,7 +456,7 @@ int main(int argc, char** argv) {
           LOE_pub_.publish(LOE_msg);
       //  }
       //  seq++;
-      }
+      // }
     }
 
     ros::spinOnce();
