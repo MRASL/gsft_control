@@ -444,7 +444,7 @@ int main(int argc, char** argv) {
           }
           thrust_prev_sent[i] = gController.tuning_nominal_Y.thrust_pre[i];
         }
-        if (seq>3){      // cheat
+        if (seq>5){      // cheat
           LOE_msg->header.seq = seq;
           //LOE_msg->header.frame_id = frame_id;
           LOE_msg->header.stamp  =  ros::Time::now();

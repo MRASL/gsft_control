@@ -4,10 +4,18 @@
   <arg name="enable_ground_truth" default="true" />
   <arg name="debug" default="false"/>
 
- <group ns="firefly">
+  <group ns="firefly">
     <node name="tuning_GS1" pkg="gsft_control" type="tuning_GS1_node" output="screen">
        <param name="~scenario"  value="gazebo" type="str"/>
        <remap from="odometry" to="odometry_sensor1/odometry" />
     </node>
   </group>
+
+  <group ns="firefly1">
+    <node name="tuning_nominal" pkg="gsft_control" type="tuning_nominal_node" output="screen">
+       <param name="~scenario"  value="gazebo" type="str"/>
+       <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+  </group>
+
 </launch>
