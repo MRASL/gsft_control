@@ -36,3 +36,43 @@ doi: 10.1109/ICUAS.2017.7991516
   month={June}
 }
 ```
+
+## Scenario de test
+* Gazebo test
+    - Code
+      + Simulink Code Generation: 200Hz => Ts = 1/200
+      + Node: ros::Rate r(200);
+    - Test
+      + Launch
+        - roslaunch rotors_gazebo mav.launch   
+        - roslaunch gsft_control tuning_nominal_Gazebo.launch
+      + Gazebo: click run
+        - first odometry mesage
+        - rqt dynamic reconfigure "gazebo": max_update_rate from 100Hz to 200
+        - dynamic reconfigure "firefly/controller": mode, gain, LOE, ... => enable_take_off
+* Compare GS and Baseline
+    - Code
+      + Simulink Code Generation: 200Hz => Ts = 1/200
+      + Node: ros::Rate r(200);
+      + Cfg
+        - controller: enable_take_off = True
+        - 
+    - Test
+      + Launch
+        - roslaunch rotors_gazebo mav.launch
+        - roslaunch gsft_control tuning_nominal_Gazebo.launch
+      + Gazebo: click run => first odometry mesage and rqt dynamic reconfigure "gazebo"
+      + rqt
+        - dynamic reconfigure "gazebo": max_update_rate = 200
+        - dynamic reconfigure "firefly/controller": mode, gain, LOE, ... then click enable_take_off
+* Experimental test
+    - Code
+      + Simulink Code Generation: 1KHz => Ts = 1/1000
+      + Node: ros::Rate r(1000);
+      + git status, git add, git commit and git push
+    - Vicon server: firefly object, 200Hz
+    - Ground Station: roslaunch vicon, rqt, rosbag record
+    - Asctec Firefly
+      + git pull and build
+      + roslaunch: fcu, msf, controller
+      + check frequencies: Vicon 200HZ, other (imu, msf, controller) 1KHz

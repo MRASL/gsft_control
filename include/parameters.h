@@ -31,7 +31,7 @@ static constexpr double kDefaultPi      = 3.14159;
 // Default constraints
 static constexpr double kDefaultXmax    = 2.5;
 static constexpr double kDefaultYmax    = 2.5;
-static constexpr double kDefaultZmax    = 1.5;
+static constexpr double kDefaultZmax    = 1.75;
 
 static constexpr double kDefaultCutoffAltitude    = 0.175;    // CutOff motor (landing)
 

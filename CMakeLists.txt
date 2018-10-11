@@ -101,6 +101,7 @@ generate_messages(
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
 generate_dynamic_reconfigure_options(
   cfg/controllerDyn.cfg
+  cfg/controllerGS1Dyn.cfg
 )
 
 ###################################

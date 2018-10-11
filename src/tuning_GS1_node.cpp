@@ -15,10 +15,11 @@
 
 #include <gsft_control/LOE.h>
 #include <gsft_control/UAVState.h>
-#include <gsft_control/controllerDynConfig.h>
+#include <gsft_control/controllerGS1DynConfig.h>
 
 tuning_GS1ModelClass gController;
 
+bool gFirst_odom;
 bool gPublish;
 bool gInit_flag;
 bool gLanding_flag;
@@ -35,12 +36,12 @@ Eigen::VectorXd gThrust_measure(6);
 
 gsft_control::EigenOdometry gOdometry;
 
-void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t level) {
+void controller_dyn_callback(gsft_control::controllerGS1DynConfig &config, uint32_t level) {  // callback if there is a change in dyn_reconfigure
   if (config.RESET) {
     // TO DO : reset parameters, gains
     config.RESET = false;
   }
-  else if (level & gsft_control::controllerDyn_ENABLE_CTRL){
+  else if (level & gsft_control::controllerGS1Dyn_ENABLE_CTRL){
       if (config.new_controller_gains){
         gGain[0]  = config.kx;      // x
         gGain[1]  = config.kvx;     // vx
@@ -67,12 +68,12 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
 
       gTest_mode = config.test_mode;
 
-      if (config.enable_take_off && !gInit_flag){     // only once
-        gY0[0]    = gOdometry.position.x();
+      if (config.enable_take_off && !gInit_flag && gFirst_odom){     // only once
+        gY0[0]    = gOdometry.position.x();           // First position before take off
         gY0[1]    = gOdometry.position.y();
         gY0[2]    = gOdometry.position.z();
         gY0[3]    = gPsi;
-      //  if (config.test_mode == gsft_control::controllerDyn_TEST_MANUAL){
+      //  if (config.test_mode == gsft_control::controllerGS1Dyn_TEST_MANUAL){
         gRef[0]   = gY0[0];
         gRef[1]   = gY0[1];
         gRef[2]   = config.ref_z;
@@ -111,7 +112,8 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gLOE_t[5]   = config.LOE_t6;
 
         gInit_flag = true;
-        ROS_INFO("Take-off Request: %s with Test_mode = %d",config.enable_take_off?"True":"False",gTest_mode);
+        ROS_INFO("Test_mode = %d",gTest_mode);
+        ROS_INFO("Take-off Request: %s at x_ref = %f, y_ref = %f, z_ref = %f, psi_ref = %f(deg)",config.enable_take_off?"True":"False",gRef[0],gRef[1],gRef[2],gRef[3]*180.0/gsft_control::kDefaultPi);
 
         config.enable_take_off = false;
 
@@ -121,18 +123,18 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gRef[1]  = gOdometry.position.y();
         gRef[2]  = gY0[2];
         gRef[3]  = gPsi;
-        gTest_mode = gsft_control::controllerDyn_TEST_MANUAL;
+        gTest_mode = gsft_control::controllerGS1Dyn_TEST_MANUAL;
         gLanding_flag = true;
-        ROS_INFO("Landing Request: %s at x_ref = %f, y_ref = %f,psi_ref = %f(deg)",config.enable_landing?"True":"False",gRef[0],gRef[1],gRef[3]*180.0/gsft_control::kDefaultPi);
+        ROS_INFO("Landing Request: %s at x_ref = %f, y_ref = %f, z_ref = %f, psi_ref = %f(deg)",config.enable_landing?"True":"False",gRef[0],gRef[1],gRef[2],gRef[3]*180.0/gsft_control::kDefaultPi);
         config.enable_landing  = false;
       }
-      else if (gTest_mode == gsft_control::controllerDyn_TEST_MANUAL){
+      else if (gTest_mode == gsft_control::controllerGS1Dyn_TEST_MANUAL){
         if (config.send_waypoint){
           gRef[0]   = config.ref_x;
           gRef[1]   = config.ref_y;
           gRef[2]   = config.ref_z;
           gRef[3]   = config.ref_yaw_deg*gsft_control::kDefaultPi/180.0;
-          ROS_INFO("Waypoint Request: x_ref = %f, y_ref = %f, z_ref = %f, psi_ref = %f(deg)",gRef[0],gRef[1],gRef[2],gRef[3]);
+          ROS_INFO("Waypoint Request: x_ref = %f, y_ref = %f, z_ref = %f, psi_ref = %f(deg)",gRef[0],gRef[1],gRef[2],gRef[3]*180.0/gsft_control::kDefaultPi);
           config.send_waypoint   = false;
         }
       }
@@ -162,6 +164,9 @@ void OdometryCallback(const nav_msgs::OdometryConstPtr& odom_msg) {
       gEmergency_status = true;
     }
   }
+  if (!gFirst_odom){
+    ROS_INFO("First odometry: x = %f, y = %f, z = %f",gOdometry.position.x(),gOdometry.position.y(),gOdometry.position.z());
+    gFirst_odom = true;}
 }
 
 /*void LostControlCallback(const gsft_control::LOEConstPtr& loe_msg) {
@@ -172,13 +177,13 @@ void OdometryCallback(const nav_msgs::OdometryConstPtr& odom_msg) {
     "]: ---------- TND LOE0 = " << gLOE[0] << std::endl;
 }*/
 
-// ASCTEC test
+// ASCTEC test: command 0..200
 void MotorSpeedCallback(const asctec_hl_comm::MotorSpeedConstPtr& motor_msg) {
   gsft_control::motorMsg2Thrust(motor_msg,&gThrust_measure);
   //ROS_INFO("Thrust T1 = %f(N)",gThrust_measure[0]);
 }
 
-// Gazebo
+// Gazebo: command rad/sec
 void MotorSpeedGazeboCallback(const mav_msgs::ActuatorsConstPtr& motor_msg) {
   gsft_control::speedMsg2Thrust(motor_msg,&gThrust_measure);
 // ROS_INFO("Thrust T1 = %f(N)",gThrust_measure[0]);
@@ -232,7 +237,8 @@ int main(int argc, char** argv) {
 
   ros::Rate r(1000);
 
-  gPublish = false;
+  gFirst_odom        = false;
+  gPublish           = false;
   gInit_flag         = false;
   gLanding_flag      = false;
   gEmergency_status  = false;
@@ -246,8 +252,8 @@ int main(int argc, char** argv) {
   gLOE_t  = Eigen::VectorXd::Zero(6);
   gThrust_measure = Eigen::VectorXd::Zero(6);
 
-  dynamic_reconfigure::Server<gsft_control::controllerDynConfig> server;
-  dynamic_reconfigure::Server<gsft_control::controllerDynConfig>::CallbackType f;
+  dynamic_reconfigure::Server<gsft_control::controllerGS1DynConfig> server;
+  dynamic_reconfigure::Server<gsft_control::controllerGS1DynConfig>::CallbackType f;
   f = boost::bind(&controller_dyn_callback, _1, _2);
   server.setCallback(f);
 
@@ -277,6 +283,10 @@ int main(int argc, char** argv) {
     gPsi = euler_angles[2];
     // gPsi = gOdometry.getYaw();                             // same result
 
+    if (gFirst_odom && !controller_active){
+      server.setCallback(f);
+    }
+
     if (gInit_flag && !controller_active) {                     // only once when controller is not actived
         gController.initialize();
         controller_active = true;
@@ -287,9 +297,9 @@ int main(int argc, char** argv) {
         for (unsigned int i=0; i< 6; i++) {
           gController.tuning_GS1_U.LOE_t[i]  = gLOE_t[i];   // fault time
         }
-        for (unsigned int i=0; i< 19; i++) {
+        /*for (unsigned int i=0; i< 19; i++) {
           ROS_INFO("Controller gain k[%d] = %f",i,gGain[i]);
-        }
+        }*/
     }
 
     if (controller_active) {                                    // controller active after take-off request
@@ -402,6 +412,7 @@ int main(int argc, char** argv) {
       uav_state_msg->rotation_speed_B.x  = gOdometry.angular_velocity.x();
       uav_state_msg->rotation_speed_B.y  = gOdometry.angular_velocity.y();
       uav_state_msg->rotation_speed_B.z  = gOdometry.angular_velocity.z();
+
       uav_state_msg->total_thrust  = gController.tuning_GS1_Y.virtual_control[0];
       uav_state_msg->moment.x      = gController.tuning_GS1_Y.virtual_control[1];
       uav_state_msg->moment.y      = gController.tuning_GS1_Y.virtual_control[2];
