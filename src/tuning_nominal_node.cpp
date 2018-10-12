@@ -268,7 +268,7 @@ int main(int argc, char** argv) {
   thrust_prev_sent    = Eigen::VectorXd::Zero(6);
 
   bool controller_active = false;
-//  gPrev_it = ros::Time::now();
+  //  gPrev_it = ros::Time::now();
 
   static int seq = 0;
   while(ros::ok()) {
@@ -283,8 +283,9 @@ int main(int argc, char** argv) {
     gPsi = euler_angles[2];
     // gPsi = gOdometry.getYaw();                             // same result
 
-    if (gFirst_odom && !controller_active){
+    if (test_scenario == "compare" && gFirst_odom && !controller_active){
       server.setCallback(f);
+      test_scenario = " ";
     }
 
     if (gInit_flag && !controller_active) {                     // only once when controller is not actived
