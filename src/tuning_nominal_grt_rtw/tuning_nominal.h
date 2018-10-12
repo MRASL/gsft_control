@@ -9,7 +9,7 @@
  *
  * Model version              : 1.1505
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Oct 11 16:37:28 2018
+ * C++ source code generated on : Fri Oct 12 10:52:57 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -151,6 +151,7 @@
 typedef struct {
   real_T Sum2;                         /* '<S56>/Sum2' */
   real_T Sum3;                         /* '<S56>/Sum3' */
+  real_T T_outer[3];                   /* '<S4>/T_outer' */
   real_T Fcn1;                         /* '<S4>/Fcn1' */
   real_T Fcn;                          /* '<S4>/Fcn' */
   real_T u[6];                         /* '<Root>/                  ' */
@@ -308,10 +309,14 @@ struct tag_RTM_tuning_nominal_T {
     time_T stepSize0;
     uint32_T clockTick1;
     uint32_T clockTickH1;
+    struct {
+      uint8_T TID[3];
+    } TaskCounters;
+
     SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
     time_T *t;
-    time_T tArray[2];
+    time_T tArray[3];
   } Timing;
 };
 
@@ -442,7 +447,6 @@ class tuning_nominalModelClass {
  * Block '<S3>/Reshapeu' : Reshape block reduction
  * Block '<S3>/Reshapexhat' : Reshape block reduction
  * Block '<S3>/Reshapey' : Reshape block reduction
- * Block '<S4>/T_outer' : Eliminated since input and output rates are identical
  * Block '<S56>/Reshape' : Reshape block reduction
  * Block '<S56>/Reshape1' : Reshape block reduction
  * Block '<S57>/Reshape' : Reshape block reduction

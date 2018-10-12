@@ -9,7 +9,7 @@
  *
  * Model version              : 1.1505
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Oct 11 16:37:28 2018
+ * C++ source code generated on : Fri Oct 12 10:52:57 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -20,6 +20,25 @@
 
 #include "tuning_nominal.h"
 #include "tuning_nominal_private.h"
+
+static void rate_scheduler(RT_MODEL_tuning_nominal_T *const tuning_nominal_M);
+
+/*
+ *   This function updates active task flag for each subrate.
+ * The function is called at model base rate, hence the
+ * generated code self-manages all its subrates.
+ */
+static void rate_scheduler(RT_MODEL_tuning_nominal_T *const tuning_nominal_M)
+{
+  /* Compute which subrates run during the next base time step.  Subrates
+   * are an integer multiple of the base rate counter.  Therefore, the subtask
+   * counter is reset when it reaches its limit (zero means run).
+   */
+  (tuning_nominal_M->Timing.TaskCounters.TID[2])++;
+  if ((tuning_nominal_M->Timing.TaskCounters.TID[2]) > 4) {/* Sample time: [0.005s, 0.0s] */
+    tuning_nominal_M->Timing.TaskCounters.TID[2] = 0;
+  }
+}
 
 /*
  * This function updates continuous states using the ODE4 fixed-step
@@ -180,13 +199,26 @@ void tuning_nominalModelClass::step()
     tuning_nominal_B.Sum3 = tuning_nominal_U.gain[5] *
       tuning_nominal_X.Integrator_CSTATE - (tuning_nominal_U.gain[3] * rtb_d_y +
       tuning_nominal_U.gain[4] * tuning_nominal_U.X[4]);
-    if (rtmIsMajorTimeStep((&tuning_nominal_M))) {
-      /* Fcn: '<S4>/Fcn1' incorporates:
-       *  Inport: '<Root>/X'
-       */
-      tuning_nominal_B.Fcn1 = tuning_nominal_B.Sum3 * std::cos
-        (tuning_nominal_U.X[8]) + tuning_nominal_B.Sum2 * std::sin
-        (tuning_nominal_U.X[8]);
+
+    /* RateTransition: '<S4>/T_outer' incorporates:
+     *  Inport: '<Root>/X'
+     */
+    if ((rtmIsMajorTimeStep((&tuning_nominal_M)) &&
+         (&tuning_nominal_M)->Timing.TaskCounters.TID[1] == 0) &&
+        (rtmIsMajorTimeStep((&tuning_nominal_M)) &&
+         (&tuning_nominal_M)->Timing.TaskCounters.TID[2] == 0)) {
+      tuning_nominal_B.T_outer[0] = tuning_nominal_B.Sum2;
+      tuning_nominal_B.T_outer[1] = tuning_nominal_B.Sum3;
+      tuning_nominal_B.T_outer[2] = tuning_nominal_U.X[8];
+    }
+
+    /* End of RateTransition: '<S4>/T_outer' */
+    if (rtmIsMajorTimeStep((&tuning_nominal_M)) &&
+        (&tuning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
+      /* Fcn: '<S4>/Fcn1' */
+      tuning_nominal_B.Fcn1 = tuning_nominal_B.T_outer[1] * std::cos
+        (tuning_nominal_B.T_outer[2]) + tuning_nominal_B.T_outer[0] * std::sin
+        (tuning_nominal_B.T_outer[2]);
     }
 
     /* Clock: '<Root>/Clock' */
@@ -231,13 +263,12 @@ void tuning_nominalModelClass::step()
     }
 
     /* End of MATLAB Function: '<S5>/FFW' */
-    if (rtmIsMajorTimeStep((&tuning_nominal_M))) {
-      /* Fcn: '<S4>/Fcn' incorporates:
-       *  Inport: '<Root>/X'
-       */
-      tuning_nominal_B.Fcn = -tuning_nominal_B.Sum3 * std::sin
-        (tuning_nominal_U.X[8]) + tuning_nominal_B.Sum2 * std::cos
-        (tuning_nominal_U.X[8]);
+    if (rtmIsMajorTimeStep((&tuning_nominal_M)) &&
+        (&tuning_nominal_M)->Timing.TaskCounters.TID[2] == 0) {
+      /* Fcn: '<S4>/Fcn' */
+      tuning_nominal_B.Fcn = -tuning_nominal_B.T_outer[1] * std::sin
+        (tuning_nominal_B.T_outer[2]) + tuning_nominal_B.T_outer[0] * std::cos
+        (tuning_nominal_B.T_outer[2]);
     }
 
     /* Sum: '<S5>/Sum6' incorporates:
@@ -556,7 +587,8 @@ void tuning_nominalModelClass::step()
     }
 
     /* End of Outport: '<Root>/LOE_true' */
-    if (rtmIsMajorTimeStep((&tuning_nominal_M))) {
+    if (rtmIsMajorTimeStep((&tuning_nominal_M)) &&
+        (&tuning_nominal_M)->Timing.TaskCounters.TID[1] == 0) {
       /* Delay: '<S3>/MemoryX' */
       for (i = 0; i < 6; i++) {
         if (tuning_nominal_DW.icLoad != 0) {
@@ -710,7 +742,8 @@ void tuning_nominalModelClass::step()
       tuning_nominal_Y.thrust_after[i] = rtb_T_f[i];
     }
 
-    if (rtmIsMajorTimeStep((&tuning_nominal_M))) {
+    if (rtmIsMajorTimeStep((&tuning_nominal_M)) &&
+        (&tuning_nominal_M)->Timing.TaskCounters.TID[1] == 0) {
       /* Outport: '<Root>/acc_Kalman' */
       tuning_nominal_Y.acc_Kalman[0] = rtb_Add_a[3];
 
@@ -868,7 +901,8 @@ void tuning_nominalModelClass::step()
 
   if (rtmIsMajorTimeStep((&tuning_nominal_M))) {
     int32_T i;
-    if (rtmIsMajorTimeStep((&tuning_nominal_M))) {
+    if (rtmIsMajorTimeStep((&tuning_nominal_M)) &&
+        (&tuning_nominal_M)->Timing.TaskCounters.TID[1] == 0) {
       /* Update for Delay: '<S3>/MemoryX' */
       tuning_nominal_DW.icLoad = 0U;
       for (i = 0; i < 6; i++) {
@@ -901,9 +935,9 @@ void tuning_nominalModelClass::step()
       ->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.005s, 0.0s] */
+      /* Update absolute timer for sample time: [0.001s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.005, which is the step size
+       * been executed. The resolution of this integer timer is 0.001, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -915,6 +949,8 @@ void tuning_nominalModelClass::step()
         (&tuning_nominal_M)->Timing.clockTickH1++;
       }
     }
+
+    rate_scheduler((&tuning_nominal_M));
   }                                    /* end MajorTimeStep */
 }
 
@@ -980,7 +1016,7 @@ void tuning_nominalModelClass::initialize()
                     &(&tuning_nominal_M)->intgData);
   rtsiSetSolverName(&(&tuning_nominal_M)->solverInfo,"ode4");
   rtmSetTPtr(getRTM(), &(&tuning_nominal_M)->Timing.tArray[0]);
-  (&tuning_nominal_M)->Timing.stepSize0 = 0.005;
+  (&tuning_nominal_M)->Timing.stepSize0 = 0.001;
 
   /* block I/O */
   (void) memset(((void *) &tuning_nominal_B), 0,
