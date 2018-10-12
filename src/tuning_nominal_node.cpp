@@ -235,7 +235,7 @@ int main(int argc, char** argv) {
 
   ros::Timer timerPublish = nh.createTimer(ros::Duration(0.01),timerPublishCallback);
 
-  ros::Rate r(1000);
+  ros::Rate r(400);
 
   gFirst_odom        = false;
   gPublish           = false;
