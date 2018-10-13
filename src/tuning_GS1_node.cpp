@@ -68,8 +68,14 @@ void controller_dyn_callback(gsft_control::controllerGS1DynConfig &config, uint3
 
       gTest_mode = config.test_mode;
 
+      // Note: dynamic reconfigure is called when created by server_dyn.setCallback(f_dyn)
+      //               i.e. before the first Odometry available
+      // Compare mode: because config.enable_take_off always TRUE
+      //               => need gFirst_odom condition: do not get initial value of gOdometry (all 0)
+      //               => need recall this function after first odom available to get correct initial point, then take-off
+      // Experimental test: initial point before take off command, not after first odom
       if (config.enable_take_off && !gInit_flag && gFirst_odom){     // only once
-        gY0[0]    = gOdometry.position.x();           // First position before take off
+        gY0[0]    = gOdometry.position.x();           // Initial point
         gY0[1]    = gOdometry.position.y();
         gY0[2]    = gOdometry.position.z();
         gY0[3]    = gPsi;
@@ -252,10 +258,10 @@ int main(int argc, char** argv) {
   gLOE_t  = Eigen::VectorXd::Zero(6);
   gThrust_measure = Eigen::VectorXd::Zero(6);
 
-  dynamic_reconfigure::Server<gsft_control::controllerGS1DynConfig> server;
-  dynamic_reconfigure::Server<gsft_control::controllerGS1DynConfig>::CallbackType f;
-  f = boost::bind(&controller_dyn_callback, _1, _2);
-  server.setCallback(f);
+  dynamic_reconfigure::Server<gsft_control::controllerGS1DynConfig> server_dyn;
+  dynamic_reconfigure::Server<gsft_control::controllerGS1DynConfig>::CallbackType f_dyn;
+  f_dyn = boost::bind(&controller_dyn_callback, _1, _2);
+  server_dyn.setCallback(f_dyn);
 
   Eigen::Vector3d velocity_W ;
   Eigen::Vector3d euler_angles;
@@ -268,26 +274,29 @@ int main(int argc, char** argv) {
   thrust_prev_sent    = Eigen::VectorXd::Zero(6);
 
   bool controller_active = false;
-//  gPrev_it = ros::Time::now();
+  //  gPrev_it = ros::Time::now();
 
   static int seq = 0;
   while(ros::ok()) {
-    /*Eigen::Matrix3d R_W_B = gOdometry.orientation.toRotationMatrix();
+    /* https://github.com/libigl/eigen/blob/master/Eigen/src/Geometry/Quaternion.h
+    Eigen::Matrix3d R_W_B = gOdometry.orientation.toRotationMatrix(); % Ned to body (not Euler matrix), ZYX order
     velocity_W =  R_W_B * gOdometry.velocity;
     double psi = atan2(R_W_B(1,0),R_W_B(0,0));
     double phi  = atan2(R_W_B(2,1),R_W_B(2,2));
     double theta = asin(-R_W_B(2,0));*/
 
     velocity_W = gOdometry.getVelocityWorld();
-    gOdometry.getEulerAngles(&euler_angles);
-    gPsi = euler_angles[2];
-    // gPsi = gOdometry.getYaw();                             // same result
 
-    if (gFirst_odom && !controller_active){
-      server.setCallback(f);
+    gOdometry.getEulerAngles(&euler_angles);      // getEulerAnglesFromQuaternion: http://docs.ros.org/jade/api/mav_msgs/html/common_8h_source.html
+    gPsi = euler_angles[2];
+    // gPsi = gOdometry.getYaw();                 // result
+
+    if (test_scenario == "compare" && gFirst_odom && !controller_active){
+      server_dyn.setCallback(f_dyn);             // get initial point when first odom available, then take
+      test_scenario = " ";
     }
 
-    if (gInit_flag && !controller_active) {                     // only once when controller is not actived
+    if (gInit_flag && !controller_active) {      // only once when controller is not actived
         gController.initialize();
         controller_active = true;
 

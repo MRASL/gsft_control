@@ -9,7 +9,7 @@
  *
  * Model version              : 1.1505
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Oct 12 12:24:48 2018
+ * C++ source code generated on : Fri Oct 12 17:49:40 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -35,7 +35,7 @@ static void rate_scheduler(RT_MODEL_tuning_nominal_T *const tuning_nominal_M)
    * counter is reset when it reaches its limit (zero means run).
    */
   (tuning_nominal_M->Timing.TaskCounters.TID[2])++;
-  if ((tuning_nominal_M->Timing.TaskCounters.TID[2]) > 1) {/* Sample time: [0.005s, 0.0s] */
+  if ((tuning_nominal_M->Timing.TaskCounters.TID[2]) > 4) {/* Sample time: [0.005s, 0.0s] */
     tuning_nominal_M->Timing.TaskCounters.TID[2] = 0;
   }
 }
@@ -935,9 +935,9 @@ void tuning_nominalModelClass::step()
       ->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.0025s, 0.0s] */
+      /* Update absolute timer for sample time: [0.001s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.0025, which is the step size
+       * been executed. The resolution of this integer timer is 0.001, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -1016,7 +1016,7 @@ void tuning_nominalModelClass::initialize()
                     &(&tuning_nominal_M)->intgData);
   rtsiSetSolverName(&(&tuning_nominal_M)->solverInfo,"ode4");
   rtmSetTPtr(getRTM(), &(&tuning_nominal_M)->Timing.tArray[0]);
-  (&tuning_nominal_M)->Timing.stepSize0 = 0.0025;
+  (&tuning_nominal_M)->Timing.stepSize0 = 0.001;
 
   /* block I/O */
   (void) memset(((void *) &tuning_nominal_B), 0,
