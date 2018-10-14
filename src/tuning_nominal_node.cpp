@@ -66,8 +66,6 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         config.new_controller_gains   = false;
       }
 
-      gTest_mode = config.test_mode;
-
       // Note: dynamic reconfigure is called when created by server_dyn.setCallback(f_dyn)
       //               i.e. before the first Odometry available
       // Compare mode: because config.enable_take_off always TRUE
@@ -116,6 +114,8 @@ void controller_dyn_callback(gsft_control::controllerDynConfig &config, uint32_t
         gLOE_t[3]   = config.LOE_t4;
         gLOE_t[4]   = config.LOE_t5;
         gLOE_t[5]   = config.LOE_t6;
+
+        gTest_mode = config.test_mode;
 
         gInit_flag = true;
         ROS_INFO("Test_mode = %d",gTest_mode);
@@ -449,7 +449,6 @@ int main(int argc, char** argv) {
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);
-      gPublish = false;
 
       // LOE message
       if (controller_active){
@@ -472,6 +471,7 @@ int main(int argc, char** argv) {
         }
         seq++;
       }
+      gPublish = false;
     }
 
     ros::spinOnce();

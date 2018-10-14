@@ -25,12 +25,13 @@ bool gInit_flag;
 bool gLanding_flag;
 bool gEmergency_status;
 int  gTest_mode;
+int  gLOE_mode;
 double gPsi;                    // heading (rad)
 
 Eigen::VectorXd gY0(4);         // initial position (equilibrium)
 Eigen::VectorXd gRef(4);        // references (x, y, z, yaw)
 Eigen::VectorXd gGain(19);
-Eigen::VectorXd gLOE(6);        // LOE true
+Eigen::VectorXd gLOE(6);        // LOE trued
 Eigen::VectorXd gLOE_t(6);      // LOE moment
 Eigen::VectorXd gThrust_measure(6);
 
@@ -65,8 +66,6 @@ void controller_dyn_callback(gsft_control::controllerGS1DynConfig &config, uint3
         ROS_INFO("New controller gains");
         config.new_controller_gains   = false;
       }
-
-      gTest_mode = config.test_mode;
 
       // Note: dynamic reconfigure is called when created by server_dyn.setCallback(f_dyn)
       //               i.e. before the first Odometry available
@@ -117,8 +116,11 @@ void controller_dyn_callback(gsft_control::controllerGS1DynConfig &config, uint3
         gLOE_t[4]   = config.LOE_t5;
         gLOE_t[5]   = config.LOE_t6;
 
+        gTest_mode = config.test_mode;
+        gLOE_mode  = config.LOE_mode;
+
         gInit_flag = true;
-        ROS_INFO("Test_mode = %d",gTest_mode);
+        ROS_INFO("Test_mode = %d, LOE_mode = %d",gTest_mode,gLOE_mode);
         ROS_INFO("Take-off Request: %s at x_ref = %f, y_ref = %f, z_ref = %f, psi_ref = %f(deg)",config.enable_take_off?"True":"False",gRef[0],gRef[1],gRef[2],gRef[3]*180.0/gsft_control::kDefaultPi);
 
         config.enable_take_off = false;
@@ -249,6 +251,7 @@ int main(int argc, char** argv) {
   gLanding_flag      = false;
   gEmergency_status  = false;
   gTest_mode         = 0;
+  gLOE_mode          = 1;   // nominal
   gPsi               = 0.0;
 
   gY0    << 0.0, 0.0, 0.0, 0.0;
@@ -273,6 +276,7 @@ int main(int argc, char** argv) {
   Eigen::VectorXd thrust_prev_sent(6);
   thrust_prev_sent    = Eigen::VectorXd::Zero(6);
 
+  double temp_LOE_calcul = 0.0;
   bool controller_active = false;
   //  gPrev_it = ros::Time::now();
 
@@ -311,9 +315,10 @@ int main(int argc, char** argv) {
         }*/
     }
 
-    if (controller_active) {                                    // controller active after take-off request
+    if (controller_active) {                                // controller active after take-off request
         // Initialization before gController.step();
-        gController.tuning_GS1_U.mode = gTest_mode;       // 0 = manual, ...
+        gController.tuning_GS1_U.mode     = gTest_mode;     // 0 = manual, ...
+        gController.tuning_GS1_U.LOE_mode = gLOE_mode;      // 1 = nominal, 2 = LOE true, ...
 
         for (unsigned int i=0; i< 4; i++) {
           gController.tuning_GS1_U.ref[i]  = gRef[i];
@@ -447,9 +452,10 @@ int main(int argc, char** argv) {
       uav_state_msg->M_Kalman.y = gController.tuning_GS1_Y.M_Kalman[1];
       uav_state_msg->M_Kalman.z = gController.tuning_GS1_Y.M_Kalman[2];
 
+      uav_state_msg->Kiz        = gController.tuning_GS1_Y.Kiz[0];
+
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);
-      gPublish = false;
 
       // LOE message
       if (controller_active){
@@ -460,7 +466,9 @@ int main(int argc, char** argv) {
             LOE_msg->LOE_FDD[i]  = gController.tuning_GS1_Y.LOE13_estimated[i];
           }
           if (thrust_prev_sent[i]!=0){
-              LOE_msg->LOE_calcul[i] = 1-gThrust_measure[i]/thrust_prev_sent[i];
+              temp_LOE_calcul = 1-gThrust_measure[i]/thrust_prev_sent[i];
+              LOE_msg->LOE_calcul[i] = temp_LOE_calcul;
+              gController.tuning_GS1_U.LOE_calcul[i] = temp_LOE_calcul;
           }
           thrust_prev_sent[i] = gController.tuning_GS1_Y.thrust_pre[i];
         }
@@ -472,6 +480,7 @@ int main(int argc, char** argv) {
         }
         seq++;
       }
+      gPublish = false;
     }
 
     ros::spinOnce();
