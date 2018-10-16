@@ -144,9 +144,9 @@ add_library(matlab_simulink
   src/tuning_GS1_grt_rtw/tuning_GS1_data.cpp
   src/tuning_GS1_grt_rtw/tuning_GS1.cpp
 
-  #src/tuning_nominal_grt_rtw/rtGetInf.cpp
-  #src/tuning_nominal_grt_rtw/rtGetNaN.cpp
-  #src/tuning_nominal_grt_rtw/rt_nonfinite.cpp
+  #src/tuning_GS1_grt_rtw/rtGetInf.cpp
+  #src/tuning_GS1_grt_rtw/rtGetNaN.cpp
+  #src/tuning_GS1_grt_rtw/rt_nonfinite.cpp
 
 )
 add_dependencies(matlab_simulink ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

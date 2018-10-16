@@ -427,10 +427,10 @@ int main(int argc, char** argv) {
       uav_state_msg->rotation_speed_B.y  = gOdometry.angular_velocity.y();
       uav_state_msg->rotation_speed_B.z  = gOdometry.angular_velocity.z();
 
-      uav_state_msg->total_thrust  = gController.tuning_GS1_Y.virtual_control[0];
-      uav_state_msg->moment.x      = gController.tuning_GS1_Y.virtual_control[1];
-      uav_state_msg->moment.y      = gController.tuning_GS1_Y.virtual_control[2];
-      uav_state_msg->moment.z      = gController.tuning_GS1_Y.virtual_control[3];
+    //  uav_state_msg->total_thrust  = gController.tuning_GS1_Y.virtual_control[0];
+    //  uav_state_msg->moment.x      = gController.tuning_GS1_Y.virtual_control[1];
+    //  uav_state_msg->moment.y      = gController.tuning_GS1_Y.virtual_control[2];
+    //  uav_state_msg->moment.z      = gController.tuning_GS1_Y.virtual_control[3];
 
       uav_state_msg->thrust_pre.x    = gController.tuning_GS1_Y.thrust_pre[0];
       uav_state_msg->thrust_pre.y    = gController.tuning_GS1_Y.thrust_pre[1];
@@ -452,7 +452,10 @@ int main(int argc, char** argv) {
       uav_state_msg->M_Kalman.y = gController.tuning_GS1_Y.M_Kalman[1];
       uav_state_msg->M_Kalman.z = gController.tuning_GS1_Y.M_Kalman[2];
 
-      uav_state_msg->Kiz        = gController.tuning_GS1_Y.Kiz[0];
+      uav_state_msg->Kxyz.x = gController.tuning_GS1_Y.gain_GS[6];
+      uav_state_msg->Kxyz.y = gController.tuning_GS1_Y.gain_GS[9];
+      uav_state_msg->Kxyz.z = gController.tuning_GS1_Y.gain_GS[0];
+      uav_state_msg->Kpsi   = gController.tuning_GS1_Y.gain_GS[3];
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);

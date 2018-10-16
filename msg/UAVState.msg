@@ -21,4 +21,5 @@ geometry_msgs/Vector3 acc_Kalman
 geometry_msgs/Vector3 M_Kalman
 
 # gain
-float64 Kiz
+geometry_msgs/Vector3 Kxyz
+float64 Kpsi
