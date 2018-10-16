@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS1".
  *
- * Model version              : 1.2039
+ * Model version              : 1.2070
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Oct 16 09:03:50 2018
+ * C++ source code generated on : Tue Oct 16 16:02:57 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -139,13 +139,12 @@ void tuning_GS1ModelClass::step()
     static const real_T Kz[12] = { 2.6144, 2.6144, 2.6144, 2.6144, 2.6144,
       2.6144, 1.3106, 1.3106, 1.3106, 1.3106, 1.3106, 1.3106 };
 
-    real_T rtb_Sum1[3];
+    real_T rtb_Sum1_cy[3];
     real_T rtb_Add_a[6];
     real_T rtb_LOE_out[6];
     real_T rtb_gamma_m[6];
-    real_T rtb_Kiz[6];
+    real_T rtb_u[6];
     real_T rtb_d_z;
-    real_T rtb_Kipsi[6];
     real_T rtb_d_psi;
     real_T rtb_Kix[4];
     real_T rtb_d_x;
@@ -155,21 +154,27 @@ void tuning_GS1ModelClass::step()
     real_T rtb_Clock;
     real_T rtb_MemoryX[6];
     real_T rtb_Kz[12];
-    real_T rtb_Kpsi[12];
     real_T rtb_Kxtheta[16];
     real_T rtb_Kyphi[24];
     int32_T i;
+    static const real_T tmp[6] = { -1.4438, 1.4438, -1.4438, 1.4438, -1.4438,
+      1.4438 };
+
+    static const real_T tmp_0[12] = { -2.274, 2.274, -2.274, 2.274, -2.274,
+      2.274, -1.4292, 1.4292, -1.4292, 1.4292, -1.4292, 1.4292 };
+
     real_T rtb_Add_f[3];
     real_T rtb_Add_f_0[3];
-    real_T rtb_Kipsi_0[6];
-    real_T rtb_ref_0[6];
+    real_T tmp_1[6];
+    real_T tmp_2[6];
+    real_T rtb_Kiy_0[6];
     int32_T i_0;
+    real_T tmp_3;
     real_T rtb_ff_idx_1;
     real_T rtb_ff_idx_0;
     real_T rtb_gamma_idx_2;
     real_T rtb_gamma_idx_1;
     real_T rtb_gamma_idx_0;
-    real_T u0;
 
     /* Clock: '<Root>/Clock' */
     rtb_Clock = (&tuning_GS1_M)->Timing.t[0];
@@ -244,13 +249,13 @@ void tuning_GS1ModelClass::step()
        *  Product: '<S65>/Product2'
        */
       for (i = 0; i < 3; i++) {
-        rtb_d_z = 0.0;
+        tmp_3 = 0.0;
         for (i_0 = 0; i_0 < 6; i_0++) {
-          rtb_d_z += tuning_GS1_ConstP.C_Value[3 * i_0 + i] *
+          tmp_3 += tuning_GS1_ConstP.C_Value[3 * i_0 + i] *
             tuning_GS1_DW.MemoryX_DSTATE[i_0];
         }
 
-        rtb_Add_f[i] = tuning_GS1_U.X[9 + i] - rtb_d_z;
+        rtb_Add_f[i] = tuning_GS1_U.X[9 + i] - tmp_3;
       }
 
       /* End of Sum: '<S65>/Add1' */
@@ -279,9 +284,9 @@ void tuning_GS1ModelClass::step()
        *  Constant: '<S3>/Constant1'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Sum1[i] = tuning_GS1_ConstP.Constant1_Value[i + 6] * rtb_Add_a[2] +
-          (tuning_GS1_ConstP.Constant1_Value[i + 3] * rtb_Add_a[1] +
-           tuning_GS1_ConstP.Constant1_Value[i] * rtb_Add_a[0]);
+        rtb_Sum1_cy[i] = tuning_GS1_ConstP.Constant1_Value[i + 6] * rtb_Add_a[2]
+          + (tuning_GS1_ConstP.Constant1_Value[i + 3] * rtb_Add_a[1] +
+             tuning_GS1_ConstP.Constant1_Value[i] * rtb_Add_a[0]);
       }
 
       /* End of Product: '<S3>/Product1' */
@@ -294,12 +299,12 @@ void tuning_GS1ModelClass::step()
        *  Product: '<S12>/j x k'
        *  Product: '<S12>/k x i'
        */
-      rtb_Add_f[0] = rtb_Add_a[1] * rtb_Sum1[2];
-      rtb_Add_f[1] = rtb_Add_a[2] * rtb_Sum1[0];
-      rtb_Add_f[2] = rtb_Add_a[0] * rtb_Sum1[1];
-      rtb_Add_f_0[0] = rtb_Add_a[2] * rtb_Sum1[1];
-      rtb_Add_f_0[1] = rtb_Add_a[0] * rtb_Sum1[2];
-      rtb_Add_f_0[2] = rtb_Add_a[1] * rtb_Sum1[0];
+      rtb_Add_f[0] = rtb_Add_a[1] * rtb_Sum1_cy[2];
+      rtb_Add_f[1] = rtb_Add_a[2] * rtb_Sum1_cy[0];
+      rtb_Add_f[2] = rtb_Add_a[0] * rtb_Sum1_cy[1];
+      rtb_Add_f_0[0] = rtb_Add_a[2] * rtb_Sum1_cy[1];
+      rtb_Add_f_0[1] = rtb_Add_a[0] * rtb_Sum1_cy[2];
+      rtb_Add_f_0[2] = rtb_Add_a[1] * rtb_Sum1_cy[0];
 
       /* Sum: '<S3>/Sum3' incorporates:
        *  Constant: '<S3>/Constant'
@@ -308,10 +313,11 @@ void tuning_GS1ModelClass::step()
        *  Sum: '<S9>/Sum1'
        */
       for (i = 0; i < 3; i++) {
-        rtb_Sum1[i] = (((tuning_GS1_ConstP.Constant1_Value[i + 3] * rtb_Add_a[4]
-                         + tuning_GS1_ConstP.Constant1_Value[i] * rtb_Add_a[3])
-                        + tuning_GS1_ConstP.Constant1_Value[i + 6] * rtb_Add_a[5])
-                       + tuning_GS1_ConstP.Constant_Value[i]) + (rtb_Add_f[i] -
+        rtb_Sum1_cy[i] = (((tuning_GS1_ConstP.Constant1_Value[i + 3] *
+                            rtb_Add_a[4] + tuning_GS1_ConstP.Constant1_Value[i] *
+                            rtb_Add_a[3]) + tuning_GS1_ConstP.Constant1_Value[i
+                           + 6] * rtb_Add_a[5]) +
+                          tuning_GS1_ConstP.Constant_Value[i]) + (rtb_Add_f[i] -
           rtb_Add_f_0[i]);
       }
 
@@ -330,9 +336,9 @@ void tuning_GS1ModelClass::step()
       /* '<S10>:1:9'         u(2) - u(5) ; */
       /* '<S10>:1:10'         u(3) - u(6) ]; */
       /* '<S10>:1:11' Residu = diff - M\y; */
-      rtb_gamma_idx_1 = rtb_Sum1[0] - rtb_Sum1[1] * -0.57735026918962584;
-      rtb_gamma_idx_2 = ((rtb_Sum1[2] - rtb_Sum1[1] * 0.19603055651554735) -
-                         rtb_gamma_idx_1 * 0.16976744186046511) /
+      rtb_gamma_idx_1 = rtb_Sum1_cy[0] - rtb_Sum1_cy[1] * -0.57735026918962584;
+      rtb_gamma_idx_2 = ((rtb_Sum1_cy[2] - rtb_Sum1_cy[1] * 0.19603055651554735)
+                         - rtb_gamma_idx_1 * 0.16976744186046511) /
         -0.10949999999999999;
       rtb_gamma_idx_1 -= rtb_gamma_idx_2 * 0.215;
       rtb_gamma_idx_1 /= 0.215;
@@ -342,8 +348,9 @@ void tuning_GS1ModelClass::step()
       /* '<S10>:1:15'             Residu(2)/u(2) */
       /* '<S10>:1:16'             Residu(3)/u(3)]; */
       rtb_gamma_idx_0 = ((tuning_GS1_DW.Memory_PreviousInput[0] -
-                          tuning_GS1_DW.Memory_PreviousInput[3]) - ((rtb_Sum1[1]
-        - rtb_gamma_idx_2 * 0.18619546181365429) - rtb_gamma_idx_1 * 0.0) /
+                          tuning_GS1_DW.Memory_PreviousInput[3]) -
+                         ((rtb_Sum1_cy[1] - rtb_gamma_idx_2 *
+                           0.18619546181365429) - rtb_gamma_idx_1 * 0.0) /
                          -0.18619546181365429) /
         tuning_GS1_DW.Memory_PreviousInput[0];
       rtb_gamma_idx_1 = ((tuning_GS1_DW.Memory_PreviousInput[1] -
@@ -406,22 +413,38 @@ void tuning_GS1ModelClass::step()
     }
 
     /* End of MultiPortSwitch: '<Root>/Multiport Switch' */
-
-    /* MATLAB Function: '<S16>/MATLAB Function' */
     /* MATLAB Function 'GS_controller/z_GS_controller/MATLAB Function': '<S20>:1' */
     /*    GS_z_gain1_OK.m */
     /*  to change 1 */
     /* '<S20>:1:4' un = (u - 0.5)./0.5; */
     for (i = 0; i < 6; i++) {
-      un[i] = (rtb_gamma_m[i] - 0.5) / 0.5;
+      /* Saturate: '<Root>/                        ' */
+      if (rtb_gamma_m[i] > 1.0) {
+        rtb_d_z = 1.0;
+      } else if (rtb_gamma_m[i] < 0.0) {
+        rtb_d_z = 0.0;
+      } else {
+        rtb_d_z = rtb_gamma_m[i];
+      }
+
+      /* MATLAB Function: '<S16>/MATLAB Function' */
+      un[i] = (rtb_d_z - 0.5) / 0.5;
+
+      /* Saturate: '<Root>/                        ' */
+      rtb_u[i] = rtb_d_z;
     }
 
+    /* MATLAB Function: '<S16>/MATLAB Function' */
     /*  normalized LOE */
     /*  to change 2 */
     /* '<S20>:1:7' Kz  = ones(6,1)*[2.6144    1.3106]; */
     memcpy(&rtb_Kz[0], &Kz[0], 12U * sizeof(real_T));
 
     /* '<S20>:1:8' Kiz = 1.9268.*ones(6,1); */
+    for (i = 0; i < 6; i++) {
+      rtb_gamma_m[i] = 1.9268;
+    }
+
     /* '<S20>:1:10' Kz_i  = [0.0345    0.0399]; */
     /* '<S20>:1:11' Kz_j  = [0.0381    0.0525]; */
     /* '<S20>:1:12' Kiz_i = -0.0554; */
@@ -449,28 +472,40 @@ void tuning_GS1ModelClass::step()
       [5];
 
     /* '<S20>:1:22' Kiz(1) =   Kiz(1) + Kiz_i.*un(1) + Kiz_j.*un(2) + Kiz_j.*un(3); */
-    rtb_Kiz[0] = ((-0.0554 * un[0] + 1.9268) + -0.0597 * un[1]) + -0.0597 * un[2];
+    rtb_gamma_m[0] = ((-0.0554 * un[0] + 1.9268) + -0.0597 * un[1]) + -0.0597 *
+      un[2];
 
     /* '<S20>:1:23' Kiz(2) =   Kiz(2) + Kiz_j.*un(1) + Kiz_i.*un(2) + Kiz_j.*un(3); */
-    rtb_Kiz[1] = ((-0.0597 * un[0] + 1.9268) + -0.0554 * un[1]) + -0.0597 * un[2];
+    rtb_gamma_m[1] = ((-0.0597 * un[0] + rtb_gamma_m[1]) + -0.0554 * un[1]) +
+      -0.0597 * un[2];
 
     /* '<S20>:1:24' Kiz(3) =   Kiz(3) + Kiz_j.*un(1) + Kiz_j.*un(2) + Kiz_i.*un(3); */
-    rtb_Kiz[2] = ((-0.0597 * un[0] + 1.9268) + -0.0597 * un[1]) + -0.0554 * un[2];
+    rtb_gamma_m[2] = ((-0.0597 * un[0] + rtb_gamma_m[2]) + -0.0597 * un[1]) +
+      -0.0554 * un[2];
 
     /* '<S20>:1:25' Kiz(4) =   Kiz(4) + Kiz_i.*un(4) + Kiz_j.*un(5) + Kiz_j.*un(6); */
-    rtb_Kiz[3] = ((-0.0554 * un[3] + 1.9268) + -0.0597 * un[4]) + -0.0597 * un[5];
+    rtb_gamma_m[3] = ((-0.0554 * un[3] + rtb_gamma_m[3]) + -0.0597 * un[4]) +
+      -0.0597 * un[5];
 
     /* '<S20>:1:26' Kiz(5) =   Kiz(5) + Kiz_j.*un(4) + Kiz_i.*un(5) + Kiz_j.*un(6); */
-    rtb_Kiz[4] = ((-0.0597 * un[3] + 1.9268) + -0.0554 * un[4]) + -0.0597 * un[5];
+    rtb_gamma_m[4] = ((-0.0597 * un[3] + rtb_gamma_m[4]) + -0.0554 * un[4]) +
+      -0.0597 * un[5];
 
     /* '<S20>:1:27' Kiz(6) =   Kiz(6) + Kiz_j.*un(4) + Kiz_j.*un(5) + Kiz_i.*un(6); */
-    rtb_Kiz[5] = ((-0.0597 * un[3] + 1.9268) + -0.0597 * un[4]) + -0.0554 * un[5];
+    rtb_gamma_m[5] = ((-0.0597 * un[3] + rtb_gamma_m[5]) + -0.0597 * un[4]) +
+      -0.0554 * un[5];
 
     /* Sum: '<S7>/Sum5' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
-    /* '<S20>:1:28' gain = [Kz(1,:) Kiz(1)]; */
+    /*      % Nominal gain */
+    /*      Kz = [  2.4538    1.1346 */
+    /*              2.4538    1.1346 */
+    /*              2.4538    1.1346]; */
+    /*   */
+    /*      Kiz = [ 2.0412  2.0412  2.0412  2.0412  2.0412  2.0412  ]'; */
+    /* '<S20>:1:38' gain = [Kz(1,:) Kiz(1)]; */
     /*   */
     /*  KX = */
     /*      2.6144    1.3106    0.0345    0.0399    0.0381    0.0525    0.0381    0.0525 */
@@ -488,7 +523,7 @@ void tuning_GS1ModelClass::step()
     /*  Kz  = [14.7226 6.8078];  Kiz =  12.2474;   */
     /*  KX0  = [Kz;Kz;Kz;Kz;Kz;Kz]./6;         */
     /*  Ki0  = [Kiz;Kiz;Kiz;Kiz;Kiz;Kiz]./6; */
-    /*                                  => gain motor 1  = [2.4538  1.1346  2.0412]   &   gain_z = [14.7226     6.8078   12.2474]    % nominal classique        */
+    /*                                  => gain motor 1  = [2.4538  1.1346  2.0412]   &    gain_z = [14.7226     6.8078   12.2474]    % nominal classique        */
     /*  ------------------------------ */
     /*  evalSurf gain: OK                                  [z        z_dot   z_int]     */
     /*  u = [0 0 0 ]                    => gain motor 1  = [2.5037  1.1657  2.0456]   =>   gain_z = [15.0222    6.9942   12.2736]    % GS nominal     */
@@ -500,80 +535,47 @@ void tuning_GS1ModelClass::step()
     /*  6*[2.6144  1.3106  1.9268] */
     rtb_d_z = tuning_GS1_U.X[2] - tuning_GS1_U.Y0[2];
 
-    /* MATLAB Function: '<S13>/MATLAB Function' */
-    /* MATLAB Function 'GS_controller/psi_GS_controller/MATLAB Function': '<S17>:1' */
-    /*  GS_psi_3gamma_gain2_OK.m */
-    /*  to change 1 */
-    /* '<S17>:1:4' un = (u - 0.5)./0.5; */
-    for (i = 0; i < 6; i++) {
-      un[i] = (rtb_gamma_m[i] - 0.5) / 0.5;
-    }
-
-    /*  normalized LOE */
-    /*  to change 2 */
-    /* '<S17>:1:7' Kpsi0  = [-2.2767   -1.6150]; */
-    /* '<S17>:1:8' Kipsi0 = -1.1607; */
-    /* '<S17>:1:10' Kpsi_i  = [0.0543   -0.0262]; */
-    /* '<S17>:1:11' Kpsi_j  = [0.0554   -0.0301]; */
-    /* '<S17>:1:12' Kipsi_i = 0.0966; */
-    /* '<S17>:1:13' Kipsi_j = 0.0905; */
-    /*  [-1 1 -1 1 -1 1] */
-    /* '<S17>:1:16' Kpsi = zeros(6,2); */
-    /* '<S17>:1:16' Kipsi = zeros(6,1); */
-    /* '<S17>:1:17' Kpsi(1,:) =    Kpsi0 + Kpsi_i.*un(1) + Kpsi_j.*un(2) + Kpsi_j.*un(3); */
-    /* '<S17>:1:18' Kpsi(2,:) =  -(Kpsi0 + Kpsi_j.*un(1) + Kpsi_i.*un(2) + Kpsi_j.*un(3)); */
-    /* '<S17>:1:19' Kpsi(3,:) =    Kpsi0 + Kpsi_j.*un(1) + Kpsi_j.*un(2) + Kpsi_i.*un(3); */
-    /* '<S17>:1:20' Kpsi(4,:) =  -(Kpsi0 + Kpsi_i.*un(4) + Kpsi_j.*un(5) + Kpsi_j.*un(6)); */
-    /* '<S17>:1:21' Kpsi(5,:) =    Kpsi0 + Kpsi_j.*un(4) + Kpsi_i.*un(5) + Kpsi_j.*un(6); */
-    /* '<S17>:1:22' Kpsi(6,:) =  -(Kpsi0 + Kpsi_j.*un(4) + Kpsi_j.*un(5) + Kpsi_i.*un(6)); */
-    rtb_Kpsi[0] = ((0.0543 * un[0] + -2.2767) + 0.0554 * un[1]) + 0.0554 * un[2];
-    rtb_Kpsi[1] = -(((0.0554 * un[0] + -2.2767) + 0.0543 * un[1]) + 0.0554 * un
-                    [2]);
-    rtb_Kpsi[2] = ((0.0554 * un[0] + -2.2767) + 0.0554 * un[1]) + 0.0543 * un[2];
-    rtb_Kpsi[3] = -(((0.0543 * un[3] + -2.2767) + 0.0554 * un[4]) + 0.0554 * un
-                    [5]);
-    rtb_Kpsi[4] = ((0.0554 * un[3] + -2.2767) + 0.0543 * un[4]) + 0.0554 * un[5];
-    rtb_Kpsi[5] = -(((0.0554 * un[3] + -2.2767) + 0.0554 * un[4]) + 0.0543 * un
-                    [5]);
-    rtb_Kpsi[6] = ((-0.0262 * un[0] + -1.615) + -0.0301 * un[1]) + -0.0301 * un
-      [2];
-    rtb_Kpsi[7] = -(((-0.0301 * un[0] + -1.615) + -0.0262 * un[1]) + -0.0301 *
-                    un[2]);
-    rtb_Kpsi[8] = ((-0.0301 * un[0] + -1.615) + -0.0301 * un[1]) + -0.0262 * un
-      [2];
-    rtb_Kpsi[9] = -(((-0.0262 * un[3] + -1.615) + -0.0301 * un[4]) + -0.0301 *
-                    un[5]);
-    rtb_Kpsi[10] = ((-0.0301 * un[3] + -1.615) + -0.0262 * un[4]) + -0.0301 *
-      un[5];
-    rtb_Kpsi[11] = -(((-0.0301 * un[3] + -1.615) + -0.0301 * un[4]) + -0.0262 *
-                     un[5]);
-
-    /* '<S17>:1:24' Kipsi(1) =     Kipsi0 + Kipsi_i.*un(1) + Kipsi_j.*un(2) + Kipsi_j.*un(3); */
-    rtb_Kipsi[0] = ((0.0966 * un[0] + -1.1607) + 0.0905 * un[1]) + 0.0905 * un[2];
-
-    /* '<S17>:1:25' Kipsi(2) =   -(Kipsi0 + Kipsi_j.*un(1) + Kipsi_i.*un(2) + Kipsi_j.*un(3)); */
-    rtb_Kipsi[1] = -(((0.0905 * un[0] + -1.1607) + 0.0966 * un[1]) + 0.0905 *
-                     un[2]);
-
-    /* '<S17>:1:26' Kipsi(3) =     Kipsi0 + Kipsi_j.*un(1) + Kipsi_j.*un(2) + Kipsi_i.*un(3); */
-    rtb_Kipsi[2] = ((0.0905 * un[0] + -1.1607) + 0.0905 * un[1]) + 0.0966 * un[2];
-
-    /* '<S17>:1:27' Kipsi(4) =   -(Kipsi0 + Kipsi_i.*un(4) + Kipsi_j.*un(5) + Kipsi_j.*un(6)); */
-    rtb_Kipsi[3] = -(((0.0966 * un[3] + -1.1607) + 0.0905 * un[4]) + 0.0905 *
-                     un[5]);
-
-    /* '<S17>:1:28' Kipsi(5) =     Kipsi0 + Kipsi_j.*un(4) + Kipsi_i.*un(5) + Kipsi_j.*un(6); */
-    rtb_Kipsi[4] = ((0.0905 * un[3] + -1.1607) + 0.0966 * un[4]) + 0.0905 * un[5];
-
-    /* '<S17>:1:29' Kipsi(6) =   -(Kipsi0 + Kipsi_j.*un(4) + Kipsi_j.*un(5) + Kipsi_i.*un(6)); */
-    rtb_Kipsi[5] = -(((0.0905 * un[3] + -1.1607) + 0.0905 * un[4]) + 0.0966 *
-                     un[5]);
-
     /* Sum: '<S7>/Sum6' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
-    /* '<S17>:1:31' gain = [Kpsi(1,:) Kipsi(1)]; */
+    /* MATLAB Function 'GS_controller/psi_GS_controller/MATLAB Function': '<S17>:1' */
+    /*  GS_psi_3gamma_gain2_OK.m */
+    /*  to change 1 */
+    /* '<S17>:1:4' un = (u - 0.5)./0.5; */
+    /*  normalized LOE */
+    /*  to change 2 */
+    /*      Kpsi0  = [-2.2767   -1.6150]; */
+    /*      Kipsi0 = -1.1607; */
+    /*   */
+    /*      Kpsi_i  = [0.0543   -0.0262]; */
+    /*      Kpsi_j  = [0.0554   -0.0301]; */
+    /*      Kipsi_i = 0.0966;  */
+    /*      Kipsi_j = 0.0905; */
+    /*   */
+    /*      % [-1 1 -1 1 -1 1] */
+    /*      Kpsi = zeros(6,2); Kipsi = zeros(6,1); */
+    /*      Kpsi(1,:) =    Kpsi0 + Kpsi_i.*un(1) + Kpsi_j.*un(2) + Kpsi_j.*un(3); */
+    /*      Kpsi(2,:) =  -(Kpsi0 + Kpsi_j.*un(1) + Kpsi_i.*un(2) + Kpsi_j.*un(3)); */
+    /*      Kpsi(3,:) =    Kpsi0 + Kpsi_j.*un(1) + Kpsi_j.*un(2) + Kpsi_i.*un(3); */
+    /*      Kpsi(4,:) =  -(Kpsi0 + Kpsi_i.*un(4) + Kpsi_j.*un(5) + Kpsi_j.*un(6)); */
+    /*      Kpsi(5,:) =    Kpsi0 + Kpsi_j.*un(4) + Kpsi_i.*un(5) + Kpsi_j.*un(6); */
+    /*      Kpsi(6,:) =  -(Kpsi0 + Kpsi_j.*un(4) + Kpsi_j.*un(5) + Kpsi_i.*un(6)); */
+    /*   */
+    /*      Kipsi(1) =     Kipsi0 + Kipsi_i.*un(1) + Kipsi_j.*un(2) + Kipsi_j.*un(3); */
+    /*      Kipsi(2) =   -(Kipsi0 + Kipsi_j.*un(1) + Kipsi_i.*un(2) + Kipsi_j.*un(3)); */
+    /*      Kipsi(3) =     Kipsi0 + Kipsi_j.*un(1) + Kipsi_j.*un(2) + Kipsi_i.*un(3); */
+    /*      Kipsi(4) =   -(Kipsi0 + Kipsi_i.*un(4) + Kipsi_j.*un(5) + Kipsi_j.*un(6)); */
+    /*      Kipsi(5) =     Kipsi0 + Kipsi_j.*un(4) + Kipsi_i.*un(5) + Kipsi_j.*un(6); */
+    /*      Kipsi(6) =   -(Kipsi0 + Kipsi_j.*un(4) + Kipsi_j.*un(5) + Kipsi_i.*un(6)); */
+    /* '<S17>:1:30' Kpsi = [-2.2740   -1.4292 */
+    /* '<S17>:1:31'              2.2740    1.4292 */
+    /* '<S17>:1:32'             -2.2740   -1.4292 */
+    /* '<S17>:1:33'              2.2740    1.4292 */
+    /* '<S17>:1:34'             -2.2740   -1.4292 */
+    /* '<S17>:1:35'              2.2740    1.4292]; */
+    /* '<S17>:1:36' Kipsi = [-1.4438  1.4438  -1.4438  1.4438  -1.4438  1.4438]'; */
+    /* '<S17>:1:37' gain = [Kpsi(1,:) Kipsi(1)]; */
     /*  KX = */
     /*     -2.2767   -1.6150    0.0543   -0.0262    0.0554   -0.0301    0.0554   -0.0301 */
     /*      2.2767    1.6150   -0.0554    0.0301   -0.0543    0.0262   -0.0554    0.0301 */
@@ -613,7 +615,7 @@ void tuning_GS1ModelClass::step()
     /*  to change 1 */
     /* '<S18>:1:4' un = (u - 0.4)./0.4; */
     for (i = 0; i < 6; i++) {
-      un[i] = (rtb_gamma_m[i] - 0.4) / 0.4;
+      un[i] = (rtb_u[i] - 0.4) / 0.4;
     }
 
     /*  normalized LOE */
@@ -726,7 +728,7 @@ void tuning_GS1ModelClass::step()
     /*  to change 1 */
     /* '<S19>:1:4' un = (u - 0.375)./0.375; */
     for (i = 0; i < 6; i++) {
-      rtb_gamma_m[i] = (rtb_gamma_m[i] - 0.375) / 0.375;
+      rtb_u[i] = (rtb_u[i] - 0.375) / 0.375;
     }
 
     /*  normalized LOE */
@@ -748,78 +750,70 @@ void tuning_GS1ModelClass::step()
     /* '<S19>:1:18' Kyphi(4,:) =    -(Kyphi(4,:) + Kyphi_i.*un(4) + Kyphi_j.*un(5) + Kyphi_j.*un(6)); */
     /* '<S19>:1:19' Kyphi(5,:) = -2.*(Kyphi(5,:) + Kyphi_j.*un(4) + Kyphi_i.*un(5) + Kyphi_j.*un(6)); */
     /* '<S19>:1:20' Kyphi(6,:) =    -(Kyphi(6,:) + Kyphi_j.*un(4) + Kyphi_j.*un(5) + Kyphi_i.*un(6)); */
-    rtb_Kyphi[0] = (0.05 * rtb_gamma_m[0] + -0.0406 * rtb_gamma_m[1]) + -0.0406 *
-      rtb_gamma_m[2];
-    rtb_Kyphi[1] = (((-0.0406 * rtb_gamma_m[0] + rtb_Kyphi[1]) + 0.05 *
-                     rtb_gamma_m[1]) + -0.0406 * rtb_gamma_m[2]) * 2.0;
-    rtb_Kyphi[2] = ((-0.0406 * rtb_gamma_m[0] + rtb_Kyphi[2]) + -0.0406 *
-                    rtb_gamma_m[1]) + 0.05 * rtb_gamma_m[2];
-    rtb_Kyphi[3] = -(((0.05 * rtb_gamma_m[3] + rtb_Kyphi[3]) + -0.0406 *
-                      rtb_gamma_m[4]) + -0.0406 * rtb_gamma_m[5]);
-    rtb_Kyphi[4] = (((-0.0406 * rtb_gamma_m[3] + rtb_Kyphi[4]) + 0.05 *
-                     rtb_gamma_m[4]) + -0.0406 * rtb_gamma_m[5]) * -2.0;
-    rtb_Kyphi[5] = -(((-0.0406 * rtb_gamma_m[3] + rtb_Kyphi[5]) + -0.0406 *
-                      rtb_gamma_m[4]) + 0.05 * rtb_gamma_m[5]);
-    rtb_Kyphi[6] = (0.0327 * rtb_gamma_m[0] + -0.0468 * rtb_gamma_m[1]) +
-      -0.0468 * rtb_gamma_m[2];
-    rtb_Kyphi[7] = (((-0.0468 * rtb_gamma_m[0] + rtb_Kyphi[7]) + 0.0327 *
-                     rtb_gamma_m[1]) + -0.0468 * rtb_gamma_m[2]) * 2.0;
-    rtb_Kyphi[8] = ((-0.0468 * rtb_gamma_m[0] + rtb_Kyphi[8]) + -0.0468 *
-                    rtb_gamma_m[1]) + 0.0327 * rtb_gamma_m[2];
-    rtb_Kyphi[9] = -(((0.0327 * rtb_gamma_m[3] + rtb_Kyphi[9]) + -0.0468 *
-                      rtb_gamma_m[4]) + -0.0468 * rtb_gamma_m[5]);
-    rtb_Kyphi[10] = (((-0.0468 * rtb_gamma_m[3] + rtb_Kyphi[10]) + 0.0327 *
-                      rtb_gamma_m[4]) + -0.0468 * rtb_gamma_m[5]) * -2.0;
-    rtb_Kyphi[11] = -(((-0.0468 * rtb_gamma_m[3] + rtb_Kyphi[11]) + -0.0468 *
-                       rtb_gamma_m[4]) + 0.0327 * rtb_gamma_m[5]);
-    rtb_Kyphi[12] = (-0.0649 * rtb_gamma_m[0] + 0.1455 * rtb_gamma_m[1]) +
-      0.1455 * rtb_gamma_m[2];
-    rtb_Kyphi[13] = (((0.1455 * rtb_gamma_m[0] + rtb_Kyphi[13]) + -0.0649 *
-                      rtb_gamma_m[1]) + 0.1455 * rtb_gamma_m[2]) * 2.0;
-    rtb_Kyphi[14] = ((0.1455 * rtb_gamma_m[0] + rtb_Kyphi[14]) + 0.1455 *
-                     rtb_gamma_m[1]) + -0.0649 * rtb_gamma_m[2];
-    rtb_Kyphi[15] = -(((-0.0649 * rtb_gamma_m[3] + rtb_Kyphi[15]) + 0.1455 *
-                       rtb_gamma_m[4]) + 0.1455 * rtb_gamma_m[5]);
-    rtb_Kyphi[16] = (((0.1455 * rtb_gamma_m[3] + rtb_Kyphi[16]) + -0.0649 *
-                      rtb_gamma_m[4]) + 0.1455 * rtb_gamma_m[5]) * -2.0;
-    rtb_Kyphi[17] = -(((0.1455 * rtb_gamma_m[3] + rtb_Kyphi[17]) + 0.1455 *
-                       rtb_gamma_m[4]) + -0.0649 * rtb_gamma_m[5]);
-    rtb_Kyphi[18] = (-0.0583 * rtb_gamma_m[0] + 0.0252 * rtb_gamma_m[1]) +
-      0.0252 * rtb_gamma_m[2];
-    rtb_Kyphi[19] = (((0.0252 * rtb_gamma_m[0] + rtb_Kyphi[19]) + -0.0583 *
-                      rtb_gamma_m[1]) + 0.0252 * rtb_gamma_m[2]) * 2.0;
-    rtb_Kyphi[20] = ((0.0252 * rtb_gamma_m[0] + rtb_Kyphi[20]) + 0.0252 *
-                     rtb_gamma_m[1]) + -0.0583 * rtb_gamma_m[2];
-    rtb_Kyphi[21] = -(((-0.0583 * rtb_gamma_m[3] + rtb_Kyphi[21]) + 0.0252 *
-                       rtb_gamma_m[4]) + 0.0252 * rtb_gamma_m[5]);
-    rtb_Kyphi[22] = (((0.0252 * rtb_gamma_m[3] + rtb_Kyphi[22]) + -0.0583 *
-                      rtb_gamma_m[4]) + 0.0252 * rtb_gamma_m[5]) * -2.0;
-    rtb_Kyphi[23] = -(((0.0252 * rtb_gamma_m[3] + rtb_Kyphi[23]) + 0.0252 *
-                       rtb_gamma_m[4]) + -0.0583 * rtb_gamma_m[5]);
+    rtb_Kyphi[0] = (0.05 * rtb_u[0] + -0.0406 * rtb_u[1]) + -0.0406 * rtb_u[2];
+    rtb_Kyphi[1] = (((-0.0406 * rtb_u[0] + rtb_Kyphi[1]) + 0.05 * rtb_u[1]) +
+                    -0.0406 * rtb_u[2]) * 2.0;
+    rtb_Kyphi[2] = ((-0.0406 * rtb_u[0] + rtb_Kyphi[2]) + -0.0406 * rtb_u[1]) +
+      0.05 * rtb_u[2];
+    rtb_Kyphi[3] = -(((0.05 * rtb_u[3] + rtb_Kyphi[3]) + -0.0406 * rtb_u[4]) +
+                     -0.0406 * rtb_u[5]);
+    rtb_Kyphi[4] = (((-0.0406 * rtb_u[3] + rtb_Kyphi[4]) + 0.05 * rtb_u[4]) +
+                    -0.0406 * rtb_u[5]) * -2.0;
+    rtb_Kyphi[5] = -(((-0.0406 * rtb_u[3] + rtb_Kyphi[5]) + -0.0406 * rtb_u[4])
+                     + 0.05 * rtb_u[5]);
+    rtb_Kyphi[6] = (0.0327 * rtb_u[0] + -0.0468 * rtb_u[1]) + -0.0468 * rtb_u[2];
+    rtb_Kyphi[7] = (((-0.0468 * rtb_u[0] + rtb_Kyphi[7]) + 0.0327 * rtb_u[1]) +
+                    -0.0468 * rtb_u[2]) * 2.0;
+    rtb_Kyphi[8] = ((-0.0468 * rtb_u[0] + rtb_Kyphi[8]) + -0.0468 * rtb_u[1]) +
+      0.0327 * rtb_u[2];
+    rtb_Kyphi[9] = -(((0.0327 * rtb_u[3] + rtb_Kyphi[9]) + -0.0468 * rtb_u[4]) +
+                     -0.0468 * rtb_u[5]);
+    rtb_Kyphi[10] = (((-0.0468 * rtb_u[3] + rtb_Kyphi[10]) + 0.0327 * rtb_u[4])
+                     + -0.0468 * rtb_u[5]) * -2.0;
+    rtb_Kyphi[11] = -(((-0.0468 * rtb_u[3] + rtb_Kyphi[11]) + -0.0468 * rtb_u[4])
+                      + 0.0327 * rtb_u[5]);
+    rtb_Kyphi[12] = (-0.0649 * rtb_u[0] + 0.1455 * rtb_u[1]) + 0.1455 * rtb_u[2];
+    rtb_Kyphi[13] = (((0.1455 * rtb_u[0] + rtb_Kyphi[13]) + -0.0649 * rtb_u[1])
+                     + 0.1455 * rtb_u[2]) * 2.0;
+    rtb_Kyphi[14] = ((0.1455 * rtb_u[0] + rtb_Kyphi[14]) + 0.1455 * rtb_u[1]) +
+      -0.0649 * rtb_u[2];
+    rtb_Kyphi[15] = -(((-0.0649 * rtb_u[3] + rtb_Kyphi[15]) + 0.1455 * rtb_u[4])
+                      + 0.1455 * rtb_u[5]);
+    rtb_Kyphi[16] = (((0.1455 * rtb_u[3] + rtb_Kyphi[16]) + -0.0649 * rtb_u[4])
+                     + 0.1455 * rtb_u[5]) * -2.0;
+    rtb_Kyphi[17] = -(((0.1455 * rtb_u[3] + rtb_Kyphi[17]) + 0.1455 * rtb_u[4])
+                      + -0.0649 * rtb_u[5]);
+    rtb_Kyphi[18] = (-0.0583 * rtb_u[0] + 0.0252 * rtb_u[1]) + 0.0252 * rtb_u[2];
+    rtb_Kyphi[19] = (((0.0252 * rtb_u[0] + rtb_Kyphi[19]) + -0.0583 * rtb_u[1])
+                     + 0.0252 * rtb_u[2]) * 2.0;
+    rtb_Kyphi[20] = ((0.0252 * rtb_u[0] + rtb_Kyphi[20]) + 0.0252 * rtb_u[1]) +
+      -0.0583 * rtb_u[2];
+    rtb_Kyphi[21] = -(((-0.0583 * rtb_u[3] + rtb_Kyphi[21]) + 0.0252 * rtb_u[4])
+                      + 0.0252 * rtb_u[5]);
+    rtb_Kyphi[22] = (((0.0252 * rtb_u[3] + rtb_Kyphi[22]) + -0.0583 * rtb_u[4])
+                     + 0.0252 * rtb_u[5]) * -2.0;
+    rtb_Kyphi[23] = -(((0.0252 * rtb_u[3] + rtb_Kyphi[23]) + 0.0252 * rtb_u[4])
+                      + -0.0583 * rtb_u[5]);
 
     /* '<S19>:1:22' Kiy(1) =     Kiy(1) + Kiy_i.*un(1) + Kiy_j.*un(2) + Kiy_j.*un(3); */
-    rtb_Kiy[0] = (0.0094 * rtb_gamma_m[0] + 0.0485 * rtb_gamma_m[1]) + 0.0485 *
-      rtb_gamma_m[2];
+    rtb_Kiy[0] = (0.0094 * rtb_u[0] + 0.0485 * rtb_u[1]) + 0.0485 * rtb_u[2];
 
     /* '<S19>:1:23' Kiy(2) =  2*(Kiy(2) + Kiy_j.*un(1) + Kiy_i.*un(2) + Kiy_j.*un(3)); */
-    rtb_Kiy[1] = ((0.0485 * rtb_gamma_m[0] + 0.0094 * rtb_gamma_m[1]) + 0.0485 *
-                  rtb_gamma_m[2]) * 2.0;
+    rtb_Kiy[1] = ((0.0485 * rtb_u[0] + 0.0094 * rtb_u[1]) + 0.0485 * rtb_u[2]) *
+      2.0;
 
     /* '<S19>:1:24' Kiy(3) =     Kiy(3) + Kiy_j.*un(1) + Kiy_j.*un(2) + Kiy_i.*un(3); */
-    rtb_Kiy[2] = (0.0485 * rtb_gamma_m[0] + 0.0485 * rtb_gamma_m[1]) + 0.0094 *
-      rtb_gamma_m[2];
+    rtb_Kiy[2] = (0.0485 * rtb_u[0] + 0.0485 * rtb_u[1]) + 0.0094 * rtb_u[2];
 
     /* '<S19>:1:25' Kiy(4) =   -(Kiy(4) + Kiy_i.*un(4) + Kiy_j.*un(5) + Kiy_j.*un(6)); */
-    rtb_Kiy[3] = -((0.0094 * rtb_gamma_m[3] + 0.0485 * rtb_gamma_m[4]) + 0.0485 *
-                   rtb_gamma_m[5]);
+    rtb_Kiy[3] = -((0.0094 * rtb_u[3] + 0.0485 * rtb_u[4]) + 0.0485 * rtb_u[5]);
 
     /* '<S19>:1:26' Kiy(5) = -2*(Kiy(5) + Kiy_j.*un(4) + Kiy_i.*un(5) + Kiy_j.*un(6)); */
-    rtb_Kiy[4] = ((0.0485 * rtb_gamma_m[3] + 0.0094 * rtb_gamma_m[4]) + 0.0485 *
-                  rtb_gamma_m[5]) * -2.0;
+    rtb_Kiy[4] = ((0.0485 * rtb_u[3] + 0.0094 * rtb_u[4]) + 0.0485 * rtb_u[5]) *
+      -2.0;
 
     /* '<S19>:1:27' Kiy(6) =   -(Kiy(6) + Kiy_j.*un(4) + Kiy_j.*un(5) + Kiy_i.*un(6)); */
-    rtb_Kiy[5] = -((0.0485 * rtb_gamma_m[3] + 0.0485 * rtb_gamma_m[4]) + 0.0094 *
-                   rtb_gamma_m[5]);
+    rtb_Kiy[5] = -((0.0485 * rtb_u[3] + 0.0485 * rtb_u[4]) + 0.0094 * rtb_u[5]);
 
     /* Sum: '<S7>/Sum4' incorporates:
      *  Inport: '<Root>/X'
@@ -958,6 +952,16 @@ void tuning_GS1ModelClass::step()
         (tuning_GS1_B.T_outer[2]);
     }
 
+    /* Gain: '<S4>/Gain' incorporates:
+     *  Constant: '<S14>/Constant'
+     *  Sum: '<S4>/Sum'
+     */
+    tmp_2[0] = 0.0 * rtb_ref[0];
+    tmp_2[1] = 0.0;
+    tmp_2[2] = 0.0 * rtb_ref[1];
+    tmp_2[3] = 0.0 * rtb_ref[2];
+    tmp_2[4] = 0.0;
+    tmp_2[5] = 0.0 * rtb_ref[3];
     for (i = 0; i < 6; i++) {
       /* Sum: '<S4>/Sum' incorporates:
        *  Inport: '<Root>/X'
@@ -967,30 +971,33 @@ void tuning_GS1ModelClass::step()
        *  SignalConversion: '<S16>/TmpSignal ConversionAtProduct1Inport2'
        *  Sum: '<S16>/Sum1'
        */
-      un[i] = (rtb_Kiz[i] * tuning_GS1_X.Integrator1_CSTATE - (rtb_Kz[i + 6] *
-                tuning_GS1_U.X[5] + rtb_Kz[i] * rtb_d_z)) + 2.5179000000000005;
+      un[i] = (rtb_gamma_m[i] * tuning_GS1_X.Integrator1_CSTATE - (rtb_Kz[i + 6]
+                * tuning_GS1_U.X[5] + rtb_Kz[i] * rtb_d_z)) + 2.5179000000000005;
 
       /* Sum: '<S13>/Sum1' incorporates:
        *  Inport: '<Root>/X'
        *  Integrator: '<S13>/Integrator1'
+       *  MATLAB Function: '<S13>/MATLAB Function'
        *  Product: '<S13>/Product'
-       *  Product: '<S13>/Product1'
        *  SignalConversion: '<S13>/TmpSignal ConversionAtProduct1Inport2'
        *  Sum: '<S4>/Sum'
        */
-      rtb_Kipsi_0[i] = rtb_Kipsi[i] * tuning_GS1_X.Integrator1_CSTATE_o -
-        (rtb_Kpsi[i + 6] * tuning_GS1_U.X[11] + rtb_Kpsi[i] * rtb_d_psi);
-    }
+      tmp_1[i] = tmp[i] * tuning_GS1_X.Integrator1_CSTATE_o - (tmp_0[i + 6] *
+        tuning_GS1_U.X[11] + tmp_0[i] * rtb_d_psi);
 
-    /* Sum: '<S4>/Sum' incorporates:
-     *  Constant: '<S14>/Constant'
-     */
-    rtb_ref_0[0] = rtb_ref[0];
-    rtb_ref_0[1] = 0.0;
-    rtb_ref_0[4] = 0.0;
-    rtb_ref_0[5] = rtb_ref[3];
-    rtb_ref_0[2] = rtb_ref[1];
-    rtb_ref_0[3] = rtb_ref[2];
+      /* Sum: '<S15>/Sum1' incorporates:
+       *  Gain: '<S4>/Gain1'
+       *  Inport: '<Root>/X'
+       *  Integrator: '<S15>/Integrator1'
+       *  Product: '<S15>/Product'
+       *  Product: '<S15>/Product1'
+       *  SignalConversion: '<S15>/TmpSignal ConversionAtProduct1Inport2'
+       */
+      rtb_Kiy_0[i] = rtb_Kiy[i] * tuning_GS1_X.Integrator1_CSTATE_d -
+        (((rtb_Kyphi[i + 6] * tuning_GS1_U.X[4] + rtb_Kyphi[i] * rtb_d_y) +
+          rtb_Kyphi[i + 12] * tuning_GS1_U.X[6]) + rtb_Kyphi[i + 18] *
+         tuning_GS1_U.X[9]);
+    }
 
     /* Saturate: '<S6>/2Nm ' incorporates:
      *  Inport: '<Root>/X'
@@ -1036,32 +1043,26 @@ void tuning_GS1ModelClass::step()
 
     /* End of Saturate: '<S6>/2Nm' */
     for (i = 0; i < 6; i++) {
-      /* Saturate: '<Root>/                   ' incorporates:
+      /* Sum: '<Root>/Sum' incorporates:
        *  Gain: '<Root>/Control Allocation'
-       *  Inport: '<Root>/X'
-       *  Integrator: '<S15>/Integrator1'
-       *  Product: '<S15>/Product'
-       *  Product: '<S15>/Product1'
-       *  SignalConversion: '<S15>/TmpSignal ConversionAtProduct1Inport2'
-       *  Sum: '<Root>/Sum'
-       *  Sum: '<S15>/Sum1'
+       *  Gain: '<S4>/Gain1'
+       *  Saturate: '<Root>/                   '
        *  Sum: '<S4>/Sum'
        */
-      u0 = ((rtb_Kiy[i] * tuning_GS1_X.Integrator1_CSTATE_d - (((rtb_Kyphi[i + 6]
-                * tuning_GS1_U.X[4] + rtb_Kyphi[i] * rtb_d_y) + rtb_Kyphi[i + 12]
-               * tuning_GS1_U.X[6]) + rtb_Kyphi[i + 18] * tuning_GS1_U.X[9])) +
-            ((un[i] + rtb_Kipsi_0[i]) + rtb_ref_0[i])) +
+      tmp_3 = (((un[i] + tmp_1[i]) + tmp_2[i]) + 0.0 * rtb_Kiy_0[i]) +
         (tuning_GS1_ConstP.ControlAllocation_Gain[i + 6] * rtb_ff_idx_1 +
          tuning_GS1_ConstP.ControlAllocation_Gain[i] * rtb_ff_idx_0);
-      if (u0 > 8.54858) {
+
+      /* Saturate: '<Root>/                   ' incorporates:
+       *  Gain: '<Root>/Control Allocation'
+       */
+      if (tmp_3 > 8.54858) {
         tuning_GS1_B.u[i] = 8.54858;
-      } else if (u0 < 0.0) {
+      } else if (tmp_3 < 0.0) {
         tuning_GS1_B.u[i] = 0.0;
       } else {
-        tuning_GS1_B.u[i] = u0;
+        tuning_GS1_B.u[i] = tmp_3;
       }
-
-      /* End of Saturate: '<Root>/                   ' */
     }
 
     /* MATLAB Function: '<Root>/Actuator_Fault' */
@@ -1073,12 +1074,12 @@ void tuning_GS1ModelClass::step()
     /* '<S1>:1:6' T5 = T(5)*(1-LOE(5)); */
     /* '<S1>:1:7' T6 = T(6)*(1-LOE(6)); */
     /* '<S1>:1:8' T_f = [T1;T2;T3;T4;T5;T6]; */
-    rtb_gamma_m[0] = (1.0 - rtb_LOE_out[0]) * tuning_GS1_B.u[0];
-    rtb_gamma_m[1] = (1.0 - rtb_LOE_out[1]) * tuning_GS1_B.u[1];
-    rtb_gamma_m[2] = (1.0 - rtb_LOE_out[2]) * tuning_GS1_B.u[2];
-    rtb_gamma_m[3] = (1.0 - rtb_LOE_out[3]) * tuning_GS1_B.u[3];
-    rtb_gamma_m[4] = (1.0 - rtb_LOE_out[4]) * tuning_GS1_B.u[4];
-    rtb_gamma_m[5] = (1.0 - rtb_LOE_out[5]) * tuning_GS1_B.u[5];
+    rtb_u[0] = (1.0 - rtb_LOE_out[0]) * tuning_GS1_B.u[0];
+    rtb_u[1] = (1.0 - rtb_LOE_out[1]) * tuning_GS1_B.u[1];
+    rtb_u[2] = (1.0 - rtb_LOE_out[2]) * tuning_GS1_B.u[2];
+    rtb_u[3] = (1.0 - rtb_LOE_out[3]) * tuning_GS1_B.u[3];
+    rtb_u[4] = (1.0 - rtb_LOE_out[4]) * tuning_GS1_B.u[4];
+    rtb_u[5] = (1.0 - rtb_LOE_out[5]) * tuning_GS1_B.u[5];
 
     /* Outport: '<Root>/motor_command' */
     for (i = 0; i < 6; i++) {
@@ -1088,8 +1089,8 @@ void tuning_GS1ModelClass::step()
        *  Sqrt: '<S8>/Sqrt1'
        *  Sum: '<S8>/Sum3'
        */
-      rtb_ff_idx_0 = (std::sqrt(116978.4923343994 * rtb_gamma_m[i]) * 9.5493 -
-                      1250.0) * 0.022857142857142857;
+      rtb_ff_idx_0 = (std::sqrt(116978.4923343994 * rtb_u[i]) * 9.5493 - 1250.0)
+        * 0.022857142857142857;
 
       /* Saturate: '<S8>/Saturation' */
       if (rtb_ff_idx_0 > 200.0) {
@@ -1257,7 +1258,7 @@ void tuning_GS1ModelClass::step()
       tuning_GS1_Y.thrust_pre[i] = tuning_GS1_B.u[i];
 
       /* Outport: '<Root>/thrust_after' */
-      tuning_GS1_Y.thrust_after[i] = rtb_gamma_m[i];
+      tuning_GS1_Y.thrust_after[i] = rtb_u[i];
     }
 
     if (rtmIsMajorTimeStep((&tuning_GS1_M)) &&
@@ -1266,7 +1267,7 @@ void tuning_GS1ModelClass::step()
       tuning_GS1_Y.acc_Kalman[0] = rtb_Add_a[3];
 
       /* Outport: '<Root>/M_Kalman' */
-      tuning_GS1_Y.M_Kalman[0] = rtb_Sum1[0];
+      tuning_GS1_Y.M_Kalman[0] = rtb_Sum1_cy[0];
 
       /* Outport: '<Root>/vel_Kalman' */
       tuning_GS1_Y.vel_Kalman[0] = rtb_Add_a[0];
@@ -1275,7 +1276,7 @@ void tuning_GS1ModelClass::step()
       tuning_GS1_Y.acc_Kalman[1] = rtb_Add_a[4];
 
       /* Outport: '<Root>/M_Kalman' */
-      tuning_GS1_Y.M_Kalman[1] = rtb_Sum1[1];
+      tuning_GS1_Y.M_Kalman[1] = rtb_Sum1_cy[1];
 
       /* Outport: '<Root>/vel_Kalman' */
       tuning_GS1_Y.vel_Kalman[1] = rtb_Add_a[1];
@@ -1284,7 +1285,7 @@ void tuning_GS1ModelClass::step()
       tuning_GS1_Y.acc_Kalman[2] = rtb_Add_a[5];
 
       /* Outport: '<Root>/M_Kalman' */
-      tuning_GS1_Y.M_Kalman[2] = rtb_Sum1[2];
+      tuning_GS1_Y.M_Kalman[2] = rtb_Sum1_cy[2];
 
       /* Outport: '<Root>/vel_Kalman' */
       tuning_GS1_Y.vel_Kalman[2] = rtb_Add_a[2];
@@ -1297,15 +1298,15 @@ void tuning_GS1ModelClass::step()
      *  MATLAB Function: '<S16>/MATLAB Function'
      */
     tuning_GS1_Y.gain_GS[0] = rtb_Kz[0];
-    tuning_GS1_Y.gain_GS[3] = rtb_Kpsi[0];
+    tuning_GS1_Y.gain_GS[3] = -2.274;
     tuning_GS1_Y.gain_GS[6] = -1.7167 + rtb_Kxtheta[0];
     tuning_GS1_Y.gain_GS[9] = -0.7429 + rtb_Kyphi[0];
     tuning_GS1_Y.gain_GS[1] = rtb_Kz[6];
-    tuning_GS1_Y.gain_GS[4] = rtb_Kpsi[6];
+    tuning_GS1_Y.gain_GS[4] = -1.4292;
     tuning_GS1_Y.gain_GS[7] = -1.0582 + rtb_Kxtheta[4];
     tuning_GS1_Y.gain_GS[10] = -0.4759 + rtb_Kyphi[6];
-    tuning_GS1_Y.gain_GS[2] = rtb_Kiz[0];
-    tuning_GS1_Y.gain_GS[5] = rtb_Kipsi[0];
+    tuning_GS1_Y.gain_GS[2] = rtb_gamma_m[0];
+    tuning_GS1_Y.gain_GS[5] = -1.4438;
     tuning_GS1_Y.gain_GS[8] = -1.2273 + rtb_Kix[0];
     tuning_GS1_Y.gain_GS[11] = -0.503 + rtb_Kiy[0];
 

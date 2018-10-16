@@ -471,7 +471,12 @@ int main(int argc, char** argv) {
           if (thrust_prev_sent[i]!=0){
               temp_LOE_calcul = 1-gThrust_measure[i]/thrust_prev_sent[i];
               LOE_msg->LOE_calcul[i] = temp_LOE_calcul;
-              gController.tuning_GS1_U.LOE_calcul[i] = temp_LOE_calcul;
+             if (seq>10){
+            //  gController.tuning_GS1_U.LOE_calcul[i] = fmin(fmax(temp_LOE_calcul,0.0),1.0);
+               gController.tuning_GS1_U.LOE_calcul[i] = temp_LOE_calcul;
+             } else{
+               gController.tuning_GS1_U.LOE_calcul[i] = 0.0;
+             }
           }
           thrust_prev_sent[i] = gController.tuning_GS1_Y.thrust_pre[i];
         }
