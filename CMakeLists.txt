@@ -102,6 +102,7 @@ generate_messages(
 generate_dynamic_reconfigure_options(
   cfg/controllerDyn.cfg
   cfg/controllerGS1Dyn.cfg
+  cfg/controllerGS2Dyn.cfg
 )
 
 ###################################
@@ -132,6 +133,7 @@ include_directories(
  R2017a/simulink/include
  src/tuning_nominal_grt_rtw/
  src/tuning_GS1_grt_rtw/
+ src/tuning_GS2_grt_rtw/
  ${catkin_INCLUDE_DIRS}
  ${EIGEN3_INCLUDE_DIRS}
 )
@@ -143,6 +145,9 @@ add_library(matlab_simulink
 
   src/tuning_GS1_grt_rtw/tuning_GS1_data.cpp
   src/tuning_GS1_grt_rtw/tuning_GS1.cpp
+
+  src/tuning_GS2_grt_rtw/tuning_GS2_data.cpp
+  src/tuning_GS2_grt_rtw/tuning_GS2.cpp
 
   #src/tuning_GS1_grt_rtw/rtGetInf.cpp
   #src/tuning_GS1_grt_rtw/rtGetNaN.cpp
@@ -182,6 +187,18 @@ target_link_libraries(tuning_GS1_node
     ${catkin_LIBRARIES}
 )
 
+add_executable(tuning_GS2_node
+    src/tuning_GS2_node.cpp
+)
+add_dependencies(tuning_GS2_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS}
+    matlab_simulink
+)
+target_link_libraries(tuning_GS2_node
+    matlab_simulink
+    ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############

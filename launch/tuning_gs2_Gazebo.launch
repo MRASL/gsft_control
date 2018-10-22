@@ -6,16 +6,8 @@
 
   <group ns="firefly">
     <node name="tuning_GS2" pkg="gsft_control" type="tuning_GS2_node" output="screen">
-       <param name="~scenario"  value="compare" type="str"/>
+       <param name="~scenario"  value="gazebo" type="str"/>
        <remap from="odometry" to="odometry_sensor1/odometry" />
     </node>
   </group>
-
-  <group ns="firefly1">
-    <node name="tuning_nominal" pkg="gsft_control" type="tuning_nominal_node" output="screen">
-       <param name="~scenario"  value="compare" type="str"/>
-       <remap from="odometry" to="odometry_sensor1/odometry" />
-    </node>
-  </group>
-
 </launch>
