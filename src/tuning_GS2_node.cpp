@@ -427,10 +427,10 @@ int main(int argc, char** argv) {
       uav_state_msg->rotation_speed_B.y  = gOdometry.angular_velocity.y();
       uav_state_msg->rotation_speed_B.z  = gOdometry.angular_velocity.z();
 
-    //  uav_state_msg->total_thrust  = gController.tuning_GS2_Y.virtual_control[0];
-    //  uav_state_msg->moment.x      = gController.tuning_GS2_Y.virtual_control[1];
-    //  uav_state_msg->moment.y      = gController.tuning_GS2_Y.virtual_control[2];
-    //  uav_state_msg->moment.z      = gController.tuning_GS2_Y.virtual_control[3];
+      uav_state_msg->total_thrust  = gController.tuning_GS2_Y.virtual_control[0];
+      uav_state_msg->moment.x      = gController.tuning_GS2_Y.virtual_control[1];
+      uav_state_msg->moment.y      = gController.tuning_GS2_Y.virtual_control[2];
+      uav_state_msg->moment.z      = gController.tuning_GS2_Y.virtual_control[3];
 
       uav_state_msg->thrust_pre.x    = gController.tuning_GS2_Y.thrust_pre[0];
       uav_state_msg->thrust_pre.y    = gController.tuning_GS2_Y.thrust_pre[1];

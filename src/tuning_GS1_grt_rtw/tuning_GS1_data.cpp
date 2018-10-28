@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS1".
  *
- * Model version              : 1.2070
+ * Model version              : 1.2101
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Oct 16 16:02:57 2018
+ * C++ source code generated on : Mon Oct 22 19:08:51 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -34,7 +34,7 @@ const ConstP_tuning_GS1_T tuning_GS1_ConstP = {
   { 0.0347563, 0.0, 0.0, 0.0, 0.0458929, 0.0, 0.0, 0.0, 0.0977 },
 
   /* Expression: pInitialization.M
-   * Referenced by: '<S21>/KalmanGainM'
+   * Referenced by: '<S23>/KalmanGainM'
    */
   { 0.0013828503617152289, 0.0, 0.0, 0.000956799230965245, 0.0, 0.0, 0.0,
     0.001382850361721501, 0.0, 0.0, 0.00095679923096881356, 0.0, 0.0, 0.0,
@@ -62,7 +62,7 @@ const ConstP_tuning_GS1_T tuning_GS1_ConstP = {
     0.0, 0.0, 0.0, 0.001, 0.0, 0.0, 1.0 },
 
   /* Expression: pInitialization.L
-   * Referenced by: '<S21>/KalmanGainL'
+   * Referenced by: '<S23>/KalmanGainL'
    */
   { 0.001383807160946194, 0.0, 0.0, 0.000956799230965245, 0.0, 0.0, 0.0,
     0.0013838071609524698, 0.0, 0.0, 0.00095679923096881356, 0.0, 0.0, 0.0,

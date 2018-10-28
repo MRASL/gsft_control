@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS1".
  *
- * Model version              : 1.2070
+ * Model version              : 1.2101
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Oct 16 16:02:57 2018
+ * C++ source code generated on : Mon Oct 22 19:08:51 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -150,8 +150,8 @@
 /* Block signals (auto storage) */
 typedef struct {
   real_T LOE_FDD[6];                   /* '<Root>/Vector Concatenate' */
-  real_T Sum2;                         /* '<S66>/Sum2' */
-  real_T Sum3;                         /* '<S66>/Sum3' */
+  real_T Sum2;                         /* '<S68>/Sum2' */
+  real_T Sum3;                         /* '<S68>/Sum3' */
   real_T T_outer[3];                   /* '<S6>/T_outer' */
   real_T Fcn1;                         /* '<S6>/Fcn1' */
   real_T Fcn;                          /* '<S6>/Fcn' */
@@ -159,11 +159,11 @@ typedef struct {
   real_T Sum3_f;                       /* '<S13>/Sum3' */
   real_T Sum3_a;                       /* '<S14>/Sum3' */
   real_T Sum3_i;                       /* '<S15>/Sum3' */
-  real_T Sum3_d;                       /* '<S16>/Sum3' */
-  real_T Sum1;                         /* '<S66>/Sum1' */
-  real_T Sum4;                         /* '<S66>/Sum4' */
-  real_T Product2[6];                  /* '<S65>/Product2' */
-  real_T Product3[6];                  /* '<S64>/Product3' */
+  real_T Sum3_d;                       /* '<S17>/Sum3' */
+  real_T Sum1;                         /* '<S68>/Sum1' */
+  real_T Sum4;                         /* '<S68>/Sum4' */
+  real_T Product2[6];                  /* '<S67>/Product2' */
+  real_T Product3[6];                  /* '<S66>/Product3' */
 } B_tuning_GS1_T;
 
 /* Block states (auto storage) for system '<Root>' */
@@ -171,38 +171,38 @@ typedef struct {
   real_T MemoryX_DSTATE[6];            /* '<S5>/MemoryX' */
   real_T Memory_PreviousInput[6];      /* '<S3>/Memory' */
   uint8_T icLoad;                      /* '<S5>/MemoryX' */
-  boolean_T MeasurementUpdate_MODE;    /* '<S39>/MeasurementUpdate' */
-  boolean_T EnabledSubsystem_MODE;     /* '<S44>/Enabled Subsystem' */
+  boolean_T MeasurementUpdate_MODE;    /* '<S41>/MeasurementUpdate' */
+  boolean_T EnabledSubsystem_MODE;     /* '<S46>/Enabled Subsystem' */
 } DW_tuning_GS1_T;
 
 /* Continuous states (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S16>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S17>/Integrator1' */
   real_T Integrator1_CSTATE_o;         /* '<S13>/Integrator1' */
   real_T Integrator1_CSTATE_b;         /* '<S14>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S15>/Integrator1' */
-  real_T Integrator1_CSTATE_p;         /* '<S66>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S66>/Integrator' */
+  real_T Integrator1_CSTATE_p;         /* '<S68>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S68>/Integrator' */
 } X_tuning_GS1_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
-  real_T Integrator1_CSTATE;           /* '<S16>/Integrator1' */
+  real_T Integrator1_CSTATE;           /* '<S17>/Integrator1' */
   real_T Integrator1_CSTATE_o;         /* '<S13>/Integrator1' */
   real_T Integrator1_CSTATE_b;         /* '<S14>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S15>/Integrator1' */
-  real_T Integrator1_CSTATE_p;         /* '<S66>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S66>/Integrator' */
+  real_T Integrator1_CSTATE_p;         /* '<S68>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S68>/Integrator' */
 } XDot_tuning_GS1_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator1_CSTATE;        /* '<S16>/Integrator1' */
+  boolean_T Integrator1_CSTATE;        /* '<S17>/Integrator1' */
   boolean_T Integrator1_CSTATE_o;      /* '<S13>/Integrator1' */
   boolean_T Integrator1_CSTATE_b;      /* '<S14>/Integrator1' */
   boolean_T Integrator1_CSTATE_d;      /* '<S15>/Integrator1' */
-  boolean_T Integrator1_CSTATE_p;      /* '<S66>/Integrator1' */
-  boolean_T Integrator_CSTATE;         /* '<S66>/Integrator' */
+  boolean_T Integrator1_CSTATE_p;      /* '<S68>/Integrator1' */
+  boolean_T Integrator_CSTATE;         /* '<S68>/Integrator' */
 } XDis_tuning_GS1_T;
 
 #ifndef ODE4_INTG
@@ -229,7 +229,7 @@ typedef struct {
   real_T Constant1_Value[9];
 
   /* Expression: pInitialization.M
-   * Referenced by: '<S21>/KalmanGainM'
+   * Referenced by: '<S23>/KalmanGainM'
    */
   real_T KalmanGainM_Value[18];
 
@@ -249,7 +249,7 @@ typedef struct {
   real_T A_Value[36];
 
   /* Expression: pInitialization.L
-   * Referenced by: '<S21>/KalmanGainL'
+   * Referenced by: '<S23>/KalmanGainL'
    */
   real_T KalmanGainL_Value[18];
 } ConstP_tuning_GS1_T;
@@ -395,24 +395,20 @@ class tuning_GS1ModelClass {
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<S21>/ConstantP' : Unused code path elimination
- * Block '<S21>/CovarianceZ' : Unused code path elimination
- * Block '<S60>/Data Type Duplicate' : Unused code path elimination
- * Block '<S61>/Data Type Duplicate' : Unused code path elimination
- * Block '<S62>/Conversion' : Unused code path elimination
+ * Block '<S23>/ConstantP' : Unused code path elimination
+ * Block '<S23>/CovarianceZ' : Unused code path elimination
  * Block '<S62>/Data Type Duplicate' : Unused code path elimination
- * Block '<S63>/Conversion' : Unused code path elimination
  * Block '<S63>/Data Type Duplicate' : Unused code path elimination
- * Block '<S22>/Add1' : Unused code path elimination
- * Block '<S22>/Product' : Unused code path elimination
- * Block '<S22>/Product1' : Unused code path elimination
- * Block '<S23>/Data Type Duplicate' : Unused code path elimination
- * Block '<S24>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S64>/Conversion' : Unused code path elimination
+ * Block '<S64>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S65>/Conversion' : Unused code path elimination
+ * Block '<S65>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S24>/Add1' : Unused code path elimination
+ * Block '<S24>/Product' : Unused code path elimination
+ * Block '<S24>/Product1' : Unused code path elimination
  * Block '<S25>/Data Type Duplicate' : Unused code path elimination
  * Block '<S26>/Data Type Duplicate' : Unused code path elimination
- * Block '<S27>/Conversion' : Unused code path elimination
  * Block '<S27>/Data Type Duplicate' : Unused code path elimination
- * Block '<S28>/Conversion' : Unused code path elimination
  * Block '<S28>/Data Type Duplicate' : Unused code path elimination
  * Block '<S29>/Conversion' : Unused code path elimination
  * Block '<S29>/Data Type Duplicate' : Unused code path elimination
@@ -426,9 +422,13 @@ class tuning_GS1ModelClass {
  * Block '<S33>/Data Type Duplicate' : Unused code path elimination
  * Block '<S34>/Conversion' : Unused code path elimination
  * Block '<S34>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S35>/Conversion' : Unused code path elimination
  * Block '<S35>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S36>/Conversion' : Unused code path elimination
  * Block '<S36>/Data Type Duplicate' : Unused code path elimination
  * Block '<S37>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S38>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S39>/Data Type Duplicate' : Unused code path elimination
  * Block '<S5>/G' : Unused code path elimination
  * Block '<S5>/H' : Unused code path elimination
  * Block '<S5>/ManualSwitchPZ' : Unused code path elimination
@@ -436,32 +436,32 @@ class tuning_GS1ModelClass {
  * Block '<S5>/P0' : Unused code path elimination
  * Block '<S5>/Q' : Unused code path elimination
  * Block '<S5>/R' : Unused code path elimination
- * Block '<S40>/Constant' : Unused code path elimination
+ * Block '<S42>/Constant' : Unused code path elimination
  * Block '<S5>/Reset' : Unused code path elimination
  * Block '<S5>/Reshapeyhat' : Unused code path elimination
- * Block '<S59>/CheckSignalProperties' : Unused code path elimination
+ * Block '<S61>/CheckSignalProperties' : Unused code path elimination
  * Block '<Root>/                          ' : Eliminated since input and output rates are identical
  * Block '<Root>/                             ' : Eliminated since input and output rates are identical
  * Block '<Root>/                                     ' : Eliminated since input and output rates are identical
- * Block '<S60>/Conversion' : Eliminate redundant data type conversion
- * Block '<S61>/Conversion' : Eliminate redundant data type conversion
- * Block '<S23>/Conversion' : Eliminate redundant data type conversion
- * Block '<S24>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S62>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S63>/Conversion' : Eliminate redundant data type conversion
  * Block '<S25>/Conversion' : Eliminate redundant data type conversion
  * Block '<S26>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S27>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S28>/Conversion' : Eliminate redundant data type conversion
  * Block '<S5>/DataTypeConversionEnable' : Eliminate redundant data type conversion
- * Block '<S35>/Conversion' : Eliminate redundant data type conversion
- * Block '<S36>/Conversion' : Eliminate redundant data type conversion
  * Block '<S37>/Conversion' : Eliminate redundant data type conversion
- * Block '<S39>/Reshape' : Reshape block reduction
+ * Block '<S38>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S39>/Conversion' : Eliminate redundant data type conversion
+ * Block '<S41>/Reshape' : Reshape block reduction
  * Block '<S5>/ReshapeX0' : Reshape block reduction
  * Block '<S5>/Reshapeu' : Reshape block reduction
  * Block '<S5>/Reshapexhat' : Reshape block reduction
  * Block '<S5>/Reshapey' : Reshape block reduction
- * Block '<S66>/Reshape' : Reshape block reduction
- * Block '<S66>/Reshape1' : Reshape block reduction
- * Block '<S67>/Reshape' : Reshape block reduction
  * Block '<S68>/Reshape' : Reshape block reduction
+ * Block '<S68>/Reshape1' : Reshape block reduction
+ * Block '<S69>/Reshape' : Reshape block reduction
+ * Block '<S70>/Reshape' : Reshape block reduction
  * Block '<Root>/Rate Transition' : Eliminated since input and output rates are identical
  */
 
@@ -495,61 +495,63 @@ class tuning_GS1ModelClass {
  * '<S13>'  : 'tuning_GS1/GS_controller/psi_GS_controller'
  * '<S14>'  : 'tuning_GS1/GS_controller/x_GS_controller'
  * '<S15>'  : 'tuning_GS1/GS_controller/y_GS_controller'
- * '<S16>'  : 'tuning_GS1/GS_controller/z_GS_controller'
- * '<S17>'  : 'tuning_GS1/GS_controller/psi_GS_controller/MATLAB Function'
- * '<S18>'  : 'tuning_GS1/GS_controller/x_GS_controller/MATLAB Function'
- * '<S19>'  : 'tuning_GS1/GS_controller/y_GS_controller/MATLAB Function'
- * '<S20>'  : 'tuning_GS1/GS_controller/z_GS_controller/MATLAB Function'
- * '<S21>'  : 'tuning_GS1/Kalman Filter/CalculatePL'
- * '<S22>'  : 'tuning_GS1/Kalman Filter/CalculateYhat'
- * '<S23>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionA'
- * '<S24>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionB'
- * '<S25>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionC'
- * '<S26>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionD'
- * '<S27>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionG'
- * '<S28>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionH'
- * '<S29>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionN'
- * '<S30>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionP'
- * '<S31>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionP0'
- * '<S32>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionQ'
- * '<S33>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionR'
- * '<S34>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionReset'
- * '<S35>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionX'
- * '<S36>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionX0'
- * '<S37>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionu'
- * '<S38>'  : 'tuning_GS1/Kalman Filter/MemoryP'
- * '<S39>'  : 'tuning_GS1/Kalman Filter/Observer'
- * '<S40>'  : 'tuning_GS1/Kalman Filter/ReducedQRN'
- * '<S41>'  : 'tuning_GS1/Kalman Filter/ScalarExpansionP0'
- * '<S42>'  : 'tuning_GS1/Kalman Filter/ScalarExpansionQ'
- * '<S43>'  : 'tuning_GS1/Kalman Filter/ScalarExpansionR'
- * '<S44>'  : 'tuning_GS1/Kalman Filter/UseCurrentEstimator'
- * '<S45>'  : 'tuning_GS1/Kalman Filter/checkA'
- * '<S46>'  : 'tuning_GS1/Kalman Filter/checkB'
- * '<S47>'  : 'tuning_GS1/Kalman Filter/checkC'
- * '<S48>'  : 'tuning_GS1/Kalman Filter/checkD'
- * '<S49>'  : 'tuning_GS1/Kalman Filter/checkEnable'
- * '<S50>'  : 'tuning_GS1/Kalman Filter/checkG'
- * '<S51>'  : 'tuning_GS1/Kalman Filter/checkH'
- * '<S52>'  : 'tuning_GS1/Kalman Filter/checkN'
- * '<S53>'  : 'tuning_GS1/Kalman Filter/checkP0'
- * '<S54>'  : 'tuning_GS1/Kalman Filter/checkQ'
- * '<S55>'  : 'tuning_GS1/Kalman Filter/checkR'
- * '<S56>'  : 'tuning_GS1/Kalman Filter/checkReset'
- * '<S57>'  : 'tuning_GS1/Kalman Filter/checkX0'
- * '<S58>'  : 'tuning_GS1/Kalman Filter/checku'
- * '<S59>'  : 'tuning_GS1/Kalman Filter/checky'
- * '<S60>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionL'
- * '<S61>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionM'
- * '<S62>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionP'
- * '<S63>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionZ'
- * '<S64>'  : 'tuning_GS1/Kalman Filter/Observer/MeasurementUpdate'
- * '<S65>'  : 'tuning_GS1/Kalman Filter/UseCurrentEstimator/Enabled Subsystem'
- * '<S66>'  : 'tuning_GS1/Nominal_xy_Controller/XY State Feedback'
- * '<S67>'  : 'tuning_GS1/Nominal_xy_Controller/pitch_controller_SF'
- * '<S68>'  : 'tuning_GS1/Nominal_xy_Controller/roll_controller_SF'
- * '<S69>'  : 'tuning_GS1/Test_config_and_data/FFW'
- * '<S70>'  : 'tuning_GS1/Test_config_and_data/LOE_'
- * '<S71>'  : 'tuning_GS1/Test_config_and_data/MATLAB Function'
+ * '<S16>'  : 'tuning_GS1/GS_controller/y_GS_controller1'
+ * '<S17>'  : 'tuning_GS1/GS_controller/z_GS_controller'
+ * '<S18>'  : 'tuning_GS1/GS_controller/psi_GS_controller/MATLAB Function'
+ * '<S19>'  : 'tuning_GS1/GS_controller/x_GS_controller/MATLAB Function'
+ * '<S20>'  : 'tuning_GS1/GS_controller/y_GS_controller/MATLAB Function'
+ * '<S21>'  : 'tuning_GS1/GS_controller/y_GS_controller1/MATLAB Function'
+ * '<S22>'  : 'tuning_GS1/GS_controller/z_GS_controller/MATLAB Function'
+ * '<S23>'  : 'tuning_GS1/Kalman Filter/CalculatePL'
+ * '<S24>'  : 'tuning_GS1/Kalman Filter/CalculateYhat'
+ * '<S25>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionA'
+ * '<S26>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionB'
+ * '<S27>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionC'
+ * '<S28>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionD'
+ * '<S29>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionG'
+ * '<S30>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionH'
+ * '<S31>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionN'
+ * '<S32>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionP'
+ * '<S33>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionP0'
+ * '<S34>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionQ'
+ * '<S35>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionR'
+ * '<S36>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionReset'
+ * '<S37>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionX'
+ * '<S38>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionX0'
+ * '<S39>'  : 'tuning_GS1/Kalman Filter/DataTypeConversionu'
+ * '<S40>'  : 'tuning_GS1/Kalman Filter/MemoryP'
+ * '<S41>'  : 'tuning_GS1/Kalman Filter/Observer'
+ * '<S42>'  : 'tuning_GS1/Kalman Filter/ReducedQRN'
+ * '<S43>'  : 'tuning_GS1/Kalman Filter/ScalarExpansionP0'
+ * '<S44>'  : 'tuning_GS1/Kalman Filter/ScalarExpansionQ'
+ * '<S45>'  : 'tuning_GS1/Kalman Filter/ScalarExpansionR'
+ * '<S46>'  : 'tuning_GS1/Kalman Filter/UseCurrentEstimator'
+ * '<S47>'  : 'tuning_GS1/Kalman Filter/checkA'
+ * '<S48>'  : 'tuning_GS1/Kalman Filter/checkB'
+ * '<S49>'  : 'tuning_GS1/Kalman Filter/checkC'
+ * '<S50>'  : 'tuning_GS1/Kalman Filter/checkD'
+ * '<S51>'  : 'tuning_GS1/Kalman Filter/checkEnable'
+ * '<S52>'  : 'tuning_GS1/Kalman Filter/checkG'
+ * '<S53>'  : 'tuning_GS1/Kalman Filter/checkH'
+ * '<S54>'  : 'tuning_GS1/Kalman Filter/checkN'
+ * '<S55>'  : 'tuning_GS1/Kalman Filter/checkP0'
+ * '<S56>'  : 'tuning_GS1/Kalman Filter/checkQ'
+ * '<S57>'  : 'tuning_GS1/Kalman Filter/checkR'
+ * '<S58>'  : 'tuning_GS1/Kalman Filter/checkReset'
+ * '<S59>'  : 'tuning_GS1/Kalman Filter/checkX0'
+ * '<S60>'  : 'tuning_GS1/Kalman Filter/checku'
+ * '<S61>'  : 'tuning_GS1/Kalman Filter/checky'
+ * '<S62>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionL'
+ * '<S63>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionM'
+ * '<S64>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionP'
+ * '<S65>'  : 'tuning_GS1/Kalman Filter/CalculatePL/DataTypeConversionZ'
+ * '<S66>'  : 'tuning_GS1/Kalman Filter/Observer/MeasurementUpdate'
+ * '<S67>'  : 'tuning_GS1/Kalman Filter/UseCurrentEstimator/Enabled Subsystem'
+ * '<S68>'  : 'tuning_GS1/Nominal_xy_Controller/XY State Feedback'
+ * '<S69>'  : 'tuning_GS1/Nominal_xy_Controller/pitch_controller_SF'
+ * '<S70>'  : 'tuning_GS1/Nominal_xy_Controller/roll_controller_SF'
+ * '<S71>'  : 'tuning_GS1/Test_config_and_data/FFW'
+ * '<S72>'  : 'tuning_GS1/Test_config_and_data/LOE_'
+ * '<S73>'  : 'tuning_GS1/Test_config_and_data/MATLAB Function'
  */
 #endif                                 /* RTW_HEADER_tuning_GS1_h_ */
