@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2279
+ * Model version              : 1.2282
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Sun Oct 28 15:44:10 2018
+ * C++ source code generated on : Sun Oct 28 17:43:50 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -447,23 +447,23 @@ void tuning_GS2ModelClass::step()
     /*  normalized LOE */
     /*  to change 2 */
     /*     %% GS2_full_OK */
-    /*      Kz  = [16.0821   9.4270] + [1.3595   2.6192].*gamma_T; */
-    /*      Kiz = 12.4380 + 0.1906*gamma_T; */
-    /*      %% GS2_full_OK2 => better */
-    /*      Kz  = [16.5633  9.6788] + [1.8443  2.8710].*gamma_T; */
-    /*      Kiz = 12.8742 + 0.6286*gamma_T; */
-    /*     %% GS2_z   */
-    /* '<S23>:1:16' Kz  = [19.0258   10.6840] + [4.3032    3.8762].*gamma_T; */
-    rtb_Kz_idx_0 = 4.3032 * gamma_T + 19.0258;
-    rtb_Kz_idx_1 = 3.8762 * gamma_T + 10.684;
+    /* '<S23>:1:8' Kz  = [16.0821   9.4270] + [1.3595   2.6192].*gamma_T; */
+    rtb_Kz_idx_0 = 1.3595 * gamma_T + 16.0821;
+    rtb_Kz_idx_1 = 2.6192 * gamma_T + 9.427;
 
-    /* '<S23>:1:17' Kiz = 13.9767 + 1.7293*gamma_T; */
-    gamma_T = 1.7293 * gamma_T + 13.9767;
+    /* '<S23>:1:9' Kiz = 12.4380 + 0.1906*gamma_T; */
+    gamma_T = 0.1906 * gamma_T + 12.438;
 
     /* Sum: '<S6>/Sum5' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
+    /*      %% GS2_full_OK2 => better */
+    /*      Kz  = [16.5633  9.6788] + [1.8443  2.8710].*gamma_T; */
+    /*      Kiz = 12.8742 + 0.6286*gamma_T; */
+    /*     %% GS2_z   */
+    /*      Kz  = [19.0258   10.6840] + [4.3032    3.8762].*gamma_T; */
+    /*      Kiz = 13.9767 + 1.7293*gamma_T; */
     /* '<S23>:1:19' gain = [Kz Kiz]; */
     /*   */
     /*  KX = */
@@ -525,20 +525,20 @@ void tuning_GS2ModelClass::step()
     /*      Kx =  [1.1359    0.6178] +  [0.1084    0.1200]*LOE_M + [0.1183    0.2181]*LOE_M^2; */
     /*      Kix = 0.8943 + 0.0013*LOE_M + 0.0216*LOE_M^2; */
     /*     %% GS2_x_pitch_OK => better */
-    /*      Kx =  [1.4762    0.9125] +  [0.1416    0.1147]*LOE_M ; */
-    /*      Kix = 1.0979  + 0.0054*LOE_M; */
-    /*     %% GS2_x_pitch_OK2 => pire than pire than GS2_x_pitch_OK */
-    /*      Kx =  [1.4814    0.8619] +  [0.1435    0.1181]*LOE_M ; */
-    /*      Kix = 1.1261  + 0.0646*LOE_M; */
-    /*     %% GS2_x_pitch_OK3 => best, chosen */
-    /* '<S21>:1:20' Kx =  [1.6243    0.9372] +  [0.3078    0.1773]*LOE_M ; */
-    /* '<S21>:1:21' Kix = 1.3333  + 0.2307*LOE_M; */
-    Kix = 0.2307 * LOE_M + 1.3333;
+    /* '<S21>:1:12' Kx =  [1.4762    0.9125] +  [0.1416    0.1147]*LOE_M ; */
+    /* '<S21>:1:13' Kix = 1.0979  + 0.0054*LOE_M; */
+    Kix = 0.0054 * LOE_M + 1.0979;
 
     /* Sum: '<S6>/Sum1' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
+    /*     %% GS2_x_pitch_OK2 => pire than pire than GS2_x_pitch_OK */
+    /*      Kx =  [1.4814    0.8619] +  [0.1435    0.1181]*LOE_M ; */
+    /*      Kix = 1.1261  + 0.0646*LOE_M; */
+    /*     %% GS2_x_pitch_OK3 => best, chosen */
+    /*      Kx =  [1.6243    0.9372] +  [0.3078    0.1773]*LOE_M ; */
+    /*      Kix = 1.3333  + 0.2307*LOE_M; */
     /* '<S21>:1:23' gain = [Kx  Kix]; */
     /*  KX = */
     /*      1.4814    0.8619    3.1595    0.6131    0.1435    0.1181    0.7622    0.1426 */
@@ -555,7 +555,7 @@ void tuning_GS2ModelClass::step()
     rtb_d_x = tuning_GS2_U.X[0] - tuning_GS2_U.Y0[0];
 
     /* MATLAB Function: '<S15>/MATLAB Function' */
-    rtb_Kx = 0.3078 * LOE_M + 1.6243;
+    rtb_Kx = 0.1416 * LOE_M + 1.4762;
 
     /* Product: '<S15>/Product1' incorporates:
      *  SignalConversion: '<S15>/TmpSignal ConversionAtProduct1Inport2'
@@ -564,7 +564,7 @@ void tuning_GS2ModelClass::step()
 
     /* MATLAB Function: '<S15>/MATLAB Function' */
     rtb_Kx_idx_0 = rtb_Kx;
-    rtb_Kx = 0.1773 * LOE_M + 0.9372;
+    rtb_Kx = 0.1147 * LOE_M + 0.9125;
 
     /* Product: '<S15>/Product1' incorporates:
      *  Inport: '<Root>/X'
@@ -806,11 +806,11 @@ void tuning_GS2ModelClass::step()
     /*     %% GS2_full_OK => pire than LQR */
     /*      Ktheta =  [2.2946    0.4589] +  [0.6371    0.1702]*LOE_M + [0.8498    0.2122]*LOE_M^2; */
     /*     %% GS2_x_pitch_OK => better */
-    /*      Ktheta =  [3.2979    0.6522 ] +  [ 0.7514    0.2016]*LOE_M; */
+    /* '<S18>:1:11' Ktheta =  [3.2979    0.6522 ] +  [ 0.7514    0.2016]*LOE_M; */
     /*     %% GS2_x_pitch_OK2 => pire than GS2_x_pitch_OK */
     /*      Ktheta =  [3.1595    0.6131] +  [0.7622    0.1426]*LOE_M; */
     /*     %% GS2_x_pitch_OK3 => best, chosen */
-    /* '<S18>:1:17' Ktheta =  [3.3090    0.6377] +  [0.9256    0.1630]*LOE_M; */
+    /*      Ktheta =  [3.3090    0.6377] +  [0.9256    0.1630]*LOE_M; */
     /*  KX = */
     /*      1.4814    0.8619    3.1595    0.6131    0.1435    0.1181    0.7622    0.1426 */
     /*  ----------------------------------- */
@@ -931,8 +931,8 @@ void tuning_GS2ModelClass::step()
      *  Sum: '<S12>/Sum1'
      *  Sum: '<S4>/Sum8'
      */
-    LOE_M = (tuning_GS2_B.Fcn + rtb_ff_idx_1) - ((0.9256 * LOE_M + 3.309) *
-      tuning_GS2_U.X[7] + (0.163 * LOE_M + 0.6377) * tuning_GS2_U.X[10]);
+    LOE_M = (tuning_GS2_B.Fcn + rtb_ff_idx_1) - ((0.7514 * LOE_M + 3.2979) *
+      tuning_GS2_U.X[7] + (0.2016 * LOE_M + 0.6522) * tuning_GS2_U.X[10]);
     if (LOE_M > 2.0) {
       rtb_ref_idx_3 = 2.0;
     } else if (LOE_M < -2.0) {
