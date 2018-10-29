@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2316
+ * Model version              : 1.2323
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Oct 29 11:06:21 2018
+ * C++ source code generated on : Mon Oct 29 12:44:53 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -376,7 +376,7 @@ void tuning_GS2ModelClass::step()
     }
 
     /* MultiPortSwitch: '<Root>/Multiport Switch' incorporates:
-     *  Inport: '<Root>/LOE_calcul'
+     *  Inport: '<Root>/LOE_cal'
      *  Inport: '<Root>/LOE_mode'
      */
     switch ((int32_T)tuning_GS2_U.LOE_mode) {
@@ -397,7 +397,7 @@ void tuning_GS2ModelClass::step()
 
      case 4:
       for (i = 0; i < 6; i++) {
-        rtb_gamma_m[i] = tuning_GS2_U.LOE_calcul[i];
+        rtb_gamma_m[i] = tuning_GS2_U.LOE_cal[i];
       }
       break;
 

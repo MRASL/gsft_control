@@ -464,21 +464,23 @@ int main(int argc, char** argv) {
       if (controller_active){
         gsft_control::LOEPtr LOE_msg(new gsft_control::LOE);
         for(unsigned int i=0; i< 6; i++) {
+          LOE_msg->LOE_calcul[i] = 0.0;
           LOE_msg->LOE_true[i]   = gController.tuning_GS2_Y.LOE_true[i];
           if (i<3){
             LOE_msg->LOE_FDD[i]  = gController.tuning_GS2_Y.LOE13_estimated[i];
           }
           if (thrust_prev_sent[i]!=0){
-              temp_LOE_calcul = 1-gThrust_measure[i]/thrust_prev_sent[i];
+              temp_LOE_calcul = 1.0-gThrust_measure[i]/thrust_prev_sent[i];
               LOE_msg->LOE_calcul[i] = temp_LOE_calcul;
              if (seq>10){
-            //  gController.tuning_GS2_U.LOE_calcul[i] = fmin(fmax(temp_LOE_calcul,0.0),1.0);
-               gController.tuning_GS2_U.LOE_calcul[i] = temp_LOE_calcul;
+            //   gController.tuning_GS2_U.LOE_calcul[i] = fmin(fmax(temp_LOE_calcul,0.0),1.0);
+               gController.tuning_GS2_U.LOE_cal[i] = temp_LOE_calcul;
              } else{
-               gController.tuning_GS2_U.LOE_calcul[i] = 0.0;
+               gController.tuning_GS2_U.LOE_cal[i] = 0.0;
              }
           }
           thrust_prev_sent[i] = gController.tuning_GS2_Y.thrust_pre[i];
+
         }
         if (seq>5){      // cheat
           LOE_msg->header.seq = seq;
