@@ -173,7 +173,6 @@ target_link_libraries(tuning_nominal_node
     ${catkin_LIBRARIES}
 )
 
-
 add_executable(tuning_GS1_node
     src/tuning_GS1_node.cpp
 )

@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2323
+ * Model version              : 1.2359
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Oct 29 12:44:53 2018
+ * C++ source code generated on : Tue Oct 30 09:09:14 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -379,23 +379,23 @@ void tuning_GS2ModelClass::step()
      *  Inport: '<Root>/LOE_cal'
      *  Inport: '<Root>/LOE_mode'
      */
-    switch ((int32_T)tuning_GS2_U.LOE_mode) {
-     case 1:
+    switch (tuning_GS2_U.LOE_mode) {
+     case 0:
       for (i = 0; i < 6; i++) {
         rtb_gamma_m[i] = 0.0;
       }
       break;
 
-     case 2:
+     case 1:
       for (i = 0; i < 6; i++) {
         rtb_gamma_m[i] = rtb_LOE_out[i];
       }
       break;
 
-     case 3:
+     case 2:
       break;
 
-     case 4:
+     case 3:
       for (i = 0; i < 6; i++) {
         rtb_gamma_m[i] = tuning_GS2_U.LOE_cal[i];
       }
@@ -449,16 +449,16 @@ void tuning_GS2ModelClass::step()
     /*     %% Choice 1: GS2_full_OK */
     /*      Kz  = [16.0821   9.4270] + [1.3595   2.6192].*gamma_T; */
     /*      Kiz = 12.4380 + 0.1906*gamma_T; */
-    /*     %% GS2_z => best in z but not in cooperation (x,y)   */
-    /*      Kz  = [19.0258   10.6840] + [4.3032    3.8762].*gamma_T; */
-    /*      Kiz = 13.9767 + 1.7293*gamma_T; */
     /*     %% Choice 2: GS2_full_OK2 */
-    /* '<S23>:1:16' Kz  = [16.5633  9.6788] + [1.8443  2.8710].*gamma_T; */
-    rtb_Kz_idx_0 = 1.8443 * gamma_T + 16.5633;
-    rtb_Kz_idx_1 = 2.871 * gamma_T + 9.6788;
+    /*      Kz  = [16.5633  9.6788] + [1.8443  2.8710].*gamma_T; */
+    /*      Kiz = 12.8742 + 0.6286*gamma_T; */
+    /*     %% Choice 3: GS2_z => best  */
+    /* '<S23>:1:16' Kz  = [19.0258   10.6840] + [4.3032    3.8762].*gamma_T; */
+    rtb_Kz_idx_0 = 4.3032 * gamma_T + 19.0258;
+    rtb_Kz_idx_1 = 3.8762 * gamma_T + 10.684;
 
-    /* '<S23>:1:17' Kiz = 12.8742 + 0.6286*gamma_T; */
-    gamma_T = 0.6286 * gamma_T + 12.8742;
+    /* '<S23>:1:17' Kiz = 13.9767 + 1.7293*gamma_T; */
+    gamma_T = 1.7293 * gamma_T + 13.9767;
 
     /* Sum: '<S6>/Sum5' incorporates:
      *  Inport: '<Root>/X'
@@ -524,12 +524,12 @@ void tuning_GS2ModelClass::step()
     /*     %% GS2_full_OK => pire than LQR */
     /*      Kx =  [1.1359    0.6178] +  [0.1084    0.1200]*LOE_M + [0.1183    0.2181]*LOE_M^2; */
     /*      Kix = 0.8943 + 0.0013*LOE_M + 0.0216*LOE_M^2; */
-    /*     %% choice 1: GS2_x_pitch_OK => better */
-    /*      Kx =  [1.4762    0.9125] +  [0.1416    0.1147]*LOE_M ; */
-    /*      Kix = 1.0979  + 0.0054*LOE_M; */
     /*     %% GS2_x_pitch_OK2 => pire than GS2_x_pitch_OK */
     /*      Kx =  [1.4814    0.8619] +  [0.1435    0.1181]*LOE_M ; */
     /*      Kix = 1.1261  + 0.0646*LOE_M; */
+    /*     %% choice 1: GS2_x_pitch_OK => better */
+    /*      Kx =  [1.4762    0.9125] +  [0.1416    0.1147]*LOE_M ; */
+    /*      Kix = 1.0979  + 0.0054*LOE_M; */
     /*     %% Choice 2: GS2_x_pitch_OK3 => best  */
     /* '<S21>:1:20' Kx =  [1.6243    0.9372] +  [0.3078    0.1773]*LOE_M ; */
     /* '<S21>:1:21' Kix = 1.3333  + 0.2307*LOE_M; */
@@ -805,10 +805,10 @@ void tuning_GS2ModelClass::step()
     /*  to change 2 */
     /*     %% GS2_full_OK => pire than LQR */
     /*      Ktheta =  [2.2946    0.4589] +  [0.6371    0.1702]*LOE_M + [0.8498    0.2122]*LOE_M^2; */
-    /*     %% Choice 1: GS2_x_pitch_OK => better */
-    /*      Ktheta =  [3.2979    0.6522 ] +  [ 0.7514    0.2016]*LOE_M; */
     /*     %% GS2_x_pitch_OK2 => pire than GS2_x_pitch_OK */
     /*      Ktheta =  [3.1595    0.6131] +  [0.7622    0.1426]*LOE_M; */
+    /*     %% Choice 1: GS2_x_pitch_OK => better */
+    /*      Ktheta =  [3.2979    0.6522 ] +  [ 0.7514    0.2016]*LOE_M; */
     /*     %% Choice 2: GS2_x_pitch_OK3 => best  */
     /* '<S18>:1:17' Ktheta =  [3.3090    0.6377] +  [0.9256    0.1630]*LOE_M; */
     /*  KX = */
@@ -962,7 +962,6 @@ void tuning_GS2ModelClass::step()
 
     for (i = 0; i < 6; i++) {
       /* Gain: '<Root>/Control Allocation' incorporates:
-       *  Saturate: '<Root>/                   '
        *  SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1'
        */
       rtb_ff_idx_0 = tuning_GS2_ConstP.ControlAllocation_Gain_c[i + 18] * y +
@@ -981,6 +980,8 @@ void tuning_GS2ModelClass::step()
       } else {
         tuning_GS2_B.u[i] = rtb_ff_idx_0;
       }
+
+      /* End of Saturate: '<Root>/                   ' */
     }
 
     /* MATLAB Function: '<Root>/Actuator_Fault' */

@@ -5,11 +5,11 @@
  * perform academic research at degree granting institutions only.  Not
  * for government, commercial, or other organizational use.
  *
- * Code generation for model "tuning_GS2".
+ * Code generation for model "tuning_GS5".
  *
- * Model version              : 1.2359
+ * Model version              : 1.1537
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Oct 30 09:09:14 2018
+ * C++ source code generated on : Mon Oct 29 23:06:09 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
