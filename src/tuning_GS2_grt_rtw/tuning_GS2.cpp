@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2369
+ * Model version              : 1.2370
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Dec 10 18:45:45 2018
+ * C++ source code generated on : Mon Dec 10 19:00:19 2018
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -447,20 +447,20 @@ void tuning_GS2ModelClass::step()
     /*  normalized LOE */
     /*  to change 2 */
     /*     %% Choice 1: GS2_full_OK */
-    /* '<S23>:1:8' Kz  = [16.0821   9.4270] + [1.3595   2.6192].*gamma_T; */
-    rtb_Kz_idx_0 = 1.3595 * gamma_T + 16.0821;
-    rtb_Kz_idx_1 = 2.6192 * gamma_T + 9.427;
+    /*      Kz  = [16.0821   9.4270] + [1.3595   2.6192].*gamma_T; */
+    /*      Kiz = 12.4380 + 0.1906*gamma_T; */
+    /*     %% Choice 2: GS2_full_OK2 */
+    /* '<S23>:1:12' Kz  = [16.5633  9.6788] + [1.8443  2.8710].*gamma_T; */
+    rtb_Kz_idx_0 = 1.8443 * gamma_T + 16.5633;
+    rtb_Kz_idx_1 = 2.871 * gamma_T + 9.6788;
 
-    /* '<S23>:1:9' Kiz = 12.4380 + 0.1906*gamma_T; */
-    gamma_T = 0.1906 * gamma_T + 12.438;
+    /* '<S23>:1:13' Kiz = 12.8742 + 0.6286*gamma_T; */
+    gamma_T = 0.6286 * gamma_T + 12.8742;
 
     /* Sum: '<S6>/Sum5' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
-    /*     %% Choice 2: GS2_full_OK2 */
-    /*      Kz  = [16.5633  9.6788] + [1.8443  2.8710].*gamma_T; */
-    /*      Kiz = 12.8742 + 0.6286*gamma_T; */
     /*     %% Choice 3: GS2_z => best  */
     /*      Kz  = [19.0258   10.6840] + [4.3032    3.8762].*gamma_T; */
     /*      Kiz = 13.9767 + 1.7293*gamma_T; */
