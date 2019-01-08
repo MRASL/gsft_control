@@ -402,7 +402,7 @@ int main(int argc, char** argv) {
 
       uav_state_msg->Kxyz.x = gController.tuning_GS2_Y.gain_GS[6];
       uav_state_msg->Kxyz.y = gController.tuning_GS2_Y.gain_GS[9];
-      uav_state_msg->Kxyz.z = gController.tuning_GS2_Y.gain_GS[0];
+      uav_state_msg->Kxyz.z = gController.tuning_GS2_Y.gain_GS[0]/10.0;
       uav_state_msg->Kpsi   = gController.tuning_GS2_Y.gain_GS[3];
 
       uav_state_msg->header.stamp  =  ros::Time::now();

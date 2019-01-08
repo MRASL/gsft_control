@@ -351,8 +351,8 @@ int main(int argc, char** argv) {
             else
             {
               motor_command[i] = gController.tuning_nominal_Y.motor_command[i];        // normalized [1 .. 200] => Asctec Firefly
-              motor_RPM[i]     = 1250.0 + motor_command[i]*43.75;                  // real RPM
-              motor_speed[i]   = motor_RPM[i]/9.5493;                              // rad/s => Gazebo
+              motor_RPM[i]     = 1250.0 + motor_command[i]*43.75;                      // real RPM
+              motor_speed[i]   = motor_RPM[i]/9.5493;                                  // rad/s => Gazebo
             }
         }
 
@@ -446,6 +446,11 @@ int main(int argc, char** argv) {
       uav_state_msg->M_Kalman.x = gController.tuning_nominal_Y.M_Kalman[0];
       uav_state_msg->M_Kalman.y = gController.tuning_nominal_Y.M_Kalman[1];
       uav_state_msg->M_Kalman.z = gController.tuning_nominal_Y.M_Kalman[2];
+
+      uav_state_msg->Kxyz.x = gGain[0];
+      uav_state_msg->Kxyz.y = gGain[3];
+      uav_state_msg->Kxyz.z = gGain[6]/10.0;
+      uav_state_msg->Kpsi   = gGain[15];
 
       uav_state_msg->header.stamp  =  ros::Time::now();
       uav_state_pub_.publish(uav_state_msg);
