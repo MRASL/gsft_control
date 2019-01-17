@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2394
+ * Model version              : 1.2524
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan  8 14:49:25 2019
+ * C++ source code generated on : Thu Jan 17 14:01:40 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -439,27 +439,62 @@ void tuning_GS2ModelClass::step()
 
     /* MATLAB Function: '<S17>/MATLAB Function' */
     /* MATLAB Function 'GS2_Controller/z_GS2_controller/MATLAB Function': '<S23>:1' */
-    /*    GS2_full_OK.m */
-    /*  to change 1 */
-    /* '<S23>:1:4' gamma_T = (u - 0.3)./0.3; */
+    /*  LQR gain: [14.7226  6.8078  12.2474] */
+    /*     %% Choice 1: GS2_full_OK - config 1 */
+    /*      gamma_T = (u - 0.3)./0.3;                                   % normalized LOE */
+    /*      Kz  = [16.0821   9.4270] + [1.3595   2.6192].*gamma_T; */
+    /*      Kiz = 12.4380 + 0.1906*gamma_T;                                   */
+    /*  u = 0         => Kz = [14.7226    6.8078   12.2474]     = LQR !!! */
+    /*  u = 0.125     => Kz = [15.2891    7.8991   12.3268]        */
+    /*  u = 0.2       => Kz = [15.6289    8.5539   12.3745]      */
+    /*  recheck by evalSurf: Ok */
+    /*     %% Choice 2: GS2_z_OK - config 1 (integral gain increases) */
+    /* '<S23>:1:15' gamma_T = (u - 0.3)./0.3; */
     gamma_T = (rtb_ControlAllocation[0] - 0.3) / 0.3;
 
-    /*  normalized LOE */
-    /*  to change 2 */
-    /*     %% Choice 1: GS2_full_OK */
-    /* '<S23>:1:8' Kz  = [16.0821   9.4270] + [1.3595   2.6192].*gamma_T; */
-    rtb_Kz_idx_0 = 1.3595 * gamma_T + 16.0821;
-    rtb_Kz_idx_1 = 2.6192 * gamma_T + 9.427;
+    /* normalized LOE */
+    /* '<S23>:1:16' Kz  = [18.2893 10.1732] + [3.5667   3.3654].*gamma_T; */
+    rtb_Kz_idx_0 = 3.5667 * gamma_T + 18.2893;
+    rtb_Kz_idx_1 = 3.3654 * gamma_T + 10.1732;
 
-    /* '<S23>:1:9' Kiz = 12.4380 + 0.1906*gamma_T; */
-    gamma_T = 0.1906 * gamma_T + 12.438;
+    /* '<S23>:1:17' Kiz = 13.5460 + 1.2986*gamma_T; */
+    gamma_T = 1.2986 * gamma_T + 13.546;
 
     /* Sum: '<S6>/Sum5' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
-    /* '<S23>:1:11' gain = [Kz Kiz]; */
+    /*  u = 0         => Kz = [14.7226    6.8078   12.2474]     = LQR !!! */
+    /*  u = 0.125     => Kz = [16.2087    8.2100   12.7885]        */
+    /*  u = 0.2       => Kz = [17.1004    9.0514   13.1131]      */
+    /*  recheck by evalSurf: Ok */
+    /*     %% Choice 3: GS2_z_OK - config 2 (integral gain decreases)      */
+    /*      gamma_T = (u - 0.3)./0.3;                                   % normalized LOE */
+    /*      Kz  = [17.0549  9.6598] + [2.3323   2.8520].*gamma_T; */
+    /*      Kiz = 12.1611 - 0.0863*gamma_T;        */
+    /*  u = 0         => Kz = [14.7226    6.8078   12.2474]     = LQR !!! */
+    /*  u = 0.125     => Kz = [15.6944    7.9961   12.2114]        */
+    /*  u = 0.2       => Kz = [16.2775    8.7091   12.1899]      */
+    /*  recheck by evalSurf: Ok */
+    /*     %% Choice 4: GS2_z_without_normalization_ML17b - config 1 (integral gain increases) */
+    /*      Kz  = [14.7226    6.8078] + [12.0004  12.5729].*u; */
+    /*      Kiz = 12.2474 + 4.2580*u;        */
+    /*  u = 0         => Kz = [14.7226    6.8078   12.2474]     = LQR !!! */
+    /*  u = 0.125     => Kz = [16.2227    8.3794   12.7797]        */
+    /*  u = 0.2       => Kz = [17.1227    9.3224   13.0990]      */
+    /*  recheck by evalSurf: Ok */
+    /*     %% Choice 5: GS2_z_without_normalization_ML17b - config 2 (integral gain decreases) */
+    /*      Kz  = [14.7226    6.8078] + [7.4659  9.7024].*u; */
+    /*      Kiz = 12.2474  -  0.5005*u;        */
+    /*  u = 0         => Kz = [14.7226    6.8078   12.2474]     = LQR !!! */
+    /*  u = 0.125     => Kz = [15.6558    8.0206   12.1848]        */
+    /*  u = 0.2       => Kz = [16.2158    8.7483   12.1473]      */
+    /*  recheck by evalSurf: Ok */
+    /*     %% */
+    /* '<S23>:1:49' gain = [Kz Kiz]; */
     /*   */
+    /*  GS2_full_OK */
+    /*  */
     /*  KX = */
     /*    Columns 1 through 13 */
     /*           0         0   16.0821         0         0    9.4270         0         0         0         0         0         0         0 */
@@ -497,33 +532,26 @@ void tuning_GS2ModelClass::step()
     /*    Columns 14 through 20 */
     /*           0         0         0         0         0         0         0 */
     /*           0         0         0         0         0         0    0.0417 */
-    /*  ------------------------------ */
-    /*  Nominal gain: OK  */
-    /*  Kz  = [14.7226 6.8078];  Kiz =  12.2474;   */
-    /*  ------------------------------ */
-    /*  evalSurf gain: OK                                   */
-    /*  u = [0 0 0 0]                   => Kz = [14.7190    6.8078   12.2456]   % GS nominal     */
-    /*  u = [0.3 0 0 0]                 => Kz = [16.5633    9.6788   12.8742]   % GS2 with LOE   */
     rtb_d_z = tuning_GS2_U.X[2] - tuning_GS2_U.Y0[2];
 
     /* MATLAB Function: '<S15>/MATLAB Function' */
     /* MATLAB Function 'GS2_Controller/x_GS2_controller/MATLAB Function': '<S21>:1' */
-    /*  to change 1 */
-    /* '<S21>:1:3' LOE_M = (u - 0.3)/0.3; */
+    /*  Note: GS2_full_OK.m => gain x trop grand */
+    /*     %% Choice 1: GS2_x_pitch_OK  */
+    /* '<S21>:1:5' LOE_M = (u - 0.3)/0.3; */
     LOE_M = (rtb_ControlAllocation[2] - 0.3) / 0.3;
 
     /*  normalized LOE */
-    /*  to change 2 */
-    /*     %% choice 1: GS2_x_pitch_OK  */
-    /* '<S21>:1:7' Kx =  [1.4762    0.9125] +  [0.1416    0.1147]*LOE_M ; */
-    /* '<S21>:1:8' Kix = 1.0979  + 0.0054*LOE_M; */
+    /* '<S21>:1:6' Kx =  [1.4762    0.9125] +  [0.1416    0.1147]*LOE_M ; */
+    /* '<S21>:1:7' Kix = 1.0979  + 0.0054*LOE_M; */
     Kix = 0.0054 * LOE_M + 1.0979;
 
     /* Sum: '<S6>/Sum1' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
-    /*  Note: GS2_full_OK.m => gain x trop grand */
+    /*      Kx =  [1.3446    0.7978] +  [0.2956  0.4896]*u ; */
+    /*      Kix = 1.0925  - 0.0652*u; */
     /* '<S21>:1:12' gain = [Kx  Kix]; */
     /*  KX = */
     /*      1.4814    0.8619    3.1595    0.6131    0.1435    0.1181    0.7622    0.1426 */
@@ -578,22 +606,25 @@ void tuning_GS2ModelClass::step()
 
     /* MATLAB Function: '<S16>/MATLAB Function' */
     /* MATLAB Function 'GS2_Controller/y_GS2_controller/MATLAB Function': '<S22>:1' */
-    /*    GS2_full_OK.m */
-    /*  to change 1 */
-    /* '<S22>:1:4' LOE_L = (u - 0.3)/0.3; */
+    /*     %% Choice 1: GS2_full_OK - config 1 */
+    /* '<S22>:1:3' LOE_L = (u - 0.3)/0.3; */
     LOE_L = (rtb_ControlAllocation[1] - 0.3) / 0.3;
 
     /*  normalized LOE */
-    /*  to change 2 */
-    /* '<S22>:1:7' Ky = [-1.4536   -0.8915] +  [-0.4937   -0.3555]*LOE_L; */
-    /* '<S22>:1:8' Kiy = -1.0775 - 0.3339*LOE_L; */
+    /* '<S22>:1:4' Ky = [-1.4536   -0.8915] +  [-0.4937   -0.3555]*LOE_L; */
+    /* '<S22>:1:5' Kiy = -1.0775 - 0.3339*LOE_L; */
     Kiy = -1.0775 - 0.3339 * LOE_L;
 
     /* Sum: '<S6>/Sum4' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
-    /* '<S22>:1:9' gain = [Ky  Kiy]; */
+    /*       */
+    /*      Ky = [-0.9599   -0.5360] +  [-0.4331   -0.5206]*u; */
+    /*      Kiy = -0.7436 - 0.0163*u; */
+    /*      Ky = [-0.9599   -0.5360] +  [-1.8071   -1.2476]*u; */
+    /*      Kiy = -0.7436 - 1.1667*u; */
+    /* '<S22>:1:13' gain = [Ky  Kiy]; */
     /*   */
     /*  Ky = */
     /*    Columns 1 through 13 */
@@ -728,14 +759,14 @@ void tuning_GS2ModelClass::step()
 
     /* MATLAB Function: '<S14>/MATLAB Function' */
     /* MATLAB Function 'GS2_Controller/roll_GS2_controller/MATLAB Function': '<S20>:1' */
-    /*    GS2_full_OK.m */
-    /*  to change 1 */
+    /*     %% Choice 1: GS2_full_OK - config 1 */
     /* '<S20>:1:4' LOE_L = (u - 0.3)/0.3; */
     LOE_L = (rtb_ControlAllocation[1] - 0.3) / 0.3;
 
     /*  normalized LOE */
-    /*  to change 2 */
-    /* '<S20>:1:7' Kphi = [3.0685   0.5927] +  [1.2959  0.2680]*LOE_L; */
+    /* '<S20>:1:5' Kphi = [3.0685   0.5927] +  [1.2959  0.2680]*LOE_L; */
+    /*      Kphi = [1.7720   0.3247] +  [2.3929  0.6028]*u;        */
+    /*      Kphi = [1.7720   0.3247] +  [4.1419  0.8457]*u; */
     /*   */
     /*  KX = */
     /*    Columns 1 through 13 */
@@ -791,17 +822,15 @@ void tuning_GS2ModelClass::step()
 
     /* MATLAB Function: '<S12>/MATLAB Function' */
     /* MATLAB Function 'GS2_Controller/pitch_GS2_controller/MATLAB Function': '<S18>:1' */
-    /*    GS2_full_OK.m */
-    /*  to change 1 */
-    /* '<S18>:1:4' LOE_M = (u - 0.3)/0.3; */
+    /*  Note: GS2_full_OK.m => gain x trop grand */
+    /*     %% Choice 1: GS2_x_pitch_OK  */
+    /* '<S18>:1:5' LOE_M = (u - 0.3)/0.3; */
     LOE_M = (rtb_ControlAllocation[2] - 0.3) / 0.3;
 
     /* MATLAB Function: '<S13>/MATLAB Function' */
     /*  normalized LOE */
-    /*  to change 2 */
-    /*     %% Choice 1: GS2_x_pitch_OK => better */
-    /* '<S18>:1:8' Ktheta =  [3.2979    0.6522 ] +  [ 0.7514    0.2016]*LOE_M; */
-    /*  Note: GS2_full_OK.m => gain x trop grand */
+    /* '<S18>:1:6' Ktheta =  [3.2979    0.6522 ] +  [ 0.7514    0.2016]*LOE_M; */
+    /*      Ktheta =  [2.5465  0.4506] +  [2.8659   0.9145]*u;   */
     /*  KX = */
     /*      1.4814    0.8619    3.1595    0.6131    0.1435    0.1181    0.7622    0.1426 */
     /*  ----------------------------------- */
@@ -822,25 +851,24 @@ void tuning_GS2ModelClass::step()
     /*     %% Choice 2: GS2_x_pitch_OK3 => best  */
     /*      Ktheta =  [3.3090    0.6377] +  [0.9256    0.1630]*LOE_M; */
     /* MATLAB Function 'GS2_Controller/psi_GS2_controller/MATLAB Function': '<S19>:1' */
-    /*    GS2_full_OK.m */
-    /*  to change 1 */
-    /* '<S19>:1:4' LOE_N = (u - 0.3)/0.3; */
+    /*     %% Choice 1: GS2_full_OK - config 1 */
+    /* '<S19>:1:3' LOE_N = (u - 0.3)/0.3; */
     LOE_N = (rtb_ControlAllocation[3] - 0.3) / 0.3;
 
     /*  normalized LOE */
-    /*  to change 2 */
-    /* '<S19>:1:7' Kpsi = [0.6048   0.4733] +  [0.1068   0.1603]*LOE_N; */
+    /* '<S19>:1:4' Kpsi = [0.6048   0.4733] +  [0.1068   0.1603]*LOE_N; */
     rtb_Kpsi_idx_0 = 0.1068 * LOE_N + 0.6048;
     rtb_Kpsi_idx_1 = 0.1603 * LOE_N + 0.4733;
 
-    /* '<S19>:1:8' Kipsi = 0.3579 + 0.0417*LOE_N; */
+    /* '<S19>:1:5' Kipsi = 0.3579 + 0.0417*LOE_N; */
     LOE_N = 0.0417 * LOE_N + 0.3579;
 
     /* Sum: '<S6>/Sum6' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
-    /* '<S19>:1:9' gain = [Kpsi  Kipsi]; */
+    /*     %% */
+    /* '<S19>:1:8' gain = [Kpsi  Kipsi]; */
     /*   */
     /*  KX = */
     /*    Columns 1 through 13 */
