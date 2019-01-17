@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2524
+ * Model version              : 1.2525
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 17 14:01:40 2019
+ * C++ source code generated on : Thu Jan 17 14:15:57 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -449,29 +449,29 @@ void tuning_GS2ModelClass::step()
     /*  u = 0.2       => Kz = [15.6289    8.5539   12.3745]      */
     /*  recheck by evalSurf: Ok */
     /*     %% Choice 2: GS2_z_OK - config 1 (integral gain increases) */
-    /* '<S23>:1:15' gamma_T = (u - 0.3)./0.3; */
-    gamma_T = (rtb_ControlAllocation[0] - 0.3) / 0.3;
-
-    /* normalized LOE */
-    /* '<S23>:1:16' Kz  = [18.2893 10.1732] + [3.5667   3.3654].*gamma_T; */
-    rtb_Kz_idx_0 = 3.5667 * gamma_T + 18.2893;
-    rtb_Kz_idx_1 = 3.3654 * gamma_T + 10.1732;
-
-    /* '<S23>:1:17' Kiz = 13.5460 + 1.2986*gamma_T; */
-    gamma_T = 1.2986 * gamma_T + 13.546;
-
-    /* Sum: '<S6>/Sum5' incorporates:
-     *  Inport: '<Root>/X'
-     *  Inport: '<Root>/Y0'
-     */
+    /*      gamma_T = (u - 0.3)./0.3;                                   %normalized LOE */
+    /*      Kz  = [18.2893 10.1732] + [3.5667   3.3654].*gamma_T; */
+    /*      Kiz = 13.5460 + 1.2986*gamma_T;        */
     /*  u = 0         => Kz = [14.7226    6.8078   12.2474]     = LQR !!! */
     /*  u = 0.125     => Kz = [16.2087    8.2100   12.7885]        */
     /*  u = 0.2       => Kz = [17.1004    9.0514   13.1131]      */
     /*  recheck by evalSurf: Ok */
     /*     %% Choice 3: GS2_z_OK - config 2 (integral gain decreases)      */
-    /*      gamma_T = (u - 0.3)./0.3;                                   % normalized LOE */
-    /*      Kz  = [17.0549  9.6598] + [2.3323   2.8520].*gamma_T; */
-    /*      Kiz = 12.1611 - 0.0863*gamma_T;        */
+    /* '<S23>:1:24' gamma_T = (u - 0.3)./0.3; */
+    gamma_T = (rtb_ControlAllocation[0] - 0.3) / 0.3;
+
+    /*  normalized LOE */
+    /* '<S23>:1:25' Kz  = [17.0549  9.6598] + [2.3323   2.8520].*gamma_T; */
+    rtb_Kz_idx_0 = 2.3323 * gamma_T + 17.0549;
+    rtb_Kz_idx_1 = 2.852 * gamma_T + 9.6598;
+
+    /* '<S23>:1:26' Kiz = 12.1611 - 0.0863*gamma_T; */
+    gamma_T = 12.1611 - 0.0863 * gamma_T;
+
+    /* Sum: '<S6>/Sum5' incorporates:
+     *  Inport: '<Root>/X'
+     *  Inport: '<Root>/Y0'
+     */
     /*  u = 0         => Kz = [14.7226    6.8078   12.2474]     = LQR !!! */
     /*  u = 0.125     => Kz = [15.6944    7.9961   12.2114]        */
     /*  u = 0.2       => Kz = [16.2775    8.7091   12.1899]      */
