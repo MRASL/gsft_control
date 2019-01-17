@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2525
+ * Model version              : 1.2526
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Thu Jan 17 14:15:57 2019
+ * C++ source code generated on : Thu Jan 17 14:23:50 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -135,7 +135,7 @@ void tuning_GS2ModelClass::step()
   }
 
   {
-    real_T gamma_T;
+    real_T Kiz;
     real_T Kix;
     real_T LOE_M;
     real_T Kiy;
@@ -166,8 +166,8 @@ void tuning_GS2ModelClass::step()
     real_T rtb_gamma_idx_0;
     real_T rtb_ref_idx_2;
     real_T rtb_Kz_idx_0;
-    real_T rtb_Kz_idx_1;
     real_T rtb_Kx_idx_0;
+    real_T rtb_Kz_idx_1;
     real_T rtb_Ky_idx_0;
     real_T rtb_Kpsi_idx_0;
     real_T rtb_Kpsi_idx_1;
@@ -457,28 +457,22 @@ void tuning_GS2ModelClass::step()
     /*  u = 0.2       => Kz = [17.1004    9.0514   13.1131]      */
     /*  recheck by evalSurf: Ok */
     /*     %% Choice 3: GS2_z_OK - config 2 (integral gain decreases)      */
-    /* '<S23>:1:24' gamma_T = (u - 0.3)./0.3; */
-    gamma_T = (rtb_ControlAllocation[0] - 0.3) / 0.3;
-
-    /*  normalized LOE */
-    /* '<S23>:1:25' Kz  = [17.0549  9.6598] + [2.3323   2.8520].*gamma_T; */
-    rtb_Kz_idx_0 = 2.3323 * gamma_T + 17.0549;
-    rtb_Kz_idx_1 = 2.852 * gamma_T + 9.6598;
-
-    /* '<S23>:1:26' Kiz = 12.1611 - 0.0863*gamma_T; */
-    gamma_T = 12.1611 - 0.0863 * gamma_T;
-
-    /* Sum: '<S6>/Sum5' incorporates:
-     *  Inport: '<Root>/X'
-     *  Inport: '<Root>/Y0'
-     */
+    /*      gamma_T = (u - 0.3)./0.3;                                   % normalized LOE */
+    /*      Kz  = [17.0549  9.6598] + [2.3323   2.8520].*gamma_T; */
+    /*      Kiz = 12.1611 - 0.0863*gamma_T;        */
     /*  u = 0         => Kz = [14.7226    6.8078   12.2474]     = LQR !!! */
     /*  u = 0.125     => Kz = [15.6944    7.9961   12.2114]        */
     /*  u = 0.2       => Kz = [16.2775    8.7091   12.1899]      */
     /*  recheck by evalSurf: Ok */
     /*     %% Choice 4: GS2_z_without_normalization_ML17b - config 1 (integral gain increases) */
-    /*      Kz  = [14.7226    6.8078] + [12.0004  12.5729].*u; */
-    /*      Kiz = 12.2474 + 4.2580*u;        */
+    /* '<S23>:1:33' Kz  = [14.7226    6.8078] + [12.0004  12.5729].*u; */
+    /* '<S23>:1:34' Kiz = 12.2474 + 4.2580*u; */
+    Kiz = 4.258 * rtb_ControlAllocation[0] + 12.2474;
+
+    /* Sum: '<S6>/Sum5' incorporates:
+     *  Inport: '<Root>/X'
+     *  Inport: '<Root>/Y0'
+     */
     /*  u = 0         => Kz = [14.7226    6.8078   12.2474]     = LQR !!! */
     /*  u = 0.125     => Kz = [16.2227    8.3794   12.7797]        */
     /*  u = 0.2       => Kz = [17.1227    9.3224   13.0990]      */
@@ -578,6 +572,9 @@ void tuning_GS2ModelClass::step()
     /*    */
     rtb_d_x = tuning_GS2_U.X[0] - tuning_GS2_U.Y0[0];
 
+    /* MATLAB Function: '<S17>/MATLAB Function' */
+    rtb_Kz_idx_0 = 12.0004 * rtb_ControlAllocation[0] + 14.7226;
+
     /* MATLAB Function: '<S15>/MATLAB Function' */
     rtb_Kx = 0.1416 * LOE_M + 1.4762;
 
@@ -588,6 +585,11 @@ void tuning_GS2ModelClass::step()
 
     /* MATLAB Function: '<S15>/MATLAB Function' */
     rtb_Kx_idx_0 = rtb_Kx;
+
+    /* MATLAB Function: '<S17>/MATLAB Function' */
+    rtb_Kz_idx_1 = 12.5729 * rtb_ControlAllocation[0] + 6.8078;
+
+    /* MATLAB Function: '<S15>/MATLAB Function' */
     rtb_Kx = 0.1147 * LOE_M + 0.9125;
 
     /* Product: '<S15>/Product1' incorporates:
@@ -927,7 +929,7 @@ void tuning_GS2ModelClass::step()
      *  Sum: '<S17>/Sum1'
      *  Sum: '<S4>/Sum1'
      */
-    rtb_ControlAllocation[0] = (gamma_T * tuning_GS2_X.Integrator1_CSTATE -
+    rtb_ControlAllocation[0] = (Kiz * tuning_GS2_X.Integrator1_CSTATE -
       (rtb_Kz_idx_0 * rtb_d_z + rtb_Kz_idx_1 * tuning_GS2_U.X[5])) +
       15.107400000000002;
 
@@ -1242,7 +1244,7 @@ void tuning_GS2ModelClass::step()
      *  MATLAB Function: '<S16>/MATLAB Function'
      *  MATLAB Function: '<S17>/MATLAB Function'
      */
-    tuning_GS2_Y.gain_GS[2] = gamma_T;
+    tuning_GS2_Y.gain_GS[2] = Kiz;
     tuning_GS2_Y.gain_GS[5] = LOE_N;
     tuning_GS2_Y.gain_GS[8] = Kix;
     tuning_GS2_Y.gain_GS[0] = rtb_Kz_idx_0;
