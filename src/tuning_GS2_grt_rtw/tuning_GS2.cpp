@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2766
+ * Model version              : 1.2767
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jan 18 15:32:57 2019
+ * C++ source code generated on : Fri Jan 18 15:58:17 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -138,7 +138,7 @@ void tuning_GS2ModelClass::step()
     real_T Kiz;
     real_T Kix;
     real_T Kiy;
-    real_T Kipsi;
+    real_T LOE_N;
     real_T rtb_Sum1_l[3];
     real_T rtb_Add_a[6];
     real_T rtb_LOE_out[6];
@@ -156,7 +156,6 @@ void tuning_GS2ModelClass::step()
     int32_T i_0;
     real_T rtb_Kx;
     real_T rtb_Ky;
-    real_T rtb_Kpsi;
     real_T rtb_Sum_idx_0;
     real_T rtb_Sum_idx_3;
     real_T rtb_ff_idx_1;
@@ -169,6 +168,7 @@ void tuning_GS2ModelClass::step()
     real_T rtb_Kz_idx_1;
     real_T rtb_Ky_idx_0;
     real_T rtb_Kpsi_idx_0;
+    real_T rtb_Kpsi_idx_1;
     real_T u0;
 
     /* Clock: '<Root>/Clock' */
@@ -875,22 +875,28 @@ void tuning_GS2ModelClass::step()
     /* MATLAB Function 'GS2_Controller/psi_GS2_controller/MATLAB Function': '<S19>:1' */
     /*  LQR gain: K = [0.4980   0.3130  0.3162];    */
     /*  Choice 1: GS2_full - config 1 */
-    /*      LOE_N = (u - 0.3)/0.3;                                                 % normalized LOE */
-    /*      Kpsi = [0.6048   0.4733] +  [0.1068   0.1603]*LOE_N;     */
-    /*      Kipsi = 0.3579 + 0.0417*LOE_N; */
-    /*  u = 0         => K = [0.4980    0.3130   0.3162]     = LQR !!! */
-    /*  u = 0.125     => K = [0.5425    0.3798   0.3336]        */
-    /*  u = 0.2       => K = [0.5692    0.4199   0.3440]      */
-    /*  recheck by evalSurf: Ok */
-    /*  Choice 2: GS2_psi_without_normalization                                            */
-    /* '<S19>:1:14' Kpsi = [0.4980   0.3130] +  [0.6933   0.5620]*u; */
-    /* '<S19>:1:15' Kipsi = 0.3162 + 0.4422*u; */
-    Kipsi = 0.4422 * rtb_ControlAllocation[3] + 0.3162;
+    /* '<S19>:1:5' LOE_N = (u - 0.3)/0.3; */
+    LOE_N = (rtb_ControlAllocation[3] - 0.3) / 0.3;
+
+    /*  normalized LOE */
+    /* '<S19>:1:6' Kpsi = [0.6048   0.4733] +  [0.1068   0.1603]*LOE_N; */
+    rtb_Kpsi_idx_0 = 0.1068 * LOE_N + 0.6048;
+    rtb_Kpsi_idx_1 = 0.1603 * LOE_N + 0.4733;
+
+    /* '<S19>:1:7' Kipsi = 0.3579 + 0.0417*LOE_N; */
+    LOE_N = 0.0417 * LOE_N + 0.3579;
 
     /* Sum: '<S6>/Sum6' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
+    /*  u = 0         => K = [0.4980    0.3130   0.3162]     = LQR !!! */
+    /*  u = 0.125     => K = [0.5425    0.3798   0.3336]        */
+    /*  u = 0.2       => K = [0.5692    0.4199   0.3440]      */
+    /*  recheck by evalSurf: Ok */
+    /*  Choice 2: GS2_psi_without_normalization                                            */
+    /*      Kpsi = [0.4980   0.3130] +  [0.6933   0.5620]*u;     */
+    /*      Kipsi = 0.3162 + 0.4422*u; */
     /*  u = 0         => K = [0.4980    0.3130   0.3162]     = LQR !!! */
     /*  u = 0.125     => K = [0.5847    0.3832   0.3715]        */
     /*  u = 0.2       => K = [0.6367    0.4254   0.4046]      */
@@ -898,24 +904,6 @@ void tuning_GS2ModelClass::step()
     /*     %% */
     /* '<S19>:1:22' gain = [Kpsi  Kipsi]; */
     rtb_d_psi = tuning_GS2_U.X[8] - tuning_GS2_U.Y0[3];
-
-    /* MATLAB Function: '<S13>/MATLAB Function' */
-    rtb_Kpsi = 0.6933 * rtb_ControlAllocation[3] + 0.498;
-
-    /* Product: '<S13>/Product1' incorporates:
-     *  SignalConversion: '<S13>/TmpSignal ConversionAtProduct1Inport2'
-     */
-    u0 = rtb_Kpsi * rtb_d_psi;
-
-    /* MATLAB Function: '<S13>/MATLAB Function' */
-    rtb_Kpsi_idx_0 = rtb_Kpsi;
-    rtb_Kpsi = 0.562 * rtb_ControlAllocation[3] + 0.313;
-
-    /* Product: '<S13>/Product1' incorporates:
-     *  Inport: '<Root>/X'
-     *  SignalConversion: '<S13>/TmpSignal ConversionAtProduct1Inport2'
-     */
-    u0 += rtb_Kpsi * tuning_GS2_U.X[11];
 
     /* SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1' incorporates:
      *  Constant: '<S4>/                     '
@@ -978,13 +966,16 @@ void tuning_GS2ModelClass::step()
     /* End of Saturate: '<S4>/2Nm' */
 
     /* Saturate: '<S4>/1Nm' incorporates:
+     *  Inport: '<Root>/X'
      *  Integrator: '<S13>/Integrator1'
      *  MATLAB Function: '<S13>/MATLAB Function'
      *  Product: '<S13>/Product'
      *  Product: '<S13>/Product1'
+     *  SignalConversion: '<S13>/TmpSignal ConversionAtProduct1Inport2'
      *  Sum: '<S13>/Sum1'
      */
-    rtb_Sum_idx_3 = Kipsi * tuning_GS2_X.Integrator1_CSTATE_j - u0;
+    rtb_Sum_idx_3 = LOE_N * tuning_GS2_X.Integrator1_CSTATE_j - (rtb_Kpsi_idx_0 *
+      rtb_d_psi + rtb_Kpsi_idx_1 * tuning_GS2_U.X[11]);
     if (rtb_Sum_idx_3 > 1.0) {
       /* SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1' */
       rtb_Sum_idx_3 = 1.0;
@@ -1250,14 +1241,14 @@ void tuning_GS2ModelClass::step()
      *  MATLAB Function: '<S17>/MATLAB Function'
      */
     tuning_GS2_Y.gain_GS[2] = Kiz;
-    tuning_GS2_Y.gain_GS[5] = Kipsi;
+    tuning_GS2_Y.gain_GS[5] = LOE_N;
     tuning_GS2_Y.gain_GS[8] = Kix;
     tuning_GS2_Y.gain_GS[0] = rtb_Kz_idx_0;
     tuning_GS2_Y.gain_GS[3] = rtb_Kpsi_idx_0;
     tuning_GS2_Y.gain_GS[6] = rtb_Kx_idx_0;
     tuning_GS2_Y.gain_GS[9] = rtb_Ky_idx_0;
     tuning_GS2_Y.gain_GS[1] = rtb_Kz_idx_1;
-    tuning_GS2_Y.gain_GS[4] = rtb_Kpsi;
+    tuning_GS2_Y.gain_GS[4] = rtb_Kpsi_idx_1;
     tuning_GS2_Y.gain_GS[7] = rtb_Kx;
     tuning_GS2_Y.gain_GS[10] = rtb_Ky;
     tuning_GS2_Y.gain_GS[11] = Kiy;
