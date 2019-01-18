@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2767
+ * Model version              : 1.2768
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jan 18 15:58:17 2019
+ * C++ source code generated on : Fri Jan 18 16:16:54 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -138,7 +138,6 @@ void tuning_GS2ModelClass::step()
     real_T Kiz;
     real_T Kix;
     real_T Kiy;
-    real_T LOE_N;
     real_T rtb_Sum1_l[3];
     real_T rtb_Add_a[6];
     real_T rtb_LOE_out[6];
@@ -167,8 +166,6 @@ void tuning_GS2ModelClass::step()
     real_T rtb_Kx_idx_0;
     real_T rtb_Kz_idx_1;
     real_T rtb_Ky_idx_0;
-    real_T rtb_Kpsi_idx_0;
-    real_T rtb_Kpsi_idx_1;
     real_T u0;
 
     /* Clock: '<Root>/Clock' */
@@ -832,7 +829,10 @@ void tuning_GS2ModelClass::step()
         (tuning_GS2_B.T_outer[2]);
     }
 
-    /* MATLAB Function: '<S13>/MATLAB Function' */
+    /* Sum: '<S6>/Sum6' incorporates:
+     *  Inport: '<Root>/X'
+     *  Inport: '<Root>/Y0'
+     */
     /* MATLAB Function 'GS2_Controller/pitch_GS2_controller/MATLAB Function': '<S18>:1' */
     /*  LQR gain1:         x        xd      theta    theta_d     int   */
     /*             K = [1.2426   0.7085]  [2.2946    0.4589]   [0.9913] */
@@ -875,21 +875,9 @@ void tuning_GS2ModelClass::step()
     /* MATLAB Function 'GS2_Controller/psi_GS2_controller/MATLAB Function': '<S19>:1' */
     /*  LQR gain: K = [0.4980   0.3130  0.3162];    */
     /*  Choice 1: GS2_full - config 1 */
-    /* '<S19>:1:5' LOE_N = (u - 0.3)/0.3; */
-    LOE_N = (rtb_ControlAllocation[3] - 0.3) / 0.3;
-
-    /*  normalized LOE */
-    /* '<S19>:1:6' Kpsi = [0.6048   0.4733] +  [0.1068   0.1603]*LOE_N; */
-    rtb_Kpsi_idx_0 = 0.1068 * LOE_N + 0.6048;
-    rtb_Kpsi_idx_1 = 0.1603 * LOE_N + 0.4733;
-
-    /* '<S19>:1:7' Kipsi = 0.3579 + 0.0417*LOE_N; */
-    LOE_N = 0.0417 * LOE_N + 0.3579;
-
-    /* Sum: '<S6>/Sum6' incorporates:
-     *  Inport: '<Root>/X'
-     *  Inport: '<Root>/Y0'
-     */
+    /*      LOE_N = (u - 0.3)/0.3;                                                 % normalized LOE */
+    /*      Kpsi = [0.6048   0.4733] +  [0.1068   0.1603]*LOE_N;     */
+    /*      Kipsi = 0.3579 + 0.0417*LOE_N; */
     /*  u = 0         => K = [0.4980    0.3130   0.3162]     = LQR !!! */
     /*  u = 0.125     => K = [0.5425    0.3798   0.3336]        */
     /*  u = 0.2       => K = [0.5692    0.4199   0.3440]      */
@@ -901,8 +889,10 @@ void tuning_GS2ModelClass::step()
     /*  u = 0.125     => K = [0.5847    0.3832   0.3715]        */
     /*  u = 0.2       => K = [0.6367    0.4254   0.4046]      */
     /*  recheck by evalSurf: Ok */
+    /* '<S19>:1:21' Kpsi = [0.4980   0.3130 ]; */
+    /* '<S19>:1:22' Kipsi = 0.3162; */
     /*     %% */
-    /* '<S19>:1:22' gain = [Kpsi  Kipsi]; */
+    /* '<S19>:1:24' gain = [Kpsi  Kipsi]; */
     rtb_d_psi = tuning_GS2_U.X[8] - tuning_GS2_U.Y0[3];
 
     /* SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1' incorporates:
@@ -974,8 +964,8 @@ void tuning_GS2ModelClass::step()
      *  SignalConversion: '<S13>/TmpSignal ConversionAtProduct1Inport2'
      *  Sum: '<S13>/Sum1'
      */
-    rtb_Sum_idx_3 = LOE_N * tuning_GS2_X.Integrator1_CSTATE_j - (rtb_Kpsi_idx_0 *
-      rtb_d_psi + rtb_Kpsi_idx_1 * tuning_GS2_U.X[11]);
+    rtb_Sum_idx_3 = 0.3162 * tuning_GS2_X.Integrator1_CSTATE_j - (0.498 *
+      rtb_d_psi + 0.313 * tuning_GS2_U.X[11]);
     if (rtb_Sum_idx_3 > 1.0) {
       /* SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1' */
       rtb_Sum_idx_3 = 1.0;
@@ -1240,17 +1230,17 @@ void tuning_GS2ModelClass::step()
      *  MATLAB Function: '<S16>/MATLAB Function'
      *  MATLAB Function: '<S17>/MATLAB Function'
      */
-    tuning_GS2_Y.gain_GS[2] = Kiz;
-    tuning_GS2_Y.gain_GS[5] = LOE_N;
-    tuning_GS2_Y.gain_GS[8] = Kix;
     tuning_GS2_Y.gain_GS[0] = rtb_Kz_idx_0;
-    tuning_GS2_Y.gain_GS[3] = rtb_Kpsi_idx_0;
+    tuning_GS2_Y.gain_GS[3] = 0.498;
     tuning_GS2_Y.gain_GS[6] = rtb_Kx_idx_0;
     tuning_GS2_Y.gain_GS[9] = rtb_Ky_idx_0;
     tuning_GS2_Y.gain_GS[1] = rtb_Kz_idx_1;
-    tuning_GS2_Y.gain_GS[4] = rtb_Kpsi_idx_1;
+    tuning_GS2_Y.gain_GS[4] = 0.313;
     tuning_GS2_Y.gain_GS[7] = rtb_Kx;
     tuning_GS2_Y.gain_GS[10] = rtb_Ky;
+    tuning_GS2_Y.gain_GS[2] = Kiz;
+    tuning_GS2_Y.gain_GS[5] = 0.3162;
+    tuning_GS2_Y.gain_GS[8] = Kix;
     tuning_GS2_Y.gain_GS[11] = Kiy;
 
     /* Outport: '<Root>/virtual_control' */
