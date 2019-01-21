@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2769
+ * Model version              : 1.2788
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Fri Jan 18 16:40:56 2019
+ * C++ source code generated on : Mon Jan 21 15:27:30 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -654,21 +654,28 @@ void tuning_GS2ModelClass::step()
     /*  u = 0.125     => K = [-1.1656   -0.6841    2.3126    0.4364   -0.8827]        */
     /*  u = 0.215     => K = [-1.3137   -0.7908    2.7013    0.5168   -0.9384]      */
     /*  recheck by evalSurf: Ok  */
-    /*  GS2_y_roll_without_normalization - config 3  => bigger gain   */
-    /* '<S22>:1:17' Ky = [-0.9599   -0.5360] +  [-1.8956   -1.3056]*u; */
-    /* '<S22>:1:18' Kiy = -0.7436 - 1.2635*u; */
-    Kiy = -0.7436 - 1.2635 * rtb_ControlAllocation[1];
+    /*  GS2_y_roll_without_normalization - config 3  => bigger gain than choice 1 */
+    /*      Ky = [-0.9599   -0.5360] +  [-1.8956   -1.3056]*u; */
+    /*      Kiy = -0.7436 - 1.2635*u; */
+    /*  u = 0         => K = [-0.9599   -0.5360    1.7720    0.3247   -0.7436]    ~ LQR gain !!! */
+    /*  u = 0.125     => K = [-1.1968   -0.6992    2.3291    0.4331   -0.9015]        */
+    /*  u = 0.215     => K = [-1.3675   -0.8167    2.7302    0.5111   -1.0153]      */
+    /*  recheck by evalSurf: Ok   */
+    /*  GS2_y_roll_without_normalization - config 4  => biggest gain */
+    /* '<S22>:1:25' Ky = [-0.9599   -0.5360] +  [-2.8090   -1.7525]*u; */
+    /* '<S22>:1:26' Kiy = -0.7436 - 2.1424*u; */
+    Kiy = -0.7436 - 2.1424 * rtb_ControlAllocation[1];
 
     /* Sum: '<S6>/Sum4' incorporates:
      *  Inport: '<Root>/X'
      *  Inport: '<Root>/Y0'
      */
     /*  u = 0         => K = [-0.9599   -0.5360    1.7720    0.3247   -0.7436]    ~ LQR gain !!! */
-    /*  u = 0.125     => K = [-1.1968   -0.6992    2.3291    0.4331   -0.9015]        */
-    /*  u = 0.215     => K = [-1.3675   -0.8167    2.7302    0.5111   -1.0153]      */
+    /*  u = 0.125     => K = [-1.3110   -0.7551    2.4519    0.4502   -1.0114]        */
+    /*  u = 0.215     => K = [-1.5638   -0.9128    2.9414    0.5406   -1.2042]      */
     /*  recheck by evalSurf: Ok   */
-    /* '<S22>:1:24' gain = [Ky  Kiy]; */
-    /*  Choice 1: GS2_full_OK - config 1 */
+    /* '<S22>:1:32' gain = [Ky  Kiy]; */
+    /*  Choice 0: GS2_full_OK - config 1 */
     /*      LOE_L = (u - 0.3)/0.3;                                                 % normalized LOE */
     /*      Ky = [-1.4536   -0.8915] +  [-0.4937   -0.3555]*LOE_L; */
     /*      Kiy = -1.0775 - 0.3339*LOE_L; */
@@ -676,31 +683,38 @@ void tuning_GS2ModelClass::step()
     /*  u = 0.125     => K = [-1.1656   -0.6841    2.3126    0.4364   -0.8827]        */
     /*  u = 0.215     => K = [-1.3137   -0.7908    2.7013    0.5168   -0.9384]      */
     /*  recheck by evalSurf: Ok  */
-    /*  Choice 2: GS2_y_roll_without_normalization - config 1  => smaller gain than choice 1 */
+    /*  Choice 1: GS2_y_roll_without_normalization - config 1  => smaller gain than choice 1 */
     /*      Ky = [-0.9479   -0.5505] +  [-0.2841   -0.3298]*u; */
     /*      Kiy = -0.7657 - 0.0308*u; */
     /*  u = 0         => K = [-0.9479   -0.5505    1.7378    0.3476   -0.7657]    = LQR gain !!! */
     /*  u = 0.125     => K = [-0.9834   -0.5917    1.9732    0.4069   -0.7696]        */
     /*  u = 0.215     => K = [-1.0090   -0.6214    2.1426    0.4496   -0.7723]      */
     /*  recheck by evalSurf: Ok  */
-    /*  Choice 3: GS2_y_roll_without_normalization - config 2  => outer loop bigger gain than choice 1, inner loop smaller gain than choice 1 */
+    /*  Choice 2: GS2_y_roll_without_normalization - config 2  => outer loop bigger gain than choice 1, inner loop smaller gain than choice 1 */
     /*      Ky = [-0.9599   -0.5360] +  [-1.8071   -1.2476]*u; */
     /*      Kiy = -0.7436 - 1.1667*u; */
     /*  u = 0         => K = [-0.9599   -0.5360    1.7720   0.3247   -0.7436]    ~ LQR gain !!! */
     /*  u = 0.125     => K = [-1.1858   -0.6920    2.2897   0.4304   -0.8894]        */
     /*  u = 0.215     => K = [-1.3484   -0.8042    2.6625   0.5065   -0.9944]      */
     /*  recheck by evalSurf: Ok   */
-    /*  Choice 4: GS2_y_roll_without_normalization - config 3  => bigger gain than choice 1 */
+    /*  Choice 3: GS2_y_roll_without_normalization - config 3  => bigger gain than choice 1 */
     /*      Ky = [-0.9599   -0.5360] +  [-1.8956   -1.3056]*u; */
     /*      Kiy = -0.7436 - 1.2635*u; */
     /*  u = 0         => K = [-0.9599   -0.5360    1.7720    0.3247   -0.7436]    ~ LQR gain !!! */
     /*  u = 0.125     => K = [-1.1968   -0.6992    2.3291    0.4331   -0.9015]        */
     /*  u = 0.215     => K = [-1.3675   -0.8167    2.7302    0.5111   -1.0153]      */
     /*  recheck by evalSurf: Ok   */
+    /*  Choice 4: GS2_y_roll_without_normalization - config 4  => biggest gain */
+    /*      Ky = [-0.9599   -0.5360] +  [-2.8090   -1.7525]*u; */
+    /*      Kiy = -0.7436 - 2.1424*u; */
+    /*  u = 0         => K = [-0.9599   -0.5360    1.7720    0.3247   -0.7436]    ~ LQR gain !!! */
+    /*  u = 0.125     => K = [-1.3110   -0.7551    2.4519    0.4502   -1.0114]        */
+    /*  u = 0.215     => K = [-1.5638   -0.9128    2.9414    0.5406   -1.2042]      */
+    /*  recheck by evalSurf: Ok   */
     rtb_d_y = tuning_GS2_U.X[1] - tuning_GS2_U.Y0[1];
 
     /* MATLAB Function: '<S16>/MATLAB Function' */
-    rtb_Ky = -1.8956 * rtb_ControlAllocation[1] + -0.9599;
+    rtb_Ky = -2.809 * rtb_ControlAllocation[1] + -0.9599;
 
     /* Product: '<S16>/Product1' incorporates:
      *  SignalConversion: '<S16>/TmpSignal ConversionAtProduct1Inport2'
@@ -709,7 +723,7 @@ void tuning_GS2ModelClass::step()
 
     /* MATLAB Function: '<S16>/MATLAB Function' */
     rtb_Ky_idx_0 = rtb_Ky;
-    rtb_Ky = -1.3056 * rtb_ControlAllocation[1] + -0.536;
+    rtb_Ky = -1.7525 * rtb_ControlAllocation[1] + -0.536;
 
     /* Product: '<S16>/Product1' incorporates:
      *  Inport: '<Root>/X'
@@ -794,36 +808,48 @@ void tuning_GS2ModelClass::step()
     /*  u = 0.215     => K = [-1.3137   -0.7908    2.7013    0.5168   -0.9384]      */
     /*  recheck by evalSurf: Ok  */
     /*  GS2_y_roll_without_normalization - config 3 => bigger gain than choice 1         */
-    /* '<S20>:1:14' Kphi = [1.7720   0.3247] +  [4.4567  0.8672]*u; */
+    /*      Kphi = [1.7720   0.3247] +  [4.4567  0.8672]*u; */
     /*  u = 0         => K = [-0.9599   -0.5360    1.7720    0.3247   -0.7436]    ~ LQR gain !!! */
     /*  u = 0.125     => K = [-1.1968   -0.6992    2.3291    0.4331   -0.9015]        */
     /*  u = 0.215     => K = [-1.3675   -0.8167    2.7302    0.5111   -1.0153]      */
     /*  recheck by evalSurf: Ok    */
-    /*  Choice 1: GS2_full_OK - config 1 */
+    /*  GS2_y_roll_without_normalization - config 4 => bigger gain than choice 1         */
+    /* '<S20>:1:21' Kphi = [1.7720   0.3247] +  [5.4391  1.0041]*u; */
+    /*  u = 0         => K = [-0.9599   -0.5360    1.7720    0.3247   -0.7436]    ~ LQR gain !!! */
+    /*  u = 0.125     => K = [-1.3110   -0.7551    2.4519    0.4502   -1.0114]        */
+    /*  u = 0.215     => K = [-1.5638   -0.9128    2.9414    0.5406   -1.2042]      */
+    /*  recheck by evalSurf: Ok    */
+    /*  Choice 0: GS2_full_OK - config 1 */
     /*      LOE_L = (u - 0.3)/0.3;                                                 % normalized LOE */
     /*      Kphi = [3.0685   0.5927] +  [1.2959  0.2680]*LOE_L; */
     /*  u = 0         => K = [-0.9599   -0.5360    1.7726    0.3247   -0.7436]    ~ LQR gain !!! */
     /*  u = 0.125     => K = [-1.1656   -0.6841    2.3126    0.4364   -0.8827]        */
     /*  u = 0.215     => K = [-1.3137   -0.7908    2.7013    0.5168   -0.9384]      */
     /*  recheck by evalSurf: Ok  */
-    /*  Choice 2: GS2_y_roll_without_normalization - config 1  => smaller gain than choice 1 */
+    /*  Choice 1: GS2_y_roll_without_normalization - config 1  => smaller gain than choice 1 */
     /*      Kphi = [1.7378   0.3476] +  [1.8829  0.4742]*u;   */
     /*  u = 0         => K = [-0.9479   -0.5505    1.7378    0.3476   -0.7657]    = LQR gain !!! */
     /*  u = 0.125     => K = [-0.9834   -0.5917    1.9732    0.4069   -0.7696]        */
     /*  u = 0.215     => K = [-1.0090   -0.6214    2.1426    0.4496   -0.7723]      */
     /*  recheck by evalSurf: Ok  */
-    /*  Choice 3: GS2_y_roll_without_normalization - config 2  => outer loop bigger gain than choice 1, inner loop smaller gain than choice 1        */
+    /*  Choice 2: GS2_y_roll_without_normalization - config 2  => outer loop bigger gain than choice 1, inner loop smaller gain than choice 1        */
     /*      Kphi = [1.7720   0.3247] +  [4.1419  0.8457]*u; */
     /*  u = 0         => K = [-0.9599   -0.5360    1.7720   0.3247   -0.7436]    ~ LQR gain !!! */
     /*  u = 0.125     => K = [-1.1858   -0.6920    2.2897   0.4304   -0.8894]        */
     /*  u = 0.215     => K = [-1.3484   -0.8042    2.6625   0.5065   -0.9944]      */
     /*  recheck by evalSurf: Ok      */
-    /*  Choice 4: GS2_y_roll_without_normalization - config 3 => bigger gain than choice 1         */
+    /*  Choice 3: GS2_y_roll_without_normalization - config 3 => bigger gain than choice 1         */
     /*      Kphi = [1.7720   0.3247] +  [4.4567  0.8672]*u; */
     /*  u = 0         => K = [-0.9599   -0.5360    1.7720    0.3247   -0.7436]    ~ LQR gain !!! */
     /*  u = 0.125     => K = [-1.1968   -0.6992    2.3291    0.4331   -0.9015]        */
     /*  u = 0.215     => K = [-1.3675   -0.8167    2.7302    0.5111   -1.0153]      */
     /*  recheck by evalSurf: Ok    */
+    /*  Choice 4: GS2_y_roll_without_normalization - config 4 => bigger gain than choice 1         */
+    /*      Kphi = [1.7720   0.3247] +  [5.4391  1.0041]*u; */
+    /*  u = 0         => K = [-0.9599   -0.5360    1.7720    0.3247   -0.7436]    ~ LQR gain !!! */
+    /*  u = 0.125     => K = [-1.3110   -0.7551    2.4519    0.4502   -1.0114]        */
+    /*  u = 0.215     => K = [-1.5638   -0.9128    2.9414    0.5406   -1.2042]      */
+    /*  recheck by evalSurf: Ok   */
     if (rtmIsMajorTimeStep((&tuning_GS2_M)) &&
         (&tuning_GS2_M)->Timing.TaskCounters.TID[2] == 0) {
       /* Fcn: '<S4>/Fcn' */
@@ -939,8 +965,8 @@ void tuning_GS2ModelClass::step()
      *  Sum: '<S14>/Sum1'
      *  Sum: '<S4>/Sum7'
      */
-    rtb_ff_idx_0 = (tuning_GS2_B.Fcn1 + rtb_ff_idx_0) - ((4.4567 *
-      rtb_ControlAllocation[1] + 1.772) * tuning_GS2_U.X[6] + (0.8672 *
+    rtb_ff_idx_0 = (tuning_GS2_B.Fcn1 + rtb_ff_idx_0) - ((5.4391 *
+      rtb_ControlAllocation[1] + 1.772) * tuning_GS2_U.X[6] + (1.0041 *
       rtb_ControlAllocation[1] + 0.3247) * tuning_GS2_U.X[9]);
     if (rtb_ff_idx_0 > 2.0) {
       /* SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1' */
