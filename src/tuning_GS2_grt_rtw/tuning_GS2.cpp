@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2788
+ * Model version              : 1.2790
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Mon Jan 21 15:27:30 2019
+ * C++ source code generated on : Tue Jan 22 10:47:47 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -1101,49 +1101,58 @@ void tuning_GS2ModelClass::step()
       rtb_ControlAllocation[1] = tuning_GS2_U.ref[1];
       rtb_ControlAllocation[2] = tuning_GS2_U.ref[2];
       rtb_ControlAllocation[3] = tuning_GS2_U.ref[3];
+
+      /* '<S71>:1:6' if t>=25 */
+      if (rtb_Clock >= 25.0) {
+        /* '<S71>:1:7' ref = Y0; */
+        rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0];
+        rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1];
+        rtb_ControlAllocation[2] = tuning_GS2_U.Y0[2];
+        rtb_ControlAllocation[3] = tuning_GS2_U.Y0[3];
+      }
       break;
 
      case 1:
-      /* '<S71>:1:6' case 1      % waypoint */
+      /* '<S71>:1:9' case 1      % waypoint */
       /*  waypoint */
-      /* '<S71>:1:7' if t<=15 */
+      /* '<S71>:1:10' if t<=15 */
       if (rtb_Clock <= 15.0) {
-        /* '<S71>:1:8' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
+        /* '<S71>:1:11' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0];
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1];
         rtb_ControlAllocation[2] = 1.0;
         rtb_ControlAllocation[3] = tuning_GS2_U.Y0[3];
       } else if (rtb_Clock <= 25.0) {
-        /* '<S71>:1:9' elseif t <= 25 */
-        /* '<S71>:1:10' ref = [Y0(1)+1; Y0(2)-1; 1; Y0(4)]; */
+        /* '<S71>:1:12' elseif t <= 25 */
+        /* '<S71>:1:13' ref = [Y0(1)+1; Y0(2)-1; 1; Y0(4)]; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0] + 1.0;
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1] - 1.0;
         rtb_ControlAllocation[2] = 1.0;
         rtb_ControlAllocation[3] = tuning_GS2_U.Y0[3];
       } else if (rtb_Clock <= 35.0) {
-        /* '<S71>:1:11' elseif t <=35 */
-        /* '<S71>:1:12' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
+        /* '<S71>:1:14' elseif t <=35 */
+        /* '<S71>:1:15' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0] - 1.0;
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1] + 1.0;
         rtb_ControlAllocation[2] = 1.0;
         rtb_ControlAllocation[3] = tuning_GS2_U.Y0[3];
       } else if (rtb_Clock <= 45.0) {
-        /* '<S71>:1:13' elseif t <=45 */
-        /* '<S71>:1:14' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
+        /* '<S71>:1:16' elseif t <=45 */
+        /* '<S71>:1:17' ref = [Y0(1)-1; Y0(2)+1; 1; Y0(4)]; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0] - 1.0;
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1] + 1.0;
         rtb_ControlAllocation[2] = 1.0;
         rtb_ControlAllocation[3] = tuning_GS2_U.Y0[3];
       } else if (rtb_Clock <= 55.0) {
-        /* '<S71>:1:15' elseif t <=55 */
-        /* '<S71>:1:16' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
+        /* '<S71>:1:18' elseif t <=55 */
+        /* '<S71>:1:19' ref = [Y0(1); Y0(2); 1; Y0(4)]; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0];
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1];
         rtb_ControlAllocation[2] = 1.0;
         rtb_ControlAllocation[3] = tuning_GS2_U.Y0[3];
       } else {
-        /* '<S71>:1:17' else */
-        /* '<S71>:1:18' ref = Y0; */
+        /* '<S71>:1:20' else */
+        /* '<S71>:1:21' ref = Y0; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0];
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1];
         rtb_ControlAllocation[2] = tuning_GS2_U.Y0[2];
@@ -1164,32 +1173,32 @@ void tuning_GS2ModelClass::step()
       break;
 
      case 2:
-      /* '<S71>:1:31' case 2      % circular tracking */
+      /* '<S71>:1:34' case 2      % circular tracking */
       /*  circular tracking */
-      /* '<S71>:1:32' if t<=10 */
+      /* '<S71>:1:35' if t<=10 */
       if (rtb_Clock <= 10.0) {
-        /* '<S71>:1:33' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+        /* '<S71>:1:36' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0];
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1];
         rtb_ControlAllocation[2] = 0.75;
         rtb_ControlAllocation[3] = tuning_GS2_U.Y0[3];
       } else if (rtb_Clock <= 50.0) {
-        /* '<S71>:1:34' elseif t <= 50 */
-        /* '<S71>:1:35' ref = [Y0(1)+cos(t); Y0(2)+sin(t); 0.75; Y0(4)]; */
+        /* '<S71>:1:37' elseif t <= 50 */
+        /* '<S71>:1:38' ref = [Y0(1)+cos(t); Y0(2)+sin(t); 0.75; Y0(4)]; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0] + std::cos(rtb_Clock);
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1] + std::sin(rtb_Clock);
         rtb_ControlAllocation[2] = 0.75;
         rtb_ControlAllocation[3] = tuning_GS2_U.Y0[3];
       } else if (rtb_Clock <= 60.0) {
-        /* '<S71>:1:36' elseif t <= 60 */
-        /* '<S71>:1:37' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
+        /* '<S71>:1:39' elseif t <= 60 */
+        /* '<S71>:1:40' ref = [Y0(1); Y0(2); 0.75; Y0(4)]; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0];
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1];
         rtb_ControlAllocation[2] = 0.75;
         rtb_ControlAllocation[3] = tuning_GS2_U.Y0[3];
       } else {
-        /* '<S71>:1:38' else */
-        /* '<S71>:1:39' ref = Y0; */
+        /* '<S71>:1:41' else */
+        /* '<S71>:1:42' ref = Y0; */
         rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0];
         rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1];
         rtb_ControlAllocation[2] = tuning_GS2_U.Y0[2];
@@ -1200,8 +1209,8 @@ void tuning_GS2ModelClass::step()
       break;
 
      default:
-      /* '<S71>:1:42' otherwise */
-      /* '<S71>:1:43' ref = Y0; */
+      /* '<S71>:1:45' otherwise */
+      /* '<S71>:1:46' ref = Y0; */
       rtb_ControlAllocation[0] = tuning_GS2_U.Y0[0];
       rtb_ControlAllocation[1] = tuning_GS2_U.Y0[1];
       rtb_ControlAllocation[2] = tuning_GS2_U.Y0[2];
