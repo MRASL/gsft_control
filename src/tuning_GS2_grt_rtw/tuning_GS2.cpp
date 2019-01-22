@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2792
+ * Model version              : 1.2794
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 22 11:23:27 2019
+ * C++ source code generated on : Tue Jan 22 11:36:56 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -137,7 +137,6 @@ void tuning_GS2ModelClass::step()
   {
     real_T Kiz;
     real_T Kix;
-    real_T LOE_M;
     real_T Kiy;
     real_T Kipsi;
     real_T rtb_Sum1_l[3];
@@ -159,6 +158,7 @@ void tuning_GS2ModelClass::step()
     real_T rtb_Ky;
     real_T rtb_Kpsi;
     real_T rtb_Sum_idx_0;
+    real_T rtb_Sum_idx_3;
     real_T rtb_ff_idx_1;
     real_T rtb_ff_idx_0;
     real_T rtb_gamma_idx_2;
@@ -545,25 +545,22 @@ void tuning_GS2ModelClass::step()
     /*  LQR gain1:         x        xd     theta     theta_d     int   */
     /*             K = [1.2426   0.7085    2.2946    0.4589    0.9913] */
     /*  GS2_x_pitch_OK  */
-    /* '<S21>:1:6' LOE_M = (u - 0.3)/0.3; */
-    LOE_M = (rtb_ControlAllocation[2] - 0.3) / 0.3;
-
-    /*  normalized LOE */
-    /* '<S21>:1:7' Kx =  [1.4762    0.9125] +  [0.1416    0.1147]*LOE_M ; */
-    /* '<S21>:1:8' Kix = 1.0979  + 0.0054*LOE_M; */
-    Kix = 0.0054 * LOE_M + 1.0979;
-
-    /* Sum: '<S6>/Sum1' incorporates:
-     *  Inport: '<Root>/X'
-     *  Inport: '<Root>/Y0'
-     */
+    /*      LOE_M = (u - 0.3)/0.3;                                                 % normalized LOE */
+    /*      Kx =  [1.4762    0.9125] +  [0.1416    0.1147]*LOE_M ; */
+    /*      Kix = 1.0979  + 0.0054*LOE_M;     */
     /*  u = 0         => K = [1.3346    0.7978    2.5465    0.4506   1.0925]     = LQR gain2 !!! */
     /*  u = 0.125     => K = [1.3936    0.8456    2.8596    0.5346   1.0948]        */
     /*  u = 0.175     => K = [1.4172    0.8647    2.9848    0.5682   1.0957]      */
     /*  recheck by evalSurf: Ok    */
     /*  GS2_x_pitch_without_normalization_ML17b - Config 4 (all increase), biggest gain        */
-    /*      Kx =  [1.3446    0.7978] +  [0.5145  0.5524]*u ; */
-    /*      Kix = 1.0925  + 0.2053*u; */
+    /* '<S21>:1:15' Kx =  [1.3446    0.7978] +  [0.5145  0.5524]*u ; */
+    /* '<S21>:1:16' Kix = 1.0925  + 0.2053*u; */
+    Kix = 0.2053 * rtb_ControlAllocation[2] + 1.0925;
+
+    /* Sum: '<S6>/Sum1' incorporates:
+     *  Inport: '<Root>/X'
+     *  Inport: '<Root>/Y0'
+     */
     /*  u = 0         => K = [1.3346    0.7978    2.5465    0.4506   1.0925]     = LQR gain2 !!! */
     /*  u = 0.125     => K = [1.4089    0.8668    2.9154    0.5598   1.1182]        */
     /*  u = 0.175     => K = [1.4346    0.8945    3.0629    0.6035   1.1284]    */
@@ -615,7 +612,7 @@ void tuning_GS2ModelClass::step()
     rtb_Kz_idx_0 = 12.0004 * rtb_ControlAllocation[0] + 14.7226;
 
     /* MATLAB Function: '<S15>/MATLAB Function' */
-    rtb_Kx = 0.1416 * LOE_M + 1.4762;
+    rtb_Kx = 0.5145 * rtb_ControlAllocation[2] + 1.3446;
 
     /* Product: '<S15>/Product1' incorporates:
      *  SignalConversion: '<S15>/TmpSignal ConversionAtProduct1Inport2'
@@ -629,7 +626,7 @@ void tuning_GS2ModelClass::step()
     rtb_Kz_idx_1 = 12.5729 * rtb_ControlAllocation[0] + 6.8078;
 
     /* MATLAB Function: '<S15>/MATLAB Function' */
-    rtb_Kx = 0.1147 * LOE_M + 0.9125;
+    rtb_Kx = 0.5524 * rtb_ControlAllocation[2] + 0.7978;
 
     /* Product: '<S15>/Product1' incorporates:
      *  Inport: '<Root>/X'
@@ -861,23 +858,19 @@ void tuning_GS2ModelClass::step()
         (tuning_GS2_B.T_outer[2]);
     }
 
-    /* MATLAB Function: '<S12>/MATLAB Function' */
+    /* MATLAB Function: '<S13>/MATLAB Function' */
     /* MATLAB Function 'GS2_Controller/pitch_GS2_controller/MATLAB Function': '<S18>:1' */
     /*  LQR gain1:         x        xd      theta    theta_d     int   */
     /*             K = [1.2426   0.7085]  [2.2946    0.4589]   [0.9913] */
     /*  GS2_x_pitch_OK  */
-    /* '<S18>:1:6' LOE_M = (u - 0.3)/0.3; */
-    LOE_M = (rtb_ControlAllocation[2] - 0.3) / 0.3;
-
-    /* MATLAB Function: '<S13>/MATLAB Function' */
-    /*  normalized LOE */
-    /* '<S18>:1:7' Ktheta =  [3.2979    0.6522 ] +  [ 0.7514    0.2016]*LOE_M; */
+    /*      LOE_M = (u - 0.3)/0.3;                                                 % normalized LOE */
+    /*      Ktheta =  [3.2979    0.6522 ] +  [ 0.7514    0.2016]*LOE_M;        */
     /*  u = 0         => K = [1.3346    0.7978    2.5465    0.4506   1.0925]     = LQR gain2 !!! */
     /*  u = 0.125     => K = [1.3936    0.8456    2.8596    0.5346   1.0948]        */
     /*  u = 0.175     => K = [1.4172    0.8647    2.9848    0.5682   1.0957]      */
     /*  recheck by evalSurf: Ok  */
     /*  GS2_x_pitch_without_normalization_ML17b - Config 4 (all increase), biggest gain        */
-    /*      Ktheta =  [2.5465  0.4506] +  [2.9509   0.8739]*u;   */
+    /* '<S18>:1:14' Ktheta =  [2.5465  0.4506] +  [2.9509   0.8739]*u; */
     /*  u = 0         => K = [1.3346    0.7978    2.5465    0.4506   1.0925]     = LQR gain2 !!! */
     /*  u = 0.125     => K = [1.4089    0.8668    2.9154    0.5598   1.1182]        */
     /*  u = 0.175     => K = [1.4346    0.8945    3.0629    0.6035   1.1284]      */
@@ -995,15 +988,16 @@ void tuning_GS2ModelClass::step()
      *  Sum: '<S12>/Sum1'
      *  Sum: '<S4>/Sum8'
      */
-    LOE_M = (tuning_GS2_B.Fcn + rtb_ff_idx_1) - ((0.7514 * LOE_M + 3.2979) *
-      tuning_GS2_U.X[7] + (0.2016 * LOE_M + 0.6522) * tuning_GS2_U.X[10]);
-    if (LOE_M > 2.0) {
+    rtb_ff_idx_1 = (tuning_GS2_B.Fcn + rtb_ff_idx_1) - ((2.9509 *
+      rtb_ControlAllocation[2] + 2.5465) * tuning_GS2_U.X[7] + (0.8739 *
+      rtb_ControlAllocation[2] + 0.4506) * tuning_GS2_U.X[10]);
+    if (rtb_ff_idx_1 > 2.0) {
       /* SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1' */
-      LOE_M = 2.0;
+      rtb_ff_idx_1 = 2.0;
     } else {
-      if (LOE_M < -2.0) {
+      if (rtb_ff_idx_1 < -2.0) {
         /* SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1' */
-        LOE_M = -2.0;
+        rtb_ff_idx_1 = -2.0;
       }
     }
 
@@ -1016,22 +1010,22 @@ void tuning_GS2ModelClass::step()
      *  Product: '<S13>/Product1'
      *  Sum: '<S13>/Sum1'
      */
-    rtb_ff_idx_1 = Kipsi * tuning_GS2_X.Integrator1_CSTATE_j - u0;
-    if (rtb_ff_idx_1 > 1.0) {
+    rtb_Sum_idx_3 = Kipsi * tuning_GS2_X.Integrator1_CSTATE_j - u0;
+    if (rtb_Sum_idx_3 > 1.0) {
       /* SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1' */
-      rtb_ff_idx_1 = 1.0;
+      rtb_Sum_idx_3 = 1.0;
     } else {
-      if (rtb_ff_idx_1 < -1.0) {
+      if (rtb_Sum_idx_3 < -1.0) {
         /* SignalConversion: '<Root>/TmpSignal ConversionAtControl AllocationInport1' */
-        rtb_ff_idx_1 = -1.0;
+        rtb_Sum_idx_3 = -1.0;
       }
     }
 
     /* End of Saturate: '<S4>/1Nm' */
     for (i = 0; i < 6; i++) {
       /* Gain: '<Root>/Control Allocation' */
-      u0 = tuning_GS2_ConstP.ControlAllocation_Gain_c[i + 18] * rtb_ff_idx_1 +
-        (tuning_GS2_ConstP.ControlAllocation_Gain_c[i + 12] * LOE_M +
+      u0 = tuning_GS2_ConstP.ControlAllocation_Gain_c[i + 18] * rtb_Sum_idx_3 +
+        (tuning_GS2_ConstP.ControlAllocation_Gain_c[i + 12] * rtb_ff_idx_1 +
          (tuning_GS2_ConstP.ControlAllocation_Gain_c[i + 6] * rtb_ff_idx_0 +
           tuning_GS2_ConstP.ControlAllocation_Gain_c[i] * rtb_Sum_idx_0));
 
@@ -1320,15 +1314,15 @@ void tuning_GS2ModelClass::step()
     rtb_ff_idx_0 = rtb_ControlAllocation[1] - tuning_GS2_U.Y0[1];
 
     /* Outport: '<Root>/virtual_control' */
-    tuning_GS2_Y.virtual_control[2] = LOE_M;
+    tuning_GS2_Y.virtual_control[2] = rtb_ff_idx_1;
 
     /* Sum: '<S6>/Sum' incorporates:
      *  Inport: '<Root>/Y0'
      */
-    LOE_M = rtb_ControlAllocation[2] - tuning_GS2_U.Y0[2];
+    rtb_ff_idx_1 = rtb_ControlAllocation[2] - tuning_GS2_U.Y0[2];
 
     /* Outport: '<Root>/virtual_control' */
-    tuning_GS2_Y.virtual_control[3] = rtb_ff_idx_1;
+    tuning_GS2_Y.virtual_control[3] = rtb_Sum_idx_3;
 
     /* Sum: '<S6>/Sum' incorporates:
      *  Inport: '<Root>/Y0'
@@ -1378,18 +1372,18 @@ void tuning_GS2ModelClass::step()
     tuning_GS2_B.Sum3_f3 = rtb_ff_idx_0 - rtb_d_y;
 
     /* Saturate: '<S17>/z' */
-    if (LOE_M > 1.75) {
-      LOE_M = 1.75;
+    if (rtb_ff_idx_1 > 1.75) {
+      rtb_ff_idx_1 = 1.75;
     } else {
-      if (LOE_M < 0.0) {
-        LOE_M = 0.0;
+      if (rtb_ff_idx_1 < 0.0) {
+        rtb_ff_idx_1 = 0.0;
       }
     }
 
     /* End of Saturate: '<S17>/z' */
 
     /* Sum: '<S17>/Sum3' */
-    tuning_GS2_B.Sum3_j = LOE_M - rtb_d_z;
+    tuning_GS2_B.Sum3_j = rtb_ff_idx_1 - rtb_d_z;
     if (rtmIsMajorTimeStep((&tuning_GS2_M)) &&
         (&tuning_GS2_M)->Timing.TaskCounters.TID[1] == 0) {
       /* Outputs for Enabled SubSystem: '<S42>/MeasurementUpdate' incorporates:
