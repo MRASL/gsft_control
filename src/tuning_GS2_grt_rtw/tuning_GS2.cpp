@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2794
+ * Model version              : 1.2797
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 22 11:36:56 2019
+ * C++ source code generated on : Wed May 15 14:50:44 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -142,7 +142,7 @@ void tuning_GS2ModelClass::step()
     real_T rtb_Sum1_l[3];
     real_T rtb_Add_a[6];
     real_T rtb_LOE_out[6];
-    real_T rtb_gamma_m[6];
+    real_T rtb_gamma_l[6];
     real_T rtb_ControlAllocation[4];
     real_T rtb_d_z;
     real_T rtb_d_x;
@@ -202,16 +202,16 @@ void tuning_GS2ModelClass::step()
       /* '<S2>:1:4' if time <= LOE_moment(i) */
       if (rtb_Clock <= tuning_GS2_U.LOE_t[i]) {
         /* '<S2>:1:5' gamma(i) = 0; */
-        rtb_gamma_m[i] = 0.0;
+        rtb_gamma_l[i] = 0.0;
       } else if (rtb_Clock <= tuning_GS2_U.LOE_t[i] + 1.5) {
         /* '<S2>:1:6' elseif time <= LOE_moment(i)+1.5 */
         /* '<S2>:1:7' gamma(i) = LOE_amplitude(i)*(time - LOE_moment(i))/1.5; */
-        rtb_gamma_m[i] = (rtb_Clock - tuning_GS2_U.LOE_t[i]) *
+        rtb_gamma_l[i] = (rtb_Clock - tuning_GS2_U.LOE_t[i]) *
           tuning_GS2_U.LOE_a[i] / 1.5;
       } else {
         /* '<S2>:1:8' else */
         /* '<S2>:1:9' gamma(i) = LOE_amplitude(i); */
-        rtb_gamma_m[i] = tuning_GS2_U.LOE_a[i];
+        rtb_gamma_l[i] = tuning_GS2_U.LOE_a[i];
       }
 
       /* End of MATLAB Function: '<Root>/FDD' */
@@ -380,13 +380,13 @@ void tuning_GS2ModelClass::step()
     switch (tuning_GS2_U.LOE_mode) {
      case 0:
       for (i = 0; i < 6; i++) {
-        rtb_gamma_m[i] = 0.0;
+        rtb_gamma_l[i] = 0.0;
       }
       break;
 
      case 1:
       for (i = 0; i < 6; i++) {
-        rtb_gamma_m[i] = rtb_LOE_out[i];
+        rtb_gamma_l[i] = rtb_LOE_out[i];
       }
       break;
 
@@ -395,13 +395,13 @@ void tuning_GS2ModelClass::step()
 
      case 3:
       for (i = 0; i < 6; i++) {
-        rtb_gamma_m[i] = tuning_GS2_U.LOE_cal[i];
+        rtb_gamma_l[i] = tuning_GS2_U.LOE_cal[i];
       }
       break;
 
      default:
       for (i = 0; i < 6; i++) {
-        rtb_gamma_m[i] = tuning_GS2_B.LOE_FDD[i];
+        rtb_gamma_l[i] = tuning_GS2_B.LOE_FDD[i];
       }
       break;
     }
@@ -410,16 +410,16 @@ void tuning_GS2ModelClass::step()
 
     /* Saturate: '<Root>/                        ' */
     for (i = 0; i < 6; i++) {
-      rtb_d_z = rtb_gamma_m[i];
-      if (rtb_gamma_m[i] > 1.0) {
+      rtb_d_z = rtb_gamma_l[i];
+      if (rtb_gamma_l[i] > 1.0) {
         rtb_d_z = 1.0;
       } else {
-        if (rtb_gamma_m[i] < 0.0) {
+        if (rtb_gamma_l[i] < 0.0) {
           rtb_d_z = 0.0;
         }
       }
 
-      rtb_gamma_m[i] = rtb_d_z;
+      rtb_gamma_l[i] = rtb_d_z;
     }
 
     /* End of Saturate: '<Root>/                        ' */
@@ -429,7 +429,7 @@ void tuning_GS2ModelClass::step()
       rtb_ControlAllocation[i] = 0.0;
       for (i_0 = 0; i_0 < 6; i_0++) {
         rtb_ControlAllocation[i] += tuning_GS2_ConstP.ControlAllocation_Gain
-          [(i_0 << 2) + i] * rtb_gamma_m[i_0];
+          [(i_0 << 2) + i] * rtb_gamma_l[i_0];
       }
     }
 
@@ -1052,12 +1052,12 @@ void tuning_GS2ModelClass::step()
     /* '<S1>:1:6' T5 = T(5)*(1-LOE(5)); */
     /* '<S1>:1:7' T6 = T(6)*(1-LOE(6)); */
     /* '<S1>:1:8' T_f = [T1;T2;T3;T4;T5;T6]; */
-    rtb_gamma_m[0] = (1.0 - rtb_LOE_out[0]) * tuning_GS2_B.u[0];
-    rtb_gamma_m[1] = (1.0 - rtb_LOE_out[1]) * tuning_GS2_B.u[1];
-    rtb_gamma_m[2] = (1.0 - rtb_LOE_out[2]) * tuning_GS2_B.u[2];
-    rtb_gamma_m[3] = (1.0 - rtb_LOE_out[3]) * tuning_GS2_B.u[3];
-    rtb_gamma_m[4] = (1.0 - rtb_LOE_out[4]) * tuning_GS2_B.u[4];
-    rtb_gamma_m[5] = (1.0 - rtb_LOE_out[5]) * tuning_GS2_B.u[5];
+    rtb_gamma_l[0] = (1.0 - rtb_LOE_out[0]) * tuning_GS2_B.u[0];
+    rtb_gamma_l[1] = (1.0 - rtb_LOE_out[1]) * tuning_GS2_B.u[1];
+    rtb_gamma_l[2] = (1.0 - rtb_LOE_out[2]) * tuning_GS2_B.u[2];
+    rtb_gamma_l[3] = (1.0 - rtb_LOE_out[3]) * tuning_GS2_B.u[3];
+    rtb_gamma_l[4] = (1.0 - rtb_LOE_out[4]) * tuning_GS2_B.u[4];
+    rtb_gamma_l[5] = (1.0 - rtb_LOE_out[5]) * tuning_GS2_B.u[5];
 
     /* Outport: '<Root>/motor_command' */
     for (i = 0; i < 6; i++) {
@@ -1067,7 +1067,7 @@ void tuning_GS2ModelClass::step()
        *  Sqrt: '<S7>/Sqrt1'
        *  Sum: '<S7>/Sum3'
        */
-      u0 = (std::sqrt(116978.4923343994 * rtb_gamma_m[i]) * 9.5493 - 1250.0) *
+      u0 = (std::sqrt(116978.4923343994 * rtb_gamma_l[i]) * 9.5493 - 1250.0) *
         0.022857142857142857;
 
       /* Saturate: '<S7>/Saturation' */
@@ -1245,7 +1245,7 @@ void tuning_GS2ModelClass::step()
       tuning_GS2_Y.thrust_pre[i] = tuning_GS2_B.u[i];
 
       /* Outport: '<Root>/thrust_after' */
-      tuning_GS2_Y.thrust_after[i] = rtb_gamma_m[i];
+      tuning_GS2_Y.thrust_after[i] = rtb_gamma_l[i];
     }
 
     if (rtmIsMajorTimeStep((&tuning_GS2_M)) &&
@@ -1436,16 +1436,16 @@ void tuning_GS2ModelClass::step()
          *  Constant: '<S5>/A'
          *  Sum: '<S42>/Add'
          */
-        rtb_gamma_m[i] = 0.0;
+        rtb_gamma_l[i] = 0.0;
         for (i_0 = 0; i_0 < 6; i_0++) {
-          rtb_gamma_m[i] += tuning_GS2_ConstP.A_Value[6 * i_0 + i] *
+          rtb_gamma_l[i] += tuning_GS2_ConstP.A_Value[6 * i_0 + i] *
             rtb_MemoryX[i_0];
         }
 
         /* End of Product: '<S42>/A[k]*xhat[k|k-1]' */
 
         /* Sum: '<S42>/Add' */
-        rtb_Add[i] = rtb_gamma_m[i] + tuning_GS2_B.Product3[i];
+        rtb_Add[i] = rtb_gamma_l[i] + tuning_GS2_B.Product3[i];
       }
     }
   }

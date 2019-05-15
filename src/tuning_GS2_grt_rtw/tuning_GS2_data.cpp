@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS2".
  *
- * Model version              : 1.2794
+ * Model version              : 1.2797
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 22 11:36:56 2019
+ * C++ source code generated on : Wed May 15 14:50:44 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -55,7 +55,7 @@ const ConstP_tuning_GS2_T tuning_GS2_ConstP = {
     0.16666666666666666, 0.25, 0.0, 0.16666666666666666, 0.16666666666666666,
     0.125, 0.25, 0.16666666666666666 },
 
-  /* Expression: B_ENU_inv
+  /* Expression: B_CA_ENU_inv
    * Referenced by: '<Root>/Control Allocation'
    */
   { 0.16666666666666674, 0.16666666666666669, 0.16666666666666671,
