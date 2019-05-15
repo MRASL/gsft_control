@@ -30,7 +30,6 @@ double gPsi;                    // heading (rad)
 
 Eigen::VectorXd gY0(4);         // initial position (equilibrium)
 Eigen::VectorXd gRef(4);        // references (x, y, z, yaw)
-Eigen::VectorXd gGain(19);
 Eigen::VectorXd gLOE(6);        // LOE trued
 Eigen::VectorXd gLOE_t(6);      // LOE moment
 Eigen::VectorXd gThrust_measure(6);
@@ -43,30 +42,6 @@ void controller_dyn_callback(gsft_control::controllerGS1DynConfig &config, uint3
     config.RESET = false;
   }
   else if (level & gsft_control::controllerGS1Dyn_ENABLE_CTRL){
-      if (config.new_controller_gains){
-        gGain[0]  = config.kx;      // x
-        gGain[1]  = config.kvx;     // vx
-        gGain[2]  = config.kix;     // integral x
-        gGain[3]  = config.ky;      // y
-        gGain[4]  = config.kvy;
-        gGain[5]  = config.kiy;
-        gGain[6]  = config.kz;      // z
-        gGain[7]  = config.kvz;
-        gGain[8]  = config.kiz;
-        gGain[9]  = config.kphi;    // roll
-        gGain[10] = config.kp;
-        gGain[11] = config.kiphi;
-        gGain[12] = config.ktheta;  // pitch
-        gGain[13] = config.kq;
-        gGain[14] = config.kitheta;
-        gGain[15] = config.kpsi;    // yaw
-        gGain[16] = config.kr;
-        gGain[17] = config.kipsi;
-
-        ROS_INFO("New controller gains");
-        config.new_controller_gains   = false;
-      }
-
       // Note: dynamic reconfigure is called when created by server_dyn.setCallback(f_dyn)
       //               i.e. before the first Odometry available
       // Compare mode: because config.enable_take_off always TRUE
@@ -78,30 +53,10 @@ void controller_dyn_callback(gsft_control::controllerGS1DynConfig &config, uint3
         gY0[1]    = gOdometry.position.y();
         gY0[2]    = gOdometry.position.z();
         gY0[3]    = gPsi;
-      //  if (config.test_mode == gsft_control::controllerGS1Dyn_TEST_MANUAL){
         gRef[0]   = gY0[0];
         gRef[1]   = gY0[1];
         gRef[2]   = config.ref_z;
         gRef[3]   = gY0[3];
-      //  }
-        gGain[0]  = config.kx;      // x
-        gGain[1]  = config.kvx;     // vx
-        gGain[2]  = config.kix;     // integral x
-        gGain[3]  = config.ky;      // y
-        gGain[4]  = config.kvy;
-        gGain[5]  = config.kiy;
-        gGain[6]  = config.kz;      // z
-        gGain[7]  = config.kvz;
-        gGain[8]  = config.kiz;
-        gGain[9]  = config.kphi;    // roll
-        gGain[10] = config.kp;
-        gGain[11] = config.kiphi;
-        gGain[12] = config.ktheta;  // pitch
-        gGain[13] = config.kq;
-        gGain[14] = config.kitheta;
-        gGain[15] = config.kpsi;    // yaw
-        gGain[16] = config.kr;
-        gGain[17] = config.kipsi;
 
         gLOE[0]   = config.LOE_1;
         gLOE[1]   = config.LOE_2;
@@ -251,12 +206,11 @@ int main(int argc, char** argv) {
   gLanding_flag      = false;
   gEmergency_status  = false;
   gTest_mode         = 0;
-  gLOE_mode          = 1;   // nominal
+  gLOE_mode          = 0;   // nominal
   gPsi               = 0.0;
 
   gY0    << 0.0, 0.0, 0.0, 0.0;
   gRef   << 0.0, 0.0, 0.0, 0.0;
-  gGain   = Eigen::VectorXd::Zero(19);
   gLOE    = Eigen::VectorXd::Zero(6);
   gLOE_t  = Eigen::VectorXd::Zero(6);
   gThrust_measure = Eigen::VectorXd::Zero(6);
@@ -310,25 +264,19 @@ int main(int argc, char** argv) {
         for (unsigned int i=0; i< 6; i++) {
           gController.tuning_GS1_U.LOE_t[i]  = gLOE_t[i];   // fault time
         }
-        /*for (unsigned int i=0; i< 19; i++) {
-          ROS_INFO("Controller gain k[%d] = %f",i,gGain[i]);
-        }*/
     }
 
     if (controller_active) {                                // controller active after take-off request
         // Initialization before gController.step();
         gController.tuning_GS1_U.mode     = gTest_mode;     // 0 = manual, ...
         gController.tuning_GS1_U.LOE_mode = gLOE_mode;      // 1 = nominal, 2 = LOE true, ...
-
         for (unsigned int i=0; i< 4; i++) {
           gController.tuning_GS1_U.ref[i]  = gRef[i];
         }
         for (unsigned int i=0; i< 4; i++) {
           gController.tuning_GS1_U.Y0[i]   = gY0[i];
         }
-        for (unsigned int i=0; i< 19; i++) {
-          gController.tuning_GS1_U.gain[i] = gGain[i];
-        }
+
         gController.tuning_GS1_U.X[0]   = gOdometry.position.x();
         gController.tuning_GS1_U.X[1]   = gOdometry.position.y();
         gController.tuning_GS1_U.X[2]   = gOdometry.position.z();
@@ -427,10 +375,10 @@ int main(int argc, char** argv) {
       uav_state_msg->rotation_speed_B.y  = gOdometry.angular_velocity.y();
       uav_state_msg->rotation_speed_B.z  = gOdometry.angular_velocity.z();
 
-    //  uav_state_msg->total_thrust  = gController.tuning_GS1_Y.virtual_control[0];
-    //  uav_state_msg->moment.x      = gController.tuning_GS1_Y.virtual_control[1];
-    //  uav_state_msg->moment.y      = gController.tuning_GS1_Y.virtual_control[2];
-    //  uav_state_msg->moment.z      = gController.tuning_GS1_Y.virtual_control[3];
+    /*  uav_state_msg->total_thrust  = gController.tuning_GS1_Y.virtual_control[0];
+      uav_state_msg->moment.x      = gController.tuning_GS1_Y.virtual_control[1];
+      uav_state_msg->moment.y      = gController.tuning_GS1_Y.virtual_control[2];
+      uav_state_msg->moment.z      = gController.tuning_GS1_Y.virtual_control[3]; */
 
       uav_state_msg->thrust_pre.x    = gController.tuning_GS1_Y.thrust_pre[0];
       uav_state_msg->thrust_pre.y    = gController.tuning_GS1_Y.thrust_pre[1];
@@ -454,7 +402,8 @@ int main(int argc, char** argv) {
 
       uav_state_msg->Kxyz.x = gController.tuning_GS1_Y.gain_GS[6];
       uav_state_msg->Kxyz.y = gController.tuning_GS1_Y.gain_GS[9];
-      uav_state_msg->Kxyz.z = gController.tuning_GS1_Y.gain_GS[0];
+      uav_state_msg->Kxyz.z = gController.tuning_GS1_Y.gain_GS[0]/10.0;
+      ROS_INFO("Kz %f",gController.tuning_GS1_Y.gain_GS[0]);
       uav_state_msg->Kpsi   = gController.tuning_GS1_Y.gain_GS[3];
 
       uav_state_msg->header.stamp  =  ros::Time::now();
@@ -463,23 +412,25 @@ int main(int argc, char** argv) {
       // LOE message
       if (controller_active){
         gsft_control::LOEPtr LOE_msg(new gsft_control::LOE);
+
         for(unsigned int i=0; i< 6; i++) {
+          gController.tuning_GS1_U.LOE_cal[i] = 0.0;
+          LOE_msg->LOE_calcul[i] = 0.0;
           LOE_msg->LOE_true[i]   = gController.tuning_GS1_Y.LOE_true[i];
           if (i<3){
             LOE_msg->LOE_FDD[i]  = gController.tuning_GS1_Y.LOE13_estimated[i];
           }
+
           if (thrust_prev_sent[i]!=0){
-              temp_LOE_calcul = 1-gThrust_measure[i]/thrust_prev_sent[i];
+              temp_LOE_calcul = 1.0-gThrust_measure[i]/thrust_prev_sent[i];
               LOE_msg->LOE_calcul[i] = temp_LOE_calcul;
              if (seq>10){
-            //  gController.tuning_GS1_U.LOE_calcul[i] = fmin(fmax(temp_LOE_calcul,0.0),1.0);
-               gController.tuning_GS1_U.LOE_calcul[i] = temp_LOE_calcul; 
-             } else{
-               gController.tuning_GS1_U.LOE_calcul[i] = 0.0;
+               gController.tuning_GS1_U.LOE_cal[i] = temp_LOE_calcul;
              }
           }
           thrust_prev_sent[i] = gController.tuning_GS1_Y.thrust_pre[i];
         }
+
         if (seq>5){      // cheat
           LOE_msg->header.seq = seq;
           //LOE_msg->header.frame_id = frame_id;

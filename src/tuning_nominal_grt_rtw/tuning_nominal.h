@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_nominal".
  *
- * Model version              : 1.1506
+ * Model version              : 1.1507
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Tue Jan 22 10:49:00 2019
+ * C++ source code generated on : Wed May 15 11:49:32 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -209,7 +209,7 @@ typedef struct {
 
 /* Constant parameters (auto storage) */
 typedef struct {
-  /* Expression: B_ENU_inv
+  /* Expression: B_CA_ENU_inv
    * Referenced by: '<Root>/Control Allocation'
    */
   real_T ControlAllocation_Gain[24];
