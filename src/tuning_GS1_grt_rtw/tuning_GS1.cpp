@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS1".
  *
- * Model version              : 1.2201
+ * Model version              : 1.2203
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed May 15 15:10:04 2019
+ * C++ source code generated on : Wed May 15 15:36:47 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -135,8 +135,44 @@ void tuning_GS1ModelClass::step()
   }
 
   {
-    static const real_T y[12] = { 2.4538, 2.4538, 2.4538, 2.4538, 2.4538, 2.4538,
-      1.1346, 1.1346, 1.1346, 1.1346, 1.1346, 1.1346 };
+    static const real_T y[12] = { 3.633, 3.633, 3.633, 3.633, 3.633, 3.633,
+      2.017, 2.017, 2.017, 2.017, 2.017, 2.017 };
+
+    static const real_T a[12] = { 0.4546, 1.009, 1.009, 1.009, 1.009, 1.009,
+      0.6222, 0.4581, 0.4581, 0.4581, 0.4581, 0.4581 };
+
+    static const real_T b_a[12] = { 1.009, 0.4546, 1.009, 1.009, 1.009, 1.009,
+      0.4581, 0.6222, 0.4581, 0.4581, 0.4581, 0.4581 };
+
+    static const real_T c_a[12] = { 1.009, 1.009, 0.4546, 1.009, 1.009, 1.009,
+      0.4581, 0.4581, 0.6222, 0.4581, 0.4581, 0.4581 };
+
+    static const real_T d_a[12] = { 1.009, 1.009, 1.009, 0.4546, 1.009, 1.009,
+      0.4581, 0.4581, 0.4581, 0.6222, 0.4581, 0.4581 };
+
+    static const real_T e_a[12] = { 1.009, 1.009, 1.009, 1.009, 0.4546, 1.009,
+      0.4581, 0.4581, 0.4581, 0.4581, 0.6222, 0.4581 };
+
+    static const real_T f_a[12] = { 1.009, 1.009, 1.009, 1.009, 1.009, 0.4546,
+      0.4581, 0.4581, 0.4581, 0.4581, 0.4581, 0.6222 };
+
+    static const real_T g_a[6] = { 0.3052, 0.7377, 0.7377, 0.7377, 0.7377,
+      0.7377 };
+
+    static const real_T h_a[6] = { 0.7377, 0.3052, 0.7377, 0.7377, 0.7377,
+      0.7377 };
+
+    static const real_T i_a[6] = { 0.7377, 0.7377, 0.3052, 0.7377, 0.7377,
+      0.7377 };
+
+    static const real_T j_a[6] = { 0.7377, 0.7377, 0.7377, 0.3052, 0.7377,
+      0.7377 };
+
+    static const real_T k_a[6] = { 0.7377, 0.7377, 0.7377, 0.7377, 0.3052,
+      0.7377 };
+
+    static const real_T l_a[6] = { 0.7377, 0.7377, 0.7377, 0.7377, 0.7377,
+      0.3052 };
 
     static const real_T y_0[12] = { -2.274, 2.274, -2.274, 2.274, -2.274, 2.274,
       -1.4292, 1.4292, -1.4292, 1.4292, -1.4292, 1.4292 };
@@ -144,48 +180,48 @@ void tuning_GS1ModelClass::step()
     static const real_T b_y[6] = { -1.4438, 1.4438, -1.4438, 1.4438, -1.4438,
       1.4438 };
 
-    static const real_T a[16] = { -0.1661, 0.3195, 0.3195, -0.3195, -0.1374,
+    static const real_T a_0[16] = { -0.1661, 0.3195, 0.3195, -0.3195, -0.1374,
       0.3305, 0.3305, -0.3305, -0.6998, 2.039, 2.039, -2.039, -0.4595, 0.5803,
       0.5803, -0.5803 };
 
-    static const real_T b_a[16] = { -0.3195, 0.1661, 0.3195, -0.3195, -0.3305,
+    static const real_T b_a_0[16] = { -0.3195, 0.1661, 0.3195, -0.3195, -0.3305,
       0.1374, 0.3305, -0.3305, -2.039, 0.6998, 2.039, -2.039, -0.5803, 0.4595,
       0.5803, -0.5803 };
 
-    static const real_T c_a[16] = { -0.3195, 0.3195, 0.1661, -0.3195, -0.3305,
+    static const real_T c_a_0[16] = { -0.3195, 0.3195, 0.1661, -0.3195, -0.3305,
       0.3305, 0.1374, -0.3305, -2.039, 2.039, 0.6998, -2.039, -0.5803, 0.5803,
       0.4595, -0.5803 };
 
-    static const real_T d_a[16] = { -0.3195, 0.3195, 0.3195, -0.1661, -0.3305,
+    static const real_T d_a_0[16] = { -0.3195, 0.3195, 0.3195, -0.1661, -0.3305,
       0.3305, 0.3305, -0.1374, -2.039, 2.039, 2.039, -0.6998, -0.5803, 0.5803,
       0.5803, -0.4595 };
 
-    static const real_T a_0[24] = { 0.1665, -0.3596, -0.1798, 0.1798, 0.3596,
+    static const real_T a_1[24] = { 0.1665, -0.3596, -0.1798, 0.1798, 0.3596,
       0.1798, 0.07562, -0.3218, -0.1609, 0.1609, 0.3218, 0.1609, 0.2108, 1.4594,
       0.7297, -0.7297, -1.4594, -0.7297, 0.3924, 0.2406, 0.1203, -0.1203,
       -0.2406, -0.1203 };
 
-    static const real_T b_a_0[24] = { -0.1798, 0.333, -0.1798, 0.1798, 0.3596,
+    static const real_T b_a_1[24] = { -0.1798, 0.333, -0.1798, 0.1798, 0.3596,
       0.1798, -0.1609, 0.15124, -0.1609, 0.1609, 0.3218, 0.1609, 0.7297, 0.4216,
       0.7297, -0.7297, -1.4594, -0.7297, 0.1203, 0.7848, 0.1203, -0.1203,
       -0.2406, -0.1203 };
 
-    static const real_T c_a_0[24] = { -0.1798, -0.3596, 0.1665, 0.1798, 0.3596,
+    static const real_T c_a_1[24] = { -0.1798, -0.3596, 0.1665, 0.1798, 0.3596,
       0.1798, -0.1609, -0.3218, 0.07562, 0.1609, 0.3218, 0.1609, 0.7297, 1.4594,
       0.2108, -0.7297, -1.4594, -0.7297, 0.1203, 0.2406, 0.3924, -0.1203,
       -0.2406, -0.1203 };
 
-    static const real_T d_a_0[24] = { -0.1798, -0.3596, -0.1798, -0.1665, 0.3596,
+    static const real_T d_a_1[24] = { -0.1798, -0.3596, -0.1798, -0.1665, 0.3596,
       0.1798, -0.1609, -0.3218, -0.1609, -0.07562, 0.3218, 0.1609, 0.7297,
       1.4594, 0.7297, -0.2108, -1.4594, -0.7297, 0.1203, 0.2406, 0.1203, -0.3924,
       -0.2406, -0.1203 };
 
-    static const real_T e_a[24] = { -0.1798, -0.3596, -0.1798, 0.1798, -0.333,
+    static const real_T e_a_0[24] = { -0.1798, -0.3596, -0.1798, 0.1798, -0.333,
       0.1798, -0.1609, -0.3218, -0.1609, 0.1609, -0.15124, 0.1609, 0.7297,
       1.4594, 0.7297, -0.7297, -0.4216, -0.7297, 0.1203, 0.2406, 0.1203, -0.1203,
       -0.7848, -0.1203 };
 
-    static const real_T f_a[24] = { -0.1798, -0.3596, -0.1798, 0.1798, 0.3596,
+    static const real_T f_a_0[24] = { -0.1798, -0.3596, -0.1798, 0.1798, 0.3596,
       -0.1665, -0.1609, -0.3218, -0.1609, 0.1609, 0.3218, -0.07562, 0.7297,
       1.4594, 0.7297, -0.7297, -1.4594, -0.2108, 0.1203, 0.2406, 0.1203, -0.1203,
       -0.2406, -0.3924 };
@@ -209,8 +245,8 @@ void tuning_GS1ModelClass::step()
     real_T rtb_Add_f[3];
     real_T rtb_Add_f_0[3];
     real_T rtb_gamma_j;
-    real_T a_1[16];
-    real_T a_2[24];
+    real_T a_2[16];
+    real_T a_3[24];
     int32_T i_0;
     real_T rtb_ref_idx_2;
     real_T rtb_ref_idx_3;
@@ -482,45 +518,45 @@ void tuning_GS1ModelClass::step()
     /*  Kiz = [2.0412 */
     /*         2.0412 */
     /*         2.0412];         */
-    /* '<S20>:1:15' Kx0 = [2.4538    1.1346]; */
+    /*      Kx0 = [2.4538    1.1346];       % Kx0 = [a0 b0]   */
+    /*      Kx1 = [0 0                      % Kx1 = [a1 b1 */
+    /*             0 0];                    %        a2 b2] */
+    /*      Ki0 =  2.0412;                  % Ki0 =  i0 */
+    /*      Ki1 = [0                        % Ki1 = [i1 i2]' */
+    /*             0];   */
+    /*  FTC1 gain */
+    /* '<S20>:1:24' Kx0 = [3.633   2.0170]; */
     /*  Kx0 = [a0 b0]   */
     /*  Kx1 = [a1 b1 */
-    /* '<S20>:1:16' Kx1 = [0 0                      % Kx1 = [a1 b1 */
-    /* '<S20>:1:17'            0 0]; */
+    /* '<S20>:1:25' Kx1 = [0.4546  0.6222           % Kx1 = [a1 b1 */
+    /* '<S20>:1:26'            1.009   0.4581]; */
     /*         a2 b2] */
-    /* '<S20>:1:18' Ki0 =  2.0412; */
+    /* '<S20>:1:27' Ki0 =  2.515; */
     /*  Ki0 =  i0 */
     /*  Ki1 = [i1 i2]' */
-    /* '<S20>:1:19' Ki1 = [0                        % Ki1 = [i1 i2]' */
-    /* '<S20>:1:20'            0]; */
-    /*  FTC1 gain */
-    /*      Kx0 = [3.633   2.0170];         % Kx0 = [a0 b0]   */
-    /*      Kx1 = [0.4546  0.6222           % Kx1 = [a1 b1 */
-    /*             1.009   0.4581];         %        a2 b2] */
-    /*      Ki0 =  2.515;                   % Ki0 =  i0 */
-    /*      Ki1 = [0.3052                   % Ki1 = [i1 i2]' */
-    /*             0.7377];        */
+    /* '<S20>:1:28' Ki1 = [0.3052                   % Ki1 = [i1 i2]' */
+    /* '<S20>:1:29'            0.7377]; */
     /*      */
     /*  */
-    /* '<S20>:1:32' K_mapping0 = [1 1 1 1 1 1]'; */
-    /* '<S20>:1:33' K_mapping1 = [1 0 0 0 0 0;0 1 1 1 1 1]'; */
-    /* '<S20>:1:34' K_mapping2 = [0 1 0 0 0 0;1 0 1 1 1 1]'; */
-    /* '<S20>:1:35' K_mapping3 = [0 0 1 0 0 0;1 1 0 1 1 1]'; */
-    /* '<S20>:1:36' K_mapping4 = [0 0 0 1 0 0;1 1 1 0 1 1]'; */
-    /* '<S20>:1:37' K_mapping5 = [0 0 0 0 1 0;1 1 1 1 0 1]'; */
-    /* '<S20>:1:38' K_mapping6 = [0 0 0 0 0 1;1 1 1 1 1 0]'; */
-    /* '<S20>:1:40' Kz  = K_mapping0*Kx0 + K_mapping1*Kx1*u(1) + K_mapping2*Kx1*u(2) + K_mapping3*Kx1*u(3) + K_mapping4*Kx1*u(4) + K_mapping5*Kx1*u(5) + K_mapping6*Kx1*u(6); */
+    /* '<S20>:1:33' K_mapping0 = [1 1 1 1 1 1]'; */
+    /* '<S20>:1:34' K_mapping1 = [1 0 0 0 0 0;0 1 1 1 1 1]'; */
+    /* '<S20>:1:35' K_mapping2 = [0 1 0 0 0 0;1 0 1 1 1 1]'; */
+    /* '<S20>:1:36' K_mapping3 = [0 0 1 0 0 0;1 1 0 1 1 1]'; */
+    /* '<S20>:1:37' K_mapping4 = [0 0 0 1 0 0;1 1 1 0 1 1]'; */
+    /* '<S20>:1:38' K_mapping5 = [0 0 0 0 1 0;1 1 1 1 0 1]'; */
+    /* '<S20>:1:39' K_mapping6 = [0 0 0 0 0 1;1 1 1 1 1 0]'; */
+    /* '<S20>:1:41' Kz  = K_mapping0*Kx0 + K_mapping1*Kx1*u(1) + K_mapping2*Kx1*u(2) + K_mapping3*Kx1*u(3) + K_mapping4*Kx1*u(4) + K_mapping5*Kx1*u(5) + K_mapping6*Kx1*u(6); */
     for (i = 0; i < 12; i++) {
-      rtb_Kz[i] = (((((0.0 * rtb_gamma_m[0] + y[i]) + 0.0 * rtb_gamma_m[1]) +
-                     0.0 * rtb_gamma_m[2]) + 0.0 * rtb_gamma_m[3]) + 0.0 *
-                   rtb_gamma_m[4]) + 0.0 * rtb_gamma_m[5];
+      rtb_Kz[i] = (((((a[i] * rtb_gamma_m[0] + y[i]) + b_a[i] * rtb_gamma_m[1])
+                     + c_a[i] * rtb_gamma_m[2]) + d_a[i] * rtb_gamma_m[3]) +
+                   e_a[i] * rtb_gamma_m[4]) + f_a[i] * rtb_gamma_m[5];
     }
 
-    /* '<S20>:1:41' Kiz = K_mapping0*Ki0 + K_mapping1*Ki1*u(1) + K_mapping2*Ki1*u(2) + K_mapping3*Ki1*u(3) + K_mapping4*Ki1*u(4) + K_mapping5*Ki1*u(5) + K_mapping6*Ki1*u(6); */
+    /* '<S20>:1:42' Kiz = K_mapping0*Ki0 + K_mapping1*Ki1*u(1) + K_mapping2*Ki1*u(2) + K_mapping3*Ki1*u(3) + K_mapping4*Ki1*u(4) + K_mapping5*Ki1*u(5) + K_mapping6*Ki1*u(6); */
     for (i = 0; i < 6; i++) {
-      rtb_Kiz[i] = (((((0.0 * rtb_gamma_m[0] + 2.0412) + 0.0 * rtb_gamma_m[1]) +
-                      0.0 * rtb_gamma_m[2]) + 0.0 * rtb_gamma_m[3]) + 0.0 *
-                    rtb_gamma_m[4]) + 0.0 * rtb_gamma_m[5];
+      rtb_Kiz[i] = (((((g_a[i] * rtb_gamma_m[0] + 2.515) + h_a[i] * rtb_gamma_m
+                       [1]) + i_a[i] * rtb_gamma_m[2]) + j_a[i] * rtb_gamma_m[3])
+                    + k_a[i] * rtb_gamma_m[4]) + l_a[i] * rtb_gamma_m[5];
     }
 
     /* Sum: '<S7>/Sum5' incorporates:
@@ -528,7 +564,7 @@ void tuning_GS1ModelClass::step()
      *  Inport: '<Root>/Y0'
      */
     /*  */
-    /* '<S20>:1:44' gain = [Kz(1,:) Kiz(1)]; */
+    /* '<S20>:1:45' gain = [Kz(1,:) Kiz(1)]; */
     /*  to display: gain z, zd, int for first rotor */
     rtb_d_z = tuning_GS1_U.X[2] - tuning_GS1_U.Y0[2];
 
@@ -1089,24 +1125,26 @@ void tuning_GS1ModelClass::step()
     rtb_gamma_idx_1 = rtb_gamma_m[3];
     rtb_gamma_idx_2 = rtb_gamma_m[5];
     for (i = 0; i < 4; i++) {
-      a_1[i << 2] = ((a[i << 2] * rtb_gamma_j + b_a[i << 2] * rtb_Clock) + c_a[i
-                     << 2] * rtb_gamma_idx_1) + d_a[i << 2] * rtb_gamma_idx_2;
-      a_1[1 + (i << 2)] = ((a[(i << 2) + 1] * rtb_gamma_j + b_a[(i << 2) + 1] *
-                            rtb_Clock) + c_a[(i << 2) + 1] * rtb_gamma_idx_1) +
-        d_a[(i << 2) + 1] * rtb_gamma_idx_2;
-      a_1[2 + (i << 2)] = ((a[(i << 2) + 2] * rtb_gamma_j + b_a[(i << 2) + 2] *
-                            rtb_Clock) + c_a[(i << 2) + 2] * rtb_gamma_idx_1) +
-        d_a[(i << 2) + 2] * rtb_gamma_idx_2;
-      a_1[3 + (i << 2)] = ((a[(i << 2) + 3] * rtb_gamma_j + b_a[(i << 2) + 3] *
-                            rtb_Clock) + c_a[(i << 2) + 3] * rtb_gamma_idx_1) +
-        d_a[(i << 2) + 3] * rtb_gamma_idx_2;
+      a_2[i << 2] = ((a_0[i << 2] * rtb_gamma_j + b_a_0[i << 2] * rtb_Clock) +
+                     c_a_0[i << 2] * rtb_gamma_idx_1) + d_a_0[i << 2] *
+        rtb_gamma_idx_2;
+      a_2[1 + (i << 2)] = ((a_0[(i << 2) + 1] * rtb_gamma_j + b_a_0[(i << 2) + 1]
+                            * rtb_Clock) + c_a_0[(i << 2) + 1] * rtb_gamma_idx_1)
+        + d_a_0[(i << 2) + 1] * rtb_gamma_idx_2;
+      a_2[2 + (i << 2)] = ((a_0[(i << 2) + 2] * rtb_gamma_j + b_a_0[(i << 2) + 2]
+                            * rtb_Clock) + c_a_0[(i << 2) + 2] * rtb_gamma_idx_1)
+        + d_a_0[(i << 2) + 2] * rtb_gamma_idx_2;
+      a_2[3 + (i << 2)] = ((a_0[(i << 2) + 3] * rtb_gamma_j + b_a_0[(i << 2) + 3]
+                            * rtb_Clock) + c_a_0[(i << 2) + 3] * rtb_gamma_idx_1)
+        + d_a_0[(i << 2) + 3] * rtb_gamma_idx_2;
 
       /* MATLAB Function: '<S15>/MATLAB Function' */
       for (i_0 = 0; i_0 < 6; i_0++) {
-        a_2[i_0 + 6 * i] = ((((a_0[6 * i + i_0] * rtb_gamma_m[0] + b_a_0[6 * i +
-          i_0] * rtb_gamma_m[1]) + c_a_0[6 * i + i_0] * rtb_gamma_m[2]) + d_a_0
-                             [6 * i + i_0] * rtb_gamma_m[3]) + e_a[6 * i + i_0] *
-                            rtb_gamma_m[4]) + f_a[6 * i + i_0] * rtb_gamma_m[5];
+        a_3[i_0 + 6 * i] = ((((a_1[6 * i + i_0] * rtb_gamma_m[0] + b_a_1[6 * i +
+          i_0] * rtb_gamma_m[1]) + c_a_1[6 * i + i_0] * rtb_gamma_m[2]) + d_a_1
+                             [6 * i + i_0] * rtb_gamma_m[3]) + e_a_0[6 * i + i_0]
+                            * rtb_gamma_m[4]) + f_a_0[6 * i + i_0] *
+          rtb_gamma_m[5];
       }
     }
 
@@ -1118,12 +1156,12 @@ void tuning_GS1ModelClass::step()
      */
     tuning_GS1_Y.gain_GS[0] = rtb_Kz[0];
     tuning_GS1_Y.gain_GS[3] = rtb_Kpsi[0];
-    tuning_GS1_Y.gain_GS[6] = -1.788 + a_1[0];
-    tuning_GS1_Y.gain_GS[9] = -0.8246 + a_2[0];
+    tuning_GS1_Y.gain_GS[6] = -1.788 + a_2[0];
+    tuning_GS1_Y.gain_GS[9] = -0.8246 + a_3[0];
     tuning_GS1_Y.gain_GS[1] = rtb_Kz[6];
     tuning_GS1_Y.gain_GS[4] = rtb_Kpsi[6];
-    tuning_GS1_Y.gain_GS[7] = -1.367 + a_1[4];
-    tuning_GS1_Y.gain_GS[10] = -0.5442 + a_2[6];
+    tuning_GS1_Y.gain_GS[7] = -1.367 + a_2[4];
+    tuning_GS1_Y.gain_GS[10] = -0.5442 + a_3[6];
     tuning_GS1_Y.gain_GS[2] = rtb_Kiz[0];
     tuning_GS1_Y.gain_GS[5] = rtb_Kipsi[0];
     tuning_GS1_Y.gain_GS[8] = (((-0.03956 * rtb_gamma_m[0] + -0.2068 *
