@@ -7,9 +7,9 @@
  *
  * Code generation for model "tuning_GS1".
  *
- * Model version              : 1.2203
+ * Model version              : 1.2204
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed May 15 15:36:47 2019
+ * C++ source code generated on : Thu May 16 09:49:04 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -181,30 +181,30 @@ typedef struct {
 typedef struct {
   real_T Integrator1_CSTATE;           /* '<S16>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S13>/Integrator1' */
-  real_T Integrator1_CSTATE_p;         /* '<S66>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S66>/Integrator' */
-  real_T Integrator1_CSTATE_pv;        /* '<S14>/Integrator1' */
+  real_T Integrator1_CSTATE_p;         /* '<S14>/Integrator1' */
   real_T Integrator1_CSTATE_n;         /* '<S15>/Integrator1' */
+  real_T Integrator1_CSTATE_pc;        /* '<S66>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S66>/Integrator' */
 } X_tuning_GS1_T;
 
 /* State derivatives (auto storage) */
 typedef struct {
   real_T Integrator1_CSTATE;           /* '<S16>/Integrator1' */
   real_T Integrator1_CSTATE_d;         /* '<S13>/Integrator1' */
-  real_T Integrator1_CSTATE_p;         /* '<S66>/Integrator1' */
-  real_T Integrator_CSTATE;            /* '<S66>/Integrator' */
-  real_T Integrator1_CSTATE_pv;        /* '<S14>/Integrator1' */
+  real_T Integrator1_CSTATE_p;         /* '<S14>/Integrator1' */
   real_T Integrator1_CSTATE_n;         /* '<S15>/Integrator1' */
+  real_T Integrator1_CSTATE_pc;        /* '<S66>/Integrator1' */
+  real_T Integrator_CSTATE;            /* '<S66>/Integrator' */
 } XDot_tuning_GS1_T;
 
 /* State disabled  */
 typedef struct {
   boolean_T Integrator1_CSTATE;        /* '<S16>/Integrator1' */
   boolean_T Integrator1_CSTATE_d;      /* '<S13>/Integrator1' */
-  boolean_T Integrator1_CSTATE_p;      /* '<S66>/Integrator1' */
-  boolean_T Integrator_CSTATE;         /* '<S66>/Integrator' */
-  boolean_T Integrator1_CSTATE_pv;     /* '<S14>/Integrator1' */
+  boolean_T Integrator1_CSTATE_p;      /* '<S14>/Integrator1' */
   boolean_T Integrator1_CSTATE_n;      /* '<S15>/Integrator1' */
+  boolean_T Integrator1_CSTATE_pc;     /* '<S66>/Integrator1' */
+  boolean_T Integrator_CSTATE;         /* '<S66>/Integrator' */
 } XDis_tuning_GS1_T;
 
 #ifndef ODE4_INTG
@@ -396,13 +396,6 @@ class tuning_GS1ModelClass {
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<S14>/Constant' : Unused code path elimination
- * Block '<S14>/Product' : Unused code path elimination
- * Block '<S14>/Product1' : Unused code path elimination
- * Block '<S14>/Sum1' : Unused code path elimination
- * Block '<S15>/Product' : Unused code path elimination
- * Block '<S15>/Product1' : Unused code path elimination
- * Block '<S15>/Sum1' : Unused code path elimination
  * Block '<S21>/ConstantP' : Unused code path elimination
  * Block '<S21>/CovarianceZ' : Unused code path elimination
  * Block '<S60>/Data Type Duplicate' : Unused code path elimination
