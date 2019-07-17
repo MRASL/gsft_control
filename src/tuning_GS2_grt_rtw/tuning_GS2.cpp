@@ -9,7 +9,7 @@
  *
  * Model version              : 1.2797
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C++ source code generated on : Wed May 15 14:50:44 2019
+ * C++ source code generated on : Tue Jul 16 15:04:29 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -1032,8 +1032,8 @@ void tuning_GS2ModelClass::step()
       /* Saturate: '<Root>/                   ' incorporates:
        *  Gain: '<Root>/Control Allocation'
        */
-      if (u0 > 8.54858) {
-        tuning_GS2_B.u[i] = 8.54858;
+      if (u0 > 9.37456697678494) {
+        tuning_GS2_B.u[i] = 9.37456697678494;
       } else if (u0 < 0.0) {
         tuning_GS2_B.u[i] = 0.0;
       } else {
